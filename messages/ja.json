@@ -2149,7 +2149,7 @@
         },
         "payments": {
           "claim": "決済連携：限定的",
-          "response": "WCPOS ProはStripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Vipps MobilePayと連携し、拡張機能カタログからワンクリックでインストールできます。また、店舗のその他のWooCommerce決済ゲートウェイをレジで有効にします。無料版では現金を受け付け、別の端末で受け付けたカード決済を記録でき、1件の注文を複数の支払いに分けられます。"
+          "response": "WCPOS ProはStripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcaveに加え、QRコードまたはプッシュ通知のVipps MobilePayと連携し、拡張機能カタログからワンクリックでインストールできます。また、店舗のその他のWooCommerce決済ゲートウェイをレジで有効にします。無料版では現金を受け付け、別の端末で受け付けたカード決済を記録でき、1件の注文を複数の支払いに分けられます。"
         },
         "hobbyShops": {
           "claim": "趣味レベルの店舗向け",
@@ -2344,7 +2344,7 @@
         },
         "tapToPay": {
           "question": "WCPOSはTap to Payに対応していますか？",
-          "answer": "まだ対応していません。iPhoneとAndroidでのTap to Payは今後のWCPOSアプリのアップデートで追加されます。また、WCPOSはWooPaymentsの対面決済をサポートしません。WCPOSのレジでのカード決済は、Proの端末連携（Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Vipps MobilePay）、Proで有効にしたWooCommerce決済ゲートウェイ、または別のカード端末を通じて行います。別の端末での決済はカード決済として記録します。"
+          "answer": "まだ対応していません。iPhoneとAndroidでのTap to Payは今後のWCPOSアプリのアップデートで追加されます。また、WCPOSはWooPaymentsの対面決済をサポートしません。WCPOSのレジでのカード決済は、Proの端末連携（Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcaveに加え、QRコードまたはプッシュ通知のVipps MobilePay）、Proで有効にしたWooCommerce決済ゲートウェイ、または別のカード端末を通じて行います。別の端末での決済はカード決済として記録します。"
         },
         "expiry": {
           "question": "WCPOS Proのライセンスが期限切れになるとどうなりますか？",
@@ -2605,7 +2605,7 @@
         "title": "どちらを選ぶべきか？",
         "wcpos": {
           "title": "WCPOSを選ぶべき場合：",
-          "body": "POSからの取引手数料をなくしたい、機能が停止しない買い切りを選びたい、Windows、macOS、Linux向けデスクトップアプリやiOSとAndroid向けアプリを使いたい、オープンソースのコードが必要、またはStripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Vipps MobilePayからカード端末を選びたい場合。"
+          "body": "POSからの取引手数料をなくしたい、機能が停止しない買い切りを選びたい、Windows、macOS、Linux向けデスクトップアプリやiOSとAndroid向けアプリを使いたい、オープンソースのコードが必要、またはStripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcaveのカード端末に加え、QRコードまたはプッシュ通知のVipps MobilePayからも選びたい場合。"
         },
         "jovvie": {
           "title": "Jovvieを選ぶなら：",
@@ -2624,7 +2624,7 @@
         },
         "stripe": {
           "question": "WCPOSでStripeのカードリーダーを使えますか？",
-          "answer": "はい、WCPOS Proで利用できます。カード端末との連携にはStripe Terminalのほか、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Vipps MobilePayが含まれます。"
+          "answer": "はい、WCPOS Proで利用できます。カード端末との連携にはStripe Terminalのほか、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcaveに加え、QRコードまたはプッシュ通知のVipps MobilePayが含まれます。"
         },
         "apps": {
           "question": "Jovvieにネイティブアプリはありますか？",
@@ -2731,7 +2731,7 @@
         "title": "どちらを選ぶべきか？",
         "wcpos": {
           "title": "WCPOSを選ぶべき場合：",
-          "body": "Windows、macOS、Linux向けデスクトップアプリやiOSとAndroid向けアプリが必要、またはStripe Terminal以外のカード端末を使いたい場合。WCPOS ProはSumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Vipps MobilePayにも対応しています。"
+          "body": "Windows、macOS、Linux向けデスクトップアプリやiOSとAndroid向けアプリが必要、またはStripe Terminal以外のカード端末を使いたい場合。WCPOS ProはSumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcaveに加え、QRコードまたはプッシュ通知のVipps MobilePayにも対応しています。"
         },
         "vitepos": {
           "title": "Viteposを選ぶべき場合：",
@@ -2758,7 +2758,7 @@
         },
         "terminals": {
           "question": "ViteposとWCPOSはどのカード端末に対応していますか？",
-          "answer": "ViteposのページにはStripe TerminalとWalleeによる端末決済が挙げられています。WCPOS Proのカード端末連携にはStripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Vipps MobilePayが含まれます。"
+          "answer": "ViteposのページにはStripe TerminalとWalleeによる端末決済が挙げられています。WCPOS Proのカード端末連携にはStripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcaveに加え、QRコードまたはプッシュ通知のVipps MobilePayが含まれます。"
         },
         "expiry": {
           "question": "WCPOS Proのライセンスが期限切れになるとどうなりますか？",
@@ -2873,7 +2873,7 @@
         "title": "どちらを選ぶべきか？",
         "wcpos": {
           "title": "WCPOSを選ぶべき場合：",
-          "body": "レジ、現金集計、分割払いを備えた無料版、カード端末連携（Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Vipps MobilePay）、Windows、macOS、Linux向けデスクトップアプリやiOSとAndroid向けアプリを使いたい、オフラインでも現金販売を続けたい、または1年分のアップデート期間が終わっても動作し続ける買い切りを選びたい場合。"
+          "body": "レジ、現金集計、分割払いを備えた無料版、カード端末連携（Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcaveに加え、QRコードまたはプッシュ通知のVipps MobilePay）、Windows、macOS、Linux向けデスクトップアプリやiOSとAndroid向けアプリを使いたい、オフラインでも現金販売を続けたい、または1年分のアップデート期間が終わっても動作し続ける買い切りを選びたい場合。"
         },
         "yith": {
           "title": "YITH Point of Saleを選ぶ場合：",
@@ -2892,7 +2892,7 @@
         },
         "terminals": {
           "question": "YITH Point of Saleにカード端末を接続できますか？",
-          "answer": "いいえ。YITHのドキュメントによると、POSのカードリーダー端末はプラグインに接続できないため、すべての支払いは手動で処理されます。支払いの記録用にCashとChip and Pinの支払い方法が追加されます。WCPOS Proのカード端末連携にはStripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Vipps MobilePayが含まれます。"
+          "answer": "いいえ。YITHのドキュメントによると、POSのカードリーダー端末はプラグインに接続できないため、すべての支払いは手動で処理されます。支払いの記録用にCashとChip and Pinの支払い方法が追加されます。WCPOS Proのカード端末連携にはStripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcaveに加え、QRコードまたはプッシュ通知のVipps MobilePayが含まれます。"
         },
         "apps": {
           "question": "YITH Point of Saleにネイティブアプリはありますか？",
@@ -3038,7 +3038,7 @@
         },
         "terminals": {
           "question": "FooSalesとWCPOSはどのカード端末に対応していますか？",
-          "answer": "Plusプランでは、FooSalesはすべてのアプリでSquare Terminal、タブレットアプリでSquare Readers、さらにStripe Terminalのリーダーと連携し、StripeまたはSquareを通じてiPhoneとAndroidでのTap to Payにも対応します。その他のカードリーダーはFooSalesの外部で使用でき、会計時にカード決済として売上を記録できます。WCPOS Proのカード端末連携にはStripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Vipps MobilePayが含まれます。WCPOSにはまだTap to Payがありません。今後のアプリのアップデートで追加されます。"
+          "answer": "Plusプランでは、FooSalesはすべてのアプリでSquare Terminal、タブレットアプリでSquare Readers、さらにStripe Terminalのリーダーと連携し、StripeまたはSquareを通じてiPhoneとAndroidでのTap to Payにも対応します。その他のカードリーダーはFooSalesの外部で使用でき、会計時にカード決済として売上を記録できます。WCPOS Proのカード端末連携にはStripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcaveに加え、QRコードまたはプッシュ通知のVipps MobilePayが含まれます。WCPOSにはまだTap to Payがありません。今後のアプリのアップデートで追加されます。"
         },
         "apps": {
           "question": "FooSalesにはネイティブアプリがありますか？",

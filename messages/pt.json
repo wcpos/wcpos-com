@@ -2149,7 +2149,7 @@
         },
         "payments": {
           "claim": "Pagamentos integrados: limitados",
-          "response": "O WCPOS Pro integra Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal e Vipps MobilePay, instaláveis com um clique a partir do catálogo de extensões, e ativa os outros gateways de pagamento WooCommerce da sua loja na caixa. A versão gratuita aceita dinheiro e regista pagamentos com cartão efetuados num terminal separado, e permite dividir uma encomenda em vários pagamentos."
+          "response": "O WCPOS Pro integra Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc e Windcave, além de Vipps MobilePay por código QR ou notificação push, instaláveis com um clique a partir do catálogo de extensões, e ativa os outros gateways de pagamento WooCommerce da sua loja na caixa. A versão gratuita aceita dinheiro e regista pagamentos com cartão efetuados num terminal separado, e permite dividir uma encomenda em vários pagamentos."
         },
         "hobbyShops": {
           "claim": "Ideal para lojas amadoras",
@@ -2344,7 +2344,7 @@
         },
         "tapToPay": {
           "question": "O WCPOS suporta Tap to Pay?",
-          "answer": "Ainda não. O Tap to Pay no iPhone e Android será disponibilizado numa atualização da aplicação WCPOS, e o WCPOS não suporta pagamentos presenciais WooPayments. Os pagamentos com cartão na caixa WCPOS passam pelas suas integrações com terminais do Pro — Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal e Vipps MobilePay —, por um gateway de pagamento WooCommerce ativado com Pro, ou são efetuados num terminal de cartão separado e registados como pagamento com cartão."
+          "answer": "Ainda não. O Tap to Pay no iPhone e Android será disponibilizado numa atualização da aplicação WCPOS, e o WCPOS não suporta pagamentos presenciais WooPayments. Os pagamentos com cartão na caixa WCPOS passam pelas suas integrações com terminais do Pro — Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc e Windcave, além de Vipps MobilePay por código QR ou notificação push —, por um gateway de pagamento WooCommerce ativado com Pro, ou são efetuados num terminal de cartão separado e registados como pagamento com cartão."
         },
         "expiry": {
           "question": "O que acontece quando uma licença WCPOS Pro expira?",
@@ -2605,7 +2605,7 @@
         "title": "Qual deve escolher?",
         "wcpos": {
           "title": "Escolha o WCPOS se:",
-          "body": "Quer evitar taxas de transação do seu ponto de venda, um pagamento único sem desativação, aplicações de desktop para Windows, macOS e Linux ou aplicações para iOS e Android, código aberto ou uma escolha de terminais de cartão: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal e Vipps MobilePay."
+          "body": "Quer evitar taxas de transação do seu ponto de venda, um pagamento único sem desativação, aplicações de desktop para Windows, macOS e Linux ou aplicações para iOS e Android, código aberto ou uma escolha de terminais de cartão: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc e Windcave, além de Vipps MobilePay por código QR ou notificação push."
         },
         "jovvie": {
           "title": "Escolha o Jovvie se:",
@@ -2624,7 +2624,7 @@
         },
         "stripe": {
           "question": "Posso usar um leitor de cartões Stripe com o WCPOS?",
-          "answer": "Sim, com o WCPOS Pro. As integrações com terminais de cartão incluem Stripe Terminal, além de SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal e Vipps MobilePay."
+          "answer": "Sim, com o WCPOS Pro. As integrações com terminais de cartão incluem Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc e Windcave, além de Vipps MobilePay por código QR ou notificação push."
         },
         "apps": {
           "question": "O Jovvie tem aplicações nativas?",
@@ -2731,7 +2731,7 @@
         "title": "Qual deve escolher?",
         "wcpos": {
           "title": "Escolha o WCPOS se:",
-          "body": "Quer aplicações de desktop para Windows, macOS e Linux ou aplicações para iOS e Android, ou um terminal de cartão diferente do Stripe Terminal: o WCPOS Pro também integra SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal e Vipps MobilePay."
+          "body": "Quer aplicações de desktop para Windows, macOS e Linux ou aplicações para iOS e Android, ou um terminal de cartão diferente do Stripe Terminal: o WCPOS Pro também integra SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc e Windcave, além de Vipps MobilePay por código QR ou notificação push."
         },
         "vitepos": {
           "title": "Escolha o Vitepos se:",
@@ -2758,7 +2758,7 @@
         },
         "terminals": {
           "question": "Que terminais de cartão são suportados pelo Vitepos e pelo WCPOS?",
-          "answer": "As páginas do Vitepos mencionam pagamentos em terminal através do Stripe Terminal e Wallee. As integrações com terminais de cartão do WCPOS Pro incluem Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal e Vipps MobilePay."
+          "answer": "As páginas do Vitepos mencionam pagamentos em terminal através do Stripe Terminal e Wallee. As integrações com terminais de cartão do WCPOS Pro incluem Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc e Windcave, além de Vipps MobilePay por código QR ou notificação push."
         },
         "expiry": {
           "question": "O que acontece quando uma licença WCPOS Pro expira?",
@@ -2873,7 +2873,7 @@
         "title": "Qual deve escolher?",
         "wcpos": {
           "title": "Escolha o WCPOS se:",
-          "body": "Quer uma versão gratuita com uma caixa, contagens de dinheiro e pagamentos divididos, integrações com terminais de cartão (Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal e Vipps MobilePay), aplicações de desktop para Windows, macOS e Linux ou aplicações para iOS e Android, vendas em dinheiro que continuam offline ou um pagamento único que continua a funcionar depois do ano de atualizações."
+          "body": "Quer uma versão gratuita com uma caixa, contagens de dinheiro e pagamentos divididos, integrações com terminais de cartão (Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc e Windcave, além de Vipps MobilePay por código QR ou notificação push), aplicações de desktop para Windows, macOS e Linux ou aplicações para iOS e Android, vendas em dinheiro que continuam offline ou um pagamento único que continua a funcionar depois do ano de atualizações."
         },
         "yith": {
           "title": "Escolha o YITH Point of Sale se:",
@@ -2892,7 +2892,7 @@
         },
         "terminals": {
           "question": "Posso ligar um terminal de cartão ao YITH Point of Sale?",
-          "answer": "Não. Segundo a documentação da YITH, não é possível ligar nenhum terminal leitor de cartões POS ao plugin, pelo que todos os pagamentos são processados manualmente; acrescenta os métodos de pagamento Cash e Chip and Pin para registar pagamentos. WCPOS Pro incluem Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal e Vipps MobilePay."
+          "answer": "Não. Segundo a documentação da YITH, não é possível ligar nenhum terminal leitor de cartões POS ao plugin, pelo que todos os pagamentos são processados manualmente; acrescenta os métodos de pagamento Cash e Chip and Pin para registar pagamentos. As integrações com terminais de cartão do WCPOS Pro incluem Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc e Windcave, além de Vipps MobilePay por código QR ou notificação push."
         },
         "apps": {
           "question": "O YITH Point of Sale tem aplicações nativas?",
@@ -3038,7 +3038,7 @@
         },
         "terminals": {
           "question": "Que terminais de cartão suportam o FooSales e o WCPOS?",
-          "answer": "No seu plano Plus, o FooSales integra Square Terminal em todas as suas aplicações, Square Readers nas suas aplicações para tablets e leitores Stripe Terminal, e suporta Tap to Pay no iPhone e Android através do Stripe ou Square. Outros leitores de cartão podem ser usados fora do FooSales, com a venda registada no checkout como pagamento com cartão. As integrações com terminais de cartão do WCPOS Pro incluem Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal e Vipps MobilePay. O WCPOS ainda não tem Tap to Pay; será disponibilizado numa atualização da aplicação."
+          "answer": "No seu plano Plus, o FooSales integra Square Terminal em todas as suas aplicações, Square Readers nas suas aplicações para tablets e leitores Stripe Terminal, e suporta Tap to Pay no iPhone e Android através do Stripe ou Square. Outros leitores de cartão podem ser usados fora do FooSales, com a venda registada no checkout como pagamento com cartão. As integrações com terminais de cartão do WCPOS Pro incluem Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc e Windcave, além de Vipps MobilePay por código QR ou notificação push. O WCPOS ainda não tem Tap to Pay; será disponibilizado numa atualização da aplicação."
         },
         "apps": {
           "question": "O FooSales tem aplicações nativas?",

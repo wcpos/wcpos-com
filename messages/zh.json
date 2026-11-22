@@ -2149,7 +2149,7 @@
         },
         "payments": {
           "claim": "集成支付：有限",
-          "response": "WCPOS Pro 集成 Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal 和 Vipps MobilePay，可在扩展目录中一键安装，并在收银台启用你店铺的其他 WooCommerce 支付网关。免费版接受现金并记录在单独的终端上收取的银行卡付款，还可将同一订单拆分为多笔付款。"
+          "response": "WCPOS Pro 集成 Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc 和 Windcave，以及通过二维码或推送通知收款的 Vipps MobilePay，可在扩展目录中一键安装，并在收银台启用你店铺的其他 WooCommerce 支付网关。免费版接受现金并记录在单独的终端上收取的银行卡付款，还可将同一订单拆分为多笔付款。"
         },
         "hobbyShops": {
           "claim": "最适合业余小店",
@@ -2344,7 +2344,7 @@
         },
         "tapToPay": {
           "question": "WCPOS 支持 Tap to Pay 吗？",
-          "answer": "暂不支持。iPhone 和 Android 上的 Tap to Pay 将在后续 WCPOS 应用更新中提供，WCPOS 不支持 WooPayments 线下支付。WCPOS 收银台的银行卡付款可通过 Pro 的终端集成——Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal 和 Vipps MobilePay——或通过 Pro 启用的 WooCommerce 支付网关处理，也可在单独的刷卡终端上收取，再记录为银行卡付款。"
+          "answer": "暂不支持。iPhone 和 Android 上的 Tap to Pay 将在后续 WCPOS 应用更新中提供，WCPOS 不支持 WooPayments 线下支付。WCPOS 收银台的银行卡付款可通过 Pro 的终端集成——Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc 和 Windcave，以及通过二维码或推送通知收款的 Vipps MobilePay——或通过 Pro 启用的 WooCommerce 支付网关处理，也可在单独的刷卡终端上收取，再记录为银行卡付款。"
         },
         "expiry": {
           "question": "WCPOS Pro 许可证到期后会发生什么？",
@@ -2605,7 +2605,7 @@
         "title": "你该选哪一个？",
         "wcpos": {
           "title": "选择 WCPOS，如果：",
-          "body": "你想避免销售点系统收取交易手续费、选择不会停用的一次性付款方案、使用 Windows、macOS 和 Linux 桌面应用或 iOS 和 Android 应用、使用开源代码，或者从 Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal 和 Vipps MobilePay 中选择刷卡终端。"
+          "body": "你想避免销售点系统收取交易手续费、选择不会停用的一次性付款方案、使用 Windows、macOS 和 Linux 桌面应用或 iOS 和 Android 应用、使用开源代码，或者从 Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc 和 Windcave 的刷卡终端，以及通过二维码或推送通知收款的 Vipps MobilePay 中进行选择。"
         },
         "jovvie": {
           "title": "选择 Jovvie，如果：",
@@ -2624,7 +2624,7 @@
         },
         "stripe": {
           "question": "WCPOS 可以使用 Stripe 读卡器吗？",
-          "answer": "可以，使用 WCPOS Pro。其刷卡终端集成包括 Stripe Terminal，以及 SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal 和 Vipps MobilePay。"
+          "answer": "可以，使用 WCPOS Pro。其刷卡终端集成包括 Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc 和 Windcave，以及通过二维码或推送通知收款的 Vipps MobilePay。"
         },
         "apps": {
           "question": "Jovvie 有原生应用吗？",
@@ -2731,7 +2731,7 @@
         "title": "你该选哪一个？",
         "wcpos": {
           "title": "选择 WCPOS，如果：",
-          "body": "你想使用 Windows、macOS 和 Linux 桌面应用或 iOS 和 Android 应用，或使用 Stripe Terminal 以外的刷卡终端：WCPOS Pro 还支持 SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal 和 Vipps MobilePay。"
+          "body": "你想使用 Windows、macOS 和 Linux 桌面应用或 iOS 和 Android 应用，或使用 Stripe Terminal 以外的刷卡终端：WCPOS Pro 还支持 SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc 和 Windcave，以及通过二维码或推送通知收款的 Vipps MobilePay。"
         },
         "vitepos": {
           "title": "选择 Vitepos，如果：",
@@ -2758,7 +2758,7 @@
         },
         "terminals": {
           "question": "Vitepos 和 WCPOS 支持哪些刷卡终端？",
-          "answer": "Vitepos 的页面列出了 Stripe Terminal 和 Wallee 的终端付款方式。WCPOS Pro 的刷卡终端集成包括 Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal 和 Vipps MobilePay。"
+          "answer": "Vitepos 的页面列出了 Stripe Terminal 和 Wallee 的终端付款方式。WCPOS Pro 的刷卡终端集成包括 Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc 和 Windcave，以及通过二维码或推送通知收款的 Vipps MobilePay。"
         },
         "expiry": {
           "question": "WCPOS Pro 许可证到期后会发生什么？",
@@ -2873,7 +2873,7 @@
         "title": "你该选哪一个？",
         "wcpos": {
           "title": "选择 WCPOS，如果：",
-          "body": "你想要带收银台、现金清点和拆分付款功能的免费版、刷卡终端集成（Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal 和 Vipps MobilePay）、Windows、macOS 和 Linux 桌面应用或 iOS 和 Android 应用、离线时仍可继续的现金销售，或希望一次性付款后在一年更新期结束时仍能继续使用。"
+          "body": "你想要带收银台、现金清点和拆分付款功能的免费版、刷卡终端集成（Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc 和 Windcave，以及通过二维码或推送通知收款的 Vipps MobilePay）、Windows、macOS 和 Linux 桌面应用或 iOS 和 Android 应用、离线时仍可继续的现金销售，或希望一次性付款后在一年更新期结束时仍能继续使用。"
         },
         "yith": {
           "title": "以下情况选择 YITH Point of Sale：",
@@ -2892,7 +2892,7 @@
         },
         "terminals": {
           "question": "可以将刷卡终端连接到 YITH Point of Sale 吗？",
-          "answer": "不可以。根据 YITH 的文档，POS 刷卡终端无法连接到该插件，因此每笔付款都需手动处理；它添加了 Cash 和 Chip and Pin 付款方式来记录付款。WCPOS Pro 的刷卡终端集成包括 Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal 和 Vipps MobilePay。"
+          "answer": "不可以。根据 YITH 的文档，POS 刷卡终端无法连接到该插件，因此每笔付款都需手动处理；它添加了 Cash 和 Chip and Pin 付款方式来记录付款。WCPOS Pro 的刷卡终端集成包括 Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc 和 Windcave，以及通过二维码或推送通知收款的 Vipps MobilePay。"
         },
         "apps": {
           "question": "YITH Point of Sale 有原生应用吗？",
@@ -3038,7 +3038,7 @@
         },
         "terminals": {
           "question": "FooSales 和 WCPOS 支持哪些刷卡终端？",
-          "answer": "在 Plus 方案中，FooSales 在所有应用中集成 Square Terminal，在平板应用中集成 Square Readers，还集成 Stripe Terminal 读卡器，并通过 Stripe 或 Square 支持在 iPhone 和 Android 上使用 Tap to Pay。其他读卡器可在 FooSales 之外使用，销售可在结账时记录为银行卡付款。WCPOS Pro 的刷卡终端集成包括 Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal 和 Vipps MobilePay。WCPOS 目前还没有 Tap to Pay，将在后续应用更新中提供。"
+          "answer": "在 Plus 方案中，FooSales 在所有应用中集成 Square Terminal，在平板应用中集成 Square Readers，还集成 Stripe Terminal 读卡器，并通过 Stripe 或 Square 支持在 iPhone 和 Android 上使用 Tap to Pay。其他读卡器可在 FooSales 之外使用，销售可在结账时记录为银行卡付款。WCPOS Pro 的刷卡终端集成包括 Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc 和 Windcave，以及通过二维码或推送通知收款的 Vipps MobilePay。WCPOS 目前还没有 Tap to Pay，将在后续应用更新中提供。"
         },
         "apps": {
           "question": "FooSales 有原生应用吗？",
