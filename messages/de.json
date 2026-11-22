@@ -1708,6 +1708,7 @@
           "title": "Möchtest du mehr? Wechsle zu Pro",
           "cardTitle": "Weitere Kassen freischalten",
           "cardBody": "Weitere Kassen & mehrere Filialen, Terminalzahlungen, Erstattungen, Bestand & Preise, Bestellverwaltung, vollständige Berichte und vorrangiger Discord-Support.",
+          "requirements": "WordPress 5.8+ · WooCommerce 9.0+ · PHP 7.4+",
           "plansCta": "Pro-Tarife ansehen",
           "signInCta": "Anmelden zum Herunterladen"
         }

@@ -1708,6 +1708,7 @@
           "title": "Besoin de plus ? Passez à Pro",
           "cardTitle": "Débloquez davantage de caisses",
           "cardBody": "Davantage de caisses et plusieurs boutiques, paiements par terminal, remboursements, stock et prix, gestion des commandes, rapports complets et assistance prioritaire sur Discord.",
+          "requirements": "WordPress 5.8+ · WooCommerce 9.0+ · PHP 7.4+",
           "plansCta": "Voir les offres Pro",
           "signInCta": "Connectez-vous pour télécharger"
         }

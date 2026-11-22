@@ -1708,6 +1708,7 @@
           "title": "Quer mais? Passe para Pro",
           "cardTitle": "Desbloqueie mais caixas",
           "cardBody": "Mais caixas e várias lojas, pagamentos em terminal, reembolsos, stock e preços, gestão de encomendas, relatórios completos e suporte prioritário no Discord.",
+          "requirements": "WordPress 5.8+ · WooCommerce 9.0+ · PHP 7.4+",
           "plansCta": "Ver planos Pro",
           "signInCta": "Iniciar sessão para transferir"
         }

@@ -1708,6 +1708,7 @@
           "title": "Want more? Go Pro",
           "cardTitle": "Unlock more registers",
           "cardBody": "More registers & stores, terminal payments, refunds, stock & pricing, order management, full reports and priority Discord support.",
+          "requirements": "WordPress 5.8+ · WooCommerce 9.0+ · PHP 7.4+",
           "plansCta": "View Pro plans",
           "signInCta": "Sign in to download"
         }
