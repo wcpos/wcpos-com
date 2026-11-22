@@ -74,3 +74,67 @@ describe('compare payments prose', () => {
     }
   }
 })
+
+const TERMINALS = [
+  'Stripe Terminal',
+  'SumUp',
+  'PayPal Reader (Zettle)',
+  'Square Terminal',
+  'Mollie Terminal',
+  'Mercado Pago',
+  'PayArc',
+  'Windcave',
+]
+
+const LISTS: { key: string; value: (m: Messages) => string }[] = [
+  {
+    key: 'compare.oliver.claims.payments.response',
+    value: (m) => m.compare.oliver.claims.payments.response,
+  },
+  {
+    key: 'compare.woocommerce.faq.tapToPay.answer',
+    value: (m) => m.compare.woocommerce.faq.tapToPay.answer,
+  },
+  {
+    key: 'compare.jovvie.choose.wcpos.body',
+    value: (m) => m.compare.jovvie.choose.wcpos.body,
+  },
+  {
+    key: 'compare.jovvie.faq.stripe.answer',
+    value: (m) => m.compare.jovvie.faq.stripe.answer,
+  },
+  {
+    key: 'compare.vitepos.choose.wcpos.body',
+    value: (m) => m.compare.vitepos.choose.wcpos.body,
+  },
+  {
+    key: 'compare.vitepos.faq.terminals.answer',
+    value: (m) => m.compare.vitepos.faq.terminals.answer,
+  },
+  {
+    key: 'compare.yith.choose.wcpos.body',
+    value: (m) => m.compare.yith.choose.wcpos.body,
+  },
+  {
+    key: 'compare.yith.faq.terminals.answer',
+    value: (m) => m.compare.yith.faq.terminals.answer,
+  },
+  {
+    key: 'compare.foosales.faq.terminals.answer',
+    value: (m) => m.compare.foosales.faq.terminals.answer,
+  },
+]
+
+describe('compare terminal lists in prose and FAQ answers', () => {
+  for (const { locale, messages, vipps } of LOCALES) {
+    for (const list of LISTS) {
+      it(`${locale} ${list.key} names every terminal and Vipps by QR or push`, () => {
+        const value = list.value(messages)
+        for (const terminal of TERMINALS) {
+          expect(value).toContain(terminal)
+        }
+        expect(value).toContain(vipps)
+      })
+    }
+  }
+})

@@ -2149,7 +2149,7 @@
         },
         "payments": {
           "claim": "통합 결제: 제한적",
-          "response": "WCPOS Pro는 Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay를 연동하며 확장 카탈로그에서 원클릭으로 설치할 수 있고, 계산대에서 매장의 다른 WooCommerce 결제 게이트웨이를 활성화합니다. 무료 버전은 현금 결제를 받고 별도 단말기에서 받은 카드 결제를 기록하며, 한 주문을 여러 결제로 나누어 처리할 수 있습니다."
+          "response": "WCPOS Pro는 Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave와 QR 코드 또는 푸시 알림 방식의 Vipps MobilePay를 연동하며 확장 카탈로그에서 원클릭으로 설치할 수 있고, 계산대에서 매장의 다른 WooCommerce 결제 게이트웨이를 활성화합니다. 무료 버전은 현금 결제를 받고 별도 단말기에서 받은 카드 결제를 기록하며, 한 주문을 여러 결제로 나누어 처리할 수 있습니다."
         },
         "hobbyShops": {
           "claim": "취미 매장에 적합",
@@ -2344,7 +2344,7 @@
         },
         "tapToPay": {
           "question": "WCPOS는 Tap to Pay를 지원하나요?",
-          "answer": "아직 지원하지 않습니다. iPhone과 Android의 Tap to Pay는 향후 WCPOS 앱 업데이트로 제공되며, WCPOS는 WooPayments 대면 결제를 지원하지 않습니다. WCPOS 계산대의 카드 결제는 Pro 단말기 연동 — Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay — 또는 Pro로 활성화한 WooCommerce 결제 게이트웨이를 통해 처리하거나, 별도 카드 단말기에서 받은 뒤 카드 결제로 기록합니다."
+          "answer": "아직 지원하지 않습니다. iPhone과 Android의 Tap to Pay는 향후 WCPOS 앱 업데이트로 제공되며, WCPOS는 WooPayments 대면 결제를 지원하지 않습니다. WCPOS 계산대의 카드 결제는 Pro 단말기 연동 — Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave와 QR 코드 또는 푸시 알림 방식의 Vipps MobilePay — 또는 Pro로 활성화한 WooCommerce 결제 게이트웨이를 통해 처리하거나, 별도 카드 단말기에서 받은 뒤 카드 결제로 기록합니다."
         },
         "expiry": {
           "question": "WCPOS Pro 라이선스가 만료되면 어떻게 되나요?",
@@ -2605,7 +2605,7 @@
         "title": "무엇을 선택해야 할까요?",
         "wcpos": {
           "title": "이런 경우 WCPOS를 선택하세요:",
-          "body": "POS의 거래 수수료가 없기를 원하거나, 기능이 꺼지지 않는 일회성 결제, Windows, macOS 및 Linux용 데스크톱 앱 또는 iOS 및 Android용 앱, 오픈 소스 코드, 또는 Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay 중에서 카드 단말기를 선택하고 싶은 경우."
+          "body": "POS의 거래 수수료가 없기를 원하거나, 기능이 꺼지지 않는 일회성 결제, Windows, macOS 및 Linux용 데스크톱 앱 또는 iOS 및 Android용 앱, 오픈 소스 코드, 또는 Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave 카드 단말기와 QR 코드 또는 푸시 알림 방식의 Vipps MobilePay 중에서 선택하고 싶은 경우."
         },
         "jovvie": {
           "title": "Jovvie를 선택하세요:",
@@ -2624,7 +2624,7 @@
         },
         "stripe": {
           "question": "WCPOS에서 Stripe 카드 리더를 사용할 수 있나요?",
-          "answer": "네, WCPOS Pro에서 사용할 수 있습니다. 카드 단말기 연동에는 Stripe Terminal 외에 SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay가 포함됩니다."
+          "answer": "네, WCPOS Pro에서 사용할 수 있습니다. 카드 단말기 연동에는 Stripe Terminal 외에 SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave와 QR 코드 또는 푸시 알림 방식의 Vipps MobilePay가 포함됩니다."
         },
         "apps": {
           "question": "Jovvie에 네이티브 앱이 있나요?",
@@ -2731,7 +2731,7 @@
         "title": "무엇을 선택해야 할까요?",
         "wcpos": {
           "title": "이런 경우 WCPOS를 선택하세요:",
-          "body": "Windows, macOS 및 Linux용 데스크톱 앱이나 iOS 및 Android용 앱을 원하거나 Stripe Terminal 이외의 카드 단말기를 원한다면: WCPOS Pro는 SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay도 연동합니다."
+          "body": "Windows, macOS 및 Linux용 데스크톱 앱이나 iOS 및 Android용 앱을 원하거나 Stripe Terminal 이외의 카드 단말기를 원한다면: WCPOS Pro는 SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave와 QR 코드 또는 푸시 알림 방식의 Vipps MobilePay도 연동합니다."
         },
         "vitepos": {
           "title": "이런 경우 Vitepos를 선택하세요:",
@@ -2758,7 +2758,7 @@
         },
         "terminals": {
           "question": "Vitepos와 WCPOS는 어떤 카드 단말기를 지원하나요?",
-          "answer": "Vitepos의 페이지에는 Stripe Terminal 및 Wallee 단말기 결제가 명시되어 있습니다. WCPOS Pro의 카드 단말기 연동에는 Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay가 포함됩니다."
+          "answer": "Vitepos의 페이지에는 Stripe Terminal 및 Wallee 단말기 결제가 명시되어 있습니다. WCPOS Pro의 카드 단말기 연동에는 Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave와 QR 코드 또는 푸시 알림 방식의 Vipps MobilePay가 포함됩니다."
         },
         "expiry": {
           "question": "WCPOS Pro 라이선스가 만료되면 어떻게 되나요?",
@@ -2873,7 +2873,7 @@
         "title": "무엇을 선택해야 할까요?",
         "wcpos": {
           "title": "이런 경우 WCPOS를 선택하세요:",
-          "body": "계산대, 현금 집계 및 분할 결제를 갖춘 무료 버전, 카드 단말기 연동(Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay), Windows, macOS 및 Linux용 데스크톱 앱이나 iOS 및 Android용 앱을 원하거나, 오프라인에서도 현금 판매를 계속하고 싶거나, 1년 업데이트 기간 이후에도 계속 작동하는 일회성 결제를 원할 경우."
+          "body": "계산대, 현금 집계 및 분할 결제를 갖춘 무료 버전, 카드 단말기 연동(Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave와 QR 코드 또는 푸시 알림 방식의 Vipps MobilePay), Windows, macOS 및 Linux용 데스크톱 앱이나 iOS 및 Android용 앱을 원하거나, 오프라인에서도 현금 판매를 계속하고 싶거나, 1년 업데이트 기간 이후에도 계속 작동하는 일회성 결제를 원할 경우."
         },
         "yith": {
           "title": "YITH Point of Sale을 선택할 경우:",
@@ -2892,7 +2892,7 @@
         },
         "terminals": {
           "question": "YITH Point of Sale에 카드 단말기를 연결할 수 있나요?",
-          "answer": "아니요. YITH 문서에 따르면 POS 카드 리더 단말기를 플러그인에 연결할 수 없으므로 모든 결제는 수동으로 처리됩니다. 결제 기록을 위한 Cash 및 Chip and Pin 결제 수단이 추가됩니다. WCPOS Pro의 카드 단말기 연동에는 Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay가 포함됩니다."
+          "answer": "아니요. YITH 문서에 따르면 POS 카드 리더 단말기를 플러그인에 연결할 수 없으므로 모든 결제는 수동으로 처리됩니다. 결제 기록을 위한 Cash 및 Chip and Pin 결제 수단이 추가됩니다. WCPOS Pro의 카드 단말기 연동에는 Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave와 QR 코드 또는 푸시 알림 방식의 Vipps MobilePay가 포함됩니다."
         },
         "apps": {
           "question": "YITH Point of Sale에 네이티브 앱이 있나요?",
@@ -3038,7 +3038,7 @@
         },
         "terminals": {
           "question": "FooSales와 WCPOS는 어떤 카드 단말기를 지원하나요?",
-          "answer": "Plus 요금제에서 FooSales는 모든 앱에 Square Terminal을, 태블릿 앱에 Square Readers를 연동하며, Stripe Terminal 리더기도 연동하고, Stripe 또는 Square를 통해 iPhone과 Android의 Tap to Pay를 지원합니다. 다른 카드 리더기는 FooSales 외부에서 사용하고 계산 시 판매를 카드 결제로 기록할 수 있습니다. WCPOS Pro의 카드 단말기 연동에는 Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay가 포함됩니다. WCPOS에는 아직 Tap to Pay가 없으며, 향후 앱 업데이트로 제공됩니다."
+          "answer": "Plus 요금제에서 FooSales는 모든 앱에 Square Terminal을, 태블릿 앱에 Square Readers를 연동하며, Stripe Terminal 리더기도 연동하고, Stripe 또는 Square를 통해 iPhone과 Android의 Tap to Pay를 지원합니다. 다른 카드 리더기는 FooSales 외부에서 사용하고 계산 시 판매를 카드 결제로 기록할 수 있습니다. WCPOS Pro의 카드 단말기 연동에는 Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave와 QR 코드 또는 푸시 알림 방식의 Vipps MobilePay가 포함됩니다. WCPOS에는 아직 Tap to Pay가 없으며, 향후 앱 업데이트로 제공됩니다."
         },
         "apps": {
           "question": "FooSales에 네이티브 앱이 있나요?",
