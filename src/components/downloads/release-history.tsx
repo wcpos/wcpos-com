@@ -40,7 +40,7 @@ function ReleaseNotes(props: { body: string; clamp?: boolean; showAll: string; l
     <>
       <Markdown
         content={preview}
-        className="text-sm [&_h1]:text-base [&_h2]:text-base [&_code]:break-words [&_a]:break-words"
+        className="text-sm [&_h1]:text-base [&_h2]:text-base [&_code]:[overflow-wrap:anywhere] [&_a]:break-words"
       />
       {rest !== null && (
         <Collapsible
@@ -49,7 +49,7 @@ function ReleaseNotes(props: { body: string; clamp?: boolean; showAll: string; l
         >
           <Markdown
             content={rest}
-            className="text-sm [&_h1]:text-base [&_h2]:text-base [&_code]:break-words [&_a]:break-words"
+            className="text-sm [&_h1]:text-base [&_h2]:text-base [&_code]:[overflow-wrap:anywhere] [&_a]:break-words"
           />
         </Collapsible>
       )}

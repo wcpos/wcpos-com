@@ -208,6 +208,19 @@ describe('ReleaseHistory long notes', () => {
     expect(nested).not.toContainElement(screen.getByText(/^Block 1 /))
   })
 
+  it('lets long code tokens wrap anywhere in both notes containers', () => {
+    render(
+      <ReleaseHistory releases={releases} copy={copy} locale="en" clampLongNotes />,
+    )
+
+    const preview = screen.getByText(/^Block 1 /).parentElement
+    const rest = screen.getByText(/^Block 4 /).parentElement
+    expect(preview).not.toBe(rest)
+    for (const notes of [preview, rest]) {
+      expect(notes).toHaveClass('[&_code]:[overflow-wrap:anywhere]')
+    }
+  })
+
   it('renders every block with no nested disclosure without clampLongNotes', () => {
     const { container } = render(
       <ReleaseHistory releases={releases} copy={copy} locale="en" />,
