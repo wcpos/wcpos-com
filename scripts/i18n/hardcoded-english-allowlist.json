@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generatedBy": "scripts/i18n/hardcoded-english.ts --update",
-  "updatedAt": "2026-11-18T17:51:38.274Z",
+  "updatedAt": "2026-11-22T20:01:05.194Z",
   "scope": [
     "src/app",
     "src/components",
@@ -298,14 +298,6 @@
       "count": 1
     },
     {
-      "id": "1d726c58bcd4ebd4",
-      "file": "src/app/[locale]/(main)/pro/pro-product-json-ld.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Windows, macOS, Linux, iOS, Android",
-      "count": 1
-    },
-    {
       "id": "c175d8325b5e62ed",
       "file": "src/app/[locale]/(main)/roadmap/page.tsx",
       "category": "route/page",
@@ -319,7 +311,7 @@
       "category": "route/page",
       "attr": null,
       "text": "roadmap",
-      "count": 3
+      "count": 4
     },
     {
       "id": "2688b87e9ad513f6",
@@ -327,7 +319,7 @@
       "category": "route/page",
       "attr": null,
       "text": "use cache",
-      "count": 1
+      "count": 2
     },
     {
       "id": "e522b210decdcbe2",
@@ -3215,14 +3207,6 @@
       "category": "component",
       "attr": null,
       "text": "relative mt-10 flex items-center justify-center overflow-hidden",
-      "count": 1
-    },
-    {
-      "id": "8a5b092c609e3695",
-      "file": "src/components/home/use-cases-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "flex h-28 items-center justify-center",
       "count": 1
     },
     {
