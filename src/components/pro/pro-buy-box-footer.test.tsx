@@ -46,6 +46,16 @@ describe('ProBuyBoxFooter', () => {
     ).toBeTruthy()
   })
 
+  it('states the refund promise and links to the refund policy', () => {
+    render(<ProBuyBoxFooter t={t} />)
+    expect(
+      screen.getByText(/we will fix it or refund you\./)
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('link', { name: 'Refund policy' })
+    ).toHaveAttribute('href', '/refunds')
+  })
+
   it('tells visitors the demo credentials', () => {
     render(<ProBuyBoxFooter t={t} />)
     expect(screen.getByText(/log in with demo \/ demo/)).toBeInTheDocument()
