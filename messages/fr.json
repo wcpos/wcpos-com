@@ -418,7 +418,7 @@
     },
     "hero": {
       "title": "WCPOS Pro – Point de vente pour WooCommerce",
-      "subtitle": "Tout ce que contient le POS gratuit, plus les terminaux de paiement, la gestion de la boutique depuis la caisse, les rapports complets et l’assistance prioritaire."
+      "subtitle": "Tout ce que contient le POS gratuit, avec en plus des caisses et des boutiques supplémentaires, les lecteurs de cartes connectés, les remboursements, la modification du stock, des commandes et des clients depuis la caisse, et l’assistance prioritaire."
     },
     "schema": {
       "name": "WCPOS Pro",
@@ -429,7 +429,7 @@
       }
     },
     "features": {
-      "title": "Que comprend Pro ?",
+      "title": "Ce que Pro ajoute",
       "stores": {
         "title": "Davantage de caisses et plusieurs boutiques",
         "description": "Ajoutez des caisses en plus de la caisse gratuite et gérez plusieurs boutiques, chacune avec sa propre adresse, ses taux de taxe, son modèle de ticket, sa tarification et ses utilisateurs autorisés."

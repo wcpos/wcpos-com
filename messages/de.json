@@ -418,7 +418,7 @@
     },
     "hero": {
       "title": "WCPOS Pro – Kassensystem für WooCommerce",
-      "subtitle": "Alles aus dem kostenlosen POS, plus Zahlungsterminals, Ladenverwaltung an der Kasse, vollständige Berichte und Prioritätssupport."
+      "subtitle": "Alles aus dem kostenlosen POS, plus weitere Kassen und Filialen, verbundene Kartenlesegeräte, Erstattungen, Bestands-, Bestell- und Kundenbearbeitung an der Kasse und Prioritätssupport."
     },
     "schema": {
       "name": "WCPOS Pro",
@@ -429,7 +429,7 @@
       }
     },
     "features": {
-      "title": "Was ist in Pro enthalten?",
+      "title": "Was Pro ergänzt",
       "stores": {
         "title": "Weitere Kassen & mehrere Filialen",
         "description": "Füge zur kostenlosen Kasse weitere Kassen hinzu und führe mehrere Filialen, jede mit eigener Adresse, eigenen Steuersätzen, eigener Belegvorlage, eigenen Preisen und eigenen autorisierten Benutzern."

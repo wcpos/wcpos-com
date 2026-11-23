@@ -418,7 +418,7 @@
     },
     "hero": {
       "title": "WCPOS Pro – Kassasysteem voor WooCommerce",
-      "subtitle": "Alles uit de gratis POS, plus betaalterminals, winkelbeheer aan de kassa, volledige rapporten en prioriteitssupport."
+      "subtitle": "Alles uit de gratis POS, plus meer kassa's en winkels, gekoppelde kaartlezers, terugbetalingen, voorraad-, order- en klantbewerking aan de kassa en prioriteitssupport."
     },
     "schema": {
       "name": "WCPOS Pro",
@@ -429,7 +429,7 @@
       }
     },
     "features": {
-      "title": "Wat zit er in Pro?",
+      "title": "Wat Pro toevoegt",
       "stores": {
         "title": "Meer kassa's en meerdere winkels",
         "description": "Voeg naast de gratis kassa meer kassa's toe en beheer meerdere winkels, elk met een eigen adres, eigen btw-tarieven, een eigen bonsjabloon, eigen prijzen en eigen geautoriseerde gebruikers."
