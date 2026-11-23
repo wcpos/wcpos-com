@@ -1,0 +1,57 @@
+{
+  "p016": {
+    "requested": 727,
+    "scrollY": 727,
+    "progress": 0.1599,
+    "opacity": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "p022": {
+    "requested": 976,
+    "scrollY": 976,
+    "progress": 0.22,
+    "opacity": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "p053": {
+    "requested": 2259,
+    "scrollY": 2259,
+    "progress": 0.53,
+    "opacity": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "p080": {
+    "requested": 3377,
+    "scrollY": 3377,
+    "progress": 0.8,
+    "opacity": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "p086": {
+    "requested": 3625,
+    "scrollY": 3625,
+    "progress": 0.8599,
+    "opacity": [
+      0,
+      0,
+      0,
+      0.249
+    ]
+  }
+}
