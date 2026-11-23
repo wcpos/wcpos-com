@@ -12,6 +12,7 @@
     "documentation": "Dokumentation",
     "roadmap": "Produktplanung",
     "pro": "Pro",
+    "getPro": "Hol dir Pro",
     "support": "Hilfe",
     "downloads": "Herunterladen"
   },
@@ -276,6 +277,7 @@
         "b": "WCPOS macht dein Tablet, dein Telefon oder deinen Computer zur Kasse — derselbe Katalog, derselbe Bestand, dieselben Preise, sogar offline.",
         "c1": "Live-Demo testen",
         "c2": "Kostenlos herunterladen",
+        "demoLogin": "Demo-Login: demo / demo",
         "badges": {
           "b1": "5.000+ aktive Installationen",
           "b2": "Kostenlos & Open Source",
@@ -470,7 +472,7 @@
       "heading": "Hol dir Pro",
       "subheading": "Eine Lizenz, alle Funktionen. Wähle nur, wie lange du Updates möchtest.",
       "termAriaLabel": "Lizenzlaufzeit",
-      "cta": "Loslegen",
+      "cta": "Pro kaufen",
       "ctaValueCopy": "Sofortzugang erhalten",
       "yearly": {
         "title": "Jährlich",

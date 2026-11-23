@@ -12,6 +12,7 @@
     "documentation": "Guides",
     "roadmap": "Feuille de route",
     "pro": "Pro",
+    "getPro": "Passez à Pro",
     "support": "Assistance",
     "downloads": "Téléchargements"
   },
@@ -276,6 +277,7 @@
         "b": "WCPOS transforme votre tablette, votre téléphone ou votre ordinateur en caisse — même catalogue, même stock, mêmes prix, même hors ligne.",
         "c1": "Essayer la démo en direct",
         "c2": "Télécharger gratuitement",
+        "demoLogin": "Identifiants de la démo : demo / demo",
         "badges": {
           "b1": "Plus de 5 000 installations actives",
           "b2": "Gratuit et open source",
@@ -470,7 +472,7 @@
       "heading": "Passez à Pro",
       "subheading": "Une licence, toutes les fonctionnalités. Choisissez simplement la durée des mises à jour.",
       "termAriaLabel": "Durée de la licence",
-      "cta": "Commencer",
+      "cta": "Acheter Pro",
       "ctaValueCopy": "Accédez immédiatement",
       "yearly": {
         "title": "Annuel",

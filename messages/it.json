@@ -12,6 +12,7 @@
     "documentation": "Documentazione",
     "roadmap": "Piano di sviluppo",
     "pro": "Pro",
+    "getPro": "Passa a Pro",
     "support": "Supporto",
     "downloads": "Download"
   },
@@ -276,6 +277,7 @@
         "b": "WCPOS trasforma il tuo tablet, telefono o computer in un registratore — stesso catalogo, stesso stock, stessi prezzi, anche offline.",
         "c1": "Prova la demo live",
         "c2": "Scarica gratis",
+        "demoLogin": "Accesso alla demo: demo / demo",
         "badges": {
           "b1": "Oltre 5.000 installazioni attive",
           "b2": "Gratuito e open source",
@@ -470,7 +472,7 @@
       "heading": "Passa a Pro",
       "subheading": "Una licenza, tutte le funzionalità. Scegli solo per quanto tempo vuoi gli aggiornamenti.",
       "termAriaLabel": "Durata della licenza",
-      "cta": "Inizia",
+      "cta": "Acquista Pro",
       "ctaValueCopy": "Ottieni accesso immediato",
       "yearly": {
         "title": "Annuale",

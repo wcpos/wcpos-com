@@ -12,6 +12,7 @@
     "documentation": "Documentación",
     "roadmap": "Hoja de ruta",
     "pro": "Pro",
+    "getPro": "Consigue Pro",
     "support": "Soporte",
     "downloads": "Descargas"
   },
@@ -276,6 +277,7 @@
         "b": "WCPOS convierte tu tableta, teléfono u ordenador en una caja: el mismo catálogo, el mismo stock, los mismos precios, incluso sin conexión.",
         "c1": "Probar demo en vivo",
         "c2": "Descargar gratis",
+        "demoLogin": "Acceso a la demo: demo / demo",
         "badges": {
           "b1": "Más de 5000 instalaciones activas",
           "b2": "Gratis y de código abierto",
@@ -470,7 +472,7 @@
       "heading": "Consigue Pro",
       "subheading": "Una licencia, todas las funciones. Solo elige cuánto tiempo quieres actualizaciones.",
       "termAriaLabel": "Duración de la licencia",
-      "cta": "Empezar",
+      "cta": "Comprar Pro",
       "ctaValueCopy": "Obtén acceso instantáneo",
       "yearly": {
         "title": "Anual",

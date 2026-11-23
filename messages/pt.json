@@ -12,6 +12,7 @@
     "documentation": "Documentação",
     "roadmap": "Roteiro",
     "pro": "Pro",
+    "getPro": "Adquira o Pro",
     "support": "Suporte",
     "downloads": "Transferências"
   },
@@ -276,6 +277,7 @@
         "b": "O WCPOS transforma o seu tablet, telemóvel ou computador numa caixa — o mesmo catálogo, o mesmo stock, os mesmos preços, mesmo offline.",
         "c1": "Experimentar demonstração",
         "c2": "Descarregar grátis",
+        "demoLogin": "Início de sessão na demonstração: demo / demo",
         "badges": {
           "b1": "Mais de 5.000 instalações ativas",
           "b2": "Gratuito e de código aberto",
@@ -470,7 +472,7 @@
       "heading": "Adquira o Pro",
       "subheading": "Uma licença, todos os recursos. Escolha apenas por quanto tempo quer atualizações.",
       "termAriaLabel": "Duração da licença",
-      "cta": "Começar",
+      "cta": "Comprar o Pro",
       "ctaValueCopy": "Obtenha acesso imediato",
       "yearly": {
         "title": "Anual",

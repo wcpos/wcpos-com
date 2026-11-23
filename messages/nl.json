@@ -12,6 +12,7 @@
     "documentation": "Documentatie",
     "roadmap": "Routekaart",
     "pro": "Pro",
+    "getPro": "Koop Pro",
     "support": "Ondersteuning",
     "downloads": "Downloaden"
   },
@@ -276,6 +277,7 @@
         "b": "WCPOS verandert je tablet, telefoon of computer in een kassa — dezelfde catalogus, dezelfde voorraad, dezelfde prijzen, zelfs offline.",
         "c1": "Live demo proberen",
         "c2": "Gratis downloaden",
+        "demoLogin": "Inloggen op de demo: demo / demo",
         "badges": {
           "b1": "5.000+ actieve installaties",
           "b2": "Gratis en open source",
@@ -470,7 +472,7 @@
       "heading": "Koop Pro",
       "subheading": "Eén licentie, alle functies. Kies alleen hoe lang je updates wilt.",
       "termAriaLabel": "Licentieduur",
-      "cta": "Aan de slag",
+      "cta": "Koop Pro",
       "ctaValueCopy": "Krijg direct toegang",
       "yearly": {
         "title": "Jaarlijks",
