@@ -3,6 +3,7 @@ import {
   screen,
   waitFor,
   fireEvent,
+  within,
   render as rtlRender,
 } from '@testing-library/react'
 import { NextIntlClientProvider } from 'next-intl'
@@ -959,8 +960,8 @@ describe('CheckoutClient', () => {
     expect(homeLink).toHaveAttribute('href', '/')
   })
 
-  it('shows the no-product error when no offer is selected', async () => {
-    render(
+  it('offers a link per plan when no offer is selected', async () => {
+    const { container } = render(
       <CheckoutClient
         checkoutPath="/pro/checkout"
         experimentVariant="control"
@@ -969,8 +970,55 @@ describe('CheckoutClient', () => {
     )
 
     await waitFor(() => {
-      expect(screen.getByText('No product selected')).toBeInTheDocument()
+      expect(
+        screen.getByText('Choose a plan to check out')
+      ).toBeInTheDocument()
     })
+    expect(
+      screen.getByRole('link', { name: 'WCPOS Pro Yearly' })
+    ).toHaveAttribute('href', '/pro/checkout?product=wcpos-pro-yearly')
+    expect(
+      screen.getByRole('link', { name: 'WCPOS Pro Lifetime' })
+    ).toHaveAttribute('href', '/pro/checkout?product=wcpos-pro-lifetime')
+    expect(
+      screen.getByRole('link', { name: /back to pricing/i })
+    ).toHaveAttribute('href', '/pro')
+    expect(screen.queryByText('No product selected')).not.toBeInTheDocument()
+    expect(container.querySelector('.text-destructive')).toBeNull()
+  })
+
+  it('states what the yearly plan buys and the refund promise in the summary', () => {
+    mockFetch.mockReturnValue(new Promise(() => {}))
+    renderSignedIn()
+
+    const summary = screen.getByTestId('checkout-order-summary')
+    expect(summary).toHaveClass('order-first', 'md:order-none')
+    expect(
+      within(summary).getByText('Updates & support for 1 year')
+    ).toBeInTheDocument()
+    expect(
+      within(summary).getByText('Use on 2 sites — one live, one development')
+    ).toBeInTheDocument()
+    expect(
+      within(summary).getByText(/we will fix it or refund you\./)
+    ).toBeInTheDocument()
+    expect(
+      within(summary).getByRole('link', { name: 'Refund policy' })
+    ).toHaveAttribute('href', '/refunds')
+  })
+
+  it('states the lifetime term for the lifetime plan', () => {
+    mockFetch.mockReturnValue(new Promise(() => {}))
+    renderSignedIn({
+      selectedOfferHandle: 'wcpos-pro-lifetime',
+      checkoutPath: '/pro/checkout?product=wcpos-pro-lifetime',
+    })
+
+    const summary = screen.getByTestId('checkout-order-summary')
+    expect(within(summary).getByText('Updates forever')).toBeInTheDocument()
+    expect(
+      within(summary).queryByText('Updates & support for 1 year')
+    ).not.toBeInTheDocument()
   })
 
   it('falls back to unit price when Medusa omits line item total', async () => {

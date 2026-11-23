@@ -6,6 +6,7 @@ import { AlertCircle } from 'lucide-react'
 import { Link } from '@/i18n/navigation'
 import { ProBuyBox } from '@/components/pro/pro-buy-box'
 import { ProBuyBoxFooter } from '@/components/pro/pro-buy-box-footer'
+import { ReviewQuote } from '@/components/home/review-quote'
 import { buildProBuyBoxOptions } from '@/components/pro/pro-buy-box-options'
 import {
   PRO_FEATURE_KEYS,
@@ -163,6 +164,7 @@ export default async function ProPage({
             <Suspense fallback={<BuyBoxSkeleton />}>
               <BuyBoxWithExperiment locale={locale} />
             </Suspense>
+            <ReviewQuote className="mt-8" />
           </div>
         </div>
       </Section>

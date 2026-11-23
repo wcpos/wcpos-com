@@ -28,6 +28,7 @@ export function Markdown({ content, className, untrusted }: MarkdownProps) {
         '[&_h2]:text-sm [&_h2]:font-semibold [&_h2]:text-foreground',
         '[&_h3]:text-sm [&_h3]:font-semibold [&_h3]:text-foreground',
         '[&_p]:leading-relaxed',
+        '[&_:is(p,li,h1,h2,h3,blockquote)]:[overflow-wrap:anywhere]',
         '[&_ul]:ml-4 [&_ul]:list-disc',
         '[&_ol]:ml-4 [&_ol]:list-decimal',
         '[&_li+li]:mt-1',

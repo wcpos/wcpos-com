@@ -330,9 +330,12 @@ test.describe('Checkout flow', () => {
   }) => {
     await page.goto('/pro/checkout')
 
-    await expect(page.getByText('No product selected')).toBeVisible({
+    await expect(page.getByText('Choose a plan to check out')).toBeVisible({
       timeout: 15000,
     })
+    await expect(
+      page.getByRole('link', { name: 'WCPOS Pro Yearly' })
+    ).toHaveAttribute('href', /product=wcpos-pro-yearly/)
     await expect(
       page.getByRole('link', { name: /Back to pricing/ }).first()
     ).toBeVisible()
