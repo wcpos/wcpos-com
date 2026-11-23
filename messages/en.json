@@ -416,7 +416,7 @@
     },
     "hero": {
       "title": "WCPOS Pro for WooCommerce POS",
-      "subtitle": "Everything in the free POS, plus payment terminals, store management at the register, full reports, and priority support."
+      "subtitle": "Everything in the free POS, plus more registers and stores, connected card readers, refunds, stock, order and customer editing at the register, and priority support."
     },
     "schema": {
       "name": "WCPOS Pro",
@@ -427,7 +427,7 @@
       }
     },
     "features": {
-      "title": "What's included in Pro?",
+      "title": "What Pro adds",
       "stores": {
         "title": "More registers & multiple stores",
         "description": "Add registers beyond the free one, and run several stores, each with its own address, tax rates, receipt template, pricing and authorized users."

@@ -25,7 +25,7 @@ test.describe('Pro Page', () => {
 
   test('displays features section', async ({ page }) => {
     await expect(
-      page.getByRole('heading', { name: "What's included in Pro?" })
+      page.getByRole('heading', { name: 'What Pro adds' })
     ).toBeVisible()
   })
 

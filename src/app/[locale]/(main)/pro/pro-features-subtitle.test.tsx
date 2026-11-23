@@ -17,7 +17,7 @@ describe('/pro features subtitle', () => {
   it('renders the heading followed directly by the features, with no subtitle', () => {
     const { container } = render(
       <ProFeatureList
-        heading="What's included in Pro?"
+        heading="What Pro adds"
         features={[
           { Icon: Store, title: 'More stores', description: 'Run several stores.' },
           { Icon: Users, title: 'Customers', description: 'Manage customers.' },
@@ -25,7 +25,7 @@ describe('/pro features subtitle', () => {
       />
     )
 
-    const heading = screen.getByRole('heading', { level: 2, name: "What's included in Pro?" })
+    const heading = screen.getByRole('heading', { level: 2, name: 'What Pro adds' })
     expect(heading.nextElementSibling).toBeNull()
     expect(heading.parentElement?.querySelector('p')).toBeNull()
     expect(screen.getByRole('heading', { level: 3, name: 'More stores' })).toBeInTheDocument()
