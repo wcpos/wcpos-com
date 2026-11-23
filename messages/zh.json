@@ -370,9 +370,9 @@
       "description": "WCPOS 是面向 WooCommerce 的免费销售点插件。这里展示其接下来的计划：进行中和已计划的工作，直接来自 GitHub。"
     },
     "page": {
-      "eyebrow": "发布列车",
+      "eyebrow": "现在、接下来、已发布",
       "title": "WooCommerce 销售点系统路线图",
-      "description": "通往更快速、更可靠离线能力的 WCPOS 的每一站——直接来自我们的 GitHub，最新工作排在最前。",
+      "description": "我们现在正在开发的内容、接下来计划的工作，以及最近发布的成果。列表直接来自我们的 GitHub，会随着工作进展而更新。",
       "changelogLink": "在更新日志中查看已发布的版本"
     },
     "board": {
