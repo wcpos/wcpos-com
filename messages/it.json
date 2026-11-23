@@ -204,7 +204,7 @@
           "f3": "Contanti o carta sul tuo terminale",
           "f4": "Modalità offline",
           "f5": "Stampa ricevute",
-          "f6": "Multi-valuta",
+          "f6": "Editor e galleria di modelli di ricevuta",
           "f7": "Prodotti illimitati",
           "f8": "Apertura e chiusura della cassa",
           "f9": "Pagamenti suddivisi",
@@ -222,7 +222,10 @@
           "p4": "Gestione clienti",
           "p5": "Report su più giorni, casse e negozi",
           "p6": "Gateway di pagamento personalizzati",
-          "p7": "Supporto prioritario"
+          "p7": "Supporto prioritario",
+          "p9": "Rimborsi totali o parziali",
+          "p10": "Gestione coupon",
+          "p11": "Display rivolto al cliente"
         }
       },
       "cta": "Vedi prezzi e funzionalità complete",
@@ -450,6 +453,10 @@
         "title": "Gestione dei clienti",
         "description": "Aggiungi e modifica i dati dei clienti al punto vendita, mantenendoli sincronizzati con WooCommerce."
       },
+      "coupons": {
+        "title": "Gestione dei coupon",
+        "description": "Cerca, crea e modifica coupon in cassa, e creane uno direttamente dal carrello."
+      },
       "reports": {
         "title": "Report su più giorni, casse e negozi",
         "description": "Consulta le vendite di giorni precedenti e intervalli di date, per ogni cassa e ogni negozio."
@@ -468,7 +475,6 @@
       "yearly": {
         "title": "Annuale",
         "subtitle": "Aggiornamenti e supporto per 1 anno",
-        "badgeLabel": "Più popolare",
         "priceSuffix": "/anno",
         "ctaNote": "Pagamento una tantum — non si rinnova mai da solo, e Pro continua a funzionare dopo."
       },
@@ -1708,6 +1714,7 @@
           "title": "Vuoi di più? Passa a Pro",
           "cardTitle": "Sblocca più casse",
           "cardBody": "Più casse e più negozi, pagamenti con terminale, rimborsi, stock e prezzi, gestione ordini, report completi e supporto Discord prioritario.",
+          "requirements": "WordPress 5.8+ · WooCommerce 9.0+ · PHP 7.4+",
           "plansCta": "Vedi i piani Pro",
           "signInCta": "Accedi per scaricare"
         }

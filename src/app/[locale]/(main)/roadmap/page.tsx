@@ -18,6 +18,7 @@ import { marketingMetadata } from '@/lib/seo'
 import { clientMessages } from '@/i18n/client-messages'
 import { Link } from '@/i18n/navigation'
 import { TextLink } from '@/components/ui/text-link'
+import { CtaSection } from '@/components/home/cta-section'
 
 export async function generateMetadata({
   params,
@@ -104,6 +105,7 @@ export default async function RoadmapPage({
             <RoadmapTimelineLoader />
           </Suspense>
         </div>
+        <CtaSection />
       </main>
     </NextIntlClientProvider>
   )

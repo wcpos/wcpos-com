@@ -32,7 +32,6 @@ const options: ProBuyBoxOption[] = [
     planId: 'yearly',
     title: 'Yearly',
     subtitle: 'Updates & support for 1 year',
-    badgeLabel: 'Most Popular',
     priceText: '$129',
     currencyCode: 'USD',
     priceSuffix: '/yr',
@@ -50,7 +49,6 @@ const options: ProBuyBoxOption[] = [
     planId: 'lifetime',
     title: 'Lifetime',
     subtitle: 'Updates forever',
-    badgeLabel: null,
     priceText: '$399',
     currencyCode: 'USD',
     priceSuffix: 'once',
@@ -187,6 +185,11 @@ describe('ProBuyBox', () => {
     expect(
       screen.getByRole('radio', { name: /Yearly/ })
     ).toHaveAttribute('aria-checked', 'true')
+  })
+
+  it('carries no popularity badge on any term', () => {
+    const { container } = renderBuyBox()
+    expect(container).not.toHaveTextContent('Most Popular')
   })
 
   it('renders nothing for an empty options list', () => {

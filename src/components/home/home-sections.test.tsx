@@ -222,6 +222,14 @@ describe('TrustSection', () => {
     expect(screen.getByText('Languages Supported')).toBeInTheDocument()
   })
 
+  it('states the shipped language count beside its label', () => {
+    const { container } = renderWithIntl(<TrustSection />)
+
+    const label = screen.getByText('Languages Supported')
+    expect(label.previousElementSibling).toHaveTextContent(/^38$/)
+    expect(container).not.toHaveTextContent('25+')
+  })
+
   it('formats the installs count for the locale', () => {
     const { unmount } = render(
       <NextIntlClientProvider locale="de" messages={messages}>

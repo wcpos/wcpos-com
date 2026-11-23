@@ -183,6 +183,19 @@ describe('DownloadsPage', () => {
     expect(screen.queryByText(/on the same foundation/)).not.toBeInTheDocument()
   })
 
+  it('states the Pro requirements in the Pro card', async () => {
+    const { default: DownloadsPage } = await import(
+      '@/app/[locale]/(main)/downloads/page'
+    )
+
+    render(await DownloadsPage({ params: Promise.resolve({ locale: 'en' }) }))
+
+    const proCard = screen.getByText('Unlock more registers').parentElement!
+    expect(
+      within(proCard).getByText('WordPress 5.8+ · WooCommerce 9.0+ · PHP 7.4+'),
+    ).toBeInTheDocument()
+  })
+
   it('links macOS 12 users to the 1.11.12 desktop build', async () => {
     const { default: DownloadsPage } = await import(
       '@/app/[locale]/(main)/downloads/page'
@@ -345,6 +358,20 @@ describe('DownloadsPage', () => {
         expect(line, `${locale} ${key}`).toContain('WooCommerce 9.0+')
         expect(line, `${locale} ${key}`).not.toContain('WooCommerce 5.3')
       }
+    }
+  })
+
+  it('states WordPress 5.8+ in the Pro requirements in every locale', () => {
+    const locales = ['en', 'de', 'es', 'fr', 'it', 'ja', 'ko', 'nl', 'pt', 'zh']
+    for (const locale of locales) {
+      const messages = JSON.parse(
+        readFileSync(join(process.cwd(), 'messages', `${locale}.json`), 'utf8'),
+      )
+      const line = readMessage(messages, 'downloads.page.steps.pro', 'requirements')
+      for (const part of ['WordPress 5.8+', 'WooCommerce 9.0+', 'PHP 7.4+']) {
+        expect(line, locale).toContain(part)
+      }
+      expect(line, locale).not.toContain('5.6')
     }
   })
 

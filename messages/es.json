@@ -204,7 +204,7 @@
           "f3": "Efectivo o tarjeta en tu propio terminal",
           "f4": "Modo sin conexión",
           "f5": "Impresión de recibos",
-          "f6": "Multimoneda",
+          "f6": "Editor y galería de plantillas de recibo",
           "f7": "Productos ilimitados",
           "f8": "Apertura y cierre de caja",
           "f9": "Pagos divididos",
@@ -222,7 +222,10 @@
           "p4": "Gestión de clientes",
           "p5": "Informes de varios días, cajas y tiendas",
           "p6": "Pasarelas de pago personalizadas",
-          "p7": "Soporte prioritario"
+          "p7": "Soporte prioritario",
+          "p9": "Reembolsos totales o parciales",
+          "p10": "Gestión de cupones",
+          "p11": "Pantalla orientada al cliente"
         }
       },
       "cta": "Ver precios y funciones completos",
@@ -450,6 +453,10 @@
         "title": "Gestión de clientes",
         "description": "Añade y edita los datos de los clientes en el punto de venta, sincronizados con WooCommerce."
       },
+      "coupons": {
+        "title": "Gestión de cupones",
+        "description": "Busca, crea y edita cupones en la caja, y crea uno desde el carrito."
+      },
       "reports": {
         "title": "Informes de varios días, cajas y tiendas",
         "description": "Consulta las ventas de días anteriores y rangos de fechas, de cada caja y cada tienda."
@@ -468,7 +475,6 @@
       "yearly": {
         "title": "Anual",
         "subtitle": "Actualizaciones y soporte durante 1 año",
-        "badgeLabel": "Más popular",
         "priceSuffix": "/año",
         "ctaNote": "Pago único: nunca se renueva automáticamente, y Pro sigue funcionando después."
       },
@@ -1708,6 +1714,7 @@
           "title": "¿Quieres más? Pásate a Pro",
           "cardTitle": "Desbloquea más cajas",
           "cardBody": "Más cajas y varias tiendas, pagos con terminal, reembolsos, stock y precios, gestión de pedidos, informes completos y soporte prioritario en Discord.",
+          "requirements": "WordPress 5.8+ · WooCommerce 9.0+ · PHP 7.4+",
           "plansCta": "Ver planes Pro",
           "signInCta": "Inicia sesión para descargar"
         }

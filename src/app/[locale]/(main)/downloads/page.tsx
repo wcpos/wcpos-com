@@ -330,6 +330,9 @@ export default async function DownloadsPage({
                 <p className="mt-1 text-sm text-muted-foreground">
                   {pageT('steps.pro.cardBody')}
                 </p>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  {pageT('steps.pro.requirements')}
+                </p>
                 <div className="mt-4 flex flex-wrap items-center gap-2">
                   <Button asChild variant="brand" size="sm">
                     <TrackedLocaleLink href="/pro" eventName="click_pro_cta">

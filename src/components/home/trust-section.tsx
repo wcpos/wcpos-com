@@ -4,6 +4,9 @@ import { Link } from '@/i18n/navigation'
 import { Section } from '@/components/ui/section'
 
 const ACTIVE_INSTALLS = 5000 // wordpress.org active installs, shown as "5,000+"
+// Distinct languages (English included) across the 53 locale codes in
+// wcpos/translations locales.json at tag 2026.11.24, which both plugins pin.
+const LANGUAGES_SHIPPED = 38
 
 export function TrustSection() {
   const t = useTranslations('home.trust')
@@ -43,7 +46,9 @@ export function TrustSection() {
           </a>
         </div>
         <div className="text-center">
-          <p className="text-3xl font-bold text-wcpos-red md:text-4xl">25+</p>
+          <p className="text-3xl font-bold text-wcpos-red md:text-4xl">
+            {format.number(LANGUAGES_SHIPPED)}
+          </p>
           <p className="text-sm text-slate-600 dark:text-slate-400">
             {t('stats.languagesSupported')}
           </p>

@@ -204,7 +204,7 @@
           "f3": "Bargeld oder Karte über dein eigenes Terminal",
           "f4": "Offline-Modus",
           "f5": "Bondruck",
-          "f6": "Mehrere Währungen",
+          "f6": "Belegvorlagen-Editor & Galerie",
           "f7": "Unbegrenzte Produkte",
           "f8": "Kasse öffnen & schließen",
           "f9": "Aufgeteilte Zahlungen",
@@ -222,7 +222,10 @@
           "p4": "Kundenverwaltung",
           "p5": "Berichte für verschiedene Tage, Kassen & Geschäfte",
           "p6": "Eigene Zahlungsgateways",
-          "p7": "Priorisierter Support"
+          "p7": "Priorisierter Support",
+          "p9": "Erstattungen, ganz oder teilweise",
+          "p10": "Gutscheinverwaltung",
+          "p11": "Kundendisplay"
         }
       },
       "cta": "Alle Preise & Funktionen ansehen",
@@ -450,6 +453,10 @@
         "title": "Kundenverwaltung",
         "description": "Füge Kundendaten direkt an der Kasse hinzu und bearbeite sie, synchronisiert mit WooCommerce."
       },
+      "coupons": {
+        "title": "Gutscheinverwaltung",
+        "description": "Suche, erstelle und bearbeite Gutscheine an der Kasse und lege direkt aus dem Warenkorb einen neuen an."
+      },
       "reports": {
         "title": "Berichte für verschiedene Tage, Kassen & Geschäfte",
         "description": "Sieh Verkäufe für frühere Tage und Datumsbereiche, für jede Kasse und jedes Geschäft."
@@ -468,7 +475,6 @@
       "yearly": {
         "title": "Jährlich",
         "subtitle": "Updates & Support für 1 Jahr",
-        "badgeLabel": "Am beliebtesten",
         "priceSuffix": "/Jahr",
         "ctaNote": "Einmalzahlung — verlängert sich nie automatisch, und Pro läuft danach weiter."
       },
@@ -1708,6 +1714,7 @@
           "title": "Möchtest du mehr? Wechsle zu Pro",
           "cardTitle": "Weitere Kassen freischalten",
           "cardBody": "Weitere Kassen & mehrere Filialen, Terminalzahlungen, Erstattungen, Bestand & Preise, Bestellverwaltung, vollständige Berichte und vorrangiger Discord-Support.",
+          "requirements": "WordPress 5.8+ · WooCommerce 9.0+ · PHP 7.4+",
           "plansCta": "Pro-Tarife ansehen",
           "signInCta": "Anmelden zum Herunterladen"
         }

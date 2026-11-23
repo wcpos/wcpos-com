@@ -204,7 +204,7 @@
           "f3": "Cash or card on your own terminal",
           "f4": "Offline mode",
           "f5": "Receipt printing",
-          "f6": "Multi-currency",
+          "f6": "Receipt template editor & gallery",
           "f7": "Unlimited products",
           "f8": "Open & close the register",
           "f9": "Split payments",
@@ -222,7 +222,10 @@
           "p4": "Customer management",
           "p5": "Reports across days, registers & stores",
           "p6": "Custom payment gateways",
-          "p7": "Priority support"
+          "p7": "Priority support",
+          "p9": "Refunds, full or partial",
+          "p10": "Coupon management",
+          "p11": "Customer-facing display"
         }
       },
       "cta": "See Full Pricing & Features",
@@ -450,6 +453,10 @@
         "title": "Customer management",
         "description": "Add and edit customer details at the point of sale, kept in sync with WooCommerce."
       },
+      "coupons": {
+        "title": "Coupon management",
+        "description": "Look up, create and edit coupons at the register, and create one from the cart."
+      },
       "reports": {
         "title": "Reports across days, registers & stores",
         "description": "See sales for earlier days and date ranges, for every register and every store."
@@ -468,7 +475,6 @@
       "yearly": {
         "title": "Yearly",
         "subtitle": "Updates & support for 1 year",
-        "badgeLabel": "Most Popular",
         "priceSuffix": "/yr",
         "ctaNote": "One-time payment — never auto-renews, and Pro keeps working after it ends."
       },
@@ -1708,6 +1714,7 @@
           "title": "Want more? Go Pro",
           "cardTitle": "Unlock more registers",
           "cardBody": "More registers & stores, terminal payments, refunds, stock & pricing, order management, full reports and priority Discord support.",
+          "requirements": "WordPress 5.8+ · WooCommerce 9.0+ · PHP 7.4+",
           "plansCta": "View Pro plans",
           "signInCta": "Sign in to download"
         }

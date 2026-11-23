@@ -100,9 +100,15 @@ describe('SyncDiagram sizing', () => {
     const get = (id: string) =>
       host.querySelector<HTMLElement>(`[data-testid="${id}"]`)!
 
-    expect(get('store-hub').style.width).toBe(`${(112 / 440) * 100}cqw`)
-    expect(get('device-sphere-desktop').style.width).toBe(`${(66 / 440) * 100}cqw`)
-    expect(get('device-sphere-ios').style.width).toBe(`${(58 / 440) * 100}cqw`)
+    const expectWidth = (id: string, expected: number) => {
+      const width = get(id).style.width
+      expect(width).toMatch(/cqw$/)
+      expect(parseFloat(width)).toBeCloseTo(expected, 3)
+    }
+
+    expectWidth('store-hub', (112 / 440) * 100)
+    expectWidth('device-sphere-desktop', (66 / 440) * 100)
+    expectWidth('device-sphere-ios', (58 / 440) * 100)
     expect(host.querySelector('[role="img"]')).toHaveClass('[container-type:inline-size]')
   })
 })

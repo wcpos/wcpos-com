@@ -204,7 +204,7 @@
           "f3": "Espèces ou carte sur votre terminal",
           "f4": "Mode hors ligne",
           "f5": "Impression de reçus",
-          "f6": "Multi-devise",
+          "f6": "Éditeur et galerie de modèles de reçu",
           "f7": "Produits illimités",
           "f8": "Ouverture et clôture de caisse",
           "f9": "Paiements fractionnés",
@@ -222,7 +222,10 @@
           "p4": "Gestion des clients",
           "p5": "Rapports sur plusieurs jours, caisses et boutiques",
           "p6": "Passerelles de paiement personnalisées",
-          "p7": "Assistance prioritaire"
+          "p7": "Assistance prioritaire",
+          "p9": "Remboursements totaux ou partiels",
+          "p10": "Gestion des codes promo",
+          "p11": "Écran côté client"
         }
       },
       "cta": "Voir tous les tarifs et fonctionnalités",
@@ -450,6 +453,10 @@
         "title": "Gestion des clients",
         "description": "Ajoutez et modifiez les coordonnées des clients au point de vente, synchronisées avec WooCommerce."
       },
+      "coupons": {
+        "title": "Gestion des codes promo",
+        "description": "Recherchez, créez et modifiez des codes promo à la caisse, et créez-en un depuis le panier."
+      },
       "reports": {
         "title": "Rapports sur plusieurs jours, caisses et boutiques",
         "description": "Consultez les ventes des jours précédents et sur des plages de dates, pour chaque caisse et chaque boutique."
@@ -468,7 +475,6 @@
       "yearly": {
         "title": "Annuel",
         "subtitle": "Mises à jour et support pendant 1 an",
-        "badgeLabel": "Le plus populaire",
         "priceSuffix": "/an",
         "ctaNote": "Paiement unique — jamais de renouvellement automatique, et Pro continue de fonctionner ensuite."
       },
@@ -1708,6 +1714,7 @@
           "title": "Besoin de plus ? Passez à Pro",
           "cardTitle": "Débloquez davantage de caisses",
           "cardBody": "Davantage de caisses et plusieurs boutiques, paiements par terminal, remboursements, stock et prix, gestion des commandes, rapports complets et assistance prioritaire sur Discord.",
+          "requirements": "WordPress 5.8+ · WooCommerce 9.0+ · PHP 7.4+",
           "plansCta": "Voir les offres Pro",
           "signInCta": "Connectez-vous pour télécharger"
         }
