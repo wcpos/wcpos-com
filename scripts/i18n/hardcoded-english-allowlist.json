@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generatedBy": "scripts/i18n/hardcoded-english.ts --update",
-  "updatedAt": "2026-11-23T04:16:28.612Z",
+  "updatedAt": "2026-11-23T04:40:38.995Z",
   "scope": [
     "src/app",
     "src/components",
@@ -2703,6 +2703,14 @@
       "category": "component",
       "attr": null,
       "text": "use client",
+      "count": 1
+    },
+    {
+      "id": "b4de9dc7ffb1071e",
+      "file": "src/components/downloads/pro-price-line.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "use cache",
       "count": 1
     },
     {

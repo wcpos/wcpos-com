@@ -352,7 +352,7 @@
         }
       },
       "terminal": {
-        "tapToPay": "Toca para pagar"
+        "tapToPay": "Acerca o inserta la tarjeta"
       },
       "cloudSync": {
         "products": "{count, number} productos",
@@ -1722,6 +1722,7 @@
           "cardBody": "Más cajas y varias tiendas, pagos con terminal, reembolsos, stock y precios, gestión de pedidos, informes completos y soporte prioritario en Discord.",
           "requirements": "WordPress 5.8+ · WooCommerce 9.0+ · PHP 7.4+",
           "plansCta": "Ver planes Pro",
+          "priceLine": "Desde {price} ({currency}) — pago único, nunca se renueva automáticamente.",
           "signInCta": "Inicia sesión para descargar"
         }
       }
@@ -1782,7 +1783,7 @@
       "eyebrow": "Una nota del desarrollador",
       "intro": "Hola, soy Paul. Creé WCPOS.",
       "p1": "Ese soy yo, cuando todo empezó. Abrí Urban Locavore en Perth en diciembre de 2011 con cientos de productos ya en WooCommerce y sin forma de venderlos en el mostrador, así que construí una caja yo mismo. Cuando la tienda cerró en abril de 2014, lo publiqué en WordPress.org para cualquiera que lo necesitara. <strong>Desde entonces han aparecido y desaparecido plugins POS para WooCommerce. Este no.</strong> Más de una década de versiones, un desarrollador y el proyecto sigue avanzando; la versión gratuita sigue siendo real: vender, imprimir y mantenerse sincronizada. Sigue siendo gratis.",
-      "p2": "<strong>Pro es la razón por la que sigue aquí.</strong> Añade herramientas extra para gestionar tu tienda — lectores de tarjetas, reembolsos en la caja, informes de cierre, multitienda — y financia cada versión, incluidas las gratuitas. Sin inversores ni una adquisición esperando al final. Los comerciantes lo financian directamente.",
+      "p2": "<strong>Pro es la razón por la que sigue aquí.</strong> Añade herramientas extra para gestionar tu tienda — lectores de tarjetas, reembolsos en la caja, informes de varios días, cajas y tiendas, multitienda — y financia cada versión, incluidas las gratuitas. Sin inversores ni una adquisición esperando al final. Los comerciantes lo financian directamente.",
       "p3": "Y los usuarios de Pro tienen una línea directa: dime qué necesita tu tienda y eso da forma a lo que construyo después.",
       "signature": {
         "name": "Paul Kilmurray",
@@ -1918,6 +1919,7 @@
       "title": "¿Prefieres hablar con una persona?",
       "subtitle": "Únete a propietarios de tiendas y al equipo en nuestra comunidad de Discord en vivo.",
       "open": "Abrir Discord",
+      "emailLine": "¿Prefieres el correo? Escríbenos a <email>support@wcpos.com</email>.",
       "embedTitle": "Chat de Discord"
     },
     "guides": {

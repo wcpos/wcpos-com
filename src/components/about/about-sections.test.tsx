@@ -241,7 +241,7 @@ describe('ValuesSection', () => {
       'Independent',
       'Funded by Pro',
       'Open & GPL',
-      'A fair licence',
+      'A fair license',
     ]) {
       expect(
         screen.getByRole('heading', { name: title })

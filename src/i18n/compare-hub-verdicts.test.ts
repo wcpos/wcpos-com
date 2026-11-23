@@ -25,7 +25,7 @@ const EN: Record<(typeof CARDS)[number], string> = {
   squareCard: "Sales made in Square's POS don't become WooCommerce orders, and their stock changes sync on a schedule (hourly by default); every WCPOS sale is a WooCommerce order.",
   jovvieCard: 'Jovvie charges a platform fee on each sale on top of its monthly plans; WCPOS charges no transaction fees, and Pro is a one-time payment.',
   viteposCard: 'Both have a free version; Vitepos adds restaurant and grocery modes, and WCPOS adds desktop apps for Windows, macOS and Linux and iOS and Android apps (beta).',
-  yithCard: 'YITH Point of Sale is a yearly licence with separate stock per store, but no offline mode and no card terminals; WCPOS is free, and Pro adds card terminals for a one-time payment.',
+  yithCard: 'YITH Point of Sale is a yearly license with separate stock per store, but no offline mode and no card terminals; WCPOS is free, and Pro adds card terminals for a one-time payment.',
   foosalesCard: "FooSales is a yearly subscription per store, and cancelling ends access to its POS; WCPOS is free, and Pro's one-time payment keeps working after the year ends.",
 }
 

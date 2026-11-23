@@ -352,7 +352,7 @@
         }
       },
       "terminal": {
-        "tapToPay": "轻触付款"
+        "tapToPay": "轻触或插入银行卡"
       },
       "cloudSync": {
         "products": "{count, number} 件商品",
@@ -1722,6 +1722,7 @@
           "cardBody": "更多收银台与多店铺、终端付款、退款、库存和定价、订单管理、完整报表以及优先 Discord 支持。",
           "requirements": "WordPress 5.8+ · WooCommerce 9.0+ · PHP 7.4+",
           "plansCta": "查看 Pro 套餐",
+          "priceLine": "{price}（{currency}）起 — 一次性付款，永不自动续订。",
           "signInCta": "登录以下载"
         }
       }
@@ -1782,7 +1783,7 @@
       "eyebrow": "来自开发者的一封信",
       "intro": "你好——我是 Paul。我创建了 WCPOS。",
       "p1": "照片里的我，是一切刚开始的时候。2011 年 12 月，我在 Perth 开了 Urban Locavore，当时 WooCommerce 里已经有数百种商品，却没有办法在柜台销售——于是我自己做了一个收银系统。2014 年 4 月店铺关闭后，我把它发布到 WordPress.org，给任何需要它的人使用。<strong>从那以后，面向 WooCommerce 的 POS 插件来来去去。这个没有离开。</strong>十多年持续发布，一个开发者，仍在更新——而免费版依然是真正可用的版本：销售、打印、保持同步。它会继续免费。",
-      "p2": "<strong>Pro 是它仍然存在的原因。</strong>它为经营商店增加了额外工具——读卡器、收银台退款、日终报表、多店铺——并资助每一次发布，包括免费版。没有投资者，也没有等待出售退出。店主们直接支持它。",
+      "p2": "<strong>Pro 是它仍然存在的原因。</strong>它为经营商店增加了额外工具——读卡器、收银台退款、跨日期、收银台和店铺的报表、多店铺——并资助每一次发布，包括免费版。没有投资者，也没有等待出售退出。店主们直接支持它。",
       "p3": "Pro 用户还有一条直接沟通渠道：告诉我你的店铺需要什么，这会影响我接下来构建的内容。",
       "signature": {
         "name": "Paul Kilmurray",
@@ -1918,6 +1919,7 @@
       "title": "更想和真人沟通？",
       "subtitle": "加入店主和团队所在的实时 Discord 社区。",
       "open": "打开 Discord",
+      "emailLine": "更喜欢用电子邮件？请发送电子邮件至 <email>support@wcpos.com</email>。",
       "embedTitle": "Discord 聊天"
     },
     "guides": {

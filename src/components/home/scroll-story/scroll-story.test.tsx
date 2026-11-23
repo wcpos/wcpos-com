@@ -120,7 +120,7 @@ describe('DeviceTerminal', () => {
     renderWithIntl(<DeviceTerminal />)
 
     expect(screen.getByText('$69.00')).toBeInTheDocument()
-    expect(screen.getByText('Tap to pay')).toBeInTheDocument()
+    expect(screen.getByText('Tap or insert card')).toBeInTheDocument()
   })
 
   it('renders the tap-to-pay label from locale messages', () => {
@@ -135,7 +135,7 @@ describe('DeviceTerminal', () => {
     })
 
     expect(screen.getByText('Translated tap label')).toBeInTheDocument()
-    expect(screen.queryByText('Tap to pay')).not.toBeInTheDocument()
+    expect(screen.queryByText('Tap or insert card')).not.toBeInTheDocument()
   })
 
   it('keeps the tap-to-pay overlay off screenless models', () => {
