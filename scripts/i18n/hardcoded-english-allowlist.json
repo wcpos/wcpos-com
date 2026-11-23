@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generatedBy": "scripts/i18n/hardcoded-english.ts --update",
-  "updatedAt": "2026-11-22T20:01:05.194Z",
+  "updatedAt": "2026-11-23T03:51:26.400Z",
   "scope": [
     "src/app",
     "src/components",
@@ -511,6 +511,14 @@
       "category": "route/page",
       "attr": null,
       "text": "%s | WCPOS",
+      "count": 1
+    },
+    {
+      "id": "aea7f90faa527bac",
+      "file": "src/app/[locale]/not-found.tsx",
+      "category": "route/page",
+      "attr": null,
+      "text": "| WCPOS",
       "count": 1
     },
     {
