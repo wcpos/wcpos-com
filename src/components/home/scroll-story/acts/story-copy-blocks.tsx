@@ -173,7 +173,7 @@ export function CopyAct2({ tone = 'onDark' }: { tone?: CopyTone }) {
         {copy('a2.b')}
       </p>
       <div className="flex flex-wrap gap-2">
-        {(['p1', 'p2', 'p3', 'p4', 'p5'] as const).map((platform) => (
+        {(['p1', 'p2', 'p3', 'p6', 'p4', 'p5'] as const).map((platform) => (
           <span
             key={platform}
             className={cn('rounded-full border px-3 py-1 text-[11px] font-semibold', t.chip)}

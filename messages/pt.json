@@ -176,8 +176,8 @@
           "description": "Adicione itens, aplique descontos, aceite dinheiro ou pagamentos com cartão no seu próprio terminal de pagamento e divida um pagamento. Pro liga <link>leitores de cartões</link> como Stripe Terminal e SumUp."
         },
         "f3": {
-          "title": "Perfis de clientes",
-          "description": "Adicione e edite dados de clientes diretamente no POS. Acompanhe clientes habituais e preste um serviço melhor."
+          "title": "Adicionar e editar clientes",
+          "description": "Adicione um novo cliente ou corrija os dados dele na caixa. Escolher um cliente existente para uma venda é gratuito."
         },
         "f4": {
           "title": "Histórico e gestão de encomendas",
@@ -286,21 +286,22 @@
       },
       "a2": {
         "k": "Todos os seus ecrãs",
-        "h": "Um POS. Web, desktop, iOS e Android.",
-        "b": "Use a caixa no tablet ao balcão, o telemóvel no atendimento em loja ou o portátil no escritório — a mesma loja, os mesmos dados.",
+        "h": "Um POS. No navegador, em Windows, macOS e Linux.",
+        "b": "Use a caixa num navegador em qualquer tablet, telemóvel ou computador, ou instale a aplicação de computador. A mesma loja, os mesmos dados. As aplicações iOS e Android estão em beta.",
         "platforms": {
           "p1": "Web",
           "p2": "Windows",
           "p3": "macOS",
           "p4": "iOS",
           "p5": "Android",
+          "p6": "Linux",
           "beta": "Beta"
         }
       },
       "a3": {
         "k": "Use o seu próprio hardware",
-        "h": "Funciona com o equipamento que já tem.",
-        "b": "Impressoras de recibos e leitores de códigos de barras: ligue o que já tem no balcão. Aceite cartões no seu próprio terminal de pagamento e o WCPOS regista-os; Pro liga Stripe Terminal, SumUp e outros."
+        "h": "Funciona com os leitores de códigos de barras e as impressoras de recibos mais comuns.",
+        "b": "Quase todos os leitores de códigos de barras funcionam assim que os liga ou emparelha. As impressoras de recibos Epson, Star e outras ESC/POS ligam-se por USB, Wi-Fi ou Bluetooth, consoante o dispositivo. Aceite cartões no seu próprio terminal de pagamento e o WCPOS regista-os; Pro liga Stripe Terminal, SumUp e outros."
       },
       "a4": {
         "k": "A sua loja, os seus dados",
@@ -436,7 +437,7 @@
       },
       "terminal": {
         "title": "Leitores de cartões ligados",
-        "description": "Aceite pagamentos presenciais com cartão em Stripe Terminal, Square Terminal, SumUp, Mollie, PayPal Reader e muito mais.",
+        "description": "Aceite pagamentos presenciais com cartão em Stripe Terminal, SumUp, Mollie Terminal, Square Terminal e muito mais. O PayPal Reader (Zettle) funciona através da página de pagamento da sua própria loja.",
         "link": "Ver todas as extensões de terminal"
       },
       "display": {
@@ -1658,11 +1659,11 @@
       "points": {
         "setup": {
           "title": "Um plugin é a única configuração necessária",
-          "body": "O plugin gratuito adiciona uma API REST segura à sua loja WooCommerce. Essa é toda a instalação — nada para alojar ou configurar por dispositivo."
+          "body": "Instale o plugin gratuito no seu site WooCommerce e a caixa fica pronta num navegador em yourdomain.com/pos. Não há mais nada para alojar. As aplicações de computador e móveis são opcionais: adicione a sua loja uma vez e inicie sessão."
         },
         "sync": {
           "title": "Todas as aplicações leem e escrevem na mesma loja",
-          "body": "Registe uma venda no computador e o telemóvel mostra o novo nível de stock — um único conjunto de produtos, encomendas e clientes, atualizado em tempo real."
+          "body": "Registe uma venda no computador e os seus outros dispositivos recebem o novo nível de stock na verificação seguinte, cerca de um minuto depois com a configuração predefinida. Um único conjunto de produtos, encomendas e clientes."
         },
         "offline": {
           "title": "Continue a registar vendas quando a ligação cai",
@@ -1697,7 +1698,7 @@
       "start": {
         "eyebrow": "Começar",
         "title": "Três passos até à sua primeira venda",
-        "subtitle": "Demora cerca de dois minutos, do início ao fim."
+        "subtitle": "Cerca de cinco minutos, do início ao fim."
       },
       "steps": {
         "plugin": {
@@ -2166,7 +2167,7 @@
         },
         "payments": {
           "claim": "Pagamentos integrados: limitados",
-          "response": "O WCPOS Pro integra Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc e Windcave, além de Vipps MobilePay por código QR ou notificação push, instaláveis com um clique a partir do catálogo de extensões, e ativa os outros gateways de pagamento WooCommerce da sua loja na caixa. A versão gratuita aceita dinheiro e regista pagamentos com cartão efetuados num terminal separado, e permite dividir uma encomenda em vários pagamentos."
+          "response": "O WCPOS Pro integra Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc e Windcave, além de Vipps MobilePay por código QR ou notificação push, instaladas a partir do catálogo de extensões, e ativa os outros gateways de pagamento WooCommerce da sua loja na caixa. A versão gratuita aceita dinheiro e regista pagamentos com cartão efetuados num terminal separado, e permite dividir uma encomenda em vários pagamentos."
         },
         "hobbyShops": {
           "claim": "Ideal para lojas amadoras",
@@ -2300,7 +2301,7 @@
       "payments": {
         "title": "Como funcionam os pagamentos com cartão?",
         "woocommerce": "O POS do WooCommerce aceita dinheiro e cartões através do WooPayments ou Stripe com um leitor de cartões Bluetooth ligado ao tablet. Com o WooPayments, os pagamentos presenciais com cartão custam menos do que os online: nos Estados Unidos, 2.70% + $0.10 contra 2.90% + $0.30 online. Um leitor de cartões custa $5.00 / £5.00 por leitor ativo por mês.",
-        "wcpos": "O WCPOS 2.0 tem o seu próprio checkout: um painel de pagamentos ao lado do carrinho aceita dinheiro, regista pagamentos com cartão efetuados num terminal separado e permite dividir uma encomenda em vários pagamentos. Com Pro, pode ativar os outros gateways de pagamento WooCommerce da sua loja na caixa e adicionar integrações com terminais de pagamento para Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc e Windcave, além de Vipps MobilePay por código QR ou notificação push, todas instaláveis com um clique a partir do catálogo de extensões. O Tap to Pay no iPhone e Android ainda não está disponível no WCPOS; será disponibilizado numa atualização da aplicação. O WCPOS não suporta pagamentos presenciais WooPayments."
+        "wcpos": "O WCPOS 2.0 tem o seu próprio checkout: um painel de pagamentos ao lado do carrinho aceita dinheiro, regista pagamentos com cartão efetuados num terminal separado e permite dividir uma encomenda em vários pagamentos. Com Pro, pode ativar os outros gateways de pagamento WooCommerce da sua loja na caixa e adicionar integrações com terminais de pagamento para Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc e Windcave, além de Vipps MobilePay por código QR ou notificação push, todas instaladas a partir do catálogo de extensões. O Tap to Pay no iPhone e Android ainda não está disponível no WCPOS; será disponibilizado numa atualização da aplicação. O WCPOS não suporta pagamentos presenciais WooPayments."
       },
       "pricing": {
         "title": "Quanto custa?",
@@ -2449,7 +2450,7 @@
       "payments": {
         "title": "Como funcionam os pagamentos com cartão?",
         "square": "O POS do Square aceita cartões através do Square, incluindo Tap to Pay no iPhone e Android. Nos Estados Unidos, com o plano Square Free, um pagamento presencial com cartão (por aproximação, inserção ou passagem) custa 2.6% + 15¢. Segundo o Square, a aceitação de pagamentos com cartão na aplicação Square está disponível nos Estados Unidos, Canadá, Austrália, Japão, Reino Unido, República da Irlanda, França e Espanha; a extensão exige que a moeda do WooCommerce coincida com a da sua conta Square.",
-        "wcpos": "O WCPOS 2.0 tem o seu próprio checkout: um painel de pagamentos ao lado do carrinho aceita dinheiro, regista pagamentos com cartão efetuados num terminal separado e permite dividir uma encomenda em vários pagamentos. Com Pro, pode ativar os outros gateways de pagamento WooCommerce da sua loja na caixa e adicionar integrações com terminais de pagamento para Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc e Windcave, além de Vipps MobilePay por código QR ou notificação push, todas instaláveis com um clique a partir do catálogo de extensões. O Tap to Pay no iPhone e Android ainda não está disponível no WCPOS; será disponibilizado numa atualização da aplicação.",
+        "wcpos": "O WCPOS 2.0 tem o seu próprio checkout: um painel de pagamentos ao lado do carrinho aceita dinheiro, regista pagamentos com cartão efetuados num terminal separado e permite dividir uma encomenda em vários pagamentos. Com Pro, pode ativar os outros gateways de pagamento WooCommerce da sua loja na caixa e adicionar integrações com terminais de pagamento para Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc e Windcave, além de Vipps MobilePay por código QR ou notificação push, todas instaladas a partir do catálogo de extensões. O Tap to Pay no iPhone e Android ainda não está disponível no WCPOS; será disponibilizado numa atualização da aplicação.",
         "both": "Já tem um Square Terminal? O gateway Square Terminal do WCPOS Pro recebe nele os pagamentos de encomendas WooCommerce diretamente da caixa WCPOS e regista o resultado na encomenda. Se utilizar o plugin oficial Square for WooCommerce, o respetivo ambiente e ID de localização são preenchidos previamente. Um Terminal com sessão iniciada no Square POS ou noutra integração tem primeiro de terminar essa sessão."
       },
       "pricing": {

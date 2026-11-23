@@ -172,7 +172,7 @@ describe('FeaturesSection', () => {
     expect(screen.getByText('Fast product search')).toBeInTheDocument()
     expect(screen.getByText('Cash, card and split payments')).toBeInTheDocument()
     for (const title of [
-      'Customer profiles',
+      'Add and edit customers',
       'Order history & management',
       'Edit stock & prices on the fly',
       'Reports across days, registers & stores',

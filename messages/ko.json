@@ -176,8 +176,8 @@
           "description": "상품을 추가하고, 할인을 적용하고, 현금이나 보유한 결제 단말기를 통한 카드 결제를 받고, 분할 결제를 처리하세요. Pro는 Stripe Terminal과 SumUp 같은 <link>카드 리더기</link>를 연결합니다."
         },
         "f3": {
-          "title": "고객 프로필",
-          "description": "POS에서 고객 정보를 직접 추가하고 편집하세요. 단골을 파악하고 더 나은 서비스를 제공하세요."
+          "title": "고객 추가 및 편집",
+          "description": "계산대에서 새 고객을 추가하거나 고객 정보를 수정하세요. 판매에 기존 고객을 선택하는 것은 무료입니다."
         },
         "f4": {
           "title": "주문 내역 및 관리",
@@ -286,21 +286,22 @@
       },
       "a2": {
         "k": "보유한 모든 화면",
-        "h": "하나의 POS. 웹, 데스크톱, iOS 및 Android.",
-        "b": "카운터의 태블릿, 매장 안의 휴대폰, 백오피스의 노트북에서 계산대를 실행하세요 — 같은 매장, 같은 데이터입니다.",
+        "h": "하나의 POS. 브라우저에서, Windows, macOS, Linux에서.",
+        "b": "어떤 태블릿, 휴대폰, 컴퓨터에서든 브라우저로 계산대를 실행하거나 데스크톱 앱을 설치하세요. 같은 매장, 같은 데이터입니다. iOS, Android 앱은 베타입니다.",
         "platforms": {
           "p1": "웹",
           "p2": "Windows",
           "p3": "macOS",
           "p4": "iOS",
           "p5": "Android",
+          "p6": "Linux",
           "beta": "베타"
         }
       },
       "a3": {
         "k": "원하는 하드웨어를 사용하세요",
-        "h": "이미 가진 장비와 함께 작동합니다.",
-        "b": "카운터의 영수증 프린터와 바코드 스캐너를 그대로 연결하세요. 보유한 단말기의 카드 결제는 WCPOS가 기록하고, Pro는 Stripe Terminal, SumUp 등을 연결합니다."
+        "h": "일반적인 바코드 스캐너 및 영수증 프린터와 함께 작동합니다.",
+        "b": "거의 모든 바코드 스캐너는 연결하거나 페어링하는 즉시 작동합니다. Epson, Star 등 ESC/POS 영수증 프린터는 기기에 따라 USB, Wi-Fi 또는 Bluetooth로 연결됩니다. 보유한 단말기의 카드 결제는 WCPOS가 기록하고, Pro는 Stripe Terminal, SumUp 등을 연결합니다."
       },
       "a4": {
         "k": "당신의 매장, 당신의 데이터",
@@ -436,7 +437,7 @@
       },
       "terminal": {
         "title": "카드 리더기 연결",
-        "description": "Stripe Terminal, Square Terminal, SumUp, Mollie, PayPal Reader 등으로 대면 카드 결제를 받으세요.",
+        "description": "Stripe Terminal, SumUp, Mollie Terminal, Square Terminal 등으로 대면 카드 결제를 받으세요. PayPal Reader (Zettle)는 매장 자체의 결제 페이지를 통해 작동합니다.",
         "link": "모든 결제 단말기 확장 기능 보기"
       },
       "display": {
@@ -1658,11 +1659,11 @@
       "points": {
         "setup": {
           "title": "설정은 플러그인 하나면 충분합니다",
-          "body": "무료 플러그인은 WooCommerce 매장에 안전한 REST API를 추가합니다. 설치는 이것으로 끝입니다 — 기기마다 호스팅하거나 설정할 것이 없습니다."
+          "body": "WooCommerce 사이트에 무료 플러그인을 설치하면 브라우저에서 yourdomain.com/pos로 계산대를 바로 사용할 수 있습니다. 그 밖에 호스팅할 것은 없습니다. 데스크톱 및 모바일 앱은 선택 사항입니다. 매장을 한 번 추가하고 로그인하세요."
         },
         "sync": {
           "title": "모든 앱이 같은 매장을 읽고 씁니다",
-          "body": "데스크톱에서 판매를 처리하면 휴대폰에 새 재고 수준이 표시됩니다 — 제품, 주문, 고객이 하나의 세트로 실시간 업데이트됩니다."
+          "body": "데스크톱에서 판매를 처리하면 다른 기기들이 다음 확인 시점에 새 재고 수준을 가져옵니다. 기본 설정에서는 약 1분 뒤입니다. 제품, 주문, 고객은 하나의 세트입니다."
         },
         "offline": {
           "title": "연결이 끊겨도 계속 판매하세요",
@@ -1697,7 +1698,7 @@
       "start": {
         "eyebrow": "시작하기",
         "title": "첫 판매까지 세 단계",
-        "subtitle": "처음부터 끝까지 약 2분이면 됩니다."
+        "subtitle": "처음부터 끝까지 약 5분입니다."
       },
       "steps": {
         "plugin": {
@@ -2166,7 +2167,7 @@
         },
         "payments": {
           "claim": "통합 결제: 제한적",
-          "response": "WCPOS Pro는 Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave와 QR 코드 또는 푸시 알림 방식의 Vipps MobilePay를 연동하며 확장 카탈로그에서 원클릭으로 설치할 수 있고, 계산대에서 매장의 다른 WooCommerce 결제 게이트웨이를 활성화합니다. 무료 버전은 현금 결제를 받고 별도 단말기에서 받은 카드 결제를 기록하며, 한 주문을 여러 결제로 나누어 처리할 수 있습니다."
+          "response": "WCPOS Pro는 Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave와 QR 코드 또는 푸시 알림 방식의 Vipps MobilePay를 연동하며 확장 카탈로그에서 설치하고, 계산대에서 매장의 다른 WooCommerce 결제 게이트웨이를 활성화합니다. 무료 버전은 현금 결제를 받고 별도 단말기에서 받은 카드 결제를 기록하며, 한 주문을 여러 결제로 나누어 처리할 수 있습니다."
         },
         "hobbyShops": {
           "claim": "취미 매장에 적합",
@@ -2300,7 +2301,7 @@
       "payments": {
         "title": "카드 결제는 어떻게 작동하나요?",
         "woocommerce": "WooCommerce POS는 현금을 받으며, 태블릿에 연결된 Bluetooth 카드 리더기로 WooPayments 또는 Stripe를 통한 카드 결제도 받습니다. WooPayments의 대면 카드 결제 요율은 온라인보다 낮습니다. 미국에서는 대면 2.70% + $0.10, 온라인 2.90% + $0.30입니다. 카드 리더기 비용은 사용 중인 리더기 한 대당 월 $5.00 / £5.00입니다.",
-        "wcpos": "WCPOS 2.0에는 자체 체크아웃이 있습니다. 장바구니 옆 결제 패널에서 현금 결제를 받고, 별도 단말기에서 받은 카드 결제를 기록하며, 한 주문을 여러 결제로 나누어 처리할 수 있습니다. Pro를 사용하면 계산대에서 매장의 다른 WooCommerce 결제 게이트웨이를 활성화하고, Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave 카드 단말기 연동과 QR 코드 또는 푸시 알림 방식의 Vipps MobilePay를 추가할 수 있으며, 확장 카탈로그에서 클릭 한 번으로 설치할 수 있습니다. iPhone과 Android의 Tap to Pay는 아직 WCPOS에 없으며, 향후 앱 업데이트로 제공됩니다. WCPOS는 WooPayments 대면 결제를 지원하지 않습니다."
+        "wcpos": "WCPOS 2.0에는 자체 체크아웃이 있습니다. 장바구니 옆 결제 패널에서 현금 결제를 받고, 별도 단말기에서 받은 카드 결제를 기록하며, 한 주문을 여러 결제로 나누어 처리할 수 있습니다. Pro를 사용하면 계산대에서 매장의 다른 WooCommerce 결제 게이트웨이를 활성화하고, Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave 카드 단말기 연동과 QR 코드 또는 푸시 알림 방식의 Vipps MobilePay를 추가할 수 있으며, 확장 카탈로그에서 설치합니다. iPhone과 Android의 Tap to Pay는 아직 WCPOS에 없으며, 향후 앱 업데이트로 제공됩니다. WCPOS는 WooPayments 대면 결제를 지원하지 않습니다."
       },
       "pricing": {
         "title": "비용은 얼마인가요?",
@@ -2449,7 +2450,7 @@
       "payments": {
         "title": "카드 결제는 어떻게 작동하나요?",
         "square": "Square의 POS는 iPhone과 Android의 Tap to Pay를 포함해 Square를 통한 카드 결제를 받습니다. 미국의 Square Free 요금제에서 대면 카드 결제(탭, 삽입 또는 긁기) 비용은 2.6% + 15¢입니다. Square에 따르면 Square 앱의 카드 결제는 미국, 캐나다, 호주, 일본, 영국, 아일랜드 공화국, 프랑스, 스페인에서 이용할 수 있으며, 확장 프로그램을 사용하려면 WooCommerce 통화가 Square 계정 통화와 일치해야 합니다.",
-        "wcpos": "WCPOS 2.0에는 자체 체크아웃이 있습니다. 장바구니 옆 결제 패널에서 현금 결제를 받고, 별도 단말기에서 받은 카드 결제를 기록하며, 한 주문을 여러 결제로 나누어 처리할 수 있습니다. Pro를 사용하면 계산대에서 매장의 다른 WooCommerce 결제 게이트웨이를 활성화하고, Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave 카드 단말기 연동과 QR 코드 또는 푸시 알림 방식의 Vipps MobilePay를 추가할 수 있으며, 확장 카탈로그에서 클릭 한 번으로 설치할 수 있습니다. iPhone과 Android의 Tap to Pay는 아직 WCPOS에 없으며, 향후 앱 업데이트로 제공됩니다.",
+        "wcpos": "WCPOS 2.0에는 자체 체크아웃이 있습니다. 장바구니 옆 결제 패널에서 현금 결제를 받고, 별도 단말기에서 받은 카드 결제를 기록하며, 한 주문을 여러 결제로 나누어 처리할 수 있습니다. Pro를 사용하면 계산대에서 매장의 다른 WooCommerce 결제 게이트웨이를 활성화하고, Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave 카드 단말기 연동과 QR 코드 또는 푸시 알림 방식의 Vipps MobilePay를 추가할 수 있으며, 확장 카탈로그에서 설치합니다. iPhone과 Android의 Tap to Pay는 아직 WCPOS에 없으며, 향후 앱 업데이트로 제공됩니다.",
         "both": "Square Terminal을 이미 사용 중이신가요? WCPOS Pro의 Square Terminal 게이트웨이는 WCPOS 계산대에서 해당 단말기로 WooCommerce 주문 결제를 직접 받고 결과를 주문에 기록합니다. 공식 Square for WooCommerce 플러그인을 사용한다면 환경과 위치 ID가 미리 입력됩니다. Square POS나 다른 연동에 로그인한 Terminal은 먼저 로그아웃해야 합니다."
       },
       "pricing": {

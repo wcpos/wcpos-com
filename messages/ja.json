@@ -176,8 +176,8 @@
           "description": "商品を追加し、割引を適用し、現金やお手持ちの決済端末でのカード払いを受け付け、分割払いにも対応できます。Proでは、Stripe TerminalやSumUpなどの<link>カードリーダー</link>を接続できます。"
         },
         "f3": {
-          "title": "顧客プロフィール",
-          "description": "POSから顧客情報を直接追加・編集できます。常連のお客様を把握し、より良いサービスを提供できます。"
+          "title": "顧客の追加・編集",
+          "description": "レジで新しい顧客を追加したり、顧客情報を修正したりできます。既存の顧客を販売に選択するのは無料です。"
         },
         "f4": {
           "title": "注文履歴と管理",
@@ -286,21 +286,22 @@
       },
       "a2": {
         "k": "手持ちのあらゆる画面で",
-        "h": "1つのPOSをウェブ、デスクトップ、iOS、Androidで。",
-        "b": "カウンターのタブレット、売り場のスマートフォン、バックオフィスのノートPCでレジを実行できます。同じストア、同じデータです。",
+        "h": "1つのPOSを、ブラウザでも、Windows、macOS、Linuxでも。",
+        "b": "どのタブレット、スマートフォン、パソコンでも、ブラウザでレジを実行できます。デスクトップアプリをインストールすることもできます。同じストア、同じデータです。iOS、Android向けアプリはベータ版です。",
         "platforms": {
           "p1": "ウェブ",
           "p2": "Windows",
           "p3": "macOS",
           "p4": "iOS",
           "p5": "Android",
+          "p6": "Linux",
           "beta": "Beta"
         }
       },
       "a3": {
         "k": "手持ちのハードウェアを利用",
-        "h": "すでにお持ちの機器で動作します。",
-        "b": "カウンターのレシートプリンターやバーコードスキャナーをそのまま接続。お手持ちの決済端末のカード払いはWCPOSが記録し、ProはStripe Terminal、SumUpなどを接続します。"
+        "h": "一般的なバーコードスキャナーやレシートプリンターで動作します。",
+        "b": "ほぼすべてのバーコードスキャナーは、接続またはペアリングするだけですぐに使えます。Epson、StarなどのESC/POS対応レシートプリンターは、機器に応じてUSB、Wi-Fi、Bluetoothで接続します。お手持ちの決済端末のカード払いはWCPOSが記録し、ProはStripe Terminal、SumUpなどを接続します。"
       },
       "a4": {
         "k": "あなたの店舗、あなたのデータ",
@@ -436,7 +437,7 @@
       },
       "terminal": {
         "title": "カードリーダー連携",
-        "description": "Stripe Terminal、Square Terminal、SumUp、Mollie、PayPal Readerなどで、対面でのカード決済を受け付けられます。",
+        "description": "Stripe Terminal、SumUp、Mollie Terminal、Square Terminalなどで、対面でのカード決済を受け付けられます。PayPal Reader (Zettle)は、ストア独自の決済ページを通じて利用できます。",
         "link": "決済端末の拡張機能をすべて見る"
       },
       "display": {
@@ -1658,11 +1659,11 @@
       "points": {
         "setup": {
           "title": "必要な設定はプラグイン1つだけ",
-          "body": "無料プラグインがWooCommerceストアに安全なREST APIを追加します。インストールはそれだけです — デバイスごとにホスティングや設定は不要です。"
+          "body": "WooCommerceサイトに無料プラグインをインストールすれば、ブラウザでyourdomain.com/posを開くだけでレジを使えます。ほかにホスティングするものはありません。デスクトップアプリとモバイルアプリは任意です。ストアを一度追加してサインインするだけです。"
         },
         "sync": {
           "title": "すべてのアプリが同じ店舗を読み書き",
-          "body": "デスクトップで販売すると、スマートフォンに新しい在庫数が表示されます — 商品、注文、顧客は1つのセットで、リアルタイムに更新されます。"
+          "body": "デスクトップで販売すると、他のデバイスは次回の確認時に新しい在庫数を取得します。デフォルト設定では約1分後です。商品、注文、顧客は1つのセットです。"
         },
         "offline": {
           "title": "接続が切れても、販売を続けられます",
@@ -1697,7 +1698,7 @@
       "start": {
         "eyebrow": "はじめに",
         "title": "最初の販売まで3ステップ",
-        "subtitle": "最初から最後まで約2分で完了します。"
+        "subtitle": "最初から最後まで約5分です。"
       },
       "steps": {
         "plugin": {
@@ -2166,7 +2167,7 @@
         },
         "payments": {
           "claim": "決済連携：限定的",
-          "response": "WCPOS ProはStripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcaveに加え、QRコードまたはプッシュ通知のVipps MobilePayと連携し、拡張機能カタログからワンクリックでインストールできます。また、店舗のその他のWooCommerce決済ゲートウェイをレジで有効にします。無料版では現金を受け付け、別の端末で受け付けたカード決済を記録でき、1件の注文を複数の支払いに分けられます。"
+          "response": "WCPOS ProはStripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcaveに加え、QRコードまたはプッシュ通知のVipps MobilePayと連携し、拡張機能カタログからインストールします。また、店舗のその他のWooCommerce決済ゲートウェイをレジで有効にします。無料版では現金を受け付け、別の端末で受け付けたカード決済を記録でき、1件の注文を複数の支払いに分けられます。"
         },
         "hobbyShops": {
           "claim": "趣味レベルの店舗向け",
@@ -2300,7 +2301,7 @@
       "payments": {
         "title": "カード決済はどのように機能しますか？",
         "woocommerce": "WooCommerceのPOSは現金のほか、タブレットに接続したBluetoothカードリーダーを使い、WooPaymentsまたはStripe経由でカードを受け付けます。WooPaymentsの対面カード決済手数料はオンラインより低く、米国では対面が2.70% + $0.10、オンラインが2.90% + $0.30です。カードリーダーの費用は稼働中のリーダー1台につき月額$5.00 / £5.00です。",
-        "wcpos": "WCPOS 2.0には独自のチェックアウトがあります。カートの横の支払いパネルで現金を受け付け、別の端末で受け付けたカード決済を記録でき、1件の注文を複数の支払いに分けられます。Proでは、店舗のその他のWooCommerce決済ゲートウェイをレジで有効にし、Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave向けのカード端末連携に加え、QRコードまたはプッシュ通知のVipps MobilePayを追加できます。これらは拡張機能カタログからワンクリックでインストールできます。iPhoneとAndroidでのTap to PayはWCPOSにはまだありません。今後のアプリのアップデートで追加されます。WCPOSはWooPaymentsの対面決済をサポートしません。"
+        "wcpos": "WCPOS 2.0には独自のチェックアウトがあります。カートの横の支払いパネルで現金を受け付け、別の端末で受け付けたカード決済を記録でき、1件の注文を複数の支払いに分けられます。Proでは、店舗のその他のWooCommerce決済ゲートウェイをレジで有効にし、Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave向けのカード端末連携に加え、QRコードまたはプッシュ通知のVipps MobilePayを追加できます。これらは拡張機能カタログからインストールします。iPhoneとAndroidでのTap to PayはWCPOSにはまだありません。今後のアプリのアップデートで追加されます。WCPOSはWooPaymentsの対面決済をサポートしません。"
       },
       "pricing": {
         "title": "料金はいくらですか？",
@@ -2449,7 +2450,7 @@
       "payments": {
         "title": "カード決済はどのように機能しますか？",
         "square": "SquareのPOSは、iPhoneとAndroidでのTap to Payを含め、Square経由でカード決済を受け付けます。米国のSquare Freeプランでは、対面でのカード決済（タッチ、差し込み、スワイプ）の手数料は2.6% + 15¢です。Squareによると、Squareアプリでのカード決済受付は米国、カナダ、オーストラリア、日本、英国、アイルランド共和国、フランス、スペインで利用できます。また、拡張機能を利用するにはWooCommerceの通貨をSquareアカウントの通貨と一致させる必要があります。",
-        "wcpos": "WCPOS 2.0には独自のチェックアウトがあります。カートの横の支払いパネルで現金を受け付け、別の端末で受け付けたカード決済を記録でき、1件の注文を複数の支払いに分けられます。Proでは、店舗のその他のWooCommerce決済ゲートウェイをレジで有効にし、Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave向けのカード端末連携に加え、QRコードまたはプッシュ通知のVipps MobilePayを追加できます。これらは拡張機能カタログからワンクリックでインストールできます。iPhoneとAndroidでのTap to PayはWCPOSにはまだありません。今後のアプリのアップデートで追加されます。",
+        "wcpos": "WCPOS 2.0には独自のチェックアウトがあります。カートの横の支払いパネルで現金を受け付け、別の端末で受け付けたカード決済を記録でき、1件の注文を複数の支払いに分けられます。Proでは、店舗のその他のWooCommerce決済ゲートウェイをレジで有効にし、Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave向けのカード端末連携に加え、QRコードまたはプッシュ通知のVipps MobilePayを追加できます。これらは拡張機能カタログからインストールします。iPhoneとAndroidでのTap to PayはWCPOSにはまだありません。今後のアプリのアップデートで追加されます。",
         "both": "すでにSquare Terminalをお持ちですか？WCPOS ProのSquare TerminalゲートウェイはWCPOSのレジから直接、その端末でWooCommerce注文の決済を受け付け、結果を注文に書き戻します。公式のSquare for WooCommerceプラグインを利用している場合、その環境と拠点IDがあらかじめ入力されます。Square POSまたは別の連携にサインインしているTerminalは、先にそこからサインアウトする必要があります。"
       },
       "pricing": {

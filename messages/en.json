@@ -176,8 +176,8 @@
           "description": "Add items, apply discounts, take cash or card on your own terminal, and split a payment. Pro connects <link>card readers</link> like Stripe Terminal and SumUp."
         },
         "f3": {
-          "title": "Customer profiles",
-          "description": "Add and edit customer info directly in the POS. Track regulars, offer better service."
+          "title": "Add and edit customers",
+          "description": "Add a new customer or fix their details at the register. Choosing an existing customer for a sale is free."
         },
         "f4": {
           "title": "Order history & management",
@@ -286,21 +286,22 @@
       },
       "a2": {
         "k": "Every screen you own",
-        "h": "One POS. Web, desktop, iOS & Android.",
-        "b": "Run the register on the tablet at the counter, the phone on the shop floor, or the laptop in the back office — same store, same data.",
+        "h": "One POS. In the browser, on Windows, macOS and Linux.",
+        "b": "Run the register in a browser on any tablet, phone or computer, or install the desktop app. Same store, same data. iOS and Android apps are in beta.",
         "platforms": {
           "p1": "Web",
           "p2": "Windows",
           "p3": "macOS",
           "p4": "iOS",
           "p5": "Android",
+          "p6": "Linux",
           "beta": "Beta"
         }
       },
       "a3": {
         "k": "Bring your own hardware",
-        "h": "Works with the equipment you already have.",
-        "b": "Receipt printers and barcode scanners: plug in what’s already on your counter. Take cards on your own terminal and WCPOS records them; Pro connects Stripe Terminal, SumUp and more."
+        "h": "Works with common scanners and receipt printers.",
+        "b": "Almost every barcode scanner works the moment you plug it in or pair it. Epson, Star and other ESC/POS receipt printers connect by USB, Wi-Fi or Bluetooth, depending on the device. Take cards on your own terminal and WCPOS records them; Pro connects Stripe Terminal, SumUp and more."
       },
       "a4": {
         "k": "Your store, your data",
@@ -436,7 +437,7 @@
       },
       "terminal": {
         "title": "Connected card readers",
-        "description": "Take in-person card payments on Stripe Terminal, Square Terminal, SumUp, Mollie, PayPal Reader and more.",
+        "description": "Take in-person card payments on Stripe Terminal, SumUp, Mollie Terminal, Square Terminal and more. PayPal Reader (Zettle) works through your store's own pay page.",
         "link": "See all terminal extensions"
       },
       "display": {
@@ -1658,11 +1659,11 @@
       "points": {
         "setup": {
           "title": "One plugin is the only setup",
-          "body": "The free plugin adds a secure REST API to your WooCommerce store. That’s the whole install — nothing to host or configure per device."
+          "body": "Install the free plugin on your WooCommerce site and the register is ready in a browser at yourdomain.com/pos. There is nothing else to host. The desktop and mobile apps are optional: add your store once and sign in."
         },
         "sync": {
           "title": "Every app reads and writes the same store",
-          "body": "Ring up a sale on the desktop and your phone shows the new stock level — one set of products, orders and customers, updating in real time."
+          "body": "Ring up a sale on the desktop and your other devices pick up the new stock level at their next check, about a minute later on the default setting. One set of products, orders and customers."
         },
         "offline": {
           "title": "Keep ringing up sales when the connection drops",
@@ -1697,7 +1698,7 @@
       "start": {
         "eyebrow": "Get started",
         "title": "Three steps to your first sale",
-        "subtitle": "It takes about two minutes, start to finish."
+        "subtitle": "About five minutes, start to finish."
       },
       "steps": {
         "plugin": {
@@ -2166,7 +2167,7 @@
         },
         "payments": {
           "claim": "Integrated payments: limited",
-          "response": "WCPOS Pro integrates Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, and Windcave, plus Vipps MobilePay by QR code or push, installable one-click from the extension catalog, and turns on your store's other WooCommerce payment gateways at the register. The free version takes cash and records cards taken on a separate terminal, and can split one order across several payments."
+          "response": "WCPOS Pro integrates Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, and Windcave, plus Vipps MobilePay by QR code or push, installed from the extension catalog, and turns on your store's other WooCommerce payment gateways at the register. The free version takes cash and records cards taken on a separate terminal, and can split one order across several payments."
         },
         "hobbyShops": {
           "claim": "Best for hobby shops",
@@ -2300,7 +2301,7 @@
       "payments": {
         "title": "How do card payments work?",
         "woocommerce": "WooCommerce's POS takes cash, and takes cards through WooPayments or Stripe with a Bluetooth card reader connected to the tablet. With WooPayments, in-person card payments cost less than online ones: in the US, 2.70% + $0.10 against 2.90% + $0.30 online. A card reader costs $5.00 / £5.00 per active reader per month.",
-        "wcpos": "WCPOS 2.0 has its own checkout: a tender pane beside the cart takes cash, records cards taken on a separate terminal, and can split one order across several payments. With Pro, you can turn on your store's other WooCommerce payment gateways at the register, and add card-terminal integrations for Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, and Windcave, plus Vipps MobilePay by QR code or push, all installable one-click from the extension catalog. Tap to Pay on iPhone and Android is not in WCPOS yet; it follows in an app update. WCPOS does not support WooPayments in-person payments."
+        "wcpos": "WCPOS 2.0 has its own checkout: a tender pane beside the cart takes cash, records cards taken on a separate terminal, and can split one order across several payments. With Pro, you can turn on your store's other WooCommerce payment gateways at the register, and add card-terminal integrations for Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, and Windcave, plus Vipps MobilePay by QR code or push, all installed from the extension catalog. Tap to Pay on iPhone and Android is not in WCPOS yet; it follows in an app update. WCPOS does not support WooPayments in-person payments."
       },
       "pricing": {
         "title": "What does it cost?",
@@ -2449,7 +2450,7 @@
       "payments": {
         "title": "How do card payments work?",
         "square": "Square's POS takes cards through Square, including Tap to Pay on iPhone and on Android. In the US on the Square Free plan, an in-person card payment (tap, dip, or swipe) costs 2.6% + 15¢. Square says card payment acceptance with the Square app is available in the US, Canada, Australia, Japan, the United Kingdom, Republic of Ireland, France and Spain, and the extension needs your WooCommerce currency to match your Square account currency.",
-        "wcpos": "WCPOS 2.0 has its own checkout: a tender pane beside the cart takes cash, records cards taken on a separate terminal, and can split one order across several payments. With Pro, you can turn on your store's other WooCommerce payment gateways at the register, and add card-terminal integrations for Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, and Windcave, plus Vipps MobilePay by QR code or push, all installable one-click from the extension catalog. Tap to Pay on iPhone and Android is not in WCPOS yet; it follows in an app update.",
+        "wcpos": "WCPOS 2.0 has its own checkout: a tender pane beside the cart takes cash, records cards taken on a separate terminal, and can split one order across several payments. With Pro, you can turn on your store's other WooCommerce payment gateways at the register, and add card-terminal integrations for Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, and Windcave, plus Vipps MobilePay by QR code or push, all installed from the extension catalog. Tap to Pay on iPhone and Android is not in WCPOS yet; it follows in an app update.",
         "both": "Already have a Square Terminal? WCPOS Pro's Square Terminal gateway collects WooCommerce order payments on it directly from the WCPOS register and writes the result back to the order. If you use the official Square for WooCommerce plugin, its environment and location ID are pre-filled. A Terminal signed in to Square POS or another integration has to sign out of it first."
       },
       "pricing": {
