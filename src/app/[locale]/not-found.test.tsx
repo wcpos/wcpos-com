@@ -30,6 +30,7 @@ const messages: Record<string, string> = {
     'The page you are looking for does not exist or may have moved.',
   'errors.goHome': 'Go to homepage',
   'header.support': 'Support',
+  'header.downloads': 'Downloads',
   'metadata.siteTitle': 'WCPOS - Point of Sale for WooCommerce',
   'metadata.siteDescription':
     'Point of Sale for WooCommerce. Fast, reliable POS system for your WooCommerce store.',
@@ -81,7 +82,16 @@ describe('NotFoundPage (localized)', () => {
     ).toBeInTheDocument()
   })
 
-  it('links to home, pro, and support', () => {
+  it('sets the tab title from the localized 404 title', () => {
+    render(<NotFoundPage />)
+
+    expect(document.head.querySelector('title')).toHaveTextContent(
+      'Page not found | WCPOS'
+    )
+    expect(document.title).toBe('Page not found | WCPOS')
+  })
+
+  it('links to home, pro, downloads, and support', () => {
     render(<NotFoundPage />)
 
     expect(
@@ -90,6 +100,10 @@ describe('NotFoundPage (localized)', () => {
     expect(screen.getByRole('link', { name: 'WCPOS Pro' })).toHaveAttribute(
       'href',
       '/pro'
+    )
+    expect(screen.getByRole('link', { name: 'Downloads' })).toHaveAttribute(
+      'href',
+      '/downloads'
     )
     expect(screen.getByRole('link', { name: 'Support' })).toHaveAttribute(
       'href',

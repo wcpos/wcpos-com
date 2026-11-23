@@ -44,6 +44,7 @@ test.describe('404 handling for unknown URLs', () => {
     await expect(
       page.getByRole('heading', { name: 'Seite nicht gefunden' })
     ).toBeVisible()
+    await expect(page).toHaveTitle('Seite nicht gefunden | WCPOS')
   })
 
   test('invalid locale prefix without a dot returns 404', async ({
