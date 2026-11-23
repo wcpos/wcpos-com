@@ -76,7 +76,7 @@
     },
     "cta": {
       "title": "¿Listo para vender en tienda con WooCommerce?",
-      "subtitle": "Prueba la demo en vivo o descarga el plugin gratuito para empezar.",
+      "subtitle": "La demo se abre en tu navegador sin instalar nada. El plugin es gratuito.",
       "liveDemo": "Probar demo en vivo",
       "compare": "Compare los sistemas TPV para WooCommerce",
       "download": "Descargar gratis"
@@ -164,14 +164,14 @@
       }
     },
     "features": {
-      "heading": "Creado para las exigencias del comercio físico",
+      "heading": "Lo que hace la caja",
       "items": {
         "f1": {
           "title": "Búsqueda rápida de productos",
-          "description": "Encuentra productos al instante con búsqueda, filtros y navegación por categorías. Compatible con lectores de códigos de barras."
+          "description": "Busca, filtra o explora por categoría. Los resultados salen de la copia guardada en el dispositivo, así que aparecen al instante. Escanea un código de barras para añadir un artículo."
         },
         "f2": {
-          "title": "Flujo de cobro fluido",
+          "title": "Efectivo, tarjeta y pagos divididos",
           "description": "Añade artículos, aplica descuentos, acepta efectivo o pagos con tarjeta en tu propio terminal de pago y divide un pago. Pro conecta <link>lectores de tarjetas</link> como Stripe Terminal y SumUp."
         },
         "f3": {
@@ -180,7 +180,7 @@
         },
         "f4": {
           "title": "Historial y gestión de pedidos",
-          "description": "Consulta pedidos anteriores, procesa devoluciones y revisa el estado de un pedido sin cambiar a WP Admin."
+          "description": "Encuentra un pedido anterior, reimprime su recibo o reembólsalo sin abrir WP Admin."
         },
         "f5": {
           "title": "Edita stock y precios sobre la marcha",
@@ -216,12 +216,12 @@
         "intro": "Todo lo de Gratis, además de:",
         "features": {
           "p8": "Más cajas y varias tiendas",
-          "p1": "Integración con terminales de pago",
+          "p1": "Lectores de tarjetas conectados",
           "p2": "Edición de stock y precios en el POS",
           "p3": "Historial y gestión de pedidos",
           "p4": "Gestión de clientes",
           "p5": "Informes de varios días, cajas y tiendas",
-          "p6": "Pasarelas de pago personalizadas",
+          "p6": "Tus otras pasarelas de WooCommerce",
           "p7": "Soporte prioritario",
           "p9": "Reembolsos totales o parciales",
           "p10": "Gestión de cupones",
@@ -433,7 +433,7 @@
         "description": "Añade cajas además de la gratuita y gestiona varias tiendas, cada una con su propia dirección, tipos impositivos, plantilla de ticket, precios y usuarios autorizados."
       },
       "terminal": {
-        "title": "Integración con terminal de pago",
+        "title": "Lectores de tarjetas conectados",
         "description": "Acepta cobros presenciales con tarjeta en Stripe Terminal, Square Terminal, SumUp, Mollie, PayPal Reader y más.",
         "link": "Ver todas las extensiones de terminal"
       },
@@ -462,7 +462,7 @@
         "description": "Consulta las ventas de días anteriores y rangos de fechas, de cada caja y cada tienda."
       },
       "gateways": {
-        "title": "Pasarelas de pago personalizadas",
+        "title": "Tus otras pasarelas de WooCommerce",
         "description": "Activa las demás pasarelas de pago de WooCommerce de tu tienda en la caja, no solo las opciones integradas."
       }
     },
@@ -498,7 +498,7 @@
       "title": "Preguntas frecuentes",
       "freePlugin": {
         "question": "¿Está limitado el plugin gratuito?",
-        "answer": "El plugin gratuito de WCPOS es software GPL sin topes de productos, pedidos ni clientes y sin comisiones por transacción; funciona con una caja, y para más cajas y las herramientas indicadas arriba se necesita Pro."
+        "answer": "Funciona con una caja. No hay topes de productos, pedidos ni clientes, ni comisiones por transacción. Para más cajas y las herramientas indicadas arriba se necesita Pro. El plugin gratuito es software GPL."
       },
       "yearlyVsLifetime": {
         "question": "¿Cuál es la diferencia entre Anual y De por vida?",
@@ -1641,7 +1641,7 @@
     "hero": {
       "eyebrow": "Descargas",
       "title": "Descargar el punto de venta para WooCommerce",
-      "tagline": "Una caja, todos los dispositivos.",
+      "tagline": "Instala el plugin gratuito y luego abre la caja en un navegador o en una app.",
       "platformChooserLabel": "Elige tu plataforma",
       "versionMeta": "Versión {version} · {platform}",
       "detected": "Detectado",
@@ -1700,7 +1700,7 @@
       "steps": {
         "plugin": {
           "title": "Instala el plugin gratuito",
-          "body": "La base a la que se conecta todo. En tu escritorio: Plugins → Añadir nuevo, luego busca “WCPOS”.",
+          "body": "Empieza aquí: la caja y todas las apps funcionan a través del plugin. En tu escritorio: Plugins → Añadir nuevo, luego busca “WCPOS”.",
           "badge": "Gratis · GPL",
           "requirements": "WordPress 5.6+ · WooCommerce 9.0+ · PHP 7.4+",
           "requirementsWithVersion": "Última {version} · WordPress 5.6+ · WooCommerce 9.0+ · PHP 7.4+",
@@ -1717,8 +1717,8 @@
           "webCta": "Abrir la demo en vivo"
         },
         "pro": {
-          "title": "¿Quieres más? Pásate a Pro",
-          "cardTitle": "Desbloquea más cajas",
+          "title": "¿Necesitas más de una caja?",
+          "cardTitle": "WCPOS Pro",
           "cardBody": "Más cajas y varias tiendas, pagos con terminal, reembolsos, stock y precios, gestión de pedidos, informes completos y soporte prioritario en Discord.",
           "requirements": "WordPress 5.8+ · WooCommerce 9.0+ · PHP 7.4+",
           "plansCta": "Ver planes Pro",
@@ -1783,7 +1783,7 @@
       "eyebrow": "Una nota del desarrollador",
       "intro": "Hola, soy Paul. Creé WCPOS.",
       "p1": "Ese soy yo, cuando todo empezó. Abrí Urban Locavore en Perth en diciembre de 2011 con cientos de productos ya en WooCommerce y sin forma de venderlos en el mostrador, así que construí una caja yo mismo. Cuando la tienda cerró en abril de 2014, lo publiqué en WordPress.org para cualquiera que lo necesitara. <strong>Desde entonces han aparecido y desaparecido plugins POS para WooCommerce. Este no.</strong> Más de una década de versiones, un desarrollador y el proyecto sigue avanzando; la versión gratuita sigue siendo real: vender, imprimir y mantenerse sincronizada. Sigue siendo gratis.",
-      "p2": "<strong>Pro es la razón por la que sigue aquí.</strong> Añade herramientas extra para gestionar tu tienda — lectores de tarjetas, reembolsos en la caja, informes de varios días, cajas y tiendas, multitienda — y financia cada versión, incluidas las gratuitas. Sin inversores ni una adquisición esperando al final. Los comerciantes lo financian directamente.",
+      "p2": "<strong>Pro es la razón por la que sigue aquí.</strong> Añade herramientas extra para gestionar tu tienda — lectores de tarjetas, reembolsos en la caja, informes de varios días y cajas, multitienda — y financia cada versión, incluidas las gratuitas. Sin inversores ni una adquisición esperando al final. Los comerciantes lo financian directamente.",
       "p3": "Y los usuarios de Pro tienen una línea directa: dime qué necesita tu tienda y eso da forma a lo que construyo después.",
       "signature": {
         "name": "Paul Kilmurray",
@@ -2321,8 +2321,8 @@
         "outro": "WooCommerce sigue añadiendo funciones de TPV al núcleo de WooCommerce, así que cabe esperar que esta lista se acorte — la volvemos a comprobar cada trimestre."
       },
       "woocommerceBetter": {
-        "title": "Dónde el TPV de WooCommerce es realmente mejor",
-        "intro": "Una comparativa honesta reconoce las ventajas de ambos:",
+        "title": "Dónde el TPV de WooCommerce es mejor",
+        "intro": "Gana en tres puntos:",
         "price": "Su software de TPV es gratuito, sin necesidad de licencia — WCPOS Pro cuesta $129 o más.",
         "official": "Lo desarrolla el propio WooCommerce, dentro de la aplicación móvil de WooCommerce que quizá ya use para gestionar su tienda.",
         "wooPayments": "Pagos presenciales nativos con WooPayments, a una tarifa inferior a la de WooPayments en línea (en Estados Unidos, 2.70% + $0.10 frente a 2.90% + $0.30). WCPOS no tiene integración con WooPayments para pagos presenciales.",

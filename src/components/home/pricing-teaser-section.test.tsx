@@ -170,7 +170,7 @@ describe('PricingTeaserSection', () => {
     expect(screen.getByText('Offline mode')).toBeInTheDocument()
     expect(screen.getByText('Unlimited products')).toBeInTheDocument()
     expect(
-      screen.getByText('Payment terminal integration')
+      screen.getByText('Connected card readers')
     ).toBeInTheDocument()
     expect(screen.getByText('Reports across days, registers & stores')).toBeInTheDocument()
   })

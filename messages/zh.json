@@ -76,7 +76,7 @@
     },
     "cta": {
       "title": "准备好用 WooCommerce 做店内销售了吗？",
-      "subtitle": "试用在线演示，或下载免费插件开始使用。",
+      "subtitle": "演示直接在浏览器中打开，无需安装任何东西。插件免费。",
       "liveDemo": "试用在线演示",
       "compare": "对比 WooCommerce POS 系统",
       "download": "免费下载"
@@ -164,14 +164,14 @@
       }
     },
     "features": {
-      "heading": "为实体零售的需求而构建",
+      "heading": "收银台能做什么",
       "items": {
         "f1": {
           "title": "快速商品搜索",
-          "description": "通过搜索、筛选和分类浏览即时找到商品。支持条码扫描器。"
+          "description": "搜索、筛选或按分类浏览。结果来自设备上的副本，因此会立即显示。扫描条码即可添加商品。"
         },
         "f2": {
-          "title": "流畅的结账流程",
+          "title": "现金、刷卡和拆分付款",
           "description": "添加商品、应用折扣、接受现金或使用自己的支付终端收取卡款，并拆分付款。Pro 可连接 Stripe Terminal 和 SumUp 等<link>读卡器</link>。"
         },
         "f3": {
@@ -180,7 +180,7 @@
         },
         "f4": {
           "title": "订单历史与管理",
-          "description": "查看历史订单、处理退货、检查订单状态，无需切换到 WP Admin。"
+          "description": "无需打开 WP Admin，即可查找历史订单、重新打印小票或办理退款。"
         },
         "f5": {
           "title": "即时编辑库存和价格",
@@ -216,12 +216,12 @@
         "intro": "包含免费版全部功能，另外还有：",
         "features": {
           "p8": "更多收银台与多店铺",
-          "p1": "支付终端集成",
+          "p1": "连接读卡器",
           "p2": "在 POS 中编辑库存和价格",
           "p3": "订单历史与管理",
           "p4": "客户管理",
           "p5": "跨日期、收银台和店铺的报表",
-          "p6": "自定义支付网关",
+          "p6": "您的其他 WooCommerce 支付网关",
           "p7": "优先支持",
           "p9": "全额或部分退款",
           "p10": "优惠券管理",
@@ -433,7 +433,7 @@
         "description": "在免费收银台之外添加更多收银台，并运营多家店铺，每家店铺都有各自的地址、税率、小票模板、定价和授权用户。"
       },
       "terminal": {
-        "title": "支付终端集成",
+        "title": "连接读卡器",
         "description": "通过 Stripe Terminal、Square Terminal、SumUp、Mollie、PayPal Reader 等接受当面刷卡收款。",
         "link": "查看全部终端扩展"
       },
@@ -462,7 +462,7 @@
         "description": "查看以往日期和日期范围内每个收银台、每家店铺的销售情况。"
       },
       "gateways": {
-        "title": "自定义支付网关",
+        "title": "您的其他 WooCommerce 支付网关",
         "description": "在收银台启用店铺的其他 WooCommerce 支付网关，不限于内置选项。"
       }
     },
@@ -498,7 +498,7 @@
       "title": "常见问题",
       "freePlugin": {
         "question": "免费插件有功能限制吗？",
-        "answer": "免费的 WCPOS 插件是 GPL 软件，商品、订单和客户数量不设上限，且无交易手续费；它支持一个收银台，更多收银台和上述工具需要 Pro。"
+        "answer": "它支持一个收银台。商品、订单和客户数量不设上限，也没有交易手续费。更多收银台和上述工具需要 Pro。免费插件是 GPL 软件。"
       },
       "yearlyVsLifetime": {
         "question": "年付和终身版有什么区别？",
@@ -1641,7 +1641,7 @@
     "hero": {
       "eyebrow": "下载",
       "title": "下载 WooCommerce 销售点系统",
-      "tagline": "一个收银台，适配所有设备。",
+      "tagline": "先安装免费插件，然后在浏览器或应用中打开收银台。",
       "platformChooserLabel": "选择您的平台",
       "versionMeta": "版本 {version} · {platform}",
       "detected": "已检测到",
@@ -1700,7 +1700,7 @@
       "steps": {
         "plugin": {
           "title": "安装免费插件",
-          "body": "这是所有内容连接的基础。在您的仪表盘中：插件 → 安装插件，然后搜索“WCPOS”。",
+          "body": "从这里开始：收银台和所有应用都通过该插件运行。在您的仪表盘中：插件 → 安装插件，然后搜索“WCPOS”。",
           "badge": "免费 · GPL",
           "requirements": "WordPress 5.6+ · WooCommerce 9.0+ · PHP 7.4+",
           "requirementsWithVersion": "最新 {version} · WordPress 5.6+ · WooCommerce 9.0+ · PHP 7.4+",
@@ -1717,8 +1717,8 @@
           "webCta": "打开在线演示"
         },
         "pro": {
-          "title": "想要更多功能？升级 Pro",
-          "cardTitle": "解锁更多收银台",
+          "title": "需要多个收银台？",
+          "cardTitle": "WCPOS Pro",
           "cardBody": "更多收银台与多店铺、终端付款、退款、库存和定价、订单管理、完整报表以及优先 Discord 支持。",
           "requirements": "WordPress 5.8+ · WooCommerce 9.0+ · PHP 7.4+",
           "plansCta": "查看 Pro 套餐",
@@ -1783,7 +1783,7 @@
       "eyebrow": "来自开发者的一封信",
       "intro": "你好——我是 Paul。我创建了 WCPOS。",
       "p1": "照片里的我，是一切刚开始的时候。2011 年 12 月，我在 Perth 开了 Urban Locavore，当时 WooCommerce 里已经有数百种商品，却没有办法在柜台销售——于是我自己做了一个收银系统。2014 年 4 月店铺关闭后，我把它发布到 WordPress.org，给任何需要它的人使用。<strong>从那以后，面向 WooCommerce 的 POS 插件来来去去。这个没有离开。</strong>十多年持续发布，一个开发者，仍在更新——而免费版依然是真正可用的版本：销售、打印、保持同步。它会继续免费。",
-      "p2": "<strong>Pro 是它仍然存在的原因。</strong>它为经营商店增加了额外工具——读卡器、收银台退款、跨日期、收银台和店铺的报表、多店铺——并资助每一次发布，包括免费版。没有投资者，也没有等待出售退出。店主们直接支持它。",
+      "p2": "<strong>Pro 是它仍然存在的原因。</strong>它为经营商店增加了额外工具——读卡器、收银台退款、跨日期和收银台的报表、多店铺——并资助每一次发布，包括免费版。没有投资者，也没有等待出售退出。店主们直接支持它。",
       "p3": "Pro 用户还有一条直接沟通渠道：告诉我你的店铺需要什么，这会影响我接下来构建的内容。",
       "signature": {
         "name": "Paul Kilmurray",
@@ -2321,8 +2321,8 @@
         "outro": "WooCommerce 持续向 WooCommerce 核心添加 POS 功能，因此预计这份清单会缩短——我们每季度重新核实。"
       },
       "woocommerceBetter": {
-        "title": "WooCommerce POS 真正更胜一筹的地方",
-        "intro": "诚实的对比要兼顾双方的优点：",
+        "title": "WooCommerce POS 更胜一筹的地方",
+        "intro": "它在三个方面胜出：",
         "price": "它的 POS 软件免费，无需任何许可证——WCPOS Pro 至少要 $129。",
         "official": "它由 WooCommerce 自己开发，就在你可能已经用来管理店铺的 WooCommerce 移动应用中。",
         "wooPayments": "原生 WooPayments 线下支付，费率低于 WooPayments 线上支付（美国线下为 2.70% + $0.10，线上为 2.90% + $0.30）。WCPOS 没有 WooPayments 线下支付集成。",

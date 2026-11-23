@@ -76,7 +76,7 @@
     },
     "cta": {
       "title": "Ready to sell in-store with WooCommerce?",
-      "subtitle": "Try the live demo or download the free plugin to get started.",
+      "subtitle": "The demo opens in your browser with nothing to install. The plugin is free.",
       "liveDemo": "Try Live Demo",
       "compare": "Compare WooCommerce POS systems",
       "download": "Download Free"
@@ -164,14 +164,14 @@
       }
     },
     "features": {
-      "heading": "Built for the demands of physical retail",
+      "heading": "What the register does",
       "items": {
         "f1": {
           "title": "Fast product search",
-          "description": "Find products instantly with search, filters, and category browsing. Barcode scanner support."
+          "description": "Search, filter or browse by category. Results come from the copy on the device, so they show at once. Scan a barcode to add an item."
         },
         "f2": {
-          "title": "Smooth checkout flow",
+          "title": "Cash, card and split payments",
           "description": "Add items, apply discounts, take cash or card on your own terminal, and split a payment. Pro connects <link>card readers</link> like Stripe Terminal and SumUp."
         },
         "f3": {
@@ -180,7 +180,7 @@
         },
         "f4": {
           "title": "Order history & management",
-          "description": "View past orders, process returns, check order status without switching to WP Admin."
+          "description": "Find a past order, reprint its receipt or refund it without opening WP Admin."
         },
         "f5": {
           "title": "Edit stock & prices on the fly",
@@ -216,12 +216,12 @@
         "intro": "Everything in Free, plus:",
         "features": {
           "p8": "More registers & multiple stores",
-          "p1": "Payment terminal integration",
+          "p1": "Connected card readers",
           "p2": "Stock & price editing in POS",
           "p3": "Order history & management",
           "p4": "Customer management",
           "p5": "Reports across days, registers & stores",
-          "p6": "Custom payment gateways",
+          "p6": "Your other WooCommerce gateways",
           "p7": "Priority support",
           "p9": "Refunds, full or partial",
           "p10": "Coupon management",
@@ -433,7 +433,7 @@
         "description": "Add registers beyond the free one, and run several stores, each with its own address, tax rates, receipt template, pricing and authorized users."
       },
       "terminal": {
-        "title": "Payment terminal integration",
+        "title": "Connected card readers",
         "description": "Take in-person card payments on Stripe Terminal, Square Terminal, SumUp, Mollie, PayPal Reader and more.",
         "link": "See all terminal extensions"
       },
@@ -462,7 +462,7 @@
         "description": "See sales for earlier days and date ranges, for every register and every store."
       },
       "gateways": {
-        "title": "Custom payment gateways",
+        "title": "Your other WooCommerce gateways",
         "description": "Turn on your store's other WooCommerce payment gateways at the register, not just the built-in options."
       }
     },
@@ -498,7 +498,7 @@
       "title": "Frequently asked questions",
       "freePlugin": {
         "question": "Is the free plugin limited?",
-        "answer": "The free WCPOS plugin is GPL software with no caps on products, orders or customers and no transaction fees; it runs one register, and more registers and the tools listed above need Pro."
+        "answer": "It runs one register. There are no caps on products, orders or customers, and no transaction fees. More registers and the tools listed above need Pro. The free plugin is GPL software."
       },
       "yearlyVsLifetime": {
         "question": "What's the difference between Yearly and Lifetime?",
@@ -1641,7 +1641,7 @@
     "hero": {
       "eyebrow": "Downloads",
       "title": "Download WooCommerce POS",
-      "tagline": "One register, every device.",
+      "tagline": "Install the free plugin, then open the register in a browser or an app.",
       "platformChooserLabel": "Choose your platform",
       "versionMeta": "Version {version} · {platform}",
       "detected": "Detected",
@@ -1700,7 +1700,7 @@
       "steps": {
         "plugin": {
           "title": "Install the free plugin",
-          "body": "The foundation everything connects to. In your dashboard: Plugins → Add New, then search “WCPOS”.",
+          "body": "Start here: the register and every app run through it. In your dashboard: Plugins → Add New, then search “WCPOS”.",
           "badge": "Free · GPL",
           "requirements": "WordPress 5.6+ · WooCommerce 9.0+ · PHP 7.4+",
           "requirementsWithVersion": "Latest {version} · WordPress 5.6+ · WooCommerce 9.0+ · PHP 7.4+",
@@ -1717,8 +1717,8 @@
           "webCta": "Open the live demo"
         },
         "pro": {
-          "title": "Want more? Go Pro",
-          "cardTitle": "Unlock more registers",
+          "title": "Need more than one register?",
+          "cardTitle": "WCPOS Pro",
           "cardBody": "More registers & stores, terminal payments, refunds, stock & pricing, order management, full reports and priority Discord support.",
           "requirements": "WordPress 5.8+ · WooCommerce 9.0+ · PHP 7.4+",
           "plansCta": "View Pro plans",
@@ -1783,7 +1783,7 @@
       "eyebrow": "A note from the developer",
       "intro": "Hi — I'm Paul. I built WCPOS.",
       "p1": "That's me, back when it all started. I opened Urban Locavore in Perth in December 2011 with hundreds of products already in WooCommerce and no way to sell them at the counter — so I built a register myself. When the shop closed in April 2014, I put it on WordPress.org for anyone who needed it. <strong>POS plugins for WooCommerce have come and gone since then. This one hasn't.</strong> More than a decade of releases, one developer, still shipping — and the free version is still the real thing: sell, print, stay in sync. It stays free.",
-      "p2": "<strong>Pro is why it's still here.</strong> It adds extra tools for running your store — card readers, refunds at the register, reports across days, registers and stores, multi-store — and it funds every release, free ones included. No investors, no acquisition exit waiting. Shopkeepers fund it directly.",
+      "p2": "<strong>Pro is why it's still here.</strong> It adds extra tools for running your store — card readers, refunds at the register, reports across days and registers, multi-store — and it funds every release, free ones included. No investors, no acquisition exit waiting. Shopkeepers fund it directly.",
       "p3": "And Pro users have a direct line: tell me what your shop needs, and it shapes what I build next.",
       "signature": {
         "name": "Paul Kilmurray",
@@ -2321,8 +2321,8 @@
         "outro": "WooCommerce keeps adding POS features to WooCommerce core, so expect this list to shrink — we re-check it every quarter."
       },
       "woocommerceBetter": {
-        "title": "Where WooCommerce's POS is genuinely better",
-        "intro": "An honest comparison cuts both ways:",
+        "title": "Where WooCommerce's POS is better",
+        "intro": "It wins on three points:",
         "price": "Its POS software is free, with no license at all — WCPOS Pro costs $129 or more.",
         "official": "It is built by WooCommerce itself, inside the WooCommerce mobile app you may already use to run your store.",
         "wooPayments": "Native WooPayments in-person payments, at a lower rate than WooPayments online (in the US, 2.70% + $0.10 against 2.90% + $0.30). WCPOS has no WooPayments in-person integration.",
