@@ -26,6 +26,7 @@ vi.mock('next-intl', () => ({
       documentation: 'Documentation',
       roadmap: 'Roadmap',
       pro: 'Pro',
+      getPro: 'Get Pro',
       support: 'Support',
       },
       common: {
@@ -220,6 +221,21 @@ describe('SiteHeader', () => {
     expect(signInLinks.length).toBeGreaterThan(0)
   })
 
+  it('shows Get Pro and Sign In links when not authenticated', async () => {
+    mockGetCustomer.mockResolvedValue(null)
+    await act(async () => {
+      render(<SiteHeader />)
+    })
+
+    expect(screen.getByRole('link', { name: 'Get Pro' })).toHaveAttribute(
+      'href',
+      '/pro'
+    )
+    expect(
+      screen.getByRole('link', { name: 'Translated sign in' })
+    ).toHaveAttribute('href', '/login')
+  })
+
   it('shows the account menu when authenticated', async () => {
     mockGetCustomer.mockResolvedValue({
       id: 'cust_1',
@@ -236,6 +252,7 @@ describe('SiteHeader', () => {
     expect(
       screen.getAllByRole('button', { name: 'Translated account menu' }).length
     ).toBeGreaterThan(0)
+    expect(screen.queryByRole('link', { name: 'Get Pro' })).toBeNull()
   })
 
   it('tracks translated sign-in button clicks', async () => {

@@ -12,6 +12,7 @@
     "documentation": "Documentation",
     "roadmap": "Roadmap",
     "pro": "Pro",
+    "getPro": "Get Pro",
     "support": "Support",
     "downloads": "Downloads"
   },
@@ -276,6 +277,7 @@
         "b": "WCPOS turns your tablet, phone or computer into a register — same catalog, same stock, same prices, even offline.",
         "c1": "Try Live Demo",
         "c2": "Download Free",
+        "demoLogin": "Demo login: demo / demo",
         "badges": {
           "b1": "5,000+ Active Installs",
           "b2": "Free & Open Source",
@@ -470,7 +472,7 @@
       "heading": "Get Pro",
       "subheading": "One license, all features. Just pick how long you want updates.",
       "termAriaLabel": "License term",
-      "cta": "Get Started",
+      "cta": "Buy Pro",
       "ctaValueCopy": "Get Instant Access",
       "yearly": {
         "title": "Yearly",

@@ -12,6 +12,7 @@
     "documentation": "文档",
     "roadmap": "路线图",
     "pro": "Pro",
+    "getPro": "购买 Pro",
     "support": "支持",
     "downloads": "下载"
   },
@@ -276,6 +277,7 @@
         "b": "WCPOS 将你的平板、手机或电脑变成收银机——同一个商品目录、同样的库存、同样的价格，即使离线也能使用。",
         "c1": "试用在线演示",
         "c2": "免费下载",
+        "demoLogin": "演示登录：demo / demo",
         "badges": {
           "b1": "5,000+ 活跃安装",
           "b2": "免费且开源",
@@ -470,7 +472,7 @@
       "heading": "购买 Pro",
       "subheading": "一个许可证，全部功能。只需选择更新时长。",
       "termAriaLabel": "许可证期限",
-      "cta": "开始使用",
+      "cta": "购买 Pro",
       "ctaValueCopy": "立即获取访问权限",
       "yearly": {
         "title": "年付",

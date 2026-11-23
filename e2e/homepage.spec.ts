@@ -36,10 +36,8 @@ test.describe('Homepage', () => {
   }) => {
     const downloadLinks = page.getByRole('link', { name: 'Download Free' })
     await expect(downloadLinks).toHaveCount(2)
-    await expect(downloadLinks.first()).toHaveAttribute(
-      'href',
-      'https://wordpress.org/plugins/woocommerce-pos/'
-    )
+    // Hero and closing band both send the visitor to the on-site downloads page
+    await expect(downloadLinks.first()).toHaveAttribute('href', '/downloads')
     await expect(downloadLinks.nth(1)).toHaveAttribute('href', '/downloads')
   })
 

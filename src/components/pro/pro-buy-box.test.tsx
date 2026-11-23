@@ -68,7 +68,7 @@ function renderBuyBox(overrides: Partial<Parameters<typeof ProBuyBox>[0]> = {}) 
   return render(
     <ProBuyBox
       options={options}
-      ctaLabel="Get Started"
+      ctaLabel="Buy Pro"
       heading="Get Pro"
       subheading="One license, all features."
       termAriaLabel="License term"
@@ -107,7 +107,7 @@ describe('ProBuyBox', () => {
     expect(radios[0]).toHaveAttribute('aria-checked', 'true')
     expect(radios[1]).toHaveAttribute('aria-checked', 'false')
 
-    const cta = screen.getByRole('link', { name: 'Get Started' })
+    const cta = screen.getByRole('link', { name: 'Buy Pro' })
     expect(cta.getAttribute('href')).toContain('product=wcpos-pro-yearly')
     expect(
       screen.getByText('One-time payment — never auto-renews.')
@@ -120,7 +120,7 @@ describe('ProBuyBox', () => {
   it('does not prefetch checkout links because they resolve auth at request time', () => {
     renderBuyBox()
 
-    expect(screen.getByRole('link', { name: 'Get Started' })).toHaveAttribute(
+    expect(screen.getByRole('link', { name: 'Buy Pro' })).toHaveAttribute(
       'data-prefetch',
       'false'
     )
@@ -134,7 +134,7 @@ describe('ProBuyBox', () => {
 
     expect(lifetime).toHaveAttribute('aria-checked', 'true')
     expect(lifetime).toHaveFocus()
-    const cta = screen.getByRole('link', { name: 'Get Started' })
+    const cta = screen.getByRole('link', { name: 'Buy Pro' })
     expect(cta.getAttribute('href')).toContain('product=wcpos-pro-lifetime')
     expect(
       screen.getByText('About 3 years of Yearly — then $0 forever.')
@@ -173,14 +173,14 @@ describe('ProBuyBox', () => {
     rerender(
       <ProBuyBox
         options={[options[0]]}
-        ctaLabel="Get Started"
+        ctaLabel="Buy Pro"
         heading="Get Pro"
         subheading="One license, all features."
         termAriaLabel="License term"
       />
     )
 
-    const cta = screen.getByRole('link', { name: 'Get Started' })
+    const cta = screen.getByRole('link', { name: 'Buy Pro' })
     expect(cta.getAttribute('href')).toContain('product=wcpos-pro-yearly')
     expect(
       screen.getByRole('radio', { name: /Yearly/ })
@@ -201,7 +201,7 @@ describe('ProBuyBox', () => {
     renderBuyBox()
 
     fireEvent.click(screen.getByRole('radio', { name: /Lifetime/ }))
-    fireEvent.click(screen.getByRole('link', { name: 'Get Started' }))
+    fireEvent.click(screen.getByRole('link', { name: 'Buy Pro' }))
 
     expect(trackClientEvent).toHaveBeenCalledWith('click_start_checkout', {
       experiment: 'pro_checkout_v1',

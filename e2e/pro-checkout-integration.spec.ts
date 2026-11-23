@@ -51,12 +51,12 @@ test.describe('Checkout Integration @integration', {
     await page.goto('/pro')
     await page.waitForLoadState('networkidle')
 
-    // Click first "Get Started" button
-    const getStartedLink = page
-      .getByRole('link', { name: /Get (Started|Instant Access)/ })
+    // Click the first buy-box CTA ("Buy Pro", or the value-copy variant)
+    const buyLink = page
+      .getByRole('link', { name: /Buy Pro|Get Instant Access/ })
       .first()
-    await expect(getStartedLink).toBeVisible({ timeout: 15000 })
-    await getStartedLink.click()
+    await expect(buyLink).toBeVisible({ timeout: 15000 })
+    await buyLink.click()
 
     // Wait for the stepper checkout to load — account is collapsed for the
     // signed-in test user, billing is active.
