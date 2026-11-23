@@ -47,7 +47,7 @@ test.describe('Homepage', () => {
     ).toBeVisible()
     await expect(
       page.getByRole('heading', {
-        name: 'Built for the demands of physical retail',
+        name: 'What the register does',
       })
     ).toBeVisible()
     await expect(

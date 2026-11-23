@@ -133,7 +133,7 @@ describe('DownloadsPage', () => {
     expect(
       screen.getByRole('heading', { level: 1, name: 'Download WooCommerce POS' }),
     ).toBeInTheDocument()
-    expect(screen.getByText('One register, every device.')).toBeInTheDocument()
+    expect(screen.getByText('Install the free plugin, then open the register in a browser or an app.')).toBeInTheDocument()
   })
 
   it('sources plugin card labels from translations', async () => {
@@ -178,8 +178,8 @@ describe('DownloadsPage', () => {
 
     render(await DownloadsPage({ params: Promise.resolve({ locale: 'en' }) }))
 
-    expect(screen.getByRole('heading', { name: 'Want more? Go Pro' })).toBeInTheDocument()
-    expect(screen.getByText('Unlock more registers')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Need more than one register?' })).toBeInTheDocument()
+    expect(screen.getByText('WCPOS Pro')).toBeInTheDocument()
     expect(screen.queryByText(/on the same foundation/)).not.toBeInTheDocument()
   })
 
@@ -190,7 +190,7 @@ describe('DownloadsPage', () => {
 
     render(await DownloadsPage({ params: Promise.resolve({ locale: 'en' }) }))
 
-    const proCard = screen.getByText('Unlock more registers').parentElement!
+    const proCard = screen.getByText('WCPOS Pro').parentElement!
     expect(
       within(proCard).getByText('WordPress 5.8+ · WooCommerce 9.0+ · PHP 7.4+'),
     ).toBeInTheDocument()
@@ -383,8 +383,10 @@ describe('DownloadsPage', () => {
     const enProCardBody = readMessage(en, 'downloads.page.steps.pro', 'cardBody')
     expect(enProCardBody).toContain('registers')
     const enProCardTitle = readMessage(en, 'downloads.page.steps.pro', 'cardTitle')
-    expect(enProCardTitle).toContain('more registers')
-    expect(enProCardTitle).not.toMatch(/\bevery\b|\ball\b|unlimited/i)
+    expect(enProCardTitle).toBe('WCPOS Pro')
+    const enProTitle = readMessage(en, 'downloads.page.steps.pro', 'title')
+    expect(enProTitle).toContain('more than one register')
+    expect(enProTitle).not.toMatch(/\bevery\b|\ball\b|unlimited/i)
     for (const key of [
       'hero.tagline',
       'howItFits.title',

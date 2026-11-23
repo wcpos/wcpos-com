@@ -77,7 +77,7 @@
     },
     "cta": {
       "title": "Klaar om in de winkel te verkopen met WooCommerce?",
-      "subtitle": "Probeer de live demo of download de gratis plugin om te beginnen.",
+      "subtitle": "De demo opent in je browser, zonder iets te installeren. De plugin is gratis.",
       "liveDemo": "Live demo proberen",
       "compare": "Vergelijk WooCommerce POS-systemen",
       "download": "Gratis downloaden"
@@ -165,14 +165,14 @@
       }
     },
     "features": {
-      "heading": "Gebouwd voor de eisen van fysieke retail",
+      "heading": "Wat de kassa doet",
       "items": {
         "f1": {
           "title": "Snel producten zoeken",
-          "description": "Vind producten direct met zoeken, filters en bladeren door categorieën. Ondersteuning voor barcodescanners."
+          "description": "Zoek, filter of blader per categorie. De resultaten komen uit de kopie op het apparaat, dus ze verschijnen meteen. Scan een barcode om een artikel toe te voegen."
         },
         "f2": {
-          "title": "Soepele checkout-flow",
+          "title": "Contant, kaart en gesplitste betalingen",
           "description": "Voeg artikelen toe, pas kortingen toe, accepteer contant geld of kaartbetalingen via je eigen betaalterminal en splits een betaling. Pro koppelt <link>kaartlezers</link> zoals Stripe Terminal en SumUp."
         },
         "f3": {
@@ -181,7 +181,7 @@
         },
         "f4": {
           "title": "Bestelgeschiedenis en beheer",
-          "description": "Bekijk eerdere bestellingen, verwerk retouren en controleer de bestelstatus zonder naar WP Admin te schakelen."
+          "description": "Zoek een eerdere bestelling op, druk de bon opnieuw af of betaal hem terug zonder WP Admin te openen."
         },
         "f5": {
           "title": "Voorraad en prijzen direct aanpassen",
@@ -217,12 +217,12 @@
         "intro": "Alles in Gratis, plus:",
         "features": {
           "p8": "Meer kassa's en meerdere winkels",
-          "p1": "Integratie met betaalterminals",
+          "p1": "Gekoppelde kaartlezers",
           "p2": "Voorraad en prijzen bewerken in het kassasysteem",
           "p3": "Bestelgeschiedenis en beheer",
           "p4": "Klantbeheer",
           "p5": "Rapporten over dagen, kassa's en winkels",
-          "p6": "Aangepaste betaalgateways",
+          "p6": "Je andere WooCommerce-gateways",
           "p7": "Prioriteitssupport",
           "p9": "Volledige of gedeeltelijke terugbetalingen",
           "p10": "Kortingsbonbeheer",
@@ -435,7 +435,7 @@
         "description": "Voeg naast de gratis kassa meer kassa's toe en beheer meerdere winkels, elk met een eigen adres, eigen btw-tarieven, een eigen bonsjabloon, eigen prijzen en eigen geautoriseerde gebruikers."
       },
       "terminal": {
-        "title": "Integratie met betaalterminals",
+        "title": "Gekoppelde kaartlezers",
         "description": "Neem kaartbetalingen ter plaatse aan met Stripe Terminal, Square Terminal, SumUp, Mollie, PayPal Reader en meer.",
         "link": "Bekijk alle terminalextensies"
       },
@@ -464,7 +464,7 @@
         "description": "Bekijk de verkopen voor eerdere dagen en datumbereiken, voor elke kassa en elke winkel."
       },
       "gateways": {
-        "title": "Aangepaste betaalgateways",
+        "title": "Je andere WooCommerce-gateways",
         "description": "Schakel de andere WooCommerce-betaalgateways van je winkel in aan de kassa, niet alleen de ingebouwde opties."
       }
     },
@@ -500,7 +500,7 @@
       "title": "Veelgestelde vragen",
       "freePlugin": {
         "question": "Is de gratis plugin beperkt?",
-        "answer": "De gratis WCPOS-plugin is GPL-software zonder limieten op producten, bestellingen of klanten en zonder transactiekosten; hij draait één kassa, en voor meer kassa’s en de hierboven genoemde tools is Pro nodig."
+        "answer": "Hij draait één kassa. Er zijn geen limieten op producten, bestellingen of klanten, en geen transactiekosten. Voor meer kassa’s en de hierboven genoemde tools is Pro nodig. De gratis plugin is GPL-software."
       },
       "yearlyVsLifetime": {
         "question": "Wat is het verschil tussen Jaarlijks en Levenslang?",
@@ -1643,7 +1643,7 @@
     "hero": {
       "eyebrow": "Downloads",
       "title": "Kassasysteem voor WooCommerce downloaden",
-      "tagline": "Eén kassa, elk apparaat.",
+      "tagline": "Installeer de gratis plugin en open de kassa daarna in een browser of een app.",
       "platformChooserLabel": "Kies je platform",
       "versionMeta": "Versie {version} · {platform}",
       "detected": "Gedetecteerd",
@@ -1702,7 +1702,7 @@
       "steps": {
         "plugin": {
           "title": "Installeer de gratis plugin",
-          "body": "De basis waar alles mee verbindt. In je dashboard: Plugins → Nieuwe toevoegen, zoek daarna naar “WCPOS”.",
+          "body": "Begin hier: de kassa en elke app draaien via de plugin. In je dashboard: Plugins → Nieuwe toevoegen, zoek daarna naar “WCPOS”.",
           "badge": "Gratis · GPL",
           "requirements": "WordPress 5.6+ · WooCommerce 9.0+ · PHP 7.4+",
           "requirementsWithVersion": "Nieuwste {version} · WordPress 5.6+ · WooCommerce 9.0+ · PHP 7.4+",
@@ -1719,8 +1719,8 @@
           "webCta": "Open de live demo"
         },
         "pro": {
-          "title": "Meer nodig? Kies Pro",
-          "cardTitle": "Ontgrendel meer kassa's",
+          "title": "Meer dan één kassa nodig?",
+          "cardTitle": "WCPOS Pro",
           "cardBody": "Meer kassa's en meerdere winkels, terminalbetalingen, terugbetalingen, voorraad en prijzen, orderbeheer, volledige rapporten en prioritaire Discord-support.",
           "requirements": "WordPress 5.8+ · WooCommerce 9.0+ · PHP 7.4+",
           "plansCta": "Bekijk Pro-abonnementen",
@@ -1785,7 +1785,7 @@
       "eyebrow": "Een bericht van de ontwikkelaar",
       "intro": "Hoi — ik ben Paul. Ik heb WCPOS gebouwd.",
       "p1": "Dat ben ik, toen alles begon. Ik opende Urban Locavore in Perth in december 2011 met honderden producten al in WooCommerce en geen manier om ze aan de toonbank te verkopen — dus bouwde ik zelf een kassa. Toen de winkel in april 2014 sloot, zette ik die op WordPress.org voor iedereen die hem nodig had. <strong>POS-plugins voor WooCommerce zijn sindsdien gekomen en gegaan. Deze niet.</strong> Meer dan tien jaar releases, één ontwikkelaar, nog steeds in ontwikkeling — en de gratis versie is nog steeds echt bruikbaar: verkopen, printen, gesynchroniseerd blijven. Die blijft gratis.",
-      "p2": "<strong>Pro is waarom het nog bestaat.</strong> Het voegt extra tools toe voor het runnen van je winkel — kaartlezers, retouren aan de kassa, rapporten over dagen, kassa's en winkels, meerdere winkels — en financiert elke release, inclusief de gratis versies. Geen investeerders, geen overname-exit die wacht. Winkeliers financieren het rechtstreeks.",
+      "p2": "<strong>Pro is waarom het nog bestaat.</strong> Het voegt extra tools toe voor het runnen van je winkel — kaartlezers, retouren aan de kassa, rapporten over dagen en kassa's, meerdere winkels — en financiert elke release, inclusief de gratis versies. Geen investeerders, geen overname-exit die wacht. Winkeliers financieren het rechtstreeks.",
       "p3": "En Pro-gebruikers hebben een directe lijn: vertel me wat je winkel nodig heeft, en dat bepaalt wat ik hierna bouw.",
       "signature": {
         "name": "Paul Kilmurray",
@@ -2323,8 +2323,8 @@
         "outro": "WooCommerce blijft POS-functies toevoegen aan WooCommerce zelf, dus deze lijst zal waarschijnlijk korter worden — we controleren hem elk kwartaal opnieuw."
       },
       "woocommerceBetter": {
-        "title": "Waar de POS van WooCommerce echt beter is",
-        "intro": "Een eerlijke vergelijking bekijkt beide kanten:",
+        "title": "Waar de POS van WooCommerce beter is",
+        "intro": "Op drie punten wint het:",
         "price": "De POS-software is gratis, zonder enige licentie — WCPOS Pro kost $129 of meer.",
         "official": "Hij is gemaakt door WooCommerce zelf, in de mobiele WooCommerce-app die je misschien al gebruikt om je winkel te beheren.",
         "wooPayments": "Ingebouwde WooPayments-betalingen ter plaatse tegen een lager tarief dan WooPayments online (in de Verenigde Staten 2.70% + $0.10 tegenover 2.90% + $0.30). WCPOS heeft geen WooPayments-integratie voor betalingen ter plaatse.",
