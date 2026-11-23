@@ -368,9 +368,9 @@
       "description": "Lo que viene para WCPOS, el plugin de punto de venta gratuito para WooCommerce: trabajo en curso y planificado, directo de GitHub."
     },
     "page": {
-      "eyebrow": "El tren de versiones",
+      "eyebrow": "Ahora, siguiente, publicado",
       "title": "Hoja de ruta del punto de venta para WooCommerce",
-      "description": "Cada parada en el camino hacia un WCPOS más rápido y preparado para trabajar sin conexión — directamente desde nuestro GitHub, con el trabajo más reciente primero.",
+      "description": "Lo que estamos creando ahora, lo que está previsto a continuación y lo último que hemos publicado. La lista viene directamente de nuestro GitHub, así que cambia a medida que avanza el trabajo.",
       "changelogLink": "Ver las versiones publicadas en el registro de cambios"
     },
     "board": {

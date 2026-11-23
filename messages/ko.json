@@ -368,9 +368,9 @@
       "description": "WooCommerce용 무료 POS 플러그인인 WCPOS의 다음 계획: 진행 중인 작업과 예정된 작업을 GitHub에서 바로 확인하세요."
     },
     "page": {
-      "eyebrow": "릴리스 일정",
+      "eyebrow": "현재, 다음, 출시 완료",
       "title": "WooCommerce용 POS 로드맵",
-      "description": "더 빠르고 오프라인에 강한 WCPOS로 가는 모든 단계 — GitHub에서 가져온 최신 작업부터 표시합니다.",
+      "description": "지금 만들고 있는 것, 다음으로 계획된 것, 최근에 출시한 것을 보여 줍니다. 목록은 GitHub에서 바로 가져오므로 작업이 진행됨에 따라 바뀝니다.",
       "changelogLink": "변경 기록에서 게시된 버전 보기"
     },
     "board": {

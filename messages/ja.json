@@ -368,9 +368,9 @@
       "description": "WooCommerce向けの無料POSプラグイン、WCPOSの今後の予定です。進行中の作業と計画中の作業をGitHubから直接お届けします。"
     },
     "page": {
-      "eyebrow": "リリースの流れ",
+      "eyebrow": "現在・次・リリース済み",
       "title": "WooCommerce用POSのロードマップ",
-      "description": "より高速でオフラインにも強いWCPOSへ向かう各ステップを、新しい作業から順にGitHubから直接表示します。",
+      "description": "現在取り組んでいること、次に予定していること、最近リリースしたものをまとめています。リストはGitHubから直接取得しているため、作業の進み具合に合わせて変わります。",
       "changelogLink": "変更履歴で公開済みのバージョンを見る"
     },
     "board": {

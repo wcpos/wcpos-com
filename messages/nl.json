@@ -368,9 +368,9 @@
       "description": "Wat er hierna komt voor WCPOS, de gratis kassaplugin voor WooCommerce: werk in uitvoering en gepland werk, rechtstreeks van GitHub."
     },
     "page": {
-      "eyebrow": "De releasetrein",
+      "eyebrow": "Nu, volgende, uitgebracht",
       "title": "Roadmap van het kassasysteem voor WooCommerce",
-      "description": "Elke halte op weg naar een sneller, offline-bestendig WCPOS — rechtstreeks uit onze GitHub gehaald, nieuwste werk eerst.",
+      "description": "Wat we nu bouwen, wat hierna gepland staat en wat als laatste is uitgebracht. De lijst komt rechtstreeks uit onze GitHub, dus hij verandert mee met het werk.",
       "changelogLink": "Bekijk gepubliceerde versies in het wijzigingslogboek"
     },
     "board": {
