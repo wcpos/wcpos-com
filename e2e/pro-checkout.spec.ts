@@ -243,7 +243,7 @@ test.describe('Checkout flow', () => {
 
     // Yearly is sorted first and featured, so the first CTA is the yearly one.
     const getStartedLink = page
-      .getByRole('link', { name: /Get (Started|Instant Access)/ })
+      .getByRole('link', { name: /Buy Pro|Get Instant Access/ })
       .first()
     await expect(getStartedLink).toBeVisible({ timeout: 10000 })
 
