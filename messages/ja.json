@@ -552,10 +552,16 @@
         "quantity": "数量: {quantity}",
         "discount": "割引",
         "total": "合計",
+        "yearlyTerm": "1年間のアップデートとサポート",
+        "lifetimeTerm": "アップデートは永久",
+        "sites": "2つのサイトで利用可能 — 本番サイト1つと開発サイト1つ",
+        "refundPromise": "WCPOS Pro が表示どおりに動作しない場合は、修正するか返金します。",
+        "refundLink": "返金ポリシー",
         "instantLicense": "ライセンスを即時配信",
         "oneTimePayment": "一回払い — 自動更新なし",
         "securePayment": "安全な決済処理"
       },
+      "noProduct": { "title": "チェックアウトするプランを選択してください" },
       "promo": {
         "invalid": "この割引リンクは期限切れか、現在は無効です。通常価格が表示されています。"
       },
@@ -567,7 +573,7 @@
         "submitting": "少々お待ちください…",
         "createContinue": "アカウントを作成して続行",
         "signInContinue": "サインインして続行",
-        "oauthPrompt": "Google、GitHub、Discord を使用しますか？",
+        "oauthPrompt": "すでにアカウントをお持ちですか？それとも Google、GitHub、Discord を使用しますか？",
         "oauthLink": "こちらからサインイン",
         "oauthSuffix": "— チェックアウトに戻ります。",
         "errors": {

@@ -31,7 +31,13 @@ import { Link } from '@/i18n/navigation'
 import type { CheckoutPaymentConfig } from '@/lib/checkout-payment-config'
 import { localizeKnownProductTitle } from '@/lib/product-title-display'
 import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
-import { getPlanByHandle } from '@/lib/plans'
+import {
+  getPlanByHandle,
+  getPlanByPolicyId,
+  LIFETIME_PRO_POLICY_ID,
+  YEARLY_PRO_POLICY_ID,
+  type Plan,
+} from '@/lib/plans'
 
 export function PaymentStepLoading({
   error,
@@ -134,6 +140,12 @@ interface OfferSummary {
   priceAmount?: number
   currencyCode?: string
 }
+
+// Every plan in the registry, for the no-product chooser. The registry keeps
+// its list private, so resolve each plan through its exported policy id.
+const PLANS = [YEARLY_PRO_POLICY_ID, LIFETIME_PRO_POLICY_ID]
+  .map(getPlanByPolicyId)
+  .filter((plan): plan is Plan => plan !== null)
 
 const PRO_CHECKOUT_EXPERIMENT = 'pro_checkout_v1'
 const LIFETIME_UPGRADE_PROMO_PREFIX = 'LT-UPG-'
@@ -700,9 +712,18 @@ export function CheckoutClient({
 
   if (prerequisiteError) {
     return (
-      <div className="flex min-h-[400px] flex-col items-center justify-center">
-        <p className="mb-4 text-destructive">{prerequisiteError}</p>
-        <Button asChild variant="outline">
+      <div className="flex min-h-[400px] flex-col items-center justify-center text-center">
+        <p className="mb-4 text-lg font-medium">{t('noProduct.title')}</p>
+        <div className="mb-4 flex flex-wrap justify-center gap-3">
+          {PLANS.map((plan) => (
+            <Button key={plan.id} asChild variant="outline">
+              <Link href={`/pro/checkout?product=${plan.handle}`}>
+                {productTitleMessages[plan.id]}
+              </Link>
+            </Button>
+          ))}
+        </div>
+        <Button asChild variant="ghost">
           <Link href="/pro">
             <ArrowLeft className="mr-2 h-4 w-4" />
             {t('backToPricing')}
@@ -923,7 +944,7 @@ export function CheckoutClient({
 
       {/* Sticky order summary */}
       <div
-        className="rounded-md border bg-card p-5 md:sticky md:top-24"
+        className="order-first rounded-md border bg-card p-5 md:order-none md:sticky md:top-24"
         data-testid="checkout-order-summary"
       >
         {cart && cart.items.length > 0 ? (
@@ -1003,6 +1024,18 @@ export function CheckoutClient({
           </p>
         )}
         <ul className="mt-4 space-y-1.5 text-sm text-muted-foreground">
+          {selectedPlan && (
+            <>
+              <li className="flex gap-2">
+                <Check className={`mt-0.5 h-4 w-4 shrink-0 ${toneText.positive}`} />
+                {t(`summary.${selectedPlan}Term`)}
+              </li>
+              <li className="flex gap-2">
+                <Check className={`mt-0.5 h-4 w-4 shrink-0 ${toneText.positive}`} />
+                {t('summary.sites')}
+              </li>
+            </>
+          )}
           <li className="flex gap-2">
             <Check className={`mt-0.5 h-4 w-4 shrink-0 ${toneText.positive}`} />
             {t('summary.instantLicense')}
@@ -1016,6 +1049,12 @@ export function CheckoutClient({
             {t('summary.securePayment')}
           </li>
         </ul>
+        <p className="mt-3 text-xs text-muted-foreground">
+          {t('summary.refundPromise')}{' '}
+          <Link href="/refunds" className="underline underline-offset-4">
+            {t('summary.refundLink')}
+          </Link>
+        </p>
       </div>
     </div>
   )

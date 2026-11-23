@@ -552,10 +552,16 @@
         "quantity": "Qtd.: {quantity}",
         "discount": "Desconto",
         "total": "Total",
+        "yearlyTerm": "Atualizações e suporte por 1 ano",
+        "lifetimeTerm": "Atualizações para sempre",
+        "sites": "Utilização em 2 sites — um em produção, um de desenvolvimento",
+        "refundPromise": "Se o WCPOS Pro não fizer o que dizemos que faz, corrigimos ou devolvemos o dinheiro.",
+        "refundLink": "Política de reembolsos",
         "instantLicense": "Entrega instantânea da licença",
         "oneTimePayment": "Pagamento único — nunca renova automaticamente",
         "securePayment": "Processamento de pagamento seguro"
       },
+      "noProduct": { "title": "Escolha um plano para finalizar a compra" },
       "promo": {
         "invalid": "Este link de desconto expirou ou já não é válido. É apresentado o preço normal."
       },
@@ -567,7 +573,7 @@
         "submitting": "Um momento…",
         "createContinue": "Criar conta e continuar",
         "signInContinue": "Iniciar sessão e continuar",
-        "oauthPrompt": "Prefere Google, GitHub ou Discord?",
+        "oauthPrompt": "Já tem conta ou prefere Google, GitHub ou Discord?",
         "oauthLink": "Inicie sessão aqui",
         "oauthSuffix": "— regressará diretamente à finalização da compra.",
         "errors": {

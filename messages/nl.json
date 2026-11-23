@@ -552,10 +552,16 @@
         "quantity": "Aantal: {quantity}",
         "discount": "Korting",
         "total": "Totaal",
+        "yearlyTerm": "Updates en support voor 1 jaar",
+        "lifetimeTerm": "Altijd updates",
+        "sites": "Te gebruiken op 2 sites — één live site, één ontwikkelsite",
+        "refundPromise": "Doet WCPOS Pro niet wat wij beloven, dan lossen we het op of betalen we je terug.",
+        "refundLink": "Restitutiebeleid",
         "instantLicense": "Licentie direct geleverd",
         "oneTimePayment": "Eenmalige betaling — nooit automatische verlenging",
         "securePayment": "Veilige betalingsverwerking"
       },
+      "noProduct": { "title": "Kies een licentie om af te rekenen" },
       "promo": {
         "invalid": "Deze kortingslink is verlopen of niet meer geldig. De normale prijs wordt getoond."
       },
@@ -567,7 +573,7 @@
         "submitting": "Een moment…",
         "createContinue": "Account maken en doorgaan",
         "signInContinue": "Inloggen en doorgaan",
-        "oauthPrompt": "Liever Google, GitHub of Discord?",
+        "oauthPrompt": "Heb je al een account, of liever Google, GitHub of Discord?",
         "oauthLink": "Log hier in",
         "oauthSuffix": "— je komt direct terug bij afrekenen.",
         "errors": {
