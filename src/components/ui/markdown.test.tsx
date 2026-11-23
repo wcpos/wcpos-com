@@ -18,4 +18,29 @@ describe('Markdown', () => {
     expect(container.querySelector('img')).not.toBeNull()
     expect(screen.getByRole('link', { name: 'docs' })).not.toHaveAttribute('target')
   })
+
+  it('wraps long tokens in prose blocks and keeps the pre scroll class', () => {
+    const md = [
+      '## A heading',
+      '',
+      'A paragraph.',
+      '',
+      '- A list item',
+      '',
+      '| Hook | Use |',
+      '| --- | --- |',
+      '| `a_hook` | Filter |',
+      '',
+      '```',
+      'const hook = 1',
+      '```',
+    ].join('\n')
+    const { container } = render(<Markdown content={md} />)
+    const root = container.firstElementChild as HTMLElement
+    expect(root.classList).toContain('[&_:is(p,li,h1,h2,h3,blockquote)]:[overflow-wrap:anywhere]')
+    expect(root.classList).toContain('[&_pre]:overflow-x-auto')
+    for (const tag of ['h2', 'p', 'li', 'table', 'pre']) {
+      expect(root.querySelector(tag)).not.toBeNull()
+    }
+  })
 })
