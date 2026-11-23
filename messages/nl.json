@@ -176,8 +176,8 @@
           "description": "Voeg artikelen toe, pas kortingen toe, accepteer contant geld of kaartbetalingen via je eigen betaalterminal en splits een betaling. Pro koppelt <link>kaartlezers</link> zoals Stripe Terminal en SumUp."
         },
         "f3": {
-          "title": "Klantprofielen",
-          "description": "Voeg klantgegevens direct in het kassasysteem toe en bewerk ze. Herken vaste klanten en bied betere service."
+          "title": "Klanten toevoegen en bewerken",
+          "description": "Voeg aan de kassa een nieuwe klant toe of corrigeer de klantgegevens. Een bestaande klant kiezen voor een verkoop is gratis."
         },
         "f4": {
           "title": "Bestelgeschiedenis en beheer",
@@ -286,21 +286,22 @@
       },
       "a2": {
         "k": "Elk scherm dat je hebt",
-        "h": "Eén kassasysteem. Web, desktop, iOS en Android.",
-        "b": "Gebruik de kassa op de tablet aan de toonbank, de telefoon op de winkelvloer of de laptop in het kantoor — dezelfde winkel, dezelfde gegevens.",
+        "h": "Eén kassasysteem. In de browser, op Windows, macOS en Linux.",
+        "b": "Gebruik de kassa in een browser op elke tablet, telefoon of computer, of installeer de desktopapp. Dezelfde winkel, dezelfde gegevens. iOS- en Android-apps zijn in bèta.",
         "platforms": {
           "p1": "Web",
           "p2": "Windows",
           "p3": "macOS",
           "p4": "iOS",
           "p5": "Android",
+          "p6": "Linux",
           "beta": "Bèta"
         }
       },
       "a3": {
         "k": "Gebruik je eigen hardware",
-        "h": "Werkt met de apparatuur die je al hebt.",
-        "b": "Bonprinters en barcodescanners: sluit aan wat al op je toonbank staat. Accepteer kaarten via je eigen betaalterminal en WCPOS registreert ze; Pro koppelt Stripe Terminal, SumUp en meer."
+        "h": "Werkt met gangbare scanners en bonprinters.",
+        "b": "Bijna elke barcodescanner werkt zodra je hem aansluit of koppelt. Epson, Star en andere ESC/POS-bonprinters maken verbinding via USB, wifi of Bluetooth, afhankelijk van het apparaat. Accepteer kaarten via je eigen betaalterminal en WCPOS registreert ze; Pro koppelt Stripe Terminal, SumUp en meer."
       },
       "a4": {
         "k": "Jouw winkel, jouw gegevens",
@@ -436,7 +437,7 @@
       },
       "terminal": {
         "title": "Gekoppelde kaartlezers",
-        "description": "Neem kaartbetalingen ter plaatse aan met Stripe Terminal, Square Terminal, SumUp, Mollie, PayPal Reader en meer.",
+        "description": "Neem kaartbetalingen ter plaatse aan met Stripe Terminal, SumUp, Mollie Terminal, Square Terminal en meer. PayPal Reader (Zettle) werkt via de eigen betaalpagina van je winkel.",
         "link": "Bekijk alle terminalextensies"
       },
       "display": {
@@ -1658,11 +1659,11 @@
       "points": {
         "setup": {
           "title": "Eén plugin is de enige setup",
-          "body": "De gratis plugin voegt een veilige REST API toe aan je WooCommerce-winkel. Dat is de hele installatie — niets om per apparaat te hosten of configureren."
+          "body": "Installeer de gratis plugin op je WooCommerce-site en de kassa staat klaar in een browser op yourdomain.com/pos. Verder hoef je niets te hosten. De desktop- en mobiele apps zijn optioneel: voeg je winkel één keer toe en meld je aan."
         },
         "sync": {
           "title": "Elke app leest en schrijft naar dezelfde winkel",
-          "body": "Sla een verkoop aan op de desktop en je telefoon toont het nieuwe voorraadniveau — één set producten, bestellingen en klanten, realtime bijgewerkt."
+          "body": "Sla een verkoop aan op de desktop en je andere apparaten halen het nieuwe voorraadniveau op bij hun volgende controle, met de standaardinstelling ongeveer een minuut later. Eén set producten, bestellingen en klanten."
         },
         "offline": {
           "title": "Blijf verkopen aanslaan als de verbinding wegvalt",
@@ -1697,7 +1698,7 @@
       "start": {
         "eyebrow": "Aan de slag",
         "title": "Drie stappen naar je eerste verkoop",
-        "subtitle": "Van begin tot eind duurt het ongeveer twee minuten."
+        "subtitle": "Ongeveer vijf minuten, van begin tot eind."
       },
       "steps": {
         "plugin": {
@@ -2166,7 +2167,7 @@
         },
         "payments": {
           "claim": "Geïntegreerde betalingen: beperkt",
-          "response": "WCPOS Pro integreert Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc en Windcave, evenals Vipps MobilePay via QR-code of push, met één klik te installeren vanuit de extensiecatalogus, en schakelt de andere WooCommerce-betaalgateways van je winkel aan de kassa in. De gratis versie accepteert contant geld en registreert kaartbetalingen die via een aparte terminal zijn verwerkt, en kan één bestelling over meerdere betalingen verdelen."
+          "response": "WCPOS Pro integreert Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc en Windcave, evenals Vipps MobilePay via QR-code of push, geïnstalleerd vanuit de extensiecatalogus, en schakelt de andere WooCommerce-betaalgateways van je winkel aan de kassa in. De gratis versie accepteert contant geld en registreert kaartbetalingen die via een aparte terminal zijn verwerkt, en kan één bestelling over meerdere betalingen verdelen."
         },
         "hobbyShops": {
           "claim": "Het meest geschikt voor hobbywinkels",
@@ -2300,7 +2301,7 @@
       "payments": {
         "title": "Hoe werken kaartbetalingen?",
         "woocommerce": "De POS van WooCommerce accepteert contant geld en kaarten via WooPayments of Stripe met een Bluetooth-kaartlezer die met de tablet is verbonden. Met WooPayments kosten kaartbetalingen ter plaatse minder dan online: in de Verenigde Staten 2.70% + $0.10 tegenover 2.90% + $0.30 online. Een kaartlezer kost $5.00 / £5.00 per actieve lezer per maand.",
-        "wcpos": "WCPOS 2.0 heeft een eigen checkout: een betaalpaneel naast de winkelwagen accepteert contant geld, registreert kaartbetalingen die via een aparte terminal zijn verwerkt en kan één bestelling over meerdere betalingen verdelen. Met Pro kun je de andere WooCommerce-betaalgateways van je winkel aan de kassa inschakelen en integraties met pinterminals toevoegen voor Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc en Windcave, evenals Vipps MobilePay via QR-code of push, alle met één klik te installeren vanuit de extensiecatalogus. Tap to Pay op iPhone en Android zit nog niet in WCPOS; het volgt in een app-update. WCPOS ondersteunt geen WooPayments-betalingen ter plaatse."
+        "wcpos": "WCPOS 2.0 heeft een eigen checkout: een betaalpaneel naast de winkelwagen accepteert contant geld, registreert kaartbetalingen die via een aparte terminal zijn verwerkt en kan één bestelling over meerdere betalingen verdelen. Met Pro kun je de andere WooCommerce-betaalgateways van je winkel aan de kassa inschakelen en integraties met pinterminals toevoegen voor Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc en Windcave, evenals Vipps MobilePay via QR-code of push, alle geïnstalleerd vanuit de extensiecatalogus. Tap to Pay op iPhone en Android zit nog niet in WCPOS; het volgt in een app-update. WCPOS ondersteunt geen WooPayments-betalingen ter plaatse."
       },
       "pricing": {
         "title": "Wat kost het?",
@@ -2449,7 +2450,7 @@
       "payments": {
         "title": "Hoe werken kaartbetalingen?",
         "square": "De POS van Square accepteert kaarten via Square, waaronder Tap to Pay op iPhone en Android. In de Verenigde Staten kost een fysieke kaartbetaling (contactloos, insteken of doorhalen) met het Square Free-abonnement 2.6% + 15¢. Volgens Square is het accepteren van kaartbetalingen met de Square-app beschikbaar in de Verenigde Staten, Canada, Australië, Japan, het Verenigd Koninkrijk, de Republiek Ierland, Frankrijk en Spanje; de extensie vereist dat je WooCommerce-valuta overeenkomt met die van je Square-account.",
-        "wcpos": "WCPOS 2.0 heeft een eigen checkout: een betaalpaneel naast de winkelwagen accepteert contant geld, registreert kaartbetalingen die via een aparte terminal zijn verwerkt en kan één bestelling over meerdere betalingen verdelen. Met Pro kun je de andere WooCommerce-betaalgateways van je winkel aan de kassa inschakelen en integraties met pinterminals toevoegen voor Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc en Windcave, evenals Vipps MobilePay via QR-code of push, alle met één klik te installeren vanuit de extensiecatalogus. Tap to Pay op iPhone en Android zit nog niet in WCPOS; het volgt in een app-update.",
+        "wcpos": "WCPOS 2.0 heeft een eigen checkout: een betaalpaneel naast de winkelwagen accepteert contant geld, registreert kaartbetalingen die via een aparte terminal zijn verwerkt en kan één bestelling over meerdere betalingen verdelen. Met Pro kun je de andere WooCommerce-betaalgateways van je winkel aan de kassa inschakelen en integraties met pinterminals toevoegen voor Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc en Windcave, evenals Vipps MobilePay via QR-code of push, alle geïnstalleerd vanuit de extensiecatalogus. Tap to Pay op iPhone en Android zit nog niet in WCPOS; het volgt in een app-update.",
         "both": "Heb je al een Square Terminal? De Square Terminal-gateway van WCPOS Pro ontvangt daarop betalingen voor WooCommerce-bestellingen rechtstreeks vanaf de WCPOS-kassa en schrijft het resultaat terug naar de bestelling. Als je de officiële Square for WooCommerce-plugin gebruikt, worden de omgeving en locatie-ID daarvan vooraf ingevuld. Een Terminal die is aangemeld bij Square POS of een andere integratie moet zich daar eerst afmelden."
       },
       "pricing": {

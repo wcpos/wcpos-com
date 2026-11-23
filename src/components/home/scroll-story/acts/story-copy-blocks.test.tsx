@@ -98,7 +98,7 @@ describe('CopyAct2', () => {
     for (const name of [platforms.p4, platforms.p5]) {
       expect(chip(name)).toHaveTextContent(platforms.beta)
     }
-    for (const name of [platforms.p1, platforms.p2, platforms.p3]) {
+    for (const name of [platforms.p1, platforms.p2, platforms.p3, platforms.p6]) {
       expect(chip(name)).not.toHaveTextContent(platforms.beta)
     }
   })

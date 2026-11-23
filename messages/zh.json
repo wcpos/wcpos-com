@@ -176,8 +176,8 @@
           "description": "添加商品、应用折扣、接受现金或使用自己的支付终端收取卡款，并拆分付款。Pro 可连接 Stripe Terminal 和 SumUp 等<link>读卡器</link>。"
         },
         "f3": {
-          "title": "客户资料",
-          "description": "直接在 POS 中添加和编辑客户信息。记录常客，提供更好的服务。"
+          "title": "添加和编辑客户",
+          "description": "在收银台添加新客户或修改客户信息。为销售选择现有客户是免费的。"
         },
         "f4": {
           "title": "订单历史与管理",
@@ -286,21 +286,22 @@
       },
       "a2": {
         "k": "你拥有的每块屏幕",
-        "h": "一个 POS。网页、桌面、iOS 和 Android。",
-        "b": "在柜台的平板、店内的手机或后办公室的笔记本上运行收银台——同一个商店，同一份数据。",
+        "h": "一个 POS。在浏览器中，在 Windows、macOS 和 Linux 上。",
+        "b": "在任意平板、手机或电脑的浏览器中运行收银台，或安装桌面应用。同一个商店，同一份数据。iOS 和 Android 应用为测试版。",
         "platforms": {
           "p1": "网页版",
           "p2": "Windows",
           "p3": "macOS",
           "p4": "iOS",
           "p5": "Android",
+          "p6": "Linux",
           "beta": "Beta"
         }
       },
       "a3": {
         "k": "使用你自己的硬件",
-        "h": "兼容你已经拥有的设备。",
-        "b": "接入柜台上的收据打印机和条码扫描器。自有终端刷卡由 WCPOS 记录；Pro 可连接 Stripe Terminal、SumUp 等。"
+        "h": "兼容常见的条码扫描器和收据打印机。",
+        "b": "几乎所有条码扫描器插上或配对后即可使用。Epson、Star 及其他 ESC/POS 收据打印机可根据设备通过 USB、Wi-Fi 或 Bluetooth 连接。自有终端刷卡由 WCPOS 记录；Pro 可连接 Stripe Terminal、SumUp 等。"
       },
       "a4": {
         "k": "你的商店，你的数据",
@@ -436,7 +437,7 @@
       },
       "terminal": {
         "title": "连接读卡器",
-        "description": "通过 Stripe Terminal、Square Terminal、SumUp、Mollie、PayPal Reader 等接受当面刷卡收款。",
+        "description": "通过 Stripe Terminal、SumUp、Mollie Terminal、Square Terminal 等接受当面刷卡收款。PayPal Reader (Zettle) 通过你店铺自己的支付页面使用。",
         "link": "查看全部终端扩展"
       },
       "display": {
@@ -1658,11 +1659,11 @@
       "points": {
         "setup": {
           "title": "唯一需要设置的是一个插件",
-          "body": "免费插件会为您的 WooCommerce 商店添加安全的 REST API。这就是全部安装内容——无需为每台设备托管或配置任何东西。"
+          "body": "在您的 WooCommerce 网站上安装免费插件，即可在浏览器中通过 yourdomain.com/pos 使用收银台。无需托管其他任何东西。桌面和移动应用为可选项：添加一次您的商店并登录即可。"
         },
         "sync": {
           "title": "每个应用都读写同一个商店",
-          "body": "在桌面端完成销售，手机上即显示新的库存水平——同一套商品、订单和客户数据，实时更新。"
+          "body": "在桌面端完成销售后，您的其他设备会在下一次检查时获取新的库存水平，默认设置下大约一分钟后。同一套商品、订单和客户数据。"
         },
         "offline": {
           "title": "连接中断时也能继续收银",
@@ -1697,7 +1698,7 @@
       "start": {
         "eyebrow": "开始使用",
         "title": "三步完成第一笔销售",
-        "subtitle": "从开始到完成大约只需两分钟。"
+        "subtitle": "从开始到完成大约五分钟。"
       },
       "steps": {
         "plugin": {
@@ -2166,7 +2167,7 @@
         },
         "payments": {
           "claim": "集成支付：有限",
-          "response": "WCPOS Pro 集成 Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc 和 Windcave，以及通过二维码或推送通知收款的 Vipps MobilePay，可在扩展目录中一键安装，并在收银台启用你店铺的其他 WooCommerce 支付网关。免费版接受现金并记录在单独的终端上收取的银行卡付款，还可将同一订单拆分为多笔付款。"
+          "response": "WCPOS Pro 集成 Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc 和 Windcave，以及通过二维码或推送通知收款的 Vipps MobilePay，从扩展目录安装，并在收银台启用你店铺的其他 WooCommerce 支付网关。免费版接受现金并记录在单独的终端上收取的银行卡付款，还可将同一订单拆分为多笔付款。"
         },
         "hobbyShops": {
           "claim": "最适合业余小店",
@@ -2300,7 +2301,7 @@
       "payments": {
         "title": "银行卡支付如何运作？",
         "woocommerce": "WooCommerce POS 接受现金，也通过 WooPayments 或 Stripe 配合连接到平板的 Bluetooth 读卡器接受银行卡。使用 WooPayments 时，线下银行卡支付费率低于线上：美国线下为 2.70% + $0.10，线上为 2.90% + $0.30。读卡器每台活跃设备每月收费 $5.00 / £5.00。",
-        "wcpos": "WCPOS 2.0 有自己的结账流程：购物车旁的收款面板可接受现金、记录在单独的终端上收取的银行卡付款，并可将同一订单拆分为多笔付款。使用 Pro，你可以在收银台启用店铺的其他 WooCommerce 支付网关，并添加 Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc 和 Windcave 的刷卡终端集成，以及通过二维码或推送通知收款的 Vipps MobilePay，均可从扩展目录一键安装。WCPOS 目前还没有 iPhone 和 Android 上的 Tap to Pay，将在后续应用更新中提供。WCPOS 不支持 WooPayments 线下支付。"
+        "wcpos": "WCPOS 2.0 有自己的结账流程：购物车旁的收款面板可接受现金、记录在单独的终端上收取的银行卡付款，并可将同一订单拆分为多笔付款。使用 Pro，你可以在收银台启用店铺的其他 WooCommerce 支付网关，并添加 Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc 和 Windcave 的刷卡终端集成，以及通过二维码或推送通知收款的 Vipps MobilePay，均从扩展目录安装。WCPOS 目前还没有 iPhone 和 Android 上的 Tap to Pay，将在后续应用更新中提供。WCPOS 不支持 WooPayments 线下支付。"
       },
       "pricing": {
         "title": "费用是多少？",
@@ -2449,7 +2450,7 @@
       "payments": {
         "title": "银行卡支付如何运作？",
         "square": "Square 的 POS 通过 Square 接受银行卡付款，包括 iPhone 和 Android 上的 Tap to Pay。在美国使用 Square Free 方案时，一笔线下银行卡付款（轻触、插卡或刷卡）的费用为 2.6% + 15¢。Square 表示，Square 应用的银行卡收款服务可在美国、加拿大、澳大利亚、日本、英国、爱尔兰共和国、法国和西班牙使用；该扩展要求 WooCommerce 的货币与 Square 账户的货币一致。",
-        "wcpos": "WCPOS 2.0 有自己的结账流程：购物车旁的收款面板可接受现金、记录在单独的终端上收取的银行卡付款，并可将同一订单拆分为多笔付款。使用 Pro，你可以在收银台启用店铺的其他 WooCommerce 支付网关，并添加 Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc 和 Windcave 的刷卡终端集成，以及通过二维码或推送通知收款的 Vipps MobilePay，均可从扩展目录一键安装。WCPOS 目前还没有 iPhone 和 Android 上的 Tap to Pay，将在后续应用更新中提供。",
+        "wcpos": "WCPOS 2.0 有自己的结账流程：购物车旁的收款面板可接受现金、记录在单独的终端上收取的银行卡付款，并可将同一订单拆分为多笔付款。使用 Pro，你可以在收银台启用店铺的其他 WooCommerce 支付网关，并添加 Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc 和 Windcave 的刷卡终端集成，以及通过二维码或推送通知收款的 Vipps MobilePay，均从扩展目录安装。WCPOS 目前还没有 iPhone 和 Android 上的 Tap to Pay，将在后续应用更新中提供。",
         "both": "已经有 Square Terminal？WCPOS Pro 的 Square Terminal 网关直接从 WCPOS 收银台在该终端上收取 WooCommerce 订单款项，并将结果写回订单。如果你使用官方 Square for WooCommerce 插件，其环境和地点 ID 会预先填写。已登录 Square POS 或其他集成的 Terminal 必须先从那里退出登录。"
       },
       "pricing": {
