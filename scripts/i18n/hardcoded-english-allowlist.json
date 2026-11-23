@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generatedBy": "scripts/i18n/hardcoded-english.ts --update",
-  "updatedAt": "2026-11-23T03:51:26.400Z",
+  "updatedAt": "2026-11-23T03:52:01.936Z",
   "scope": [
     "src/app",
     "src/components",
@@ -4143,6 +4143,14 @@
       "category": "component",
       "attr": null,
       "text": "use client",
+      "count": 1
+    },
+    {
+      "id": "925b0f232fbdec16",
+      "file": "src/components/ui/markdown.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "[&_:is(p,li,h1,h2,h3,blockquote)]:[overflow-wrap:anywhere]",
       "count": 1
     },
     {
