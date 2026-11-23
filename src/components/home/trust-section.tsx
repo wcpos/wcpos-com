@@ -2,6 +2,7 @@ import { useFormatter, useTranslations } from 'next-intl'
 import { GithubIcon } from '@/components/icons/github'
 import { Link } from '@/i18n/navigation'
 import { Section } from '@/components/ui/section'
+import { ReviewQuote } from './review-quote'
 
 const ACTIVE_INSTALLS = 5000 // wordpress.org active installs, shown as "5,000+"
 // Distinct languages (English included) across the 53 locale codes in
@@ -55,22 +56,7 @@ export function TrustSection() {
         </div>
       </div>
 
-      {/* Real customer quote — public wordpress.org review, linked below. */}
-      <figure className="mx-auto max-w-2xl text-center">
-        <blockquote className="mb-4 text-lg italic leading-relaxed text-slate-700 dark:text-slate-300">
-          &ldquo;{t('quote')}&rdquo;
-        </blockquote>
-        <figcaption className="text-sm text-slate-500 dark:text-slate-400">
-          —{' '}
-          <a
-            href="https://wordpress.org/support/topic/does-what-it-says-836/"
-            className="underline underline-offset-4 hover:text-slate-700 dark:hover:text-slate-300"
-            rel="noopener"
-          >
-            {t('attribution')}
-          </a>
-        </figcaption>
-      </figure>
+      <ReviewQuote />
 
       <p className="mt-8 text-center text-sm">
         <Link

@@ -550,10 +550,16 @@
         "quantity": "数量：{quantity}",
         "discount": "优惠",
         "total": "总计",
+        "yearlyTerm": "1年更新和支持",
+        "lifetimeTerm": "永久更新",
+        "sites": "可在2个站点上使用 — 一个正式站点，一个开发站点",
+        "refundPromise": "如果 WCPOS Pro 没有做到我们所说的功能，我们会修好它，或者给你退款。",
+        "refundLink": "退款政策",
         "instantLicense": "许可证即时交付",
         "oneTimePayment": "一次性付款 — 永不自动续订",
         "securePayment": "安全支付处理"
       },
+      "noProduct": { "title": "选择一个套餐进行结账" },
       "promo": {
         "invalid": "此优惠链接已过期或不再有效。当前显示常规价格。"
       },
@@ -565,7 +571,7 @@
         "submitting": "请稍候…",
         "createContinue": "创建账户并继续",
         "signInContinue": "登录并继续",
-        "oauthPrompt": "更愿意使用 Google、GitHub 或 Discord？",
+        "oauthPrompt": "已有账户，或更愿意使用 Google、GitHub 或 Discord？",
         "oauthLink": "在此登录",
         "oauthSuffix": "— 您会直接回到结账。",
         "errors": {
