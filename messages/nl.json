@@ -354,7 +354,7 @@
         }
       },
       "terminal": {
-        "tapToPay": "Tik om te betalen"
+        "tapToPay": "Tik of steek je kaart in"
       },
       "cloudSync": {
         "products": "{count, number} producten",
@@ -1724,6 +1724,7 @@
           "cardBody": "Meer kassa's en meerdere winkels, terminalbetalingen, terugbetalingen, voorraad en prijzen, orderbeheer, volledige rapporten en prioritaire Discord-support.",
           "requirements": "WordPress 5.8+ · WooCommerce 9.0+ · PHP 7.4+",
           "plansCta": "Bekijk Pro-abonnementen",
+          "priceLine": "Vanaf {price} ({currency}) — eenmalige betaling, nooit automatische verlenging.",
           "signInCta": "Log in om te downloaden"
         }
       }
@@ -1784,7 +1785,7 @@
       "eyebrow": "Een bericht van de ontwikkelaar",
       "intro": "Hoi — ik ben Paul. Ik heb WCPOS gebouwd.",
       "p1": "Dat ben ik, toen alles begon. Ik opende Urban Locavore in Perth in december 2011 met honderden producten al in WooCommerce en geen manier om ze aan de toonbank te verkopen — dus bouwde ik zelf een kassa. Toen de winkel in april 2014 sloot, zette ik die op WordPress.org voor iedereen die hem nodig had. <strong>POS-plugins voor WooCommerce zijn sindsdien gekomen en gegaan. Deze niet.</strong> Meer dan tien jaar releases, één ontwikkelaar, nog steeds in ontwikkeling — en de gratis versie is nog steeds echt bruikbaar: verkopen, printen, gesynchroniseerd blijven. Die blijft gratis.",
-      "p2": "<strong>Pro is waarom het nog bestaat.</strong> Het voegt extra tools toe voor het runnen van je winkel — kaartlezers, retouren aan de kassa, einde-dagrapporten, meerdere winkels — en financiert elke release, inclusief de gratis versies. Geen investeerders, geen overname-exit die wacht. Winkeliers financieren het rechtstreeks.",
+      "p2": "<strong>Pro is waarom het nog bestaat.</strong> Het voegt extra tools toe voor het runnen van je winkel — kaartlezers, retouren aan de kassa, rapporten over dagen, kassa's en winkels, meerdere winkels — en financiert elke release, inclusief de gratis versies. Geen investeerders, geen overname-exit die wacht. Winkeliers financieren het rechtstreeks.",
       "p3": "En Pro-gebruikers hebben een directe lijn: vertel me wat je winkel nodig heeft, en dat bepaalt wat ik hierna bouw.",
       "signature": {
         "name": "Paul Kilmurray",
@@ -1920,6 +1921,7 @@
       "title": "Praat je liever met een mens?",
       "subtitle": "Sluit je aan bij winkeleigenaren en het team in onze live Discord-community.",
       "open": "Discord openen",
+      "emailLine": "Liever e-mail? Mail ons via <email>support@wcpos.com</email>.",
       "embedTitle": "Discord-chat"
     },
     "guides": {

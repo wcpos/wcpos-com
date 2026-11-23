@@ -21,6 +21,7 @@ export default function NotFoundPage() {
 
   return (
     <main className="flex min-h-screen items-center justify-center p-8">
+      <title>{`${t('notFoundTitle')} | WCPOS`}</title>
       <Card className="w-full max-w-md">
         <CardContent className="py-8 text-center text-muted-foreground">
           <SearchX className="h-8 w-8 mx-auto mb-2 opacity-50" />
@@ -34,6 +35,9 @@ export default function NotFoundPage() {
             </Button>
             <Button variant="outline" asChild>
               <Link href="/pro">WCPOS Pro</Link>
+            </Button>
+            <Button variant="outline" asChild>
+              <Link href="/downloads">{tHeader('downloads')}</Link>
             </Button>
             <Button variant="outline" asChild>
               <Link href="/support">{tHeader('support')}</Link>

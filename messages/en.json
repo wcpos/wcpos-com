@@ -354,7 +354,7 @@
         }
       },
       "terminal": {
-        "tapToPay": "Tap to pay"
+        "tapToPay": "Tap or insert card"
       },
       "cloudSync": {
         "products": "{count, number} products",
@@ -727,7 +727,7 @@
         "confirming": {
           "title": "Payment received",
           "description": "The Bitcoin network is confirming your payment. Your order completes automatically once it settles — you can leave this page at any time.",
-          "hint": "Your licence will be emailed to you as soon as the payment settles. On-chain payments can take a while; Lightning is usually instant."
+          "hint": "Your license will be emailed to you as soon as the payment settles. On-chain payments can take a while; Lightning is usually instant."
         },
         "awaiting": {
           "title": "Invoice not paid yet",
@@ -750,7 +750,7 @@
         },
         "error": {
           "title": "We couldn't check your payment",
-          "description": "Something went wrong while checking the payment status. If you've paid, your order and licence email will still arrive automatically.",
+          "description": "Something went wrong while checking the payment status. If you've paid, your order and license email will still arrive automatically.",
           "viewOrders": "View your orders"
         },
         "backToCheckout": "Back to checkout",
@@ -824,8 +824,8 @@
       "quantity": "Qty: {count}",
       "licenseKeysTitle": "License Keys",
       "manage": "Manage",
-      "licenseFromOrderTitle": "Licence from this order",
-      "manageLicence": "Manage licence →",
+      "licenseFromOrderTitle": "License from this order",
+      "manageLicence": "Manage license →",
       "legacyOrderLabel": "WooCommerce order"
     },
     "licenseStatus": {
@@ -856,7 +856,7 @@
       "machineAdded": "Added {date}",
       "deactivateMachineAria": "Deactivate {name}",
       "genericMachineName": "machine",
-      "coversLatestVersion": "Latest version {version} · via this licence",
+      "coversLatestVersion": "Latest version {version} · via this license",
       "coversUpToVersion": "Covers updates up to {version}",
       "siteUpdatesThrough": "Updates through {version}",
       "discordHeading": "Discord access",
@@ -922,7 +922,7 @@
     },
     "downloads": {
       "heading": "Downloads",
-      "subheading": "Every release. What you can install depends on your licence.",
+      "subheading": "Every release. What you can install depends on your license.",
       "expiredBanner": "Your license expired on {date}. You can still download versions released before then.",
       "suspendedBanner": "Your license is suspended — contact support.",
       "revokedBanner": "Your license has been revoked and no longer includes downloads. Contact support if you believe this is an error.",
@@ -938,8 +938,8 @@
       "majorBadge": "Major",
       "releaseNotes": "Release notes",
       "releaseCount": "{count, plural, one {# release} other {# releases}}",
-      "availableOnPlan": "Available on your active {plan} licence",
-      "availableOnActive": "Available on your active licence",
+      "availableOnPlan": "Available on your active {plan} license",
+      "availableOnActive": "Available on your active license",
       "emptyList": "No downloadable versions were found.",
       "reasonExpired": "Released after your license expired.",
       "reasonUnknown": "We couldn't verify your license.",
@@ -1045,12 +1045,12 @@
       "disconnectBody": "You'll no longer be able to sign in with {provider}. You can reconnect anytime by signing in with {provider} again.",
       "disconnectCancel": "Cancel",
       "deleteAccountTitle": "Delete account",
-      "deleteAccountHint": "Permanently delete your WCPOS account — sign-in methods, profile, and billing details. Licence keys that were already issued keep working, but can no longer be managed or renewed from an account. Order records are kept as required for tax and accounting.",
+      "deleteAccountHint": "Permanently delete your WCPOS account — sign-in methods, profile, and billing details. License keys that were already issued keep working, but can no longer be managed or renewed from an account. Order records are kept as required for tax and accounting.",
       "deleteAccountButton": "Delete account…",
       "deleteAccountDialogTitle": "Delete your account?",
       "deleteAccountDialogBody": "This permanently deletes your account and cannot be undone.",
       "deleteAccountConsequenceSignIn": "All your sign-in methods are removed — you are signed out everywhere and can no longer log in.",
-      "deleteAccountConsequenceLicenses": "Licence keys already issued keep working, but can no longer be managed, renewed, or recovered from this account.",
+      "deleteAccountConsequenceLicenses": "License keys already issued keep working, but can no longer be managed, renewed, or recovered from this account.",
       "deleteAccountConsequenceOrders": "Order records are kept as required for tax and accounting.",
       "deleteAccountConfirmLabel": "Type {email} to confirm",
       "deleteAccountCancel": "Cancel",
@@ -1166,20 +1166,20 @@
       "lifetime": "WCPOS Pro Lifetime"
     },
     "renew": {
-      "summaryLabel": "Renewing your licence",
+      "summaryLabel": "Renewing your license",
       "secureNote": "Secure, encrypted payment",
-      "extendsNote": "Extends your current licence by one year — no days are lost if you renew early.",
+      "extendsNote": "Extends your current license by one year — no days are lost if you renew early.",
       "preparing": "Preparing your renewal…",
       "errorBody": "We couldn't start your renewal just now. You can renew from the full checkout instead.",
       "goToCheckout": "Go to checkout",
       "cancel": "Cancel",
       "paymentNotConfigured": "No payment methods are configured. Please contact support.",
-      "pageTitle": "Renew your licence",
-      "backToLicences": "Back to licences"
+      "pageTitle": "Renew your license",
+      "backToLicences": "Back to licenses"
     },
     "emailUndeliverable": {
       "title": "We can’t deliver email to you",
-      "body": "Email to {email} is bouncing, so receipts, licence details and password resets aren’t reaching you. Update your address to fix it.",
+      "body": "Email to {email} is bouncing, so receipts, license details and password resets aren’t reaching you. Update your address to fix it.",
       "cta": "Update your email"
     }
   },
@@ -1724,6 +1724,7 @@
           "cardBody": "More registers & stores, terminal payments, refunds, stock & pricing, order management, full reports and priority Discord support.",
           "requirements": "WordPress 5.8+ · WooCommerce 9.0+ · PHP 7.4+",
           "plansCta": "View Pro plans",
+          "priceLine": "From {price} ({currency}) — one-time payment, never auto-renews.",
           "signInCta": "Sign in to download"
         }
       }
@@ -1784,7 +1785,7 @@
       "eyebrow": "A note from the developer",
       "intro": "Hi — I'm Paul. I built WCPOS.",
       "p1": "That's me, back when it all started. I opened Urban Locavore in Perth in December 2011 with hundreds of products already in WooCommerce and no way to sell them at the counter — so I built a register myself. When the shop closed in April 2014, I put it on WordPress.org for anyone who needed it. <strong>POS plugins for WooCommerce have come and gone since then. This one hasn't.</strong> More than a decade of releases, one developer, still shipping — and the free version is still the real thing: sell, print, stay in sync. It stays free.",
-      "p2": "<strong>Pro is why it's still here.</strong> It adds extra tools for running your store — card readers, refunds at the till, end-of-day reports, multi-store — and it funds every release, free ones included. No investors, no acquisition exit waiting. Shopkeepers fund it directly.",
+      "p2": "<strong>Pro is why it's still here.</strong> It adds extra tools for running your store — card readers, refunds at the register, reports across days, registers and stores, multi-store — and it funds every release, free ones included. No investors, no acquisition exit waiting. Shopkeepers fund it directly.",
       "p3": "And Pro users have a direct line: tell me what your shop needs, and it shapes what I build next.",
       "signature": {
         "name": "Paul Kilmurray",
@@ -1794,7 +1795,7 @@
         "label": "P.S.",
         "withPrice": "— Pro is <price></price>.",
         "fallback": "— Pro is available from the Pro page.",
-        "licence": "If a licence lapses, Pro keeps working; you just stop getting updates.",
+        "licence": "If a license lapses, Pro keeps working; you just stop getting updates.",
         "priceSummary": "{yearly}/yr or {lifetime} once"
       }
     },
@@ -1851,8 +1852,8 @@
           "body": "Released on WordPress.org under the GPL. Yours to use, inspect, and keep — wherever WooCommerce runs."
         },
         "v4": {
-          "title": "A fair licence",
-          "body": "No card is stored, and nothing is ever charged automatically. Renewing is a decision, not a default — if a year of updates wasn’t worth paying for, you don’t pay again. And a lapsed licence never switches anything off."
+          "title": "A fair license",
+          "body": "No card is stored, and nothing is ever charged automatically. Renewing is a decision, not a default — if a year of updates wasn’t worth paying for, you don’t pay again. And a lapsed license never switches anything off."
         }
       }
     },
@@ -1877,7 +1878,7 @@
         "subtitle": "Ask anything about WCPOS — setup, licensing, hardware, syncing, printing. You'll get an instant answer drawn from our docs."
       },
       "examples": {
-        "e1": "How many sites can I use my licence on?",
+        "e1": "How many sites can I use my license on?",
         "e2": "Which barcode scanners are supported?",
         "e3": "How do I sync products from WooCommerce?"
       },
@@ -1920,12 +1921,13 @@
       "title": "Prefer to talk to a human?",
       "subtitle": "Join store owners and the team in our live Discord community.",
       "open": "Open Discord",
+      "emailLine": "Prefer email? Write to <email>support@wcpos.com</email>.",
       "embedTitle": "Discord chat"
     },
     "guides": {
       "title": "Start with these guides",
       "installation": "Install WCPOS on your WooCommerce store",
-      "proLicense": "Activate your Pro licence",
+      "proLicense": "Activate your Pro license",
       "barcodeScanners": "Set up a barcode scanner",
       "receiptPrinters": "Set up a receipt printer",
       "productSync": "How product sync works"
@@ -1978,7 +1980,7 @@
       },
       "yithCard": {
         "title": "WCPOS vs YITH Point of Sale",
-        "description": "YITH Point of Sale is a yearly licence with separate stock per store, but no offline mode and no card terminals; WCPOS is free, and Pro adds card terminals for a one-time payment.",
+        "description": "YITH Point of Sale is a yearly license with separate stock per store, but no offline mode and no card terminals; WCPOS is free, and Pro adds card terminals for a one-time payment.",
         "cta": "Read the comparison"
       },
       "foosalesCard": {
@@ -2060,7 +2062,7 @@
           },
           "display": {
             "label": "Customer-facing display",
-            "wcpos": "Yes, with Pro: open it in any browser and pair it to a till with a code",
+            "wcpos": "Yes, with Pro: open it in any browser and pair it to a register with a code",
             "oliver": "Yes"
           },
           "openSource": {
@@ -2667,7 +2669,7 @@
       "shortAnswer": {
         "title": "The short answer",
         "wcpos": "WCPOS is a free, open-source point of sale plugin for WooCommerce, with no caps on products, orders, or customers. It runs in any modern browser, as desktop apps for Windows, macOS and Linux, and as iOS and Android apps (beta). WCPOS charges no transaction fees. Pro adds multi-store management, card-terminal integrations and your store's other WooCommerce payment gateways for a one-time payment — $129 for a year of updates or $399 lifetime — and keeps working after the year ends.",
-        "vitepos": "Vitepos, by Appsbd, is a WooCommerce point of sale plugin with a free version, Vitepos Lite, on WordPress.org. On 2026-10-07, vitepos.com listed Vitepos Pro from $79 for a yearly one-site plan, and a one-site lifetime licence at $299. Vitepos says it keeps processing orders offline and syncs them when the connection returns, and it has grocery and restaurant modes with waiter, kitchen and table management. It runs in a web browser — Vitepos's own blog says it has no dedicated mobile app — and takes terminal payments through Stripe Terminal and Wallee. On WordPress.org it had 1,000+ active installs and a 4.7-star rating from 54 reviews."
+        "vitepos": "Vitepos, by Appsbd, is a WooCommerce point of sale plugin with a free version, Vitepos Lite, on WordPress.org. On 2026-10-07, vitepos.com listed Vitepos Pro from $79 for a yearly one-site plan, and a one-site lifetime license at $299. Vitepos says it keeps processing orders offline and syncs them when the connection returns, and it has grocery and restaurant modes with waiter, kitchen and table management. It runs in a web browser — Vitepos's own blog says it has no dedicated mobile app — and takes terminal payments through Stripe Terminal and Wallee. On WordPress.org it had 1,000+ active installs and a 4.7-star rating from 54 reviews."
       },
       "glance": {
         "title": "At a glance",
@@ -2678,7 +2680,7 @@
           "price": {
             "label": "Price",
             "wcpos": "Free plugin with no caps; Pro is $129 for one year of updates or $399 lifetime — one-time payments, no auto-renewal",
-            "vitepos": "Free Lite plugin; Pro from $79 for a yearly one-site plan, or $299 for a one-site lifetime licence (vitepos.com, 2026-10-07)"
+            "vitepos": "Free Lite plugin; Pro from $79 for a yearly one-site plan, or $299 for a one-site lifetime license (vitepos.com, 2026-10-07)"
           },
           "cardPayments": {
             "label": "Card payments",
@@ -2702,7 +2704,7 @@
           },
           "display": {
             "label": "Customer-facing display",
-            "wcpos": "Yes, with Pro: open it in any browser and pair it to a till with a code",
+            "wcpos": "Yes, with Pro: open it in any browser and pair it to a register with a code",
             "vitepos": "Yes"
           },
           "kiosk": {
@@ -2724,9 +2726,9 @@
       },
       "pricing": {
         "title": "What does it cost?",
-        "vitepos": "On 2026-10-07, vitepos.com listed Vitepos Lite as free, and Vitepos Pro at $79 for a yearly one-site plan or $149 for a yearly five-site plan. Lifetime licences were $299 for one site or $499 for five sites, each with one year of premium support. Check vitepos.com/pricing for current prices.",
+        "vitepos": "On 2026-10-07, vitepos.com listed Vitepos Lite as free, and Vitepos Pro at $79 for a yearly one-site plan or $149 for a yearly five-site plan. Lifetime licenses were $299 for one site or $499 for five sites, each with one year of premium support. Check vitepos.com/pricing for current prices.",
         "wcpos": "WCPOS is free, with no caps on products, orders, customers, or cash sales. Since 2.0, the free version also includes one register with an opening float, cash in and out, a count at close and numbered closures, split payments, and the Reports screen for today on that register. Pro is $129 — a one-time payment covering one year of updates and priority support — or $399 lifetime. It never auto-renews, and Pro keeps working after the year ends: nothing switches off, ever. WCPOS charges no transaction fees; you pay your payment processor's own rates.",
-        "compare": "On list price, Vitepos Pro costs less than WCPOS Pro: $79 against $129 for a year, and $299 against $399 for a lifetime licence. Compare what each Pro version includes before you decide.",
+        "compare": "On list price, Vitepos Pro costs less than WCPOS Pro: $79 against $129 for a year, and $299 against $399 for a lifetime license. Compare what each Pro version includes before you decide.",
         "proAdds": "<pro>Pro</pro> adds: multi-store management, more registers, card-terminal integrations, your store's other WooCommerce payment gateways at the register, a customer-facing display, the Coupons screen, refunds at the register, order history, customer management at the register, store-specific pricing, stock and price editing, reports for earlier days and for every register and store, and the <ext>extension directory</ext>.",
         "demoPrefix": "Try everything first at",
         "demoLinkLabel": "demo.wcpos.com/pos",
@@ -2757,7 +2759,7 @@
         "title": "Frequently asked questions",
         "price": {
           "question": "How much does Vitepos cost?",
-          "answer": "Vitepos Lite is free on WordPress.org. On 2026-10-07, vitepos.com listed Vitepos Pro at $79 for a yearly one-site plan or $149 for a yearly five-site plan, and lifetime licences at $299 for one site or $499 for five sites. Check vitepos.com/pricing for current prices. WCPOS is free, and WCPOS Pro is a one-time $129 for a year of updates or $399 lifetime."
+          "answer": "Vitepos Lite is free on WordPress.org. On 2026-10-07, vitepos.com listed Vitepos Pro at $79 for a yearly one-site plan or $149 for a yearly five-site plan, and lifetime licenses at $299 for one site or $499 for five sites. Check vitepos.com/pricing for current prices. WCPOS is free, and WCPOS Pro is a one-time $129 for a year of updates or $399 lifetime."
         },
         "offline": {
           "question": "Does Vitepos work offline?",
@@ -2809,7 +2811,7 @@
       "shortAnswer": {
         "title": "The short answer",
         "wcpos": "WCPOS is a free, open-source point of sale plugin for WooCommerce, with no caps on products, orders, or customers. It runs in any modern browser, as desktop apps for Windows, macOS and Linux, and as iOS and Android apps (beta). WCPOS charges no transaction fees. Since 2.0, the free version includes a register with an opening float, cash in and out, a count at close and numbered closures, plus split payments. Pro adds multi-store management, more registers, card-terminal integrations and your store's other WooCommerce payment gateways for a one-time payment — $129 for a year of updates or $399 lifetime — and keeps working after the year ends.",
-        "yith": "YITH Point of Sale for WooCommerce, by YITH, is a paid point of sale plugin for WooCommerce, sold as a yearly licence that renews automatically; its product page mentions no free version. It runs in a web browser, has unlimited stores and registers with separate stock for each store, and supports split payments. It has no offline mode, and it connects to no card terminal: YITH's docs say every payment is processed manually. On 2026-10-07 its product page said 4,667 customers use it, with a rating of 4.23 out of 5 from 71 customer ratings, and its changelog listed version 3.27.0, released on 2026-09-30."
+        "yith": "YITH Point of Sale for WooCommerce, by YITH, is a paid point of sale plugin for WooCommerce, sold as a yearly license that renews automatically; its product page mentions no free version. It runs in a web browser, has unlimited stores and registers with separate stock for each store, and supports split payments. It has no offline mode, and it connects to no card terminal: YITH's docs say every payment is processed manually. On 2026-10-07 its product page said 4,667 customers use it, with a rating of 4.23 out of 5 from 71 customer ratings, and its changelog listed version 3.27.0, released on 2026-09-30."
       },
       "glance": {
         "title": "At a glance",
@@ -2820,12 +2822,12 @@
           "price": {
             "label": "Price",
             "wcpos": "Free plugin with no caps; Pro is $129 for one year of updates or $399 lifetime — one-time payments, no auto-renewal",
-            "yith": "Paid plugin, with no free version on its product page; a yearly licence with one year of updates and support that renews automatically (check yithemes.com for the current price)"
+            "yith": "Paid plugin, with no free version on its product page; a yearly license with one year of updates and support that renews automatically (check yithemes.com for the current price)"
           },
           "expiry": {
             "label": "If you stop paying",
             "wcpos": "An expired Pro license keeps working forever — you keep your register, your data, and every feature; only updates and priority support pause",
-            "yith": "Updates and support stop when the licence expires; YITH's terms do not say whether the plugin keeps working"
+            "yith": "Updates and support stop when the license expires; YITH's terms do not say whether the plugin keeps working"
           },
           "cardPayments": {
             "label": "Card payments",
@@ -2866,9 +2868,9 @@
       },
       "pricing": {
         "title": "What does it cost?",
-        "yith": "YITH sells YITH Point of Sale for WooCommerce as a licence with one year of updates and support, and a 30-day money-back guarantee. YITH's terms say its licences renew automatically every year, and that once a licence expires you no longer receive updates or support. We could not read the price on its product page on 2026-10-07; check yithemes.com for the current price.",
+        "yith": "YITH sells YITH Point of Sale for WooCommerce as a license with one year of updates and support, and a 30-day money-back guarantee. YITH's terms say its licenses renew automatically every year, and that once a license expires you no longer receive updates or support. We could not read the price on its product page on 2026-10-07; check yithemes.com for the current price.",
         "wcpos": "WCPOS is free, with no caps on products, orders, customers, or cash sales. Since 2.0, the free version also includes one register with an opening float, cash in and out, a count at close and numbered closures, split payments, and the Reports screen for today on that register. Pro is $129 — a one-time payment covering one year of updates and priority support — or $399 lifetime. It never auto-renews, and Pro keeps working after the year ends: nothing switches off, ever. WCPOS charges no transaction fees; you pay your payment processor's own rates.",
-        "compare": "Because we could not confirm YITH's current price, this page does not compare list prices. The licence terms differ: a YITH licence renews automatically every year, while WCPOS Pro is a one-time payment that keeps working after its year of updates ends.",
+        "compare": "Because we could not confirm YITH's current price, this page does not compare list prices. The license terms differ: a YITH license renews automatically every year, while WCPOS Pro is a one-time payment that keeps working after its year of updates ends.",
         "proAdds": "<pro>Pro</pro> adds: multi-store management, more registers, card-terminal integrations, your store's other WooCommerce payment gateways at the register, a customer-facing display, the Coupons screen, refunds at the register, order history, customer management at the register, store-specific pricing, stock and price editing, reports for earlier days and for every register and store, and the <ext>extension directory</ext>.",
         "demoPrefix": "Try everything first at",
         "demoLinkLabel": "demo.wcpos.com/pos",
@@ -2899,7 +2901,7 @@
         "title": "Frequently asked questions",
         "price": {
           "question": "How much does YITH Point of Sale cost?",
-          "answer": "YITH sells it as a yearly licence with one year of updates and support, which renews automatically, and a 30-day money-back guarantee. We could not read the price on its product page on 2026-10-07, so check yithemes.com for the current price. Its product page mentions no free version. WCPOS is free, and WCPOS Pro is a one-time $129 for a year of updates or $399 lifetime."
+          "answer": "YITH sells it as a yearly license with one year of updates and support, which renews automatically, and a 30-day money-back guarantee. We could not read the price on its product page on 2026-10-07, so check yithemes.com for the current price. Its product page mentions no free version. WCPOS is free, and WCPOS Pro is a one-time $129 for a year of updates or $399 lifetime."
         },
         "offline": {
           "question": "Does YITH Point of Sale work offline?",
@@ -2914,8 +2916,8 @@
           "answer": "YITH's docs describe opening the point of sale in a browser and saving it to a phone or tablet home screen, and mention no native app. YITH says it is tested on 10- to 12-inch tablets such as iPads and Android tablets. WCPOS runs in any modern browser, as desktop apps for Windows, macOS and Linux, and as iOS and Android apps (beta)."
         },
         "licence": {
-          "question": "What happens when a YITH licence expires?",
-          "answer": "YITH's terms say its licences renew automatically every year, and that once a licence expires you no longer receive updates or support for the product. They do not say whether the plugin keeps working after that."
+          "question": "What happens when a YITH license expires?",
+          "answer": "YITH's terms say its licenses renew automatically every year, and that once a license expires you no longer receive updates or support for the product. They do not say whether the plugin keeps working after that."
         },
         "expiry": {
           "question": "What happens when a WCPOS Pro license expires?",
@@ -2926,7 +2928,7 @@
         "title": "Sources",
         "intro": "Every YITH Point of Sale fact on this page comes from YITH's own pages, read on 2026-10-07:",
         "items": {
-          "product": "Licence with one year of updates and support, 30-day money-back guarantee, split payments, tablets, barcode scanning, no offline mode, unlimited stores and registers, Multi-Stock, customers and rating",
+          "product": "License with one year of updates and support, 30-day money-back guarantee, split payments, tablets, barcode scanning, no offline mode, unlimited stores and registers, Multi-Stock, customers and rating",
           "faqs": "No card terminal connection, manual payments, receipt printing",
           "paymentMethods": "Cash and Chip and Pin payment methods",
           "mobile": "Point of sale in the browser, saved to a phone or tablet home screen",
@@ -2934,7 +2936,7 @@
           "manageCash": "Cash in hand, adding and removing cash during a session",
           "closeRegister": "Register closing summary and CSV closure report",
           "changelog": "Version 3.27.0, released on 2026-09-30",
-          "terms": "Yearly licences that renew automatically; no updates or support after a licence expires"
+          "terms": "Yearly licenses that renew automatically; no updates or support after a license expires"
         }
       },
       "footer": {
