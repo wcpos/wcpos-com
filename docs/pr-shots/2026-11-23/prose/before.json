@@ -1,0 +1,44 @@
+{
+  "label": "before",
+  "plain375": {
+    "scrollWidth": 375,
+    "widest": [],
+    "overflowWrap": {
+      "injected p": "not found",
+      "injected li": "not found",
+      "injected h2": "not found",
+      "injected blockquote p": "not found",
+      "blockquote": "not found",
+      "injected pre (in Markdown)": "not found",
+      "injected td (in Markdown)": "not found",
+      "td > code (in Markdown)": "not found",
+      "first button (Open menu)": "normal",
+      "first nav a (Downloads)": "normal"
+    }
+  },
+  "injectNote": "injected p, ul>li, h2, blockquote>p, table td>code, pre into Markdown container (text-muted-foreground [&>*+*]:mt-2 [&>*+…)",
+  "injected375": {
+    "scrollWidth": 445,
+    "widest": [
+      {
+        "el": "code.",
+        "right": 584,
+        "w": 556
+      }
+    ],
+    "overflowWrap": {
+      "injected p": "normal",
+      "injected li": "normal",
+      "injected h2": "normal",
+      "injected blockquote p": "normal",
+      "blockquote": "normal",
+      "injected pre (in Markdown)": "normal",
+      "injected td (in Markdown)": "normal",
+      "td > code (in Markdown)": "anywhere",
+      "first button (Open menu)": "normal",
+      "first nav a (Downloads)": "normal"
+    }
+  },
+  "shot_phone": "/Users/claude/.claude/jobs/a085f2e2/tmp/shots-prose/before-dl-notes-phone.png",
+  "shot_desktop": "/Users/claude/.claude/jobs/a085f2e2/tmp/shots-prose/before-dl-notes-desktop.png"
+}
