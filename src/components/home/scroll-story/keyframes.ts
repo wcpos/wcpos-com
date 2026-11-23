@@ -144,20 +144,22 @@ export const K = {
   ], // vh
 
   // copy overlays
+  // crossfaded so one heading is always at least half visible (audit #15);
+  // each swap spans 0.01 of progress (~40px), so two headings never rest on top of each other
   copy1Opacity: [
-    [0, 0.08, 0.15, 1],
+    [0, 0.145, 0.155, 1],
     [1, 1, 0, 0],
   ],
   copy2Opacity: [
-    [0, 0.28, 0.34, 0.46, 0.52, 1],
+    [0, 0.145, 0.155, 0.495, 0.505, 1],
     [0, 0, 1, 1, 0, 0],
   ],
   copy3Opacity: [
-    [0, 0.54, 0.6, 0.7, 0.76, 1],
+    [0, 0.495, 0.505, 0.795, 0.805, 1],
     [0, 0, 1, 1, 0, 0],
   ],
   copy4Opacity: [
-    [0, 0.84, 0.92, 1],
+    [0, 0.795, 0.805, 1],
     [0, 0, 1, 1],
   ],
 

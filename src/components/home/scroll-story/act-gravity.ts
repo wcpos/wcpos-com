@@ -9,8 +9,9 @@ import { animate, type MotionValue } from 'motion/react'
  * the catch radius of an act's hold plateau, the last stretch eases to the
  * plateau — the classic scrollytelling "settle assist" (GSAP ScrollTrigger
  * calls it snap; CSS proximity snapping is the platform cousin, but its
- * radius isn't tunable). Any user input cancels immediately; reduced motion
- * disables it entirely.
+ * radius isn't tunable). The pull only goes the way the visitor was already
+ * travelling, and waits for input to stop. Any user input cancels
+ * immediately; reduced motion disables it entirely.
  */
 
 /** Progress positions where each act sits fully composed (see keyframes.ts:
@@ -25,6 +26,10 @@ export const CATCH_RADIUS = 0.05
 /** Dead zone so a settle that lands on the plateau doesn't re-trigger. */
 export const DEAD_ZONE = 0.004
 
+/** Input-free time before a rest counts: slow wheels and trackpad glides
+ * fire scrollend between steps while the visitor is still scrolling. */
+export const QUIET_MS = 200
+
 export function nearestHold(progress: number): number | null {
   let best: number | null = null
   for (const hold of ACT_HOLDS) {
@@ -33,6 +38,17 @@ export function nearestHold(progress: number): number | null {
     if (best === null || distance < Math.abs(progress - best)) best = hold
   }
   return best
+}
+
+/** The hold to settle on, only when it lies ahead in the direction of
+ * travel since the last rest; null when the visitor is moving away from it
+ * or has not moved. */
+export function settleHold(progress: number, lastRest: number): number | null {
+  const hold = nearestHold(progress)
+  if (hold === null || progress === lastRest) return null
+  return Math.sign(hold - progress) === Math.sign(progress - lastRest)
+    ? hold
+    : null
 }
 
 export function useActGravity(
@@ -52,6 +68,8 @@ export function useActGravity(
     let animation: ReturnType<typeof animate> | null = null
     let settling = false
     let debounce: ReturnType<typeof setTimeout> | undefined
+    let lastRest = 0
+    let lastInputAt = 0
 
     const cancel = () => {
       clearTimeout(debounce)
@@ -63,12 +81,21 @@ export function useActGravity(
 
     const settle = () => {
       if (settling) return
-      const hold = nearestHold(progress.get())
+      const elapsed = Date.now() - lastInputAt
+      if (elapsed < QUIET_MS) {
+        clearTimeout(debounce)
+        debounce = setTimeout(settle, QUIET_MS - elapsed)
+        return
+      }
+      const p = progress.get()
+      const hold = settleHold(p, lastRest)
+      lastRest = p
       if (hold === null) return
       const top = scroller.getBoundingClientRect().top + window.scrollY
       const target = top + hold * (scroller.offsetHeight - window.innerHeight)
       if (Math.abs(target - window.scrollY) < 2) return
       settling = true
+      lastRest = hold
       animation = animate(window.scrollY, target, {
         duration: 0.55,
         ease: [0.22, 0.61, 0.36, 1],
@@ -96,9 +123,16 @@ export function useActGravity(
     else window.addEventListener('scroll', onScroll, { passive: true })
 
     // the user always wins: any input releases the pull instantly
-    const onInput = () => cancel()
+    const onInput = () => {
+      lastInputAt = Date.now()
+      cancel()
+    }
+    const onTouchMove = () => {
+      lastInputAt = Date.now()
+    }
     window.addEventListener('wheel', onInput, { passive: true })
     window.addEventListener('touchstart', onInput, { passive: true })
+    window.addEventListener('touchmove', onTouchMove, { passive: true })
     window.addEventListener('keydown', onInput)
 
     return () => {
@@ -108,6 +142,7 @@ export function useActGravity(
       window.removeEventListener('scroll', onScroll)
       window.removeEventListener('wheel', onInput)
       window.removeEventListener('touchstart', onInput)
+      window.removeEventListener('touchmove', onTouchMove)
       window.removeEventListener('keydown', onInput)
     }
   }, [scrollerRef, progress])
