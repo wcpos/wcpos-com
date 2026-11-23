@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { Suspense } from 'react'
 import { resolveLocale } from '@/i18n/resolve-locale'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server'
@@ -18,6 +19,7 @@ import { formatDateForLocale } from '@/lib/date-format'
 import { DownloadsHero } from '@/components/downloads/download-hero'
 import { PLATFORMS, type PlatformKey } from '@/components/downloads/platforms'
 import { HowItFits } from '@/components/downloads/how-it-fits'
+import { ProPriceLine } from '@/components/downloads/pro-price-line'
 import {
   GetStartedSteps,
   GetStartedStep,
@@ -333,6 +335,9 @@ export default async function DownloadsPage({
                 <p className="mt-1 text-sm text-muted-foreground">
                   {pageT('steps.pro.requirements')}
                 </p>
+                <Suspense fallback={null}>
+                  <ProPriceLine locale={locale} />
+                </Suspense>
                 <div className="mt-4 flex flex-wrap items-center gap-2">
                   <Button asChild variant="brand" size="sm">
                     <TrackedLocaleLink href="/pro" eventName="click_pro_cta">

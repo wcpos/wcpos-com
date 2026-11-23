@@ -352,7 +352,7 @@
         }
       },
       "terminal": {
-        "tapToPay": "Toque para pagar"
+        "tapToPay": "Aproxime ou insira o cartão"
       },
       "cloudSync": {
         "products": "{count, number} produtos",
@@ -1716,6 +1716,7 @@
           "cardBody": "Mais caixas e várias lojas, pagamentos em terminal, reembolsos, stock e preços, gestão de encomendas, relatórios completos e suporte prioritário no Discord.",
           "requirements": "WordPress 5.8+ · WooCommerce 9.0+ · PHP 7.4+",
           "plansCta": "Ver planos Pro",
+          "priceLine": "A partir de {price} ({currency}) — pagamento único, nunca renova automaticamente.",
           "signInCta": "Iniciar sessão para transferir"
         }
       }
@@ -1776,7 +1777,7 @@
       "eyebrow": "Uma nota do programador",
       "intro": "Olá — sou o Paul. Criei o WCPOS.",
       "p1": "Sou eu, na altura em que tudo começou. Abri a Urban Locavore em Perth em dezembro de 2011 com centenas de produtos já no WooCommerce e sem forma de os vender ao balcão — por isso criei uma caixa registadora. Quando a loja fechou em abril de 2014, publiquei-a no WordPress.org para quem precisasse. <strong>Os plugins de POS para WooCommerce apareceram e desapareceram desde então. Este não.</strong> Mais de uma década de lançamentos, um programador, ainda em desenvolvimento — e a versão gratuita continua a ser real: vender, imprimir, manter tudo sincronizado. Continua gratuita.",
-      "p2": "<strong>O Pro é a razão pela qual isto continua aqui.</strong> Adiciona ferramentas extra para gerir a sua loja — leitores de cartões, reembolsos na caixa, relatórios de fim de dia, várias lojas — e financia todos os lançamentos, incluindo os gratuitos. Sem investidores, sem uma aquisição à espera. Os lojistas financiam-no diretamente.",
+      "p2": "<strong>O Pro é a razão pela qual isto continua aqui.</strong> Adiciona ferramentas extra para gerir a sua loja — leitores de cartões, reembolsos na caixa, relatórios de vários dias, caixas e lojas, várias lojas — e financia todos os lançamentos, incluindo os gratuitos. Sem investidores, sem uma aquisição à espera. Os lojistas financiam-no diretamente.",
       "p3": "E os utilizadores Pro têm uma linha direta: diga-me o que a sua loja precisa, e isso molda o que vou criar a seguir.",
       "signature": {
         "name": "Paul Kilmurray",
@@ -1912,6 +1913,7 @@
       "title": "Prefere falar com uma pessoa?",
       "subtitle": "Junte-se a lojistas e à equipa na nossa comunidade Discord em direto.",
       "open": "Abrir o Discord",
+      "emailLine": "Prefere email? Envie-nos um email para <email>support@wcpos.com</email>.",
       "embedTitle": "Chat do Discord"
     },
     "guides": {

@@ -352,7 +352,7 @@
         }
       },
       "terminal": {
-        "tapToPay": "Approcher pour payer"
+        "tapToPay": "Présenter ou insérer la carte"
       },
       "cloudSync": {
         "products": "{count, number} produits",
@@ -1716,6 +1716,7 @@
           "cardBody": "Davantage de caisses et plusieurs boutiques, paiements par terminal, remboursements, stock et prix, gestion des commandes, rapports complets et assistance prioritaire sur Discord.",
           "requirements": "WordPress 5.8+ · WooCommerce 9.0+ · PHP 7.4+",
           "plansCta": "Voir les offres Pro",
+          "priceLine": "À partir de {price} ({currency}) — paiement unique, jamais de renouvellement automatique.",
           "signInCta": "Connectez-vous pour télécharger"
         }
       }
@@ -1776,7 +1777,7 @@
       "eyebrow": "Un mot du développeur",
       "intro": "Bonjour — je suis Paul. J’ai créé WCPOS.",
       "p1": "C’est moi, à l’époque où tout a commencé. J’ai ouvert Urban Locavore à Perth en décembre 2011 avec des centaines de produits déjà dans WooCommerce et aucun moyen de les vendre au comptoir — j’ai donc construit une caisse moi-même. Quand la boutique a fermé en avril 2014, je l’ai publiée sur WordPress.org pour tous ceux qui en avaient besoin. <strong>Depuis, des plugins de caisse pour WooCommerce sont apparus puis ont disparu. Celui-ci est toujours là.</strong> Plus de dix ans de versions, un seul développeur, toujours en livraison — et la version gratuite reste une vraie caisse : vendre, imprimer, rester synchronisé. Elle reste gratuite.",
-      "p2": "<strong>Pro est la raison pour laquelle le projet existe encore.</strong> Il ajoute des outils supplémentaires pour gérer votre magasin — lecteurs de carte, remboursements en caisse, rapports de fin de journée, multi-boutique — et finance chaque version, y compris les gratuites. Pas d’investisseurs, pas de sortie par acquisition en attente. Les commerçants le financent directement.",
+      "p2": "<strong>Pro est la raison pour laquelle le projet existe encore.</strong> Il ajoute des outils supplémentaires pour gérer votre magasin — lecteurs de carte, remboursements en caisse, rapports sur plusieurs jours, caisses et boutiques, multi-boutique — et finance chaque version, y compris les gratuites. Pas d’investisseurs, pas de sortie par acquisition en attente. Les commerçants le financent directement.",
       "p3": "Les utilisateurs Pro ont aussi une ligne directe : dites-moi ce dont votre boutique a besoin, et cela influence ce que je construis ensuite.",
       "signature": {
         "name": "Paul Kilmurray",
@@ -1912,6 +1913,7 @@
       "title": "Vous préférez parler à un humain ?",
       "subtitle": "Rejoignez des propriétaires de boutiques et l’équipe dans notre communauté Discord en direct.",
       "open": "Ouvrir Discord",
+      "emailLine": "Vous préférez l’e-mail ? Envoyez-nous un e-mail à <email>support@wcpos.com</email>.",
       "embedTitle": "Chat Discord"
     },
     "guides": {

@@ -38,7 +38,7 @@ describe('SupportGuides', () => {
     expect(links.map((a) => a.getAttribute('href'))).toEqual(HREFS)
     expect(links.map((a) => a.textContent)).toEqual([
       'Install WCPOS on your WooCommerce store',
-      'Activate your Pro licence',
+      'Activate your Pro license',
       'Set up a barcode scanner',
       'Set up a receipt printer',
       'How product sync works',

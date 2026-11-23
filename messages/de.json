@@ -352,7 +352,7 @@
         }
       },
       "terminal": {
-        "tapToPay": "Zum Bezahlen tippen"
+        "tapToPay": "Karte vorhalten oder einstecken"
       },
       "cloudSync": {
         "products": "{count, number} Produkte",
@@ -1716,6 +1716,7 @@
           "cardBody": "Weitere Kassen & mehrere Filialen, Terminalzahlungen, Erstattungen, Bestand & Preise, Bestellverwaltung, vollständige Berichte und vorrangiger Discord-Support.",
           "requirements": "WordPress 5.8+ · WooCommerce 9.0+ · PHP 7.4+",
           "plansCta": "Pro-Tarife ansehen",
+          "priceLine": "Ab {price} ({currency}) — Einmalzahlung, keine automatische Verlängerung.",
           "signInCta": "Anmelden zum Herunterladen"
         }
       }
@@ -1776,7 +1777,7 @@
       "eyebrow": "Eine Notiz vom Entwickler",
       "intro": "Hallo — ich bin Paul. Ich habe WCPOS gebaut.",
       "p1": "Das bin ich damals, als alles begann. Ich eröffnete Urban Locavore in Perth im Dezember 2011 mit Hunderten Produkten bereits in WooCommerce und ohne Möglichkeit, sie am Tresen zu verkaufen — also baute ich selbst eine Kasse. Als der Laden im April 2014 schloss, stellte ich sie auf WordPress.org für alle bereit, die sie brauchten. <strong>POS-Plugins für WooCommerce sind seitdem gekommen und gegangen. Dieses nicht.</strong> Mehr als ein Jahrzehnt Veröffentlichungen, ein Entwickler, immer noch aktiv — und die kostenlose Version ist weiterhin echt: verkaufen, drucken, synchron bleiben. Sie bleibt kostenlos.",
-      "p2": "<strong>Pro ist der Grund, warum es WCPOS noch gibt.</strong> Es ergänzt Werkzeuge für den Betrieb deines Shops — Kartenleser, Erstattungen an der Kasse, Tagesabschlussberichte, Multi-Store — und finanziert jede Veröffentlichung, auch die kostenlosen. Keine Investoren, kein Exit durch Übernahme. Ladenbesitzer finanzieren es direkt.",
+      "p2": "<strong>Pro ist der Grund, warum es WCPOS noch gibt.</strong> Es ergänzt Werkzeuge für den Betrieb deines Shops — Kartenleser, Erstattungen an der Kasse, Berichte für verschiedene Tage, Kassen und Geschäfte, Multi-Store — und finanziert jede Veröffentlichung, auch die kostenlosen. Keine Investoren, kein Exit durch Übernahme. Ladenbesitzer finanzieren es direkt.",
       "p3": "Und Pro-Nutzer haben eine direkte Leitung: Sag mir, was dein Laden braucht, und das prägt, was ich als Nächstes baue.",
       "signature": {
         "name": "Paul Kilmurray",
@@ -1912,6 +1913,7 @@
       "title": "Möchtest du lieber mit einem Menschen sprechen?",
       "subtitle": "Tritt Ladenbesitzern und dem Team in unserer Live-Discord-Community bei.",
       "open": "Discord öffnen",
+      "emailLine": "Lieber per E-Mail? Schreib uns an <email>support@wcpos.com</email>.",
       "embedTitle": "Discord-Chat"
     },
     "guides": {
