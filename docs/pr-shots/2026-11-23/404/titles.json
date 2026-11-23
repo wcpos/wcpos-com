@@ -1,0 +1,100 @@
+{
+  "before": {
+    "phone": {
+      "status": 404,
+      "documentTitle": "WCPOS - Point of Sale for WooCommerce",
+      "headTitles": [
+        "WCPOS - Point of Sale for WooCommerce"
+      ],
+      "links": [
+        {
+          "text": "Go to homepage",
+          "href": "/"
+        },
+        {
+          "text": "WCPOS Pro",
+          "href": "/pro"
+        },
+        {
+          "text": "Support",
+          "href": "/support"
+        }
+      ]
+    },
+    "desktop": {
+      "status": 404,
+      "documentTitle": "WCPOS - Point of Sale for WooCommerce",
+      "headTitles": [
+        "WCPOS - Point of Sale for WooCommerce"
+      ],
+      "links": [
+        {
+          "text": "Go to homepage",
+          "href": "/"
+        },
+        {
+          "text": "WCPOS Pro",
+          "href": "/pro"
+        },
+        {
+          "text": "Support",
+          "href": "/support"
+        }
+      ]
+    }
+  },
+  "after": {
+    "phone": {
+      "status": 404,
+      "documentTitle": "Page not found | WCPOS",
+      "headTitles": [
+        "Page not found | WCPOS",
+        "WCPOS - Point of Sale for WooCommerce"
+      ],
+      "links": [
+        {
+          "text": "Go to homepage",
+          "href": "/"
+        },
+        {
+          "text": "WCPOS Pro",
+          "href": "/pro"
+        },
+        {
+          "text": "Downloads",
+          "href": "/downloads"
+        },
+        {
+          "text": "Support",
+          "href": "/support"
+        }
+      ]
+    },
+    "desktop": {
+      "status": 404,
+      "documentTitle": "Page not found | WCPOS",
+      "headTitles": [
+        "Page not found | WCPOS",
+        "WCPOS - Point of Sale for WooCommerce"
+      ],
+      "links": [
+        {
+          "text": "Go to homepage",
+          "href": "/"
+        },
+        {
+          "text": "WCPOS Pro",
+          "href": "/pro"
+        },
+        {
+          "text": "Downloads",
+          "href": "/downloads"
+        },
+        {
+          "text": "Support",
+          "href": "/support"
+        }
+      ]
+    }
+  }
+}
