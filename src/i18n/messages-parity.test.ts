@@ -155,14 +155,7 @@ const receiptPdfEnglishPhrases = [
   'Canceled',
   'Unknown',
 ]
-const releaseNoteFallbackEnglishOnlyKeys = [
-  'downloads.releaseHistory.fallback.v196',
-  'downloads.releaseHistory.fallback.v195',
-  'downloads.releaseHistory.fallback.v194',
-  'downloads.releaseHistory.fallback.v190',
-]
 const globallyLanguageNeutralOrEnglishOnlyKeys = new Set([
-  ...releaseNoteFallbackEnglishOnlyKeys,
   'about.founder.signature.name',
   'about.timeline.dates.range',
   // Brand/technical labels — kept verbatim across locales by design.
@@ -268,7 +261,6 @@ const italianIdenticalCopyAllowlist = new Set([
   'account.licenses.pluginVersionLabel',
   'account.licenses.wpVersionLabel',
   'account.licenses.wcVersionLabel',
-  ...releaseNoteFallbackEnglishOnlyKeys,
   'account.orderDetail.emailLabel',
   'account.profile.email',
   'account.profile.taxLabels.abn',
@@ -365,7 +357,6 @@ const dutchIdenticalCopyAllowlist = new Set([
   'account.licenses.pluginVersionLabel',
   'account.licenses.wpVersionLabel',
   'account.licenses.wcVersionLabel',
-  ...releaseNoteFallbackEnglishOnlyKeys,
   'about.founder.signature.name',
   'about.timeline.dates.range',
   'home.title',
@@ -471,7 +462,6 @@ const koreanIdenticalCopyAllowlist = new Set([
   'account.licenses.pluginVersionLabel',
   'account.licenses.wpVersionLabel',
   'account.licenses.wcVersionLabel',
-  ...releaseNoteFallbackEnglishOnlyKeys,
   'about.founder.signature.name',
   'about.timeline.dates.range',
   'home.title',
@@ -603,7 +593,6 @@ const portugueseIdenticalCopyAllowlist = new Set([
   'account.licenses.pluginVersionLabel',
   'account.licenses.wpVersionLabel',
   'account.licenses.wcVersionLabel',
-  ...releaseNoteFallbackEnglishOnlyKeys,
   'header.pro',
   'footer.copyright',
   'footer.discord',
@@ -702,7 +691,6 @@ const japaneseIdenticalCopyAllowlist = new Set([
   'account.licenses.pluginVersionLabel',
   'account.licenses.wpVersionLabel',
   'account.licenses.wcVersionLabel',
-  ...releaseNoteFallbackEnglishOnlyKeys,
   'auth.common.emailPlaceholder',
   'header.pro',
   'footer.copyright',
@@ -804,7 +792,6 @@ const chineseIdenticalCopyAllowlist = new Set([
   'account.licenses.pluginVersionLabel',
   'account.licenses.wpVersionLabel',
   'account.licenses.wcVersionLabel',
-  ...releaseNoteFallbackEnglishOnlyKeys,
   'auth.common.emailPlaceholder',
   'header.pro',
   'footer.copyright',
@@ -906,7 +893,6 @@ const germanIdenticalCopyAllowlist = new Set([
   'account.licenses.pluginVersionLabel',
   'account.licenses.wpVersionLabel',
   'account.licenses.wcVersionLabel',
-  ...releaseNoteFallbackEnglishOnlyKeys,
   'header.pro',
   'footer.copyright',
   'footer.pro',
@@ -998,7 +984,6 @@ const spanishIdenticalCopyAllowlist = new Set([
   'account.licenses.pluginVersionLabel',
   'account.licenses.wpVersionLabel',
   'account.licenses.wcVersionLabel',
-  ...releaseNoteFallbackEnglishOnlyKeys,
   'header.pro',
   'footer.copyright',
   'footer.discord',
@@ -1107,7 +1092,6 @@ const frenchIdenticalCopyAllowlist = new Set([
   'account.licenses.pluginVersionLabel',
   'account.licenses.wpVersionLabel',
   'account.licenses.wcVersionLabel',
-  ...releaseNoteFallbackEnglishOnlyKeys,
   'downloads.platforms.mac-arm.name',
   'downloads.platforms.mac-arm.listLabel',
   'downloads.platforms.mac-arm.short',
@@ -1368,29 +1352,6 @@ describe('messages key parity', () => {
       expect(
         leakedPhrases,
         `messages/${locale}.json account.receiptPdf copy must not retain high-signal English receipt phrases`
-      ).toEqual([])
-    }
-  )
-
-  it.each(otherLocales)(
-    '%s.json keeps release-note fallback bodies in English',
-    (locale) => {
-      const english = loadMessages(defaultLocale)
-      const localized = loadMessages(locale)
-      const fallbackKeys = enKeys.filter((key) =>
-        key.startsWith('downloads.releaseHistory.fallback.')
-      )
-      const translatedFallbacks = fallbackKeys
-        .map((key) => ({
-          key,
-          english: valueAtPath(english, key),
-          localized: valueAtPath(localized, key),
-        }))
-        .filter(({ english, localized }) => localized !== english)
-
-      expect(
-        translatedFallbacks,
-        `messages/${locale}.json release-note fallbacks must stay English; GitHub release notes are not translated`
       ).toEqual([])
     }
   )
