@@ -61,6 +61,24 @@ describe('UserMenu', () => {
     ).toBeInTheDocument()
   })
 
+  it('draws sign-out in the readable red, not the dark-theme destructive red', () => {
+    render(<UserMenu email="user@example.com" avatarUrl="" initials="UE" />)
+
+    fireEvent.pointerDown(
+      screen.getByRole('button', { name: 'Translated account menu' })
+    )
+
+    // text-destructive is 2.0:1 on the dark popover; wcpos-red-accent on the
+    // primary/10 tint is at least 4.5:1 in both themes.
+    const signOut = screen.getByRole('menuitem', { name: /Translated sign out/ })
+    expect(signOut).toHaveClass(
+      'text-wcpos-red-accent',
+      'focus:bg-primary/10',
+      'focus:text-wcpos-red-accent'
+    )
+    expect(signOut.className).not.toContain('text-destructive')
+  })
+
   it('posts sign-out to the localized login fallback', () => {
     render(<UserMenu email="user@example.com" avatarUrl="" initials="UE" />)
 

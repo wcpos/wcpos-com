@@ -71,8 +71,10 @@ export function UserMenu({ email, avatarUrl, initials }: UserMenuProps) {
           method="POST"
           className="hidden"
         />
+        {/* wcpos-red-accent on the primary/10 tint stays at least 4.5:1 in both
+            themes; text-destructive was 2.0:1 on the dark popover. */}
         <DropdownMenuItem
-          className="text-destructive focus:text-destructive"
+          className="text-wcpos-red-accent focus:bg-primary/10 focus:text-wcpos-red-accent"
           onSelect={(event) => {
             event.preventDefault()
             signOutForm.current?.submit()

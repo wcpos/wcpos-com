@@ -185,6 +185,24 @@ describe('SiteHeader', () => {
     })
   })
 
+  it('switches desktop nav, auth buttons and the menu button at lg together', async () => {
+    mockGetCustomer.mockResolvedValue(null)
+    await act(async () => {
+      render(<SiteHeader />)
+    })
+
+    // German labels need more than md's 768px next to Get Pro / Sign In.
+    const desktopNav = screen.getAllByRole('navigation')[0]
+    expect(desktopNav).toHaveClass('hidden', 'lg:flex')
+    expect(desktopNav).not.toHaveClass('md:flex')
+    const auth = screen.getAllByRole('link', { name: 'Translated sign in' })[0]
+      .parentElement!
+    expect(auth).toHaveClass('hidden', 'lg:flex')
+    const trigger = screen.getByRole('button', { name: 'Translated open menu' })
+    expect(trigger).toHaveClass('lg:hidden')
+    expect(trigger).not.toHaveClass('md:hidden')
+  })
+
   it('uses a translated accessible label for the mobile menu trigger', async () => {
     mockGetCustomer.mockResolvedValue(null)
     await act(async () => {

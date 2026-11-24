@@ -91,8 +91,9 @@ export function SiteHeader() {
           <DesktopNav links={navLinks} />
         </div>
 
-        {/* Desktop Auth Button */}
-        <div className="hidden md:flex md:items-center md:gap-2">
+        {/* Desktop nav and auth from lg: the longest locales (de, nl) need
+            more than md's 768px for the labels plus Get Pro / Sign In. */}
+        <div className="hidden lg:flex lg:items-center lg:gap-2">
           <Suspense fallback={<AuthButtonFallback />}>
             <AuthButton signInLabel={tCommon('signIn')} getProLabel={t('getPro')} />
           </Suspense>
@@ -100,7 +101,7 @@ export function SiteHeader() {
 
         {/* Mobile Hamburger */}
         <Sheet>
-          <SheetTrigger asChild className="md:hidden">
+          <SheetTrigger asChild className="lg:hidden">
             <Button variant="ghost" size="icon">
               <Menu className="h-5 w-5" />
               <span className="sr-only">{tCommon('openMenu')}</span>
