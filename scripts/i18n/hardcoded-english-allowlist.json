@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generatedBy": "scripts/i18n/hardcoded-english.ts --update",
-  "updatedAt": "2026-11-23T04:40:38.995Z",
+  "updatedAt": "2026-11-24T22:25:01.387Z",
   "scope": [
     "src/app",
     "src/components",
@@ -3514,11 +3514,11 @@
       "count": 1
     },
     {
-      "id": "9e0f2baa503bb437",
+      "id": "eaafc66ddc5807d7",
       "file": "src/components/pro/checkout/payment-step.tsx",
       "category": "component",
       "attr": null,
-      "text": "border-primary bg-primary [box-shadow:inset_0_0_0_2.5px_var(--card)]",
+      "text": "border-primary bg-primary [box-shadow:inset_0_0_0_2.5px_hsl(var(--card))]",
       "count": 1
     },
     {
@@ -3666,11 +3666,11 @@
       "count": 1
     },
     {
-      "id": "8189a0952a2f8511",
+      "id": "0506b0f5b60ac32d",
       "file": "src/components/pro/pro-buy-box.tsx",
       "category": "component",
       "attr": null,
-      "text": "border-primary bg-primary [box-shadow:inset_0_0_0_2.5px_var(--card)]",
+      "text": "border-primary bg-primary [box-shadow:inset_0_0_0_2.5px_hsl(var(--card))]",
       "count": 1
     },
     {

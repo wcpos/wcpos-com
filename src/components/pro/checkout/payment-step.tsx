@@ -69,7 +69,7 @@ function MethodRow({
           aria-hidden
           className={`h-4 w-4 shrink-0 rounded-full border-2 ${
             selected
-              ? 'border-primary bg-primary [box-shadow:inset_0_0_0_2.5px_var(--card)]'
+              ? 'border-primary bg-primary [box-shadow:inset_0_0_0_2.5px_hsl(var(--card))]'
               : 'border-muted-foreground/40'
           }`}
         />
@@ -154,7 +154,7 @@ function ConsentGate({
           disabled={disabled}
           onChange={(event) => onChange(event.target.checked)}
           data-testid="checkout-supply-consent"
-          className="mt-0.5 h-4 w-4 shrink-0 accent-[var(--primary)]"
+          className="mt-0.5 h-4 w-4 shrink-0 accent-[hsl(var(--primary))]"
         />
         <label htmlFor={id} className="text-sm leading-6 text-muted-foreground">
           {t.rich('label', {

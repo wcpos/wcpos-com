@@ -100,7 +100,7 @@ export function ProBuyBox({
                 aria-hidden
                 className={`h-4 w-4 shrink-0 rounded-full border-2 ${
                   isSelected
-                    ? 'border-primary bg-primary [box-shadow:inset_0_0_0_2.5px_var(--card)]'
+                    ? 'border-primary bg-primary [box-shadow:inset_0_0_0_2.5px_hsl(var(--card))]'
                     : 'border-muted-foreground/40'
                 }`}
               />
