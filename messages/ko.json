@@ -485,7 +485,6 @@
         "title": "평생",
         "subtitle": "영구 업데이트",
         "priceSuffix": "1회",
-        "ctaNote": "연간 약 {years}년치 — 이후 영구적으로 $0.",
         "ctaNoteSimple": "한 번만 결제 — 업데이트는 영구적."
       },
       "tryFreeLink": "먼저 무료 버전을 사용해 보세요",

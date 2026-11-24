@@ -485,7 +485,6 @@
         "title": "買い切り",
         "subtitle": "アップデートは永久",
         "priceSuffix": "一回払い",
-        "ctaNote": "年間約{years}年分 — その後は永久に$0。",
         "ctaNoteSimple": "一度の支払いで、アップデートは永久。"
       },
       "tryFreeLink": "まずは無料版をお試しください",
