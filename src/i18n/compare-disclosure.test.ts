@@ -9,9 +9,10 @@ import { describe, expect, it } from 'vitest'
 // every locale.)
 const LOCALES = ['en', 'de', 'nl', 'fr', 'es', 'it', 'pt', 'ja', 'ko', 'zh'] as const
 
-// "Quarter" in each locale's wording: quarter / Quartal, vierteljährlich /
-// trimestre, trimestral(mente) / kwartaal / 四半期 / 분기 / 季度.
-const QUARTERLY = /quarter|quartal|vierteljährlich|trimestr|kwartaal|四半期|분기|季度/i
+// "Quarter" in each locale's wording: quarter(s/ly) as a whole word (not
+// "headquartered") / Quartal, vierteljährlich / trimestre, trimestral(mente) /
+// kwartaal / 四半期 / 분기 / 季度.
+const QUARTERLY = /\bquarter(?:s|ly)?\b|quartal|vierteljährlich|trimestr|kwartaal|四半期|분기|季度/i
 
 function compare(locale: string) {
   return JSON.parse(
