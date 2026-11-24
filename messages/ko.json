@@ -2318,7 +2318,7 @@
         "offline": "오프라인 모드 없음: 활성 인터넷 연결이 필요합니다.",
         "multiLocation": "다중 위치는 아직 지원하지 않습니다.",
         "gateways": "카드 결제에는 WooPayments 또는 Stripe가 필요합니다.",
-        "outro": "WooCommerce는 WooCommerce 코어에 POS 기능을 계속 추가하고 있으므로 이 목록은 줄어들 것으로 예상됩니다 — 분기마다 다시 확인합니다."
+        "outro": "WooCommerce는 WooCommerce 코어에 POS 기능을 계속 추가하고 있으므로 이 목록은 줄어들 것으로 예상됩니다 — 마지막으로 확인한 날짜는 페이지 하단에 표시합니다."
       },
       "woocommerceBetter": {
         "title": "WooCommerce POS가 더 나은 부분",
@@ -2367,7 +2367,7 @@
         }
       },
       "footer": {
-        "factsDated": "WooCommerce POS에 관한 정보는 2026-10-06에 WooCommerce 자체 페이지(POS 문서, POS 페이지, WooPayments 수수료 페이지)에서 확인했습니다. WCPOS 정보는 wcpos.com에서 가져왔습니다. WCPOS 정보는 2026-11-09에 출시된 WCPOS 2.0 기준이며, 앱과 플러그인 모두 버전 2.0이어야 합니다. 분기마다 다시 확인합니다.",
+        "factsDated": "WooCommerce POS에 관한 정보는 2026-10-06에 WooCommerce 자체 페이지(POS 문서, POS 페이지, WooPayments 수수료 페이지)에서 확인했습니다. WCPOS 정보는 wcpos.com에서 가져왔습니다. WCPOS 정보는 2026-11-09에 출시된 WCPOS 2.0 기준이며, 앱과 플러그인 모두 버전 2.0이어야 합니다.",
         "corrections": "오류를 발견하셨나요? support@wcpos.com으로 알려 주세요. 빠르게 수정하고 모든 변경을 기록합니다."
       }
     },
@@ -2468,7 +2468,7 @@
         "countries": "Square는 미국, 캐나다, 호주, 일본, 영국, 프랑스, 스페인, 아일랜드에서 이용할 수 있으며 WooCommerce 통화는 Square 계정 통화와 일치해야 합니다.",
         "sku": "모든 상품에는 SKU가 있어야 합니다.",
         "variations": "Square에서 WooCommerce로 상품을 동기화할 때 상품당 최대 250개 옵션과 6개 속성을 허용합니다.",
-        "outro": "이 목록은 분기마다 다시 확인합니다."
+        "outro": "이 목록을 마지막으로 확인한 날짜는 페이지 하단에 표시합니다."
       },
       "squareBetter": {
         "title": "Square가 실제로 더 나은 점",
@@ -2538,7 +2538,7 @@
         }
       },
       "footer": {
-        "factsDated": "Square 관련 사실은 2026-10-06에 Square 자체 페이지(수수료 페이지, 가격 발표, 오프라인 결제, Tap to Pay, 기기 및 국제 서비스 제공에 관한 도움말)와 Square for WooCommerce 확장 프로그램의 WooCommerce 문서에서 확인하고 2026-11-18에 다시 확인했습니다. WCPOS 관련 사실은 wcpos.com과 docs.wcpos.com을 참조했습니다. WCPOS 정보는 2026-11-09에 출시된 WCPOS 2.0 기준이며, 앱과 플러그인 모두 버전 2.0이어야 합니다. 분기마다 다시 확인합니다.",
+        "factsDated": "Square 관련 사실은 2026-10-06에 Square 자체 페이지(수수료 페이지, 가격 발표, 오프라인 결제, Tap to Pay, 기기 및 국제 서비스 제공에 관한 도움말)와 Square for WooCommerce 확장 프로그램의 WooCommerce 문서에서 확인하고 2026-11-18에 다시 확인했습니다. WCPOS 관련 사실은 wcpos.com과 docs.wcpos.com을 참조했습니다. WCPOS 정보는 2026-11-09에 출시된 WCPOS 2.0 기준이며, 앱과 플러그인 모두 버전 2.0이어야 합니다.",
         "corrections": "오류를 발견하셨나요? support@wcpos.com으로 알려 주세요. 빠르게 수정하고 모든 변경을 기록합니다."
       }
     },
@@ -2793,7 +2793,7 @@
         }
       },
       "footer": {
-        "factsDated": "Vitepos 정보는 2026-10-07에 vitepos.com과 WordPress.org 등록 페이지에서 확인했습니다(출처 참조). 결정하기 전에 현재 가격은 vitepos.com에서 확인하세요. WCPOS 정보는 wcpos.com, docs.wcpos.com, WordPress.org를 출처로 합니다. WCPOS 정보는 2026-11-09에 출시된 WCPOS 2.0 기준이며, 앱과 플러그인 모두 버전 2.0이어야 합니다. 분기마다 다시 확인합니다.",
+        "factsDated": "Vitepos 정보는 2026-10-07에 vitepos.com과 WordPress.org 등록 페이지에서 확인했습니다(출처 참조). 결정하기 전에 현재 가격은 vitepos.com에서 확인하세요. WCPOS 정보는 wcpos.com, docs.wcpos.com, WordPress.org를 출처로 합니다. WCPOS 정보는 2026-11-09에 출시된 WCPOS 2.0 기준이며, 앱과 플러그인 모두 버전 2.0이어야 합니다.",
         "corrections": "오류를 발견하셨나요? support@wcpos.com으로 알려 주세요. 빠르게 수정하고 모든 변경을 기록합니다."
       }
     },
@@ -2938,7 +2938,7 @@
         }
       },
       "footer": {
-        "factsDated": "YITH Point of Sale 정보는 2026-10-07에 yithemes.com과 docs.yithemes.com에서 확인했습니다(출처 참조). 결정하기 전에 현재 가격은 yithemes.com에서 확인하세요. WCPOS 정보는 wcpos.com, docs.wcpos.com, WordPress.org를 출처로 합니다. WCPOS 정보는 2026-11-09에 출시된 WCPOS 2.0 기준이며, 앱과 플러그인 모두 버전 2.0이어야 합니다. 분기마다 다시 확인합니다.",
+        "factsDated": "YITH Point of Sale 정보는 2026-10-07에 yithemes.com과 docs.yithemes.com에서 확인했습니다(출처 참조). 결정하기 전에 현재 가격은 yithemes.com에서 확인하세요. WCPOS 정보는 wcpos.com, docs.wcpos.com, WordPress.org를 출처로 합니다. WCPOS 정보는 2026-11-09에 출시된 WCPOS 2.0 기준이며, 앱과 플러그인 모두 버전 2.0이어야 합니다.",
         "corrections": "오류를 발견하셨나요? support@wcpos.com으로 알려 주세요. 빠르게 수정하고 모든 변경을 기록합니다."
       }
     },
@@ -3084,7 +3084,7 @@
         }
       },
       "footer": {
-        "factsDated": "FooSales 정보는 2026-10-07에 foosales.com, help.foosales.com 및 App Store 등록 페이지에서 확인했습니다(출처 참조). 결정하기 전에 foosales.com에서 현재 가격을 확인하세요. WCPOS 관련 정보는 wcpos.com, docs.wcpos.com 및 WordPress.org를 출처로 합니다. WCPOS 정보는 2026-11-09에 출시된 WCPOS 2.0 기준이며, 앱과 플러그인 모두 버전 2.0이어야 합니다. 분기마다 다시 확인합니다.",
+        "factsDated": "FooSales 정보는 2026-10-07에 foosales.com, help.foosales.com 및 App Store 등록 페이지에서 확인했습니다(출처 참조). 결정하기 전에 foosales.com에서 현재 가격을 확인하세요. WCPOS 관련 정보는 wcpos.com, docs.wcpos.com 및 WordPress.org를 출처로 합니다. WCPOS 정보는 2026-11-09에 출시된 WCPOS 2.0 기준이며, 앱과 플러그인 모두 버전 2.0이어야 합니다.",
         "corrections": "오류를 발견하셨나요? support@wcpos.com으로 알려 주세요. 빠르게 수정하고 모든 변경을 기록합니다."
       }
     }

@@ -2318,7 +2318,7 @@
         "offline": "无离线模式：需要有效的互联网连接。",
         "multiLocation": "目前尚不支持多地点。",
         "gateways": "银行卡支付需要 WooPayments 或 Stripe。",
-        "outro": "WooCommerce 持续向 WooCommerce 核心添加 POS 功能，因此预计这份清单会缩短——我们每季度重新核实。"
+        "outro": "WooCommerce 持续向 WooCommerce 核心添加 POS 功能，因此预计这份清单会缩短——页面底部注明了最后一次核实的日期。"
       },
       "woocommerceBetter": {
         "title": "WooCommerce POS 更胜一筹的地方",
@@ -2367,7 +2367,7 @@
         }
       },
       "footer": {
-        "factsDated": "有关 WooCommerce POS 的信息已于 2026-10-06 对照 WooCommerce 自身的页面（POS 文档、POS 页面和 WooPayments 费用页面）核实；WCPOS 的信息来自 wcpos.com。WCPOS 信息适用于 2026-11-09 发布的 WCPOS 2.0，应用和插件均需为 2.0 版本。我们每季度重新核实。",
+        "factsDated": "有关 WooCommerce POS 的信息已于 2026-10-06 对照 WooCommerce 自身的页面（POS 文档、POS 页面和 WooPayments 费用页面）核实；WCPOS 的信息来自 wcpos.com。WCPOS 信息适用于 2026-11-09 发布的 WCPOS 2.0，应用和插件均需为 2.0 版本。",
         "corrections": "发现错误？发邮件到 support@wcpos.com——我们会尽快更正并记录每次修改。"
       }
     },
@@ -2468,7 +2468,7 @@
         "countries": "Square 可在美国、加拿大、澳大利亚、日本、英国、法国、西班牙和爱尔兰使用，且你的 WooCommerce 货币必须与 Square 账户货币一致。",
         "sku": "每件商品都必须有 SKU。",
         "variations": "从 Square 向 WooCommerce 同步商品时，每件商品最多支持 250 个变体和 6 个属性。",
-        "outro": "我们每季度重新核实这份清单。"
+        "outro": "页面底部注明了这份清单最后一次核实的日期。"
       },
       "squareBetter": {
         "title": "Square 真正更胜一筹的地方",
@@ -2538,7 +2538,7 @@
         }
       },
       "footer": {
-        "factsDated": "Square 相关事实于 2026-10-06 根据 Square 自己的页面（费率页面、价格公告，以及关于离线支付、Tap to Pay、设备和国际可用性的帮助文章）和 WooCommerce 的 Square for WooCommerce 扩展文档核实，并于 2026-11-18 再次核实；WCPOS 相关事实来自 wcpos.com 和 docs.wcpos.com。WCPOS 信息适用于 2026-11-09 发布的 WCPOS 2.0，应用和插件均需为 2.0 版本。我们每季度重新核实。",
+        "factsDated": "Square 相关事实于 2026-10-06 根据 Square 自己的页面（费率页面、价格公告，以及关于离线支付、Tap to Pay、设备和国际可用性的帮助文章）和 WooCommerce 的 Square for WooCommerce 扩展文档核实，并于 2026-11-18 再次核实；WCPOS 相关事实来自 wcpos.com 和 docs.wcpos.com。WCPOS 信息适用于 2026-11-09 发布的 WCPOS 2.0，应用和插件均需为 2.0 版本。",
         "corrections": "发现错误？发邮件到 support@wcpos.com——我们会尽快更正并记录每次修改。"
       }
     },
@@ -2793,7 +2793,7 @@
         }
       },
       "footer": {
-        "factsDated": "关于 Vitepos 的信息于 2026-10-07 从 vitepos.com 及其 WordPress.org 列表页面查阅（见“来源”）；决定前请在 vitepos.com 查看当前价格。WCPOS 信息来自 wcpos.com、docs.wcpos.com 和 WordPress.org。WCPOS 信息适用于 2026-11-09 发布的 WCPOS 2.0，应用和插件均需为 2.0 版本。我们每季度重新核实。",
+        "factsDated": "关于 Vitepos 的信息于 2026-10-07 从 vitepos.com 及其 WordPress.org 列表页面查阅（见“来源”）；决定前请在 vitepos.com 查看当前价格。WCPOS 信息来自 wcpos.com、docs.wcpos.com 和 WordPress.org。WCPOS 信息适用于 2026-11-09 发布的 WCPOS 2.0，应用和插件均需为 2.0 版本。",
         "corrections": "发现错误？发邮件到 support@wcpos.com——我们会尽快更正并记录每次修改。"
       }
     },
@@ -2938,7 +2938,7 @@
         }
       },
       "footer": {
-        "factsDated": "关于 YITH Point of Sale 的信息于 2026-10-07 从 yithemes.com 和 docs.yithemes.com 查阅（见“来源”）；决定前请在 yithemes.com 查看当前价格。WCPOS 信息来自 wcpos.com、docs.wcpos.com 和 WordPress.org。WCPOS 信息适用于 2026-11-09 发布的 WCPOS 2.0，应用和插件均需为 2.0 版本。我们每季度重新核实。",
+        "factsDated": "关于 YITH Point of Sale 的信息于 2026-10-07 从 yithemes.com 和 docs.yithemes.com 查阅（见“来源”）；决定前请在 yithemes.com 查看当前价格。WCPOS 信息来自 wcpos.com、docs.wcpos.com 和 WordPress.org。WCPOS 信息适用于 2026-11-09 发布的 WCPOS 2.0，应用和插件均需为 2.0 版本。",
         "corrections": "发现错误？发邮件到 support@wcpos.com——我们会尽快更正并记录每次修改。"
       }
     },
@@ -3084,7 +3084,7 @@
         }
       },
       "footer": {
-        "factsDated": "关于 FooSales 的信息于 2026-10-07 从 foosales.com、help.foosales.com 及其 App Store 列表页面查阅（见“来源”）；决定前请在 foosales.com 查看当前价格。WCPOS 信息来自 wcpos.com、docs.wcpos.com 和 WordPress.org。WCPOS 信息适用于 2026-11-09 发布的 WCPOS 2.0，应用和插件均需为 2.0 版本。我们每季度重新核实。",
+        "factsDated": "关于 FooSales 的信息于 2026-10-07 从 foosales.com、help.foosales.com 及其 App Store 列表页面查阅（见“来源”）；决定前请在 foosales.com 查看当前价格。WCPOS 信息来自 wcpos.com、docs.wcpos.com 和 WordPress.org。WCPOS 信息适用于 2026-11-09 发布的 WCPOS 2.0，应用和插件均需为 2.0 版本。",
         "corrections": "发现错误？发邮件到 support@wcpos.com——我们会尽快更正并记录每次修改。"
       }
     }
