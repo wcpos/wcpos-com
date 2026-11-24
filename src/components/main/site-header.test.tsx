@@ -198,6 +198,7 @@ describe('SiteHeader', () => {
     const auth = screen.getAllByRole('link', { name: 'Translated sign in' })[0]
       .parentElement!
     expect(auth).toHaveClass('hidden', 'lg:flex')
+    expect(auth).not.toHaveClass('md:flex')
     const trigger = screen.getByRole('button', { name: 'Translated open menu' })
     expect(trigger).toHaveClass('lg:hidden')
     expect(trigger).not.toHaveClass('md:hidden')

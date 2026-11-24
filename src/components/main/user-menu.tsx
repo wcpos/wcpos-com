@@ -72,9 +72,10 @@ export function UserMenu({ email, avatarUrl, initials }: UserMenuProps) {
           className="hidden"
         />
         {/* wcpos-red-accent on the primary/10 tint stays at least 4.5:1 in both
-            themes; text-destructive was 2.0:1 on the dark popover. */}
+            themes; text-destructive was 2.0:1 on the dark popover. The tint is
+            faint in dark, so keyboard focus also draws a red outline. */}
         <DropdownMenuItem
-          className="text-wcpos-red-accent focus:bg-primary/10 focus:text-wcpos-red-accent"
+          className="text-wcpos-red-accent focus:bg-primary/10 focus:text-wcpos-red-accent focus-visible:outline-solid focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-wcpos-red-accent"
           onSelect={(event) => {
             event.preventDefault()
             signOutForm.current?.submit()

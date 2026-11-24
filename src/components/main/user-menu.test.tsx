@@ -74,7 +74,9 @@ describe('UserMenu', () => {
     expect(signOut).toHaveClass(
       'text-wcpos-red-accent',
       'focus:bg-primary/10',
-      'focus:text-wcpos-red-accent'
+      'focus:text-wcpos-red-accent',
+      'focus-visible:outline-2',
+      'focus-visible:outline-wcpos-red-accent'
     )
     expect(signOut.className).not.toContain('text-destructive')
   })
