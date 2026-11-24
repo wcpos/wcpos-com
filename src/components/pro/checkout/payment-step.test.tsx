@@ -171,6 +171,22 @@ function renderStepRaw(method: PaymentMethod = 'stripe', lockMethods = false) {
   )
 }
 
+describe('PaymentStep token colours', () => {
+  // --card and --primary hold bare HSL components; without hsl() the
+  // browser drops the declaration.
+  it('wraps the selected radio ring and consent accent in hsl()', () => {
+    renderStepRaw('stripe')
+
+    const dot = screen
+      .getByTestId('payment-method-stripe')
+      .querySelector('span[aria-hidden]')!
+    expect(dot.className).toContain('[box-shadow:inset_0_0_0_2.5px_hsl(var(--card))]')
+    expect(screen.getByTestId('checkout-supply-consent').className).toContain(
+      'accent-[hsl(var(--primary))]'
+    )
+  })
+})
+
 describe('PaymentStep refund-conditions gate', () => {
   beforeEach(() => {
     vi.clearAllMocks()

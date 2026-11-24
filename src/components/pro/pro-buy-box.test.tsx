@@ -100,6 +100,21 @@ describe('ProBuyBox', () => {
     expect(italianText.split('USD').length - 1).toBe(1)
   })
 
+  it('rings the selected radio dot with a valid card colour', () => {
+    renderBuyBox()
+
+    // --card holds bare HSL components, so a bare var(--card) is not a colour
+    // and the browser drops the whole box-shadow.
+    const [selectedDot, idleDot] = screen
+      .getAllByRole('radio')
+      .map((radio) => radio.querySelector('span[aria-hidden]')!)
+    expect(selectedDot.className).toContain(
+      '[box-shadow:inset_0_0_0_2.5px_hsl(var(--card))]'
+    )
+    expect(selectedDot.className).not.toMatch(/_var\(--card\)/)
+    expect(idleDot.className).not.toContain('box-shadow')
+  })
+
   it('selects the first option by default and links its checkout href', () => {
     renderBuyBox()
 
