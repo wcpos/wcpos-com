@@ -485,7 +485,6 @@
         "title": "终身",
         "subtitle": "永久更新",
         "priceSuffix": "一次性",
-        "ctaNote": "约等于{years}年年付 — 之后永久$0。",
         "ctaNoteSimple": "一次付款 — 永久更新。"
       },
       "tryFreeLink": "先试用免费版",

@@ -485,7 +485,6 @@
         "title": "Lifetime",
         "subtitle": "Updates forever",
         "priceSuffix": "once",
-        "ctaNote": "About {years} years of Yearly — then $0 forever.",
         "ctaNoteSimple": "Pay once — updates forever."
       },
       "tryFreeLink": "Try the free version first",

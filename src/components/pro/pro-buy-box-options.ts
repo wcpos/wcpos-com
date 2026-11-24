@@ -8,8 +8,8 @@ import { buildProCheckoutHref, type ProOffer } from '@/lib/pro-offer-catalog'
  * payload built server-side so the client component carries a single
  * source for "where does this CTA go and what does it report".
  *
- * The lifetime note derives its "≈N years of Yearly" claim from the live
- * prices — never hardcode a price ratio as copy.
+ * The lifetime note never compares Lifetime with Yearly: Lifetime stays
+ * available but is not sold against Yearly (owner ruling).
  */
 export interface ProBuyBoxOption {
   planId: PlanId
@@ -36,22 +36,6 @@ export type TranslateFn = (
   values?: Record<string, string | number>
 ) => string
 
-function lifetimeCtaNote(
-  offers: ProOffer[],
-  t: TranslateFn
-): string {
-  const yearly = offers.find((offer) => offer.planId === 'yearly')
-  const lifetime = offers.find((offer) => offer.planId === 'lifetime')
-  const years =
-    yearly && lifetime && yearly.price.amount > 0
-      ? Math.floor(lifetime.price.amount / yearly.price.amount)
-      : null
-
-  return years !== null && years >= 2
-    ? t('buyBox.lifetime.ctaNote', { years })
-    : t('buyBox.lifetime.ctaNoteSimple')
-}
-
 export function buildProBuyBoxOptions(
   offers: ProOffer[],
   experimentVariant: ProCheckoutVariant,
@@ -67,7 +51,7 @@ export function buildProBuyBoxOptions(
     priceSuffix: t(`buyBox.${offer.planId}.priceSuffix`),
     ctaNote:
       offer.planId === 'lifetime'
-        ? lifetimeCtaNote(offers, t)
+        ? t('buyBox.lifetime.ctaNoteSimple')
         : t('buyBox.yearly.ctaNote'),
     checkoutHref: buildProCheckoutHref(offer, experimentVariant),
     eventProperties: {

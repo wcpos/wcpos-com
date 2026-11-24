@@ -52,7 +52,7 @@ const options: ProBuyBoxOption[] = [
     priceText: '$399',
     currencyCode: 'USD',
     priceSuffix: 'once',
-    ctaNote: 'About 3 years of Yearly — then $0 forever.',
+    ctaNote: 'Pay once — updates forever.',
     checkoutHref:
       '/pro/checkout?product=wcpos-pro-lifetime&variant=variant_456&exp=pro_checkout_v1&exp_variant=control',
     eventProperties: {
@@ -137,7 +137,7 @@ describe('ProBuyBox', () => {
     const cta = screen.getByRole('link', { name: 'Buy Pro' })
     expect(cta.getAttribute('href')).toContain('product=wcpos-pro-lifetime')
     expect(
-      screen.getByText('About 3 years of Yearly — then $0 forever.')
+      screen.getByText('Pay once — updates forever.')
     ).toBeInTheDocument()
   })
 

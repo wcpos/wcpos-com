@@ -63,38 +63,21 @@ describe('buildProBuyBoxOptions', () => {
     expect(options[1].priceText).toBe('$399')
   })
 
-  it('derives the lifetime years claim from the live prices', () => {
-    const options = buildProBuyBoxOptions(offers, 'control', t)
-    expect(options[1].ctaNote).toBe('buyBox.lifetime.ctaNote|{"years":3}')
+  it('always gives Lifetime the simple note, never a comparison with Yearly', () => {
+    for (const [yearly, lifetime] of [
+      [129, 399],
+      [199, 399],
+      [350, 399],
+    ]) {
+      const priced = buildProOfferCatalog([
+        product('wcpos-pro-yearly', yearly, 'variant_yearly'),
+        product('wcpos-pro-lifetime', lifetime, 'variant_lifetime'),
+      ])
+      expect(buildProBuyBoxOptions(priced, 'control', t)[1].ctaNote).toBe(
+        'buyBox.lifetime.ctaNoteSimple'
+      )
+    }
 
-    // $199 yearly vs $399 lifetime → 2 years, still claimable
-    const closerOffers = buildProOfferCatalog([
-      product('wcpos-pro-yearly', 199, 'variant_yearly'),
-      product('wcpos-pro-lifetime', 399, 'variant_lifetime'),
-    ])
-    expect(buildProBuyBoxOptions(closerOffers, 'control', t)[1].ctaNote).toBe(
-      'buyBox.lifetime.ctaNote|{"years":2}'
-    )
-
-    const fractionalOffers = buildProOfferCatalog([
-      product('wcpos-pro-yearly', 250, 'variant_yearly'),
-      product('wcpos-pro-lifetime', 399, 'variant_lifetime'),
-    ])
-    expect(
-      buildProBuyBoxOptions(fractionalOffers, 'control', t)[1].ctaNote
-    ).toBe('buyBox.lifetime.ctaNoteSimple')
-  })
-
-  it('falls back to the simple lifetime note when the ratio is not a selling point', () => {
-    const nearParity = buildProOfferCatalog([
-      product('wcpos-pro-yearly', 350, 'variant_yearly'),
-      product('wcpos-pro-lifetime', 399, 'variant_lifetime'),
-    ])
-    expect(buildProBuyBoxOptions(nearParity, 'control', t)[1].ctaNote).toBe(
-      'buyBox.lifetime.ctaNoteSimple'
-    )
-
-    // No yearly offer present at all → nothing to compare against.
     const lifetimeOnly = buildProOfferCatalog([
       product('wcpos-pro-lifetime', 399, 'variant_lifetime'),
     ])
