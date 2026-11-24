@@ -1939,7 +1939,7 @@
     "more": { "title": "More comparisons" },
     "disclosure": {
       "title": "Who runs this comparison",
-      "body": "This page is published by WCPOS, the makers of WooCommerce POS. We obviously have a horse in this race — so every number is sourced and dated, we link to competitors' own pricing pages, and we tell you plainly when a competitor is the better choice. Check everything."
+      "body": "This page is published by WCPOS, so we are not neutral. That is why every number is sourced and dated, we link to competitors' own pricing pages, and we say plainly when a competitor is the better choice. Check everything."
     },
     "hub": {
       "metadata": {
@@ -1952,7 +1952,7 @@
       },
       "method": {
         "title": "How these comparisons work",
-        "body": "Facts come from vendors' own pricing pages and WordPress.org, fetched on a stated date and re-verified quarterly. Where WCPOS loses a category — kiosk mode, vendor hardware, app-store polish — the page says so. Spot an error? Email support@wcpos.com and we will correct it and log the change."
+        "body": "Facts come from vendors' own pricing pages and WordPress.org, fetched on a stated date; each page shows when its facts were last checked. Where WCPOS loses a category — kiosk mode, vendor hardware, app-store polish — the page says so. Spot an error? Email support@wcpos.com and we will correct it and log the change."
       },
       "oliverCard": {
         "title": "WCPOS vs Oliver POS",

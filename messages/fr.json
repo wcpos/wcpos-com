@@ -1939,7 +1939,7 @@
     "more": { "title": "Autres comparatifs" },
     "disclosure": {
       "title": "Qui est derrière ce comparatif",
-      "body": "Cette page est publiée par WCPOS, les créateurs de WooCommerce POS. Nous avons évidemment un intérêt dans l'affaire — c'est pourquoi chaque chiffre est sourcé et daté, nous renvoyons vers les pages de tarifs des concurrents eux-mêmes, et nous disons clairement quand un concurrent est le meilleur choix. Vérifiez tout."
+      "body": "Cette page est publiée par WCPOS : nous ne sommes donc pas neutres. C'est pourquoi chaque chiffre est sourcé et daté, nous renvoyons vers les pages de tarifs des concurrents eux-mêmes, et nous disons clairement quand un concurrent est le meilleur choix. Vérifiez tout."
     },
     "hub": {
       "metadata": {
@@ -1952,7 +1952,7 @@
       },
       "method": {
         "title": "Comment fonctionnent ces comparatifs",
-        "body": "Les faits proviennent des pages de tarifs des éditeurs eux-mêmes et de WordPress.org, consultées à une date indiquée et revérifiées chaque trimestre. Là où WCPOS perd une catégorie — mode kiosque, matériel fourni par l'éditeur, finition digne d'un app store — la page le dit. Vous repérez une erreur ? Écrivez à support@wcpos.com : nous la corrigerons et consignerons la modification."
+        "body": "Les faits proviennent des pages de tarifs des éditeurs eux-mêmes et de WordPress.org, consultées à une date indiquée ; chaque page indique quand ses faits ont été vérifiés pour la dernière fois. Là où WCPOS perd une catégorie — mode kiosque, matériel fourni par l'éditeur, finition digne d'un app store — la page le dit. Vous repérez une erreur ? Écrivez à support@wcpos.com : nous la corrigerons et consignerons la modification."
       },
       "oliverCard": {
         "title": "WCPOS vs Oliver POS",

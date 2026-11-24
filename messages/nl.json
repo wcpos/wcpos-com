@@ -1939,7 +1939,7 @@
     "more": { "title": "Meer vergelijkingen" },
     "disclosure": {
       "title": "Wie deze vergelijking publiceert",
-      "body": "Deze pagina wordt gepubliceerd door WCPOS, de makers van WooCommerce POS. We hebben uiteraard een belang bij de uitkomst — daarom is elk cijfer voorzien van bron en datum, linken we naar de eigen prijspagina's van concurrenten en zeggen we ronduit wanneer een concurrent de betere keuze is. Controleer alles zelf."
+      "body": "Deze pagina wordt gepubliceerd door WCPOS, dus we zijn niet neutraal. Daarom is elk cijfer voorzien van bron en datum, linken we naar de eigen prijspagina's van concurrenten en zeggen we ronduit wanneer een concurrent de betere keuze is. Controleer alles zelf."
     },
     "hub": {
       "metadata": {
@@ -1952,7 +1952,7 @@
       },
       "method": {
         "title": "Hoe deze vergelijkingen werken",
-        "body": "De feiten komen van de eigen prijspagina's van leveranciers en van WordPress.org, opgehaald op een vermelde datum en elk kwartaal opnieuw gecontroleerd. Waar WCPOS een categorie verliest — kioskmodus, hardware van de leverancier, app-store-afwerking — staat dat gewoon op de pagina. Een fout gezien? Mail naar support@wcpos.com en we corrigeren het en leggen de wijziging vast."
+        "body": "De feiten komen van de eigen prijspagina's van leveranciers en van WordPress.org, opgehaald op een vermelde datum; elke pagina laat zien wanneer de feiten voor het laatst zijn gecontroleerd. Waar WCPOS een categorie verliest — kioskmodus, hardware van de leverancier, app-store-afwerking — staat dat gewoon op de pagina. Een fout gezien? Mail naar support@wcpos.com en we corrigeren het en leggen de wijziging vast."
       },
       "oliverCard": {
         "title": "WCPOS vs Oliver POS",
