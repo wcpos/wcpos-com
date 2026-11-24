@@ -2,25 +2,38 @@ import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 
-// The /compare disclosure (hub and every detail page) never names the product
-// "WooCommerce POS" (WooCommerce is Automattic's trademark; the product is
-// WCPOS), and the method note never promises a re-check schedule the pages
-// do not keep.
+// The /compare method note and the Jovvie footer never promise a re-check
+// schedule the pages do not keep. (metadata-length.test.ts keeps
+// "WooCommerce POS" out of the disclosure in every locale.)
 const LOCALES = ['en', 'de', 'nl', 'fr', 'es', 'it', 'pt', 'ja', 'ko', 'zh'] as const
 
-// Each locale's old "makers of WooCommerce POS" phrase and old quarterly
-// clause, from git.
-const OLD: Record<(typeof LOCALES)[number], { makers: string; quarterly: string }> = {
-  en: { makers: 'the makers of WooCommerce POS', quarterly: 're-verified quarterly' },
-  de: { makers: 'den Machern von WooCommerce POS', quarterly: 'vierteljährlich neu geprüft' },
-  nl: { makers: 'de makers van WooCommerce POS', quarterly: 'elk kwartaal opnieuw gecontroleerd' },
-  fr: { makers: 'les créateurs de WooCommerce POS', quarterly: 'revérifiées chaque trimestre' },
-  es: { makers: 'los creadores de WooCommerce POS', quarterly: 'verificadas de nuevo cada trimestre' },
-  it: { makers: 'i creatori di WooCommerce POS', quarterly: 'riverificati ogni trimestre' },
-  pt: { makers: 'os criadores do WooCommerce POS', quarterly: 'verificados novamente a cada trimestre' },
-  ja: { makers: 'WooCommerce POSの開発元', quarterly: '四半期ごとに再検証' },
-  ko: { makers: 'WooCommerce POS 개발사', quarterly: '분기마다 다시 검증' },
-  zh: { makers: 'WooCommerce POS 的开发者', quarterly: '每季度重新核实' },
+// Each locale's old quarterly re-check clause, from git.
+const OLD_QUARTERLY: Record<(typeof LOCALES)[number], string> = {
+  en: 're-verified quarterly',
+  de: 'vierteljährlich neu geprüft',
+  nl: 'elk kwartaal opnieuw gecontroleerd',
+  fr: 'revérifiées chaque trimestre',
+  es: 'verificadas de nuevo cada trimestre',
+  it: 'riverificati ogni trimestre',
+  pt: 'verificados novamente a cada trimestre',
+  ja: '四半期ごとに再検証',
+  ko: '분기마다 다시 검증',
+  zh: '每季度重新核实',
+}
+
+// Jovvie's facts have not been re-checked since 2026-07-09, so its footer
+// carries no re-check promise; each locale's old closing sentence, from git.
+const OLD_JOVVIE_PROMISE: Record<(typeof LOCALES)[number], string> = {
+  en: 'We re-verify every quarter.',
+  de: 'Wir überprüfen sie jedes Quartal erneut.',
+  nl: 'We controleren ze elk kwartaal opnieuw.',
+  fr: 'Nous les revérifions chaque trimestre.',
+  es: 'Los volvemos a verificar cada trimestre.',
+  it: 'Li verifichiamo di nuovo ogni trimestre.',
+  pt: 'Verificamo-los novamente a cada trimestre.',
+  ja: '四半期ごとに再確認します。',
+  ko: '분기마다 다시 확인합니다.',
+  zh: '我们每季度重新核实。',
 }
 
 function compare(locale: string) {
@@ -42,11 +55,13 @@ describe('compare disclosure and method copy', () => {
     )
   })
 
-  it.each(LOCALES)('%s disclosure drops the old "makers of WooCommerce POS" phrase', (locale) => {
-    expect(compare(locale).disclosure.body).not.toContain(OLD[locale].makers)
+  it.each(LOCALES)('%s method drops the quarterly re-check claim', (locale) => {
+    expect(compare(locale).hub.method.body).not.toContain(OLD_QUARTERLY[locale])
   })
 
-  it.each(LOCALES)('%s method drops the quarterly re-check claim', (locale) => {
-    expect(compare(locale).hub.method.body).not.toContain(OLD[locale].quarterly)
+  it.each(LOCALES)('%s Jovvie footer drops the quarterly re-check promise', (locale) => {
+    expect(compare(locale).jovvie.footer.factsDated).not.toContain(
+      OLD_JOVVIE_PROMISE[locale],
+    )
   })
 })
