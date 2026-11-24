@@ -1737,11 +1737,9 @@
       "fullHistory": "Histórico completo no GitHub —",
       "desktop": "Computador",
       "emptyNotes": "_Sem notas de lançamento para esta versão._",
-      "fallback": {
-        "v196": "- Cash drawer support — auto-open after payment or via a new Open Drawer button, with per-printer connectors (ESC-POS, Epson, PrintNode, cloud)\n- Fixed analytics events firing too often\n- Updated translations",
-        "v195": "- Fixed a payment-gateways API crash (HTTP 500 with some third-party gateways, e.g. ToyyibPay)",
-        "v194": "- Redesigned Bluetooth printer setup; serial printing for OS-paired Bluetooth Classic printers\n- Improved Windows raw printing; smoother USB flow",
-        "v190": "- New receipt template gallery; thermal printing (58/80mm)\n- Customer Tax IDs; Pro coupons & refunds at the POS"
+      "empty": {
+        "title": "Não foi possível carregar a lista de lançamentos",
+        "body": "As notas de lançamento recentes não estão disponíveis aqui de momento. Os downloads desta página não são afetados."
       },
       "plugin": "Gratuito",
       "showAllNotes": "Mostrar todas as notas de lançamento da versão {version}",

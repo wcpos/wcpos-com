@@ -1737,11 +1737,9 @@
       "fullHistory": "GitHub 上的完整历史 —",
       "desktop": "桌面版",
       "emptyNotes": "_此版本没有发布说明。_",
-      "fallback": {
-        "v196": "- Cash drawer support — auto-open after payment or via a new Open Drawer button, with per-printer connectors (ESC-POS, Epson, PrintNode, cloud)\n- Fixed analytics events firing too often\n- Updated translations",
-        "v195": "- Fixed a payment-gateways API crash (HTTP 500 with some third-party gateways, e.g. ToyyibPay)",
-        "v194": "- Redesigned Bluetooth printer setup; serial printing for OS-paired Bluetooth Classic printers\n- Improved Windows raw printing; smoother USB flow",
-        "v190": "- New receipt template gallery; thermal printing (58/80mm)\n- Customer Tax IDs; Pro coupons & refunds at the POS"
+      "empty": {
+        "title": "发布列表未能加载",
+        "body": "目前无法在此显示近期发布说明。本页的下载不受影响。"
       },
       "plugin": "免费",
       "showAllNotes": "显示 {version} 的全部发布说明",
