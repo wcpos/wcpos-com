@@ -1740,7 +1740,7 @@
       "emptyNotes": "_No release notes for this version._",
       "empty": {
         "title": "The release list did not load",
-        "body": "GitHub did not answer, so recent release notes can't be shown here. The downloads on this page are not affected."
+        "body": "Recent release notes aren't available here right now. The downloads on this page are not affected."
       },
       "plugin": "Free",
       "showAllNotes": "Show all {version} release notes",

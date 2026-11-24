@@ -1740,7 +1740,7 @@
       "emptyNotes": "_Nessuna nota di rilascio per questa versione._",
       "empty": {
         "title": "Impossibile caricare l’elenco delle versioni",
-        "body": "GitHub non ha risposto, quindi qui non è possibile mostrare le note di rilascio recenti. I download di questa pagina non sono interessati."
+        "body": "Le note di rilascio recenti non sono disponibili qui al momento. I download di questa pagina non sono interessati."
       },
       "plugin": "Gratis",
       "showAllNotes": "Mostra tutte le note di rilascio della versione {version}",

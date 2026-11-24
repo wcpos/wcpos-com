@@ -1740,7 +1740,7 @@
       "emptyNotes": "_Aucune note de version pour cette version._",
       "empty": {
         "title": "La liste des versions n’a pas pu être chargée",
-        "body": "GitHub n’a pas répondu, les notes des versions récentes ne peuvent donc pas s’afficher ici. Les téléchargements de cette page ne sont pas concernés."
+        "body": "Les notes des versions récentes ne sont pas disponibles ici pour le moment. Les téléchargements de cette page ne sont pas concernés."
       },
       "plugin": "Gratuit",
       "showAllNotes": "Afficher toutes les notes de version {version}",

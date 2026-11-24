@@ -1740,7 +1740,7 @@
       "emptyNotes": "_Keine Versionshinweise für diese Version._",
       "empty": {
         "title": "Die Release-Liste wurde nicht geladen",
-        "body": "GitHub hat nicht geantwortet, daher können die aktuellen Versionshinweise hier nicht angezeigt werden. Die Downloads auf dieser Seite sind davon nicht betroffen."
+        "body": "Aktuelle Versionshinweise sind hier gerade nicht verfügbar. Die Downloads auf dieser Seite sind davon nicht betroffen."
       },
       "plugin": "Kostenlos",
       "showAllNotes": "Alle Versionshinweise zu {version} anzeigen",

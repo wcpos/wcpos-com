@@ -1740,7 +1740,7 @@
       "emptyNotes": "_Geen release-opmerkingen voor deze versie._",
       "empty": {
         "title": "De releaselijst is niet geladen",
-        "body": "GitHub gaf geen antwoord, dus recente release-opmerkingen kunnen hier niet worden getoond. De downloads op deze pagina werken gewoon."
+        "body": "Recente release-opmerkingen zijn hier op dit moment niet beschikbaar. De downloads op deze pagina werken gewoon."
       },
       "plugin": "Gratis",
       "showAllNotes": "Alle release-opmerkingen van {version} tonen",

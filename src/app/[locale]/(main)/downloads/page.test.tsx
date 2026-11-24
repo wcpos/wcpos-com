@@ -159,7 +159,7 @@ describe('DownloadsPage', () => {
     expect(screen.getByText('The release list did not load')).toBeInTheDocument()
     expect(
       screen.getByText(
-        "GitHub did not answer, so recent release notes can't be shown here. The downloads on this page are not affected.",
+        "Recent release notes aren't available here right now. The downloads on this page are not affected.",
       ),
     ).toBeInTheDocument()
     expect(screen.queryByText(/^\d+\.\d+\.\d+$/)).not.toBeInTheDocument()

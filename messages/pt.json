@@ -1740,7 +1740,7 @@
       "emptyNotes": "_Sem notas de lançamento para esta versão._",
       "empty": {
         "title": "Não foi possível carregar a lista de lançamentos",
-        "body": "O GitHub não respondeu, por isso as notas de lançamento recentes não podem ser mostradas aqui. Os downloads desta página não são afetados."
+        "body": "As notas de lançamento recentes não estão disponíveis aqui de momento. Os downloads desta página não são afetados."
       },
       "plugin": "Gratuito",
       "showAllNotes": "Mostrar todas as notas de lançamento da versão {version}",

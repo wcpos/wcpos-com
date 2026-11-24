@@ -1740,7 +1740,7 @@
       "emptyNotes": "_No hay notas de versión para esta versión._",
       "empty": {
         "title": "No se pudo cargar la lista de versiones",
-        "body": "GitHub no respondió, así que aquí no se pueden mostrar las notas de las versiones recientes. Las descargas de esta página no se ven afectadas."
+        "body": "Las notas de las versiones recientes no están disponibles aquí en este momento. Las descargas de esta página no se ven afectadas."
       },
       "plugin": "Gratis",
       "showAllNotes": "Mostrar todas las notas de la versión {version}",

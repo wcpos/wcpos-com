@@ -50,7 +50,7 @@ The site is not fully translated unless these non-obvious surfaces are covered t
 
 Release notes are intentionally English-only. They are authored upstream in GitHub releases and should flow through from GitHub in English rather than being copied into separate translated versions. Keep the surrounding release-history UI translated, but mark English release-note bodies with `contentLocale: 'en'` so the page can show the localized English-content notice and set the rendered Markdown `lang` attribute correctly.
 
-Do not translate fallback release-note bodies in non-English message files. If GitHub has no release body for a version, use the approved English fallback body and keep the same English-content notice visible.
+There is no hard-coded release list or English fallback body. If GitHub has no release body for a version, that release shows the translated `downloads.releaseHistory.emptyNotes`. If there are no releases to show at all, /downloads shows the translated `downloads.releaseHistory.empty` state above the GitHub history links.
 
 Roadmap issue details are also third-party authored GitHub content and may be shown in English, but all roadmap labels, status text, filters, notices, and page chrome must remain translated.
 
