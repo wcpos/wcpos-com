@@ -1936,7 +1936,7 @@
     "more": { "title": "更多对比" },
     "disclosure": {
       "title": "这份对比由谁发布",
-      "body": "本页面由 WooCommerce POS 的开发者 WCPOS 发布。我们显然是利益相关方——因此每一个数字都注明来源和日期，我们直接链接到竞争对手自己的定价页面，并且在竞争对手是更好选择时坦率地告诉你。请自行核实所有内容。"
+      "body": "本页面由 WCPOS 发布，所以我们并不中立。正因如此，每一个数字都注明来源和日期，我们直接链接到竞争对手自己的定价页面，并且在竞争对手是更好选择时坦率地告诉你。请自行核实所有内容。"
     },
     "hub": {
       "metadata": {
@@ -1949,7 +1949,7 @@
       },
       "method": {
         "title": "这些对比是如何做出来的",
-        "body": "事实数据来自厂商自己的定价页面和 WordPress.org，在注明的日期抓取，并每季度重新核实。在 WCPOS 落后的类别——自助终端模式、厂商硬件、应用商店的打磨程度——页面会如实说明。发现错误？发邮件到 support@wcpos.com，我们会更正并记录每次修改。"
+        "body": "事实数据来自厂商自己的定价页面和 WordPress.org，在注明的日期抓取；每个页面都会注明其信息最后一次核实的时间。在 WCPOS 落后的类别——自助终端模式、厂商硬件、应用商店的打磨程度——页面会如实说明。发现错误？发邮件到 support@wcpos.com，我们会更正并记录每次修改。"
       },
       "oliverCard": {
         "title": "WCPOS vs Oliver POS",
@@ -2651,7 +2651,7 @@
         }
       },
       "footer": {
-        "factsDated": "有关 Jovvie 的信息截至 2026-07-09，来自我们自己的竞品研究，此后未重新核实；决定前请到 jovvie.com 查看当前价格。WCPOS 信息来自 wcpos.com、docs.wcpos.com 和 WordPress.org。WCPOS 信息适用于 2026-11-09 发布的 WCPOS 2.0，应用和插件均需为 2.0 版本。我们每季度重新核实。",
+        "factsDated": "有关 Jovvie 的信息截至 2026-07-09，来自我们自己的竞品研究，此后未重新核实；决定前请到 jovvie.com 查看当前价格。WCPOS 信息来自 wcpos.com、docs.wcpos.com 和 WordPress.org。WCPOS 信息适用于 2026-11-09 发布的 WCPOS 2.0，应用和插件均需为 2.0 版本。",
         "corrections": "发现错误？发邮件到 support@wcpos.com——我们会尽快更正并记录每次修改。"
       }
     },

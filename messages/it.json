@@ -1936,7 +1936,7 @@
     "more": { "title": "Altri confronti" },
     "disclosure": {
       "title": "Chi pubblica questo confronto",
-      "body": "Questa pagina è pubblicata da WCPOS, i creatori di WooCommerce POS. Abbiamo ovviamente un interesse in gioco — per questo ogni dato è documentato e datato, rimandiamo alle pagine dei prezzi dei concorrenti e diciamo chiaramente quando un concorrente è la scelta migliore. Verificate tutto."
+      "body": "Questa pagina è pubblicata da WCPOS, quindi non siamo neutrali. Per questo ogni dato è documentato e datato, rimandiamo alle pagine dei prezzi dei concorrenti e diciamo chiaramente quando un concorrente è la scelta migliore. Verificate tutto."
     },
     "hub": {
       "metadata": {
@@ -1949,7 +1949,7 @@
       },
       "method": {
         "title": "Come funzionano questi confronti",
-        "body": "I dati provengono dalle pagine dei prezzi dei fornitori stessi e da WordPress.org, rilevati in una data dichiarata e riverificati ogni trimestre. Dove WCPOS perde in una categoria — modalità chiosco, hardware del fornitore, rifinitura da app store — la pagina lo dice. Avete trovato un errore? Scrivete a support@wcpos.com: lo correggeremo e registreremo la modifica."
+        "body": "I dati provengono dalle pagine dei prezzi dei fornitori stessi e da WordPress.org, rilevati in una data dichiarata; ogni pagina indica quando i suoi dati sono stati controllati per l'ultima volta. Dove WCPOS perde in una categoria — modalità chiosco, hardware del fornitore, rifinitura da app store — la pagina lo dice. Avete trovato un errore? Scrivete a support@wcpos.com: lo correggeremo e registreremo la modifica."
       },
       "oliverCard": {
         "title": "WCPOS vs Oliver POS",
@@ -2651,7 +2651,7 @@
         }
       },
       "footer": {
-        "factsDated": "I dati su Jovvie risalgono al 2026-07-09, provengono dalla nostra ricerca sui concorrenti e non sono stati ricontrollati da allora; consultate jovvie.com per i prezzi attuali prima di decidere. I dati su WCPOS provengono da wcpos.com, docs.wcpos.com e WordPress.org e si riferiscono a WCPOS 2.0, rilasciato il 2026-11-09, che richiede sia l'app sia il plugin alla versione 2.0. Li verifichiamo di nuovo ogni trimestre.",
+        "factsDated": "I dati su Jovvie risalgono al 2026-07-09, provengono dalla nostra ricerca sui concorrenti e non sono stati ricontrollati da allora; consultate jovvie.com per i prezzi attuali prima di decidere. I dati su WCPOS provengono da wcpos.com, docs.wcpos.com e WordPress.org e si riferiscono a WCPOS 2.0, rilasciato il 2026-11-09, che richiede sia l'app sia il plugin alla versione 2.0.",
         "corrections": "Avete trovato un errore? Scrivete a support@wcpos.com — correggiamo rapidamente e registriamo ogni modifica."
       }
     },
