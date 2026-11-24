@@ -2318,7 +2318,7 @@
         "offline": "オフラインモードなし：有効なインターネット接続が必要です。",
         "multiLocation": "複数拠点にはまだ対応していません。",
         "gateways": "カード決済にはWooPaymentsまたはStripeが必要です。",
-        "outro": "WooCommerceはWooCommerce本体にPOS機能を追加し続けているため、このリストは短くなると予想されます。四半期ごとに再確認します。"
+        "outro": "WooCommerceはWooCommerce本体にPOS機能を追加し続けているため、このリストは短くなると予想されます。最後に確認した日付はページ下部に記載しています。"
       },
       "woocommerceBetter": {
         "title": "WooCommerceのPOSが優れている点",
@@ -2367,7 +2367,7 @@
         }
       },
       "footer": {
-        "factsDated": "WooCommerceのPOSに関する情報は2026-10-06にWooCommerce自身のページ（POSのドキュメント、POSのページ、WooPaymentsの手数料ページ）で確認済みです。WCPOSの情報はwcpos.comに基づき、2026-11-09にリリースされたWCPOS 2.0についてのものです。アプリとプラグインの両方がバージョン2.0である必要があります。四半期ごとに再確認します。",
+        "factsDated": "WooCommerceのPOSに関する情報は2026-10-06にWooCommerce自身のページ（POSのドキュメント、POSのページ、WooPaymentsの手数料ページ）で確認済みです。WCPOSの情報はwcpos.comに基づき、2026-11-09にリリースされたWCPOS 2.0についてのものです。アプリとプラグインの両方がバージョン2.0である必要があります。",
         "corrections": "誤りを見つけましたか？ support@wcpos.com までご連絡ください。迅速に修正し、すべての変更を記録します。"
       }
     },
@@ -2468,7 +2468,7 @@
         "countries": "Squareは米国、カナダ、オーストラリア、日本、英国、フランス、スペイン、アイルランドで利用でき、WooCommerceの通貨はSquareアカウントの通貨と一致する必要があります。",
         "sku": "すべての商品にSKUが必要です。",
         "variations": "SquareからWooCommerceへ商品を同期する場合、商品ごとに最大250バリエーション、6属性までです。",
-        "outro": "この一覧は四半期ごとに再確認します。"
+        "outro": "この一覧を最後に確認した日付はページ下部に記載しています。"
       },
       "squareBetter": {
         "title": "Squareが本当に優れている点",
@@ -2538,7 +2538,7 @@
         }
       },
       "footer": {
-        "factsDated": "Squareに関する事実は2026-10-06にSquare自身のページ（手数料ページ、料金変更の発表、オフライン決済、Tap to Pay、デバイス、国際的な提供状況に関するヘルプ記事）およびSquare for WooCommerce拡張機能のWooCommerceドキュメントで確認し、2026-11-18に再確認しました。WCPOSに関する事実はwcpos.comとdocs.wcpos.comに基づき、2026-11-09にリリースされたWCPOS 2.0についてのものです。アプリとプラグインの両方がバージョン2.0である必要があります。四半期ごとに再確認します。",
+        "factsDated": "Squareに関する事実は2026-10-06にSquare自身のページ（手数料ページ、料金変更の発表、オフライン決済、Tap to Pay、デバイス、国際的な提供状況に関するヘルプ記事）およびSquare for WooCommerce拡張機能のWooCommerceドキュメントで確認し、2026-11-18に再確認しました。WCPOSに関する事実はwcpos.comとdocs.wcpos.comに基づき、2026-11-09にリリースされたWCPOS 2.0についてのものです。アプリとプラグインの両方がバージョン2.0である必要があります。",
         "corrections": "誤りを見つけましたか？ support@wcpos.com までご連絡ください。迅速に修正し、すべての変更を記録します。"
       }
     },
@@ -2793,7 +2793,7 @@
         }
       },
       "footer": {
-        "factsDated": "Viteposの情報は2026-10-07にvitepos.comとWordPress.orgの掲載ページで確認しました（「出典」を参照）。決める前に現在の価格をvitepos.comでご確認ください。WCPOSの情報はwcpos.com、docs.wcpos.com、WordPress.orgに基づき、2026-11-09にリリースされたWCPOS 2.0についてのものです。アプリとプラグインの両方がバージョン2.0である必要があります。四半期ごとに再確認しています。",
+        "factsDated": "Viteposの情報は2026-10-07にvitepos.comとWordPress.orgの掲載ページで確認しました（「出典」を参照）。決める前に現在の価格をvitepos.comでご確認ください。WCPOSの情報はwcpos.com、docs.wcpos.com、WordPress.orgに基づき、2026-11-09にリリースされたWCPOS 2.0についてのものです。アプリとプラグインの両方がバージョン2.0である必要があります。",
         "corrections": "誤りを見つけましたか？ support@wcpos.com までご連絡ください。迅速に修正し、すべての変更を記録します。"
       }
     },
@@ -2938,7 +2938,7 @@
         }
       },
       "footer": {
-        "factsDated": "YITH Point of Saleの情報は2026-10-07にyithemes.comとdocs.yithemes.comで確認しました（「出典」を参照）。決める前に現在の価格をyithemes.comでご確認ください。WCPOSの情報はwcpos.com、docs.wcpos.com、WordPress.orgに基づき、2026-11-09にリリースされたWCPOS 2.0についてのものです。アプリとプラグインの両方がバージョン2.0である必要があります。四半期ごとに再確認しています。",
+        "factsDated": "YITH Point of Saleの情報は2026-10-07にyithemes.comとdocs.yithemes.comで確認しました（「出典」を参照）。決める前に現在の価格をyithemes.comでご確認ください。WCPOSの情報はwcpos.com、docs.wcpos.com、WordPress.orgに基づき、2026-11-09にリリースされたWCPOS 2.0についてのものです。アプリとプラグインの両方がバージョン2.0である必要があります。",
         "corrections": "誤りを見つけましたか？ support@wcpos.com までご連絡ください。迅速に修正し、すべての変更を記録します。"
       }
     },
@@ -3084,7 +3084,7 @@
         }
       },
       "footer": {
-        "factsDated": "FooSalesの情報は2026-10-07にfoosales.com、help.foosales.com、App Storeの掲載ページで確認しました（「出典」を参照）。決める前にfoosales.comで現在の価格をご確認ください。WCPOSに関する情報はwcpos.com、docs.wcpos.com、WordPress.orgに基づき、2026-11-09にリリースされたWCPOS 2.0についてのものです。アプリとプラグインの両方がバージョン2.0である必要があります。四半期ごとに再確認します。",
+        "factsDated": "FooSalesの情報は2026-10-07にfoosales.com、help.foosales.com、App Storeの掲載ページで確認しました（「出典」を参照）。決める前にfoosales.comで現在の価格をご確認ください。WCPOSに関する情報はwcpos.com、docs.wcpos.com、WordPress.orgに基づき、2026-11-09にリリースされたWCPOS 2.0についてのものです。アプリとプラグインの両方がバージョン2.0である必要があります。",
         "corrections": "誤りを見つけましたか？ support@wcpos.com までご連絡ください。迅速に修正し、すべての変更を記録します。"
       }
     }

@@ -2318,7 +2318,7 @@
         "offline": "Kein Offline-Modus: Eine aktive Internetverbindung ist erforderlich.",
         "multiLocation": "Noch keine Unterstützung für mehrere Standorte.",
         "gateways": "Kartenzahlungen benötigen WooPayments oder Stripe.",
-        "outro": "WooCommerce fügt WooCommerce Core weiterhin POS-Funktionen hinzu; diese Liste dürfte also kürzer werden — wir prüfen sie jedes Quartal erneut."
+        "outro": "WooCommerce fügt WooCommerce Core weiterhin POS-Funktionen hinzu; diese Liste dürfte also kürzer werden — am Ende der Seite steht, wann sie zuletzt geprüft wurde."
       },
       "woocommerceBetter": {
         "title": "Wo das POS von WooCommerce besser ist",
@@ -2367,7 +2367,7 @@
         }
       },
       "footer": {
-        "factsDated": "Fakten zum POS von WooCommerce am 2026-10-06 anhand WooCommerce-eigener Seiten überprüft (POS-Dokumentation, POS-Seite und WooPayments-Gebührenseite); WCPOS-Fakten stammen von wcpos.com und beziehen sich auf WCPOS 2.0, veröffentlicht am 2026-11-09, wofür sowohl die App als auch das Plugin auf Version 2.0 sein müssen. Wir prüfen sie jedes Quartal erneut.",
+        "factsDated": "Fakten zum POS von WooCommerce am 2026-10-06 anhand WooCommerce-eigener Seiten überprüft (POS-Dokumentation, POS-Seite und WooPayments-Gebührenseite); WCPOS-Fakten stammen von wcpos.com und beziehen sich auf WCPOS 2.0, veröffentlicht am 2026-11-09, wofür sowohl die App als auch das Plugin auf Version 2.0 sein müssen.",
         "corrections": "Einen Fehler entdeckt? Schreiben Sie an support@wcpos.com — wir korrigieren schnell und protokollieren jede Änderung."
       }
     },
@@ -2468,7 +2468,7 @@
         "countries": "Square ist in den USA, Kanada, Australien, Japan, dem Vereinigten Königreich, Frankreich, Spanien und Irland verfügbar; Ihre WooCommerce-Währung muss mit der Währung Ihres Square-Kontos übereinstimmen.",
         "sku": "Jedes Produkt muss eine SKU haben.",
         "variations": "Bei der Synchronisierung von Produkten von Square zu WooCommerce sind höchstens 250 Varianten und 6 Attribute pro Produkt möglich.",
-        "outro": "Wir prüfen diese Liste jedes Quartal erneut."
+        "outro": "Am Ende der Seite steht, wann diese Liste zuletzt geprüft wurde."
       },
       "squareBetter": {
         "title": "Wo Square wirklich besser ist",
@@ -2538,7 +2538,7 @@
         }
       },
       "footer": {
-        "factsDated": "Fakten zu Square am 2026-10-06 anhand Square-eigener Seiten überprüft (Gebührenseite, Preisankündigung und Hilfeartikel zu Offline-Zahlungen, Tap to Pay, Geräten und internationaler Verfügbarkeit) sowie anhand der WooCommerce-Dokumentation zur Erweiterung Square for WooCommerce, erneut geprüft am 2026-11-18; WCPOS-Fakten stammen von wcpos.com und docs.wcpos.com und beziehen sich auf WCPOS 2.0, veröffentlicht am 2026-11-09, wofür sowohl die App als auch das Plugin auf Version 2.0 sein müssen. Wir prüfen sie jedes Quartal erneut.",
+        "factsDated": "Fakten zu Square am 2026-10-06 anhand Square-eigener Seiten überprüft (Gebührenseite, Preisankündigung und Hilfeartikel zu Offline-Zahlungen, Tap to Pay, Geräten und internationaler Verfügbarkeit) sowie anhand der WooCommerce-Dokumentation zur Erweiterung Square for WooCommerce, erneut geprüft am 2026-11-18; WCPOS-Fakten stammen von wcpos.com und docs.wcpos.com und beziehen sich auf WCPOS 2.0, veröffentlicht am 2026-11-09, wofür sowohl die App als auch das Plugin auf Version 2.0 sein müssen.",
         "corrections": "Einen Fehler entdeckt? Schreiben Sie an support@wcpos.com — wir korrigieren schnell und protokollieren jede Änderung."
       }
     },
@@ -2793,7 +2793,7 @@
         }
       },
       "footer": {
-        "factsDated": "Die Fakten zu Vitepos wurden am 2026-10-07 von vitepos.com und dessen WordPress.org-Eintrag abgerufen (siehe Quellen); prüfen Sie vor Ihrer Entscheidung die aktuellen Preise auf vitepos.com. Die Fakten zu WCPOS stammen von wcpos.com, docs.wcpos.com und WordPress.org und beziehen sich auf WCPOS 2.0, veröffentlicht am 2026-11-09, wofür sowohl die App als auch das Plugin auf Version 2.0 sein müssen. Wir überprüfen sie jedes Quartal erneut.",
+        "factsDated": "Die Fakten zu Vitepos wurden am 2026-10-07 von vitepos.com und dessen WordPress.org-Eintrag abgerufen (siehe Quellen); prüfen Sie vor Ihrer Entscheidung die aktuellen Preise auf vitepos.com. Die Fakten zu WCPOS stammen von wcpos.com, docs.wcpos.com und WordPress.org und beziehen sich auf WCPOS 2.0, veröffentlicht am 2026-11-09, wofür sowohl die App als auch das Plugin auf Version 2.0 sein müssen.",
         "corrections": "Einen Fehler entdeckt? Schreiben Sie an support@wcpos.com — wir korrigieren schnell und protokollieren jede Änderung."
       }
     },
@@ -2938,7 +2938,7 @@
         }
       },
       "footer": {
-        "factsDated": "Die Fakten zu YITH Point of Sale wurden am 2026-10-07 von yithemes.com und docs.yithemes.com abgerufen (siehe Quellen); prüfen Sie vor Ihrer Entscheidung den aktuellen Preis auf yithemes.com. Die Fakten zu WCPOS stammen von wcpos.com, docs.wcpos.com und WordPress.org und beziehen sich auf WCPOS 2.0, veröffentlicht am 2026-11-09, wofür sowohl die App als auch das Plugin auf Version 2.0 sein müssen. Wir überprüfen sie jedes Quartal erneut.",
+        "factsDated": "Die Fakten zu YITH Point of Sale wurden am 2026-10-07 von yithemes.com und docs.yithemes.com abgerufen (siehe Quellen); prüfen Sie vor Ihrer Entscheidung den aktuellen Preis auf yithemes.com. Die Fakten zu WCPOS stammen von wcpos.com, docs.wcpos.com und WordPress.org und beziehen sich auf WCPOS 2.0, veröffentlicht am 2026-11-09, wofür sowohl die App als auch das Plugin auf Version 2.0 sein müssen.",
         "corrections": "Einen Fehler entdeckt? Schreiben Sie an support@wcpos.com — wir korrigieren schnell und protokollieren jede Änderung."
       }
     },
@@ -3084,7 +3084,7 @@
         }
       },
       "footer": {
-        "factsDated": "Die Fakten zu FooSales wurden am 2026-10-07 von foosales.com, help.foosales.com und seinem App Store-Eintrag abgerufen (siehe Quellen); prüfen Sie vor Ihrer Entscheidung die aktuellen Preise auf foosales.com. Die Fakten zu WCPOS stammen von wcpos.com, docs.wcpos.com und WordPress.org und beziehen sich auf WCPOS 2.0, veröffentlicht am 2026-11-09, wofür sowohl die App als auch das Plugin auf Version 2.0 sein müssen. Wir prüfen sie jedes Quartal erneut.",
+        "factsDated": "Die Fakten zu FooSales wurden am 2026-10-07 von foosales.com, help.foosales.com und seinem App Store-Eintrag abgerufen (siehe Quellen); prüfen Sie vor Ihrer Entscheidung die aktuellen Preise auf foosales.com. Die Fakten zu WCPOS stammen von wcpos.com, docs.wcpos.com und WordPress.org und beziehen sich auf WCPOS 2.0, veröffentlicht am 2026-11-09, wofür sowohl die App als auch das Plugin auf Version 2.0 sein müssen.",
         "corrections": "Einen Fehler entdeckt? Schreiben Sie an support@wcpos.com — wir korrigieren schnell und protokollieren jede Änderung."
       }
     }
