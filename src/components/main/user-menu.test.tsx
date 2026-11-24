@@ -75,6 +75,7 @@ describe('UserMenu', () => {
       'text-wcpos-red-accent',
       'focus:bg-primary/10',
       'focus:text-wcpos-red-accent',
+      'focus-visible:outline-solid',
       'focus-visible:outline-2',
       'focus-visible:outline-wcpos-red-accent'
     )
