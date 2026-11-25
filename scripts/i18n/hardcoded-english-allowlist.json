@@ -6194,6 +6194,38 @@
       "count": 1
     },
     {
+      "id": "a8383974c179dd3d",
+      "file": "src/lib/sentry-scrub/redact.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "$1[EMAIL]",
+      "count": 1
+    },
+    {
+      "id": "f5cd0e7a9f2b6ad9",
+      "file": "src/lib/sentry-scrub/redact.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Basic [REDACTED]",
+      "count": 1
+    },
+    {
+      "id": "500db5914bb49edf",
+      "file": "src/lib/sentry-scrub/redact.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Bearer [REDACTED]",
+      "count": 1
+    },
+    {
+      "id": "823eccd590a74db1",
+      "file": "src/lib/sentry-scrub/redact.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "password",
+      "count": 1
+    },
+    {
       "id": "f59341ddaed0767a",
       "file": "src/lib/sinks/discord-sink.ts",
       "category": "error/status",
