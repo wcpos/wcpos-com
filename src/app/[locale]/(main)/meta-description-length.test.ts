@@ -134,7 +134,14 @@ describe('home and /downloads meta descriptions', () => {
     }
   )
 
-  it.each(LOCALES)(
+  // The product is WCPOS Pro; "WooCommerce POS" is never written as or
+  // alongside its name, so the English H1 is the brand alone.
+  it('en pro.hero.title is the brand alone, never "WooCommerce POS"', () => {
+    expect(en.pro.hero.title).toBe('WCPOS Pro')
+    expect(en.pro.hero.title).not.toContain('WooCommerce POS')
+  })
+
+  it.each(LOCALES.filter(({ locale }) => locale !== 'en'))(
     '$locale pro.hero.title names WooCommerce in 50 characters',
     ({ messages }) => {
       const title = messages.pro.hero.title
