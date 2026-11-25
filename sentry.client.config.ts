@@ -1,9 +1,10 @@
 import * as Sentry from '@sentry/nextjs'
+import { stripRequest } from '@/lib/sentry-scrub/request'
 import { scrubBreadcrumb, scrubEvent } from '@/lib/sentry-scrub/scrub'
 
 const SENTRY_DSN = process.env.NEXT_PUBLIC_SENTRY_DSN
 
-// Errors only: session replay and tracing were removed on 2026-11-23; bringing them back is a privacy/cookie-notice decision for Paul.
+// Errors only: session replay and tracing were removed on 2026-11-23; bringing them back is a privacy/cookie-notice decision for Paul; browser sessions are off too.
 if (SENTRY_DSN) {
   Sentry.init({
     dsn: SENTRY_DSN,
@@ -14,13 +15,15 @@ if (SENTRY_DSN) {
     // Setting this option to true will print useful information to the console while you're setting up Sentry.
     debug: false,
 
+    integrations: (defaults) => defaults.filter((integration) => integration.name !== 'BrowserSession'),
+
     // Filter out sensitive data
     beforeSend(event) {
       // Remove email from user context if present
       if (event.user?.email) {
         event.user.email = '***@***'
       }
-      return scrubEvent(event)
+      return scrubEvent(stripRequest(event))
     },
 
     beforeBreadcrumb(breadcrumb) {

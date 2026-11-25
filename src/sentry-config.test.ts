@@ -34,9 +34,10 @@ describe('Sentry configs', () => {
     await configs.client()
     expect(init).toHaveBeenCalledTimes(1)
     const options = init.mock.calls[0][0]
-    for (const key of ['integrations', 'tracesSampleRate', 'replaysSessionSampleRate', 'replaysOnErrorSampleRate']) {
+    for (const key of ['tracesSampleRate', 'replaysSessionSampleRate', 'replaysOnErrorSampleRate']) {
       expect(options).not.toHaveProperty(key)
     }
+    expect(options.integrations([{ name: 'BrowserSession' }, { name: 'Dedupe' }])).toEqual([{ name: 'Dedupe' }])
     const message = 'jane@example.com +61 412 345 678'
     const event = options.beforeSend({ message, exception: { values: [{ value: `Error: ${message}` }] } }, {})
     expect(event.message).toBe('[EMAIL] [PHONE]')
@@ -56,5 +57,25 @@ describe('Sentry configs', () => {
     expect(options).not.toHaveProperty('profilesSampleRate')
     expect(options.beforeSend({ message: 'jane@example.com failed' }, {}).message).toBe('[EMAIL] failed')
     expect(options.beforeBreadcrumb({ message: 'jane@example.com' }, {})).toEqual({ message: '[EMAIL]' })
+  })
+
+  it.each(Object.entries(configs))('%s config drops request body, cookies, query and headers', async (_name, load) => {
+    vi.stubEnv('SENTRY_DSN', DSN)
+    vi.stubEnv('NEXT_PUBLIC_SENTRY_DSN', DSN)
+    await load()
+    const options = init.mock.calls[0][0]
+    const request = {
+      url: 'https://wcpos.com/api/auth/login',
+      method: 'POST',
+      data: '{"password":"hunter2"}',
+      cookies: { 'medusa-token': 'jwt' },
+      query_string: 'email=jane%40example.com',
+      headers: { cookie: 'medusa-token=jwt', 'user-agent': 'UA/1' },
+    }
+    expect(options.beforeSend({ request }, {}).request).toEqual({
+      url: '/api/auth/login',
+      method: 'POST',
+      headers: { 'User-Agent': 'UA/1' },
+    })
   })
 })

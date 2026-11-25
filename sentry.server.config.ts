@@ -1,4 +1,5 @@
 import * as Sentry from '@sentry/nextjs'
+import { stripRequest } from '@/lib/sentry-scrub/request'
 import { scrubBreadcrumb, scrubEvent } from '@/lib/sentry-scrub/scrub'
 
 const SENTRY_DSN = process.env.SENTRY_DSN || process.env.NEXT_PUBLIC_SENTRY_DSN
@@ -23,7 +24,7 @@ if (SENTRY_DSN) {
         delete env.MEDUSA_PUBLISHABLE_KEY
         delete env.LOKI_API_KEY
       }
-      return scrubEvent(event)
+      return scrubEvent(stripRequest(event))
     },
 
     beforeBreadcrumb(breadcrumb) {
