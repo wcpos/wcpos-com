@@ -243,7 +243,7 @@ test.describe('Checkout flow', () => {
 
     // Yearly is sorted first and featured, so the first CTA is the yearly one.
     const getStartedLink = page
-      .getByRole('link', { name: /Get (Started|Instant Access)/ })
+      .getByRole('link', { name: /Buy Pro|Get Instant Access/ })
       .first()
     await expect(getStartedLink).toBeVisible({ timeout: 10000 })
 
@@ -330,9 +330,12 @@ test.describe('Checkout flow', () => {
   }) => {
     await page.goto('/pro/checkout')
 
-    await expect(page.getByText('No product selected')).toBeVisible({
+    await expect(page.getByText('Choose a plan to check out')).toBeVisible({
       timeout: 15000,
     })
+    await expect(
+      page.getByRole('link', { name: 'WCPOS Pro Yearly' })
+    ).toHaveAttribute('href', /product=wcpos-pro-yearly/)
     await expect(
       page.getByRole('link', { name: /Back to pricing/ }).first()
     ).toBeVisible()

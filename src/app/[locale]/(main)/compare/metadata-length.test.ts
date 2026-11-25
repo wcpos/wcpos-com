@@ -87,6 +87,7 @@ describe('/compare disclosure attribution', () => {
     const body = messages.compare.disclosure.body
     expect(body).not.toMatch(/kilbot/i)
     expect(body).toContain('WCPOS')
-    expect(body).toContain('WooCommerce POS')
+    // The product is WCPOS; "WooCommerce POS" is never its name.
+    expect(body).not.toContain('WooCommerce POS')
   })
 })

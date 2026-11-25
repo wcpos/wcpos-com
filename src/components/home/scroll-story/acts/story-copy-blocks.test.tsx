@@ -1,6 +1,23 @@
-import { afterEach, describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, render, screen } from '@testing-library/react'
 import { NextIntlClientProvider } from 'next-intl'
+
+vi.mock('@/i18n/navigation', () => ({
+  Link: ({
+    children,
+    href,
+    className,
+  }: {
+    children: React.ReactNode
+    href: string
+    className?: string
+  }) => (
+    <a href={href} className={className}>
+      {children}
+    </a>
+  ),
+}))
+
 import { CopyAct1, CopyAct2 } from './story-copy-blocks'
 import messages from '../../../../../messages/en.json'
 
@@ -47,6 +64,24 @@ describe('CopyAct1', () => {
     expect(heading).toHaveClass('sm:text-balance')
     expect(heading).not.toHaveClass('text-balance')
   })
+
+  it.each([
+    { name: 'onLight', ui: <CopyAct1 tone="onLight" /> },
+    { name: 'default', ui: <CopyAct1 /> },
+  ])('sends Download Free to /downloads and captions the demo login with $name tone', ({ ui }) => {
+    render(
+      <NextIntlClientProvider locale="en" messages={messages}>
+        {ui}
+      </NextIntlClientProvider>
+    )
+
+    const { a1 } = messages.home.story
+    expect(screen.getByRole('link', { name: a1.c2 })).toHaveAttribute('href', '/downloads')
+    const caption = screen.getByText(a1.demoLogin)
+    expect(caption).toHaveClass('text-xs')
+    const demo = screen.getByRole('link', { name: a1.c1 })
+    expect(demo.compareDocumentPosition(caption) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+  })
 })
 
 describe('CopyAct2', () => {
@@ -63,7 +98,7 @@ describe('CopyAct2', () => {
     for (const name of [platforms.p4, platforms.p5]) {
       expect(chip(name)).toHaveTextContent(platforms.beta)
     }
-    for (const name of [platforms.p1, platforms.p2, platforms.p3]) {
+    for (const name of [platforms.p1, platforms.p2, platforms.p3, platforms.p6]) {
       expect(chip(name)).not.toHaveTextContent(platforms.beta)
     }
   })

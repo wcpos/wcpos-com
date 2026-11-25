@@ -319,14 +319,14 @@ describe('SupportChat', () => {
 
   it('submits the translated example prompt when an example is clicked', async () => {
     renderWithIntl(<SupportChat />)
-    const example = screen.getByRole('button', { name: 'How many sites can I use my licence on?' })
+    const example = screen.getByRole('button', { name: 'How many sites can I use my license on?' })
 
     expect(example.className).toContain('inline-flex')
     fireEvent.click(example)
 
     await waitFor(() => expect(screen.getByText(/Open Settings/)).toBeInTheDocument())
     expect(fetch).toHaveBeenCalledWith('/api/support/ask', expect.objectContaining({
-      body: expect.stringContaining('How many sites can I use my licence on?'),
+      body: expect.stringContaining('How many sites can I use my license on?'),
     }))
     expect(fetch).not.toHaveBeenCalledWith('/api/support/ask', expect.objectContaining({
       body: expect.stringContaining('"e1"'),
@@ -352,7 +352,7 @@ describe('SupportChat', () => {
     renderWithIntl(<SupportChat />)
 
     // While the widget is verifying, the example chips are the visible gate.
-    const example = screen.getByRole('button', { name: 'How many sites can I use my licence on?' })
+    const example = screen.getByRole('button', { name: 'How many sites can I use my license on?' })
     expect(example).toBeDisabled()
 
     // An ad-blocker eating challenges.cloudflare.com surfaces as onError (or
@@ -443,7 +443,7 @@ describe('SupportChat', () => {
     turnstileMock.auto = false
     renderWithIntl(<SupportChat />)
 
-    const example = screen.getByRole('button', { name: 'How many sites can I use my licence on?' })
+    const example = screen.getByRole('button', { name: 'How many sites can I use my license on?' })
     expect(example).toBeDisabled()
 
     act(() => {
@@ -465,7 +465,7 @@ describe('SupportChat', () => {
 
     expect(screen.getByText(/security check couldn’t finish/)).toBeInTheDocument()
     expect(
-      screen.getByRole('button', { name: 'How many sites can I use my licence on?' })
+      screen.getByRole('button', { name: 'How many sites can I use my license on?' })
     ).toBeEnabled()
   })
 

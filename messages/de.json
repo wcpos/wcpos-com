@@ -12,6 +12,7 @@
     "documentation": "Dokumentation",
     "roadmap": "Produktplanung",
     "pro": "Pro",
+    "getPro": "Hol dir Pro",
     "support": "Hilfe",
     "downloads": "Herunterladen"
   },
@@ -76,7 +77,7 @@
     },
     "cta": {
       "title": "Bereit, mit WooCommerce im Laden zu verkaufen?",
-      "subtitle": "Probiere die Live-Demo aus oder lade das kostenlose Plugin herunter, um loszulegen.",
+      "subtitle": "Die Demo öffnet sich in deinem Browser, ohne dass du etwas installieren musst. Das Plugin ist kostenlos.",
       "liveDemo": "Live-Demo testen",
       "compare": "WooCommerce-Kassensysteme im Vergleich",
       "download": "Kostenlos herunterladen"
@@ -164,23 +165,23 @@
       }
     },
     "features": {
-      "heading": "Gebaut für die Anforderungen des stationären Einzelhandels",
+      "heading": "Was die Kasse kann",
       "items": {
         "f1": {
           "title": "Schnelle Produktsuche",
-          "description": "Finde Produkte sofort per Suche, Filtern und Kategorien. Unterstützung für Barcodescanner inklusive."
+          "description": "Suche, filtere oder stöbere nach Kategorie. Die Ergebnisse kommen aus der Kopie auf dem Gerät, deshalb erscheinen sie sofort. Scanne einen Barcode, um einen Artikel hinzuzufügen."
         },
         "f2": {
-          "title": "Reibungsloser Checkout",
+          "title": "Bar, Karte und geteilte Zahlungen",
           "description": "Füge Artikel hinzu, wende Rabatte an, nimm Bargeld oder Kartenzahlungen über dein eigenes Zahlungsterminal an und teile eine Zahlung auf. Pro verbindet <link>Kartenlesegeräte</link> wie Stripe Terminal und SumUp."
         },
         "f3": {
-          "title": "Kundenprofile",
-          "description": "Kundendaten direkt im POS hinzufügen und bearbeiten. Stammkunden erkennen und besseren Service bieten."
+          "title": "Kunden hinzufügen und bearbeiten",
+          "description": "Lege an der Kasse einen neuen Kunden an oder korrigiere seine Daten. Einen bestehenden Kunden für einen Verkauf auszuwählen ist kostenlos."
         },
         "f4": {
           "title": "Bestellverlauf & Verwaltung",
-          "description": "Vergangene Bestellungen ansehen, Retouren bearbeiten und Bestellstatus prüfen, ohne in WP Admin zu wechseln."
+          "description": "Finde eine frühere Bestellung, drucke ihren Beleg erneut oder erstatte sie, ohne WP Admin zu öffnen."
         },
         "f5": {
           "title": "Lagerbestand & Preise spontan bearbeiten",
@@ -216,12 +217,12 @@
         "intro": "Alles aus Kostenlos, plus:",
         "features": {
           "p8": "Weitere Kassen & mehrere Filialen",
-          "p1": "Integration von Zahlungsterminals",
+          "p1": "Verbundene Kartenlesegeräte",
           "p2": "Lager- und Preisbearbeitung im POS",
           "p3": "Bestellverlauf & Verwaltung",
           "p4": "Kundenverwaltung",
           "p5": "Berichte für verschiedene Tage, Kassen & Geschäfte",
-          "p6": "Eigene Zahlungsgateways",
+          "p6": "Deine anderen WooCommerce-Gateways",
           "p7": "Priorisierter Support",
           "p9": "Erstattungen, ganz oder teilweise",
           "p10": "Gutscheinverwaltung",
@@ -276,6 +277,7 @@
         "b": "WCPOS macht dein Tablet, dein Telefon oder deinen Computer zur Kasse — derselbe Katalog, derselbe Bestand, dieselben Preise, sogar offline.",
         "c1": "Live-Demo testen",
         "c2": "Kostenlos herunterladen",
+        "demoLogin": "Demo-Login: demo / demo",
         "badges": {
           "b1": "5.000+ aktive Installationen",
           "b2": "Kostenlos & Open Source",
@@ -284,21 +286,22 @@
       },
       "a2": {
         "k": "Jeder Bildschirm, den du besitzt",
-        "h": "Ein POS. Web, Desktop, iOS & Android.",
-        "b": "Nutze die Kasse auf dem Tablet an der Theke, das Telefon auf der Verkaufsfläche oder den Laptop im Büro — derselbe Shop, dieselben Daten.",
+        "h": "Ein POS. Im Browser, unter Windows, macOS und Linux.",
+        "b": "Nutze die Kasse im Browser auf jedem Tablet, Telefon oder Computer, oder installiere die Desktop-App. Derselbe Shop, dieselben Daten. iOS- und Android-Apps sind in der Beta.",
         "platforms": {
           "p1": "Web",
           "p2": "Windows",
           "p3": "macOS",
           "p4": "iOS",
           "p5": "Android",
+          "p6": "Linux",
           "beta": "Beta"
         }
       },
       "a3": {
         "k": "Bring deine eigene Hardware mit",
-        "h": "Funktioniert mit der Ausstattung, die du bereits hast.",
-        "b": "Bondrucker und Barcodescanner: Schließe an, was schon auf deiner Theke steht. Nimm Karten über dein eigenes Zahlungsterminal an, WCPOS erfasst sie; Pro verbindet Stripe Terminal, SumUp und mehr."
+        "h": "Funktioniert mit gängigen Scannern und Bondruckern.",
+        "b": "Fast jeder Barcodescanner funktioniert, sobald du ihn anschließt oder koppelst. Epson, Star und andere ESC/POS-Bondrucker verbinden sich je nach Gerät per USB, WLAN oder Bluetooth. Nimm Karten über dein eigenes Zahlungsterminal an, WCPOS erfasst sie; Pro verbindet Stripe Terminal, SumUp und mehr."
       },
       "a4": {
         "k": "Dein Shop, deine Daten",
@@ -352,7 +355,7 @@
         }
       },
       "terminal": {
-        "tapToPay": "Zum Bezahlen tippen"
+        "tapToPay": "Karte vorhalten oder einstecken"
       },
       "cloudSync": {
         "products": "{count, number} Produkte",
@@ -368,9 +371,9 @@
       "description": "Was als Nächstes für WCPOS kommt, das kostenlose Kassen-Plugin für WooCommerce: laufende und geplante Arbeiten, direkt von GitHub."
     },
     "page": {
-      "eyebrow": "Der Veröffentlichungsfahrplan",
+      "eyebrow": "Jetzt, als Nächstes, ausgeliefert",
       "title": "Roadmap des WooCommerce-Kassensystems",
-      "description": "Jede Station auf dem Weg zu einem schnelleren, offline-sicheren WCPOS — direkt aus unserem GitHub, neueste Arbeit zuerst.",
+      "description": "Woran wir gerade arbeiten, was als Nächstes geplant ist und was zuletzt ausgeliefert wurde. Die Liste kommt direkt aus unserem GitHub und ändert sich mit der Arbeit.",
       "changelogLink": "Veröffentlichte Versionen im Änderungsprotokoll ansehen"
     },
     "board": {
@@ -416,7 +419,7 @@
     },
     "hero": {
       "title": "WCPOS Pro – Kassensystem für WooCommerce",
-      "subtitle": "Alles aus dem kostenlosen POS, plus Zahlungsterminals, Ladenverwaltung an der Kasse, vollständige Berichte und Prioritätssupport."
+      "subtitle": "Alles aus dem kostenlosen POS, plus weitere Kassen und Filialen, verbundene Kartenlesegeräte, Erstattungen, Bestands-, Bestell- und Kundenbearbeitung an der Kasse und Prioritätssupport."
     },
     "schema": {
       "name": "WCPOS Pro",
@@ -427,14 +430,14 @@
       }
     },
     "features": {
-      "title": "Was ist in Pro enthalten?",
+      "title": "Was Pro ergänzt",
       "stores": {
         "title": "Weitere Kassen & mehrere Filialen",
         "description": "Füge zur kostenlosen Kasse weitere Kassen hinzu und führe mehrere Filialen, jede mit eigener Adresse, eigenen Steuersätzen, eigener Belegvorlage, eigenen Preisen und eigenen autorisierten Benutzern."
       },
       "terminal": {
-        "title": "Zahlungsterminal-Integration",
-        "description": "Nimm Kartenzahlungen vor Ort mit Stripe Terminal, Square Terminal, SumUp, Mollie, PayPal Reader und mehr entgegen.",
+        "title": "Verbundene Kartenlesegeräte",
+        "description": "Nimm Kartenzahlungen vor Ort mit Stripe Terminal, SumUp, Mollie Terminal, Square Terminal und mehr entgegen. PayPal Reader (Zettle) funktioniert über die eigene Bezahlseite deines Shops.",
         "link": "Alle Terminal-Erweiterungen ansehen"
       },
       "display": {
@@ -462,7 +465,7 @@
         "description": "Sieh Verkäufe für frühere Tage und Datumsbereiche, für jede Kasse und jedes Geschäft."
       },
       "gateways": {
-        "title": "Individuelle Zahlungs-Gateways",
+        "title": "Deine anderen WooCommerce-Gateways",
         "description": "Aktiviere die anderen WooCommerce-Zahlungsgateways deines Shops an der Kasse, nicht nur die integrierten Optionen."
       }
     },
@@ -470,7 +473,7 @@
       "heading": "Hol dir Pro",
       "subheading": "Eine Lizenz, alle Funktionen. Wähle nur, wie lange du Updates möchtest.",
       "termAriaLabel": "Lizenzlaufzeit",
-      "cta": "Loslegen",
+      "cta": "Pro kaufen",
       "ctaValueCopy": "Sofortzugang erhalten",
       "yearly": {
         "title": "Jährlich",
@@ -482,7 +485,6 @@
         "title": "Lebenslang",
         "subtitle": "Updates für immer",
         "priceSuffix": "einmalig",
-        "ctaNote": "Etwa {years} Jahre Jährlich — danach für immer $0.",
         "ctaNoteSimple": "Einmal zahlen — Updates für immer."
       },
       "tryFreeLink": "Testen Sie zuerst die kostenlose Version",
@@ -498,7 +500,7 @@
       "title": "Häufig gestellte Fragen",
       "freePlugin": {
         "question": "Ist das kostenlose Plugin eingeschränkt?",
-        "answer": "Das kostenlose WCPOS-Plugin ist GPL-Software ohne Obergrenzen für Produkte, Bestellungen oder Kunden und ohne Transaktionsgebühren; es betreibt eine Kasse, und für weitere Kassen und die oben aufgeführten Werkzeuge braucht es Pro."
+        "answer": "Es betreibt eine Kasse. Es gibt keine Obergrenzen für Produkte, Bestellungen oder Kunden und keine Transaktionsgebühren. Für weitere Kassen und die oben aufgeführten Werkzeuge braucht es Pro. Das kostenlose Plugin ist GPL-Software."
       },
       "yearlyVsLifetime": {
         "question": "Was ist der Unterschied zwischen Jährlich und Lebenslang?",
@@ -550,10 +552,16 @@
         "quantity": "Menge: {quantity}",
         "discount": "Rabatt",
         "total": "Gesamt",
+        "yearlyTerm": "Updates & Support für 1 Jahr",
+        "lifetimeTerm": "Updates für immer",
+        "sites": "Nutzung auf 2 Websites — eine Live-Website, eine Entwicklungs-Website",
+        "refundPromise": "Tut WCPOS Pro nicht, was wir zusagen, bringen wir es in Ordnung oder erstatten dir den Kauf.",
+        "refundLink": "Rückerstattungsrichtlinie",
         "instantLicense": "Sofortige Lizenzzustellung",
         "oneTimePayment": "Einmalzahlung — keine automatische Verlängerung",
         "securePayment": "Sichere Zahlungsabwicklung"
       },
+      "noProduct": { "title": "Wählen Sie einen Tarif, um zur Kasse zu gehen" },
       "promo": {
         "invalid": "Dieser Rabatt-Link ist abgelaufen oder nicht mehr gültig. Der reguläre Preis wird angezeigt."
       },
@@ -565,7 +573,7 @@
         "submitting": "Einen Moment…",
         "createContinue": "Konto erstellen und fortfahren",
         "signInContinue": "Anmelden und fortfahren",
-        "oauthPrompt": "Bevorzugen Sie Google, GitHub oder Discord?",
+        "oauthPrompt": "Haben Sie bereits ein Konto oder bevorzugen Sie Google, GitHub oder Discord?",
         "oauthLink": "Hier anmelden",
         "oauthSuffix": "— Sie kommen direkt zurück zur Kasse.",
         "errors": {
@@ -1635,7 +1643,7 @@
     "hero": {
       "eyebrow": "Downloads",
       "title": "WooCommerce-Kassensystem herunterladen",
-      "tagline": "Eine Kasse, jedes Gerät.",
+      "tagline": "Installiere das kostenlose Plugin und öffne dann die Kasse im Browser oder in einer App.",
       "platformChooserLabel": "Plattform auswählen",
       "versionMeta": "Version {version} · {platform}",
       "detected": "Erkannt",
@@ -1650,11 +1658,11 @@
       "points": {
         "setup": {
           "title": "Ein Plugin ist die gesamte Einrichtung",
-          "body": "Das kostenlose Plugin fügt deinem WooCommerce-Shop eine sichere REST-API hinzu. Das ist die ganze Installation — nichts muss pro Gerät gehostet oder konfiguriert werden."
+          "body": "Installiere das kostenlose Plugin auf deiner WooCommerce-Website, und die Kasse ist im Browser unter yourdomain.com/pos bereit. Sonst musst du nichts hosten. Die Desktop- und Mobil-Apps sind optional: Füge deinen Shop einmal hinzu und melde dich an."
         },
         "sync": {
           "title": "Jede App liest und schreibt im selben Shop",
-          "body": "Kassiere einen Verkauf am Desktop, und dein Telefon zeigt den neuen Lagerbestand — ein gemeinsamer Bestand an Produkten, Bestellungen und Kunden, der in Echtzeit aktualisiert wird."
+          "body": "Kassiere einen Verkauf am Desktop, und deine anderen Geräte übernehmen den neuen Lagerbestand bei ihrer nächsten Abfrage, mit der Standardeinstellung etwa eine Minute später. Ein gemeinsamer Bestand an Produkten, Bestellungen und Kunden."
         },
         "offline": {
           "title": "Verkäufe weiter kassieren, wenn die Verbindung abbricht",
@@ -1689,12 +1697,12 @@
       "start": {
         "eyebrow": "Erste Schritte",
         "title": "Drei Schritte bis zum ersten Verkauf",
-        "subtitle": "Von Anfang bis Ende dauert es etwa zwei Minuten."
+        "subtitle": "Etwa fünf Minuten, von Anfang bis Ende."
       },
       "steps": {
         "plugin": {
           "title": "Kostenloses Plugin installieren",
-          "body": "Die Grundlage, mit der sich alles verbindet. In deinem Dashboard: Plugins → Installieren, dann nach „WCPOS“ suchen.",
+          "body": "Hier fängst du an: Die Kasse und jede App laufen über das Plugin. In deinem Dashboard: Plugins → Installieren, dann nach „WCPOS“ suchen.",
           "badge": "Kostenlos · GPL",
           "requirements": "WordPress 5.6+ · WooCommerce 9.0+ · PHP 7.4+",
           "requirementsWithVersion": "Neueste Version {version} · WordPress 5.6+ · WooCommerce 9.0+ · PHP 7.4+",
@@ -1711,11 +1719,12 @@
           "webCta": "Live-Demo öffnen"
         },
         "pro": {
-          "title": "Möchtest du mehr? Wechsle zu Pro",
-          "cardTitle": "Weitere Kassen freischalten",
+          "title": "Brauchst du mehr als eine Kasse?",
+          "cardTitle": "WCPOS Pro",
           "cardBody": "Weitere Kassen & mehrere Filialen, Terminalzahlungen, Erstattungen, Bestand & Preise, Bestellverwaltung, vollständige Berichte und vorrangiger Discord-Support.",
           "requirements": "WordPress 5.8+ · WooCommerce 9.0+ · PHP 7.4+",
           "plansCta": "Pro-Tarife ansehen",
+          "priceLine": "Ab {price} ({currency}) — Einmalzahlung, keine automatische Verlängerung.",
           "signInCta": "Anmelden zum Herunterladen"
         }
       }
@@ -1728,11 +1737,9 @@
       "fullHistory": "Vollständiger Verlauf auf GitHub —",
       "desktop": "Desktop",
       "emptyNotes": "_Keine Versionshinweise für diese Version._",
-      "fallback": {
-        "v196": "- Cash drawer support — auto-open after payment or via a new Open Drawer button, with per-printer connectors (ESC-POS, Epson, PrintNode, cloud)\n- Fixed analytics events firing too often\n- Updated translations",
-        "v195": "- Fixed a payment-gateways API crash (HTTP 500 with some third-party gateways, e.g. ToyyibPay)",
-        "v194": "- Redesigned Bluetooth printer setup; serial printing for OS-paired Bluetooth Classic printers\n- Improved Windows raw printing; smoother USB flow",
-        "v190": "- New receipt template gallery; thermal printing (58/80mm)\n- Customer Tax IDs; Pro coupons & refunds at the POS"
+      "empty": {
+        "title": "Die Release-Liste wurde nicht geladen",
+        "body": "Aktuelle Versionshinweise sind hier gerade nicht verfügbar. Die Downloads auf dieser Seite sind davon nicht betroffen."
       },
       "plugin": "Kostenlos",
       "showAllNotes": "Alle Versionshinweise zu {version} anzeigen",
@@ -1776,7 +1783,7 @@
       "eyebrow": "Eine Notiz vom Entwickler",
       "intro": "Hallo — ich bin Paul. Ich habe WCPOS gebaut.",
       "p1": "Das bin ich damals, als alles begann. Ich eröffnete Urban Locavore in Perth im Dezember 2011 mit Hunderten Produkten bereits in WooCommerce und ohne Möglichkeit, sie am Tresen zu verkaufen — also baute ich selbst eine Kasse. Als der Laden im April 2014 schloss, stellte ich sie auf WordPress.org für alle bereit, die sie brauchten. <strong>POS-Plugins für WooCommerce sind seitdem gekommen und gegangen. Dieses nicht.</strong> Mehr als ein Jahrzehnt Veröffentlichungen, ein Entwickler, immer noch aktiv — und die kostenlose Version ist weiterhin echt: verkaufen, drucken, synchron bleiben. Sie bleibt kostenlos.",
-      "p2": "<strong>Pro ist der Grund, warum es WCPOS noch gibt.</strong> Es ergänzt Werkzeuge für den Betrieb deines Shops — Kartenleser, Erstattungen an der Kasse, Tagesabschlussberichte, Multi-Store — und finanziert jede Veröffentlichung, auch die kostenlosen. Keine Investoren, kein Exit durch Übernahme. Ladenbesitzer finanzieren es direkt.",
+      "p2": "<strong>Pro ist der Grund, warum es WCPOS noch gibt.</strong> Es ergänzt Werkzeuge für den Betrieb deines Shops — Kartenleser, Erstattungen an der Kasse, Berichte für verschiedene Tage und Kassen, Multi-Store — und finanziert jede Veröffentlichung, auch die kostenlosen. Keine Investoren, kein Exit durch Übernahme. Ladenbesitzer finanzieren es direkt.",
       "p3": "Und Pro-Nutzer haben eine direkte Leitung: Sag mir, was dein Laden braucht, und das prägt, was ich als Nächstes baue.",
       "signature": {
         "name": "Paul Kilmurray",
@@ -1912,6 +1919,7 @@
       "title": "Möchtest du lieber mit einem Menschen sprechen?",
       "subtitle": "Tritt Ladenbesitzern und dem Team in unserer Live-Discord-Community bei.",
       "open": "Discord öffnen",
+      "emailLine": "Lieber per E-Mail? Schreib uns an <email>support@wcpos.com</email>.",
       "embedTitle": "Discord-Chat"
     },
     "guides": {
@@ -1928,7 +1936,7 @@
     "more": { "title": "Weitere Vergleiche" },
     "disclosure": {
       "title": "Wer hinter diesem Vergleich steht",
-      "body": "Diese Seite wird von WCPOS veröffentlicht, den Machern von WooCommerce POS. Wir sind hier offensichtlich Partei — deshalb ist jede Zahl belegt und datiert, wir verlinken auf die Preisseiten der Wettbewerber selbst und sagen klar, wann ein Wettbewerber die bessere Wahl ist. Prüfen Sie alles nach."
+      "body": "Diese Seite wird von WCPOS veröffentlicht, wir sind also nicht neutral. Deshalb ist jede Zahl belegt und datiert, wir verlinken auf die Preisseiten der Wettbewerber selbst und sagen klar, wann ein Wettbewerber die bessere Wahl ist. Prüfen Sie alles nach."
     },
     "hub": {
       "metadata": {
@@ -1941,7 +1949,7 @@
       },
       "method": {
         "title": "So funktionieren diese Vergleiche",
-        "body": "Die Fakten stammen von den Preisseiten der Anbieter selbst und von WordPress.org, abgerufen zu einem angegebenen Datum und vierteljährlich neu geprüft. Wo WCPOS eine Kategorie verliert — Kiosk-Modus, Anbieter-Hardware, App-Store-Politur — steht das auch auf der Seite. Einen Fehler entdeckt? Schreiben Sie an support@wcpos.com — wir korrigieren ihn und protokollieren die Änderung."
+        "body": "Die Fakten stammen von den Preisseiten der Anbieter selbst und von WordPress.org, abgerufen zu einem angegebenen Datum; jede Seite zeigt, wann ihre Fakten zuletzt geprüft wurden. Wo WCPOS eine Kategorie verliert — Kiosk-Modus, Anbieter-Hardware, App-Store-Politur — steht das auch auf der Seite. Einen Fehler entdeckt? Schreiben Sie an support@wcpos.com — wir korrigieren ihn und protokollieren die Änderung."
       },
       "oliverCard": {
         "title": "WCPOS vs. Oliver POS",
@@ -2156,7 +2164,7 @@
         },
         "payments": {
           "claim": "Integrierte Zahlungen: eingeschränkt",
-          "response": "WCPOS Pro integriert Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc und Windcave sowie Vipps MobilePay per QR-Code oder Push, per Ein-Klick-Installation aus dem Erweiterungskatalog, und aktiviert die anderen WooCommerce-Zahlungsgateways Ihres Shops an der Kasse. Die kostenlose Version nimmt Bargeld an, erfasst Kartenzahlungen über ein separates Terminal und kann eine Bestellung auf mehrere Zahlungen aufteilen."
+          "response": "WCPOS Pro integriert Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc und Windcave sowie Vipps MobilePay per QR-Code oder Push, installiert aus dem Erweiterungskatalog, und aktiviert die anderen WooCommerce-Zahlungsgateways Ihres Shops an der Kasse. Die kostenlose Version nimmt Bargeld an, erfasst Kartenzahlungen über ein separates Terminal und kann eine Bestellung auf mehrere Zahlungen aufteilen."
         },
         "hobbyShops": {
           "claim": "Am besten für Hobby-Shops",
@@ -2290,7 +2298,7 @@
       "payments": {
         "title": "Wie funktionieren Kartenzahlungen?",
         "woocommerce": "Das POS von WooCommerce nimmt Bargeld an und akzeptiert Kartenzahlungen über WooPayments oder Stripe mit einem Bluetooth-Kartenlesegerät, das mit dem Tablet verbunden ist. Mit WooPayments kosten Kartenzahlungen vor Ort weniger als Online-Zahlungen: in den USA 2.70% + $0.10 gegenüber 2.90% + $0.30 online. Ein Kartenlesegerät kostet $5.00 / £5.00 pro aktivem Lesegerät und Monat.",
-        "wcpos": "WCPOS 2.0 hat einen eigenen Bezahlvorgang: Ein Zahlungsbereich neben dem Warenkorb nimmt Bargeld an, erfasst Kartenzahlungen über ein separates Terminal und kann eine Bestellung auf mehrere Zahlungen aufteilen. Mit Pro können Sie die anderen WooCommerce-Zahlungsgateways Ihres Shops an der Kasse aktivieren und Kartenterminal-Integrationen für Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc und Windcave sowie Vipps MobilePay per QR-Code oder Push hinzufügen, die sich mit einem Klick aus dem Erweiterungskatalog installieren lassen. Tap to Pay auf iPhone und Android ist in WCPOS noch nicht verfügbar; es folgt in einem App-Update. WCPOS unterstützt keine WooPayments-Zahlungen vor Ort."
+        "wcpos": "WCPOS 2.0 hat einen eigenen Bezahlvorgang: Ein Zahlungsbereich neben dem Warenkorb nimmt Bargeld an, erfasst Kartenzahlungen über ein separates Terminal und kann eine Bestellung auf mehrere Zahlungen aufteilen. Mit Pro können Sie die anderen WooCommerce-Zahlungsgateways Ihres Shops an der Kasse aktivieren und Kartenterminal-Integrationen für Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc und Windcave sowie Vipps MobilePay per QR-Code oder Push hinzufügen, die aus dem Erweiterungskatalog installiert werden. Tap to Pay auf iPhone und Android ist in WCPOS noch nicht verfügbar; es folgt in einem App-Update. WCPOS unterstützt keine WooPayments-Zahlungen vor Ort."
       },
       "pricing": {
         "title": "Was kostet es?",
@@ -2310,11 +2318,11 @@
         "offline": "Kein Offline-Modus: Eine aktive Internetverbindung ist erforderlich.",
         "multiLocation": "Noch keine Unterstützung für mehrere Standorte.",
         "gateways": "Kartenzahlungen benötigen WooPayments oder Stripe.",
-        "outro": "WooCommerce fügt WooCommerce Core weiterhin POS-Funktionen hinzu; diese Liste dürfte also kürzer werden — wir prüfen sie jedes Quartal erneut."
+        "outro": "WooCommerce fügt WooCommerce Core weiterhin POS-Funktionen hinzu; diese Liste dürfte also kürzer werden — am Ende der Seite steht, wann sie zuletzt geprüft wurde."
       },
       "woocommerceBetter": {
-        "title": "Wo das POS von WooCommerce wirklich besser ist",
-        "intro": "Ein ehrlicher Vergleich zeigt beide Seiten:",
+        "title": "Wo das POS von WooCommerce besser ist",
+        "intro": "In drei Punkten liegt es vorn:",
         "price": "Die POS-Software ist kostenlos, ganz ohne Lizenz — WCPOS Pro kostet $129 oder mehr.",
         "official": "Es stammt von WooCommerce selbst und befindet sich in der mobilen WooCommerce-App, die Sie womöglich bereits für Ihren Shop nutzen.",
         "wooPayments": "Native WooPayments-Zahlungen vor Ort zu einem niedrigeren Tarif als bei WooPayments online (in den USA 2.70% + $0.10 gegenüber 2.90% + $0.30). WCPOS bietet keine WooPayments-Integration für Zahlungen vor Ort.",
@@ -2359,7 +2367,7 @@
         }
       },
       "footer": {
-        "factsDated": "Fakten zum POS von WooCommerce am 2026-10-06 anhand WooCommerce-eigener Seiten überprüft (POS-Dokumentation, POS-Seite und WooPayments-Gebührenseite); WCPOS-Fakten stammen von wcpos.com und beziehen sich auf WCPOS 2.0, veröffentlicht am 2026-11-09, wofür sowohl die App als auch das Plugin auf Version 2.0 sein müssen. Wir prüfen sie jedes Quartal erneut.",
+        "factsDated": "Fakten zum POS von WooCommerce am 2026-10-06 anhand WooCommerce-eigener Seiten überprüft (POS-Dokumentation, POS-Seite und WooPayments-Gebührenseite); WCPOS-Fakten stammen von wcpos.com und beziehen sich auf WCPOS 2.0, veröffentlicht am 2026-11-09, wofür sowohl die App als auch das Plugin auf Version 2.0 sein müssen.",
         "corrections": "Einen Fehler entdeckt? Schreiben Sie an support@wcpos.com — wir korrigieren schnell und protokollieren jede Änderung."
       }
     },
@@ -2439,7 +2447,7 @@
       "payments": {
         "title": "Wie funktionieren Kartenzahlungen?",
         "square": "Das POS von Square nimmt Kartenzahlungen über Square an, einschließlich Tap to Pay auf iPhone und Android. In den USA kostet eine Kartenzahlung vor Ort (kontaktlos, per Chip oder durch Durchziehen) mit Square Free 2.6% + 15¢. Laut Square ist die Annahme von Kartenzahlungen mit der Square-App in den USA, Kanada, Australien, Japan, dem Vereinigten Königreich, der Republik Irland, Frankreich und Spanien verfügbar; die Erweiterung erfordert, dass die WooCommerce-Währung mit der Währung Ihres Square-Kontos übereinstimmt.",
-        "wcpos": "WCPOS 2.0 hat einen eigenen Bezahlvorgang: Ein Zahlungsbereich neben dem Warenkorb nimmt Bargeld an, erfasst Kartenzahlungen über ein separates Terminal und kann eine Bestellung auf mehrere Zahlungen aufteilen. Mit Pro können Sie die anderen WooCommerce-Zahlungsgateways Ihres Shops an der Kasse aktivieren und Kartenterminal-Integrationen für Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc und Windcave sowie Vipps MobilePay per QR-Code oder Push hinzufügen, die sich mit einem Klick aus dem Erweiterungskatalog installieren lassen. Tap to Pay auf iPhone und Android ist in WCPOS noch nicht verfügbar; es folgt in einem App-Update.",
+        "wcpos": "WCPOS 2.0 hat einen eigenen Bezahlvorgang: Ein Zahlungsbereich neben dem Warenkorb nimmt Bargeld an, erfasst Kartenzahlungen über ein separates Terminal und kann eine Bestellung auf mehrere Zahlungen aufteilen. Mit Pro können Sie die anderen WooCommerce-Zahlungsgateways Ihres Shops an der Kasse aktivieren und Kartenterminal-Integrationen für Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc und Windcave sowie Vipps MobilePay per QR-Code oder Push hinzufügen, die aus dem Erweiterungskatalog installiert werden. Tap to Pay auf iPhone und Android ist in WCPOS noch nicht verfügbar; es folgt in einem App-Update.",
         "both": "Haben Sie bereits ein Square Terminal? Das Square Terminal-Gateway von WCPOS Pro nimmt damit Zahlungen für WooCommerce-Bestellungen direkt an der WCPOS-Kasse entgegen und schreibt das Ergebnis in die Bestellung zurück. Wenn Sie das offizielle Plugin Square for WooCommerce verwenden, werden dessen Umgebung und Standort-ID vorab eingetragen. Ein Terminal, das bei Square POS oder einer anderen Integration angemeldet ist, muss dort zuerst abgemeldet werden."
       },
       "pricing": {
@@ -2460,7 +2468,7 @@
         "countries": "Square ist in den USA, Kanada, Australien, Japan, dem Vereinigten Königreich, Frankreich, Spanien und Irland verfügbar; Ihre WooCommerce-Währung muss mit der Währung Ihres Square-Kontos übereinstimmen.",
         "sku": "Jedes Produkt muss eine SKU haben.",
         "variations": "Bei der Synchronisierung von Produkten von Square zu WooCommerce sind höchstens 250 Varianten und 6 Attribute pro Produkt möglich.",
-        "outro": "Wir prüfen diese Liste jedes Quartal erneut."
+        "outro": "Am Ende der Seite steht, wann diese Liste zuletzt geprüft wurde."
       },
       "squareBetter": {
         "title": "Wo Square wirklich besser ist",
@@ -2530,7 +2538,7 @@
         }
       },
       "footer": {
-        "factsDated": "Fakten zu Square am 2026-10-06 anhand Square-eigener Seiten überprüft (Gebührenseite, Preisankündigung und Hilfeartikel zu Offline-Zahlungen, Tap to Pay, Geräten und internationaler Verfügbarkeit) sowie anhand der WooCommerce-Dokumentation zur Erweiterung Square for WooCommerce, erneut geprüft am 2026-11-18; WCPOS-Fakten stammen von wcpos.com und docs.wcpos.com und beziehen sich auf WCPOS 2.0, veröffentlicht am 2026-11-09, wofür sowohl die App als auch das Plugin auf Version 2.0 sein müssen. Wir prüfen sie jedes Quartal erneut.",
+        "factsDated": "Fakten zu Square am 2026-10-06 anhand Square-eigener Seiten überprüft (Gebührenseite, Preisankündigung und Hilfeartikel zu Offline-Zahlungen, Tap to Pay, Geräten und internationaler Verfügbarkeit) sowie anhand der WooCommerce-Dokumentation zur Erweiterung Square for WooCommerce, erneut geprüft am 2026-11-18; WCPOS-Fakten stammen von wcpos.com und docs.wcpos.com und beziehen sich auf WCPOS 2.0, veröffentlicht am 2026-11-09, wofür sowohl die App als auch das Plugin auf Version 2.0 sein müssen.",
         "corrections": "Einen Fehler entdeckt? Schreiben Sie an support@wcpos.com — wir korrigieren schnell und protokollieren jede Änderung."
       }
     },
@@ -2643,7 +2651,7 @@
         }
       },
       "footer": {
-        "factsDated": "Die Fakten zu Jovvie stammen vom 2026-07-09 aus unserer eigenen Mitbewerberrecherche und wurden seither nicht erneut überprüft; prüfen Sie vor Ihrer Entscheidung die aktuellen Preise auf jovvie.com. Die Fakten zu WCPOS stammen von wcpos.com, docs.wcpos.com und WordPress.org und beziehen sich auf WCPOS 2.0, veröffentlicht am 2026-11-09, wofür sowohl die App als auch das Plugin auf Version 2.0 sein müssen. Wir überprüfen sie jedes Quartal erneut.",
+        "factsDated": "Die Fakten zu Jovvie stammen vom 2026-07-09 aus unserer eigenen Mitbewerberrecherche und wurden seither nicht erneut überprüft; prüfen Sie vor Ihrer Entscheidung die aktuellen Preise auf jovvie.com. Die Fakten zu WCPOS stammen von wcpos.com, docs.wcpos.com und WordPress.org und beziehen sich auf WCPOS 2.0, veröffentlicht am 2026-11-09, wofür sowohl die App als auch das Plugin auf Version 2.0 sein müssen.",
         "corrections": "Einen Fehler entdeckt? Schreiben Sie an support@wcpos.com — wir korrigieren schnell und protokollieren jede Änderung."
       }
     },
@@ -2785,7 +2793,7 @@
         }
       },
       "footer": {
-        "factsDated": "Die Fakten zu Vitepos wurden am 2026-10-07 von vitepos.com und dessen WordPress.org-Eintrag abgerufen (siehe Quellen); prüfen Sie vor Ihrer Entscheidung die aktuellen Preise auf vitepos.com. Die Fakten zu WCPOS stammen von wcpos.com, docs.wcpos.com und WordPress.org und beziehen sich auf WCPOS 2.0, veröffentlicht am 2026-11-09, wofür sowohl die App als auch das Plugin auf Version 2.0 sein müssen. Wir überprüfen sie jedes Quartal erneut.",
+        "factsDated": "Die Fakten zu Vitepos wurden am 2026-10-07 von vitepos.com und dessen WordPress.org-Eintrag abgerufen (siehe Quellen); prüfen Sie vor Ihrer Entscheidung die aktuellen Preise auf vitepos.com. Die Fakten zu WCPOS stammen von wcpos.com, docs.wcpos.com und WordPress.org und beziehen sich auf WCPOS 2.0, veröffentlicht am 2026-11-09, wofür sowohl die App als auch das Plugin auf Version 2.0 sein müssen.",
         "corrections": "Einen Fehler entdeckt? Schreiben Sie an support@wcpos.com — wir korrigieren schnell und protokollieren jede Änderung."
       }
     },
@@ -2930,7 +2938,7 @@
         }
       },
       "footer": {
-        "factsDated": "Die Fakten zu YITH Point of Sale wurden am 2026-10-07 von yithemes.com und docs.yithemes.com abgerufen (siehe Quellen); prüfen Sie vor Ihrer Entscheidung den aktuellen Preis auf yithemes.com. Die Fakten zu WCPOS stammen von wcpos.com, docs.wcpos.com und WordPress.org und beziehen sich auf WCPOS 2.0, veröffentlicht am 2026-11-09, wofür sowohl die App als auch das Plugin auf Version 2.0 sein müssen. Wir überprüfen sie jedes Quartal erneut.",
+        "factsDated": "Die Fakten zu YITH Point of Sale wurden am 2026-10-07 von yithemes.com und docs.yithemes.com abgerufen (siehe Quellen); prüfen Sie vor Ihrer Entscheidung den aktuellen Preis auf yithemes.com. Die Fakten zu WCPOS stammen von wcpos.com, docs.wcpos.com und WordPress.org und beziehen sich auf WCPOS 2.0, veröffentlicht am 2026-11-09, wofür sowohl die App als auch das Plugin auf Version 2.0 sein müssen.",
         "corrections": "Einen Fehler entdeckt? Schreiben Sie an support@wcpos.com — wir korrigieren schnell und protokollieren jede Änderung."
       }
     },
@@ -3076,7 +3084,7 @@
         }
       },
       "footer": {
-        "factsDated": "Die Fakten zu FooSales wurden am 2026-10-07 von foosales.com, help.foosales.com und seinem App Store-Eintrag abgerufen (siehe Quellen); prüfen Sie vor Ihrer Entscheidung die aktuellen Preise auf foosales.com. Die Fakten zu WCPOS stammen von wcpos.com, docs.wcpos.com und WordPress.org und beziehen sich auf WCPOS 2.0, veröffentlicht am 2026-11-09, wofür sowohl die App als auch das Plugin auf Version 2.0 sein müssen. Wir prüfen sie jedes Quartal erneut.",
+        "factsDated": "Die Fakten zu FooSales wurden am 2026-10-07 von foosales.com, help.foosales.com und seinem App Store-Eintrag abgerufen (siehe Quellen); prüfen Sie vor Ihrer Entscheidung die aktuellen Preise auf foosales.com. Die Fakten zu WCPOS stammen von wcpos.com, docs.wcpos.com und WordPress.org und beziehen sich auf WCPOS 2.0, veröffentlicht am 2026-11-09, wofür sowohl die App als auch das Plugin auf Version 2.0 sein müssen.",
         "corrections": "Einen Fehler entdeckt? Schreiben Sie an support@wcpos.com — wir korrigieren schnell und protokollieren jede Änderung."
       }
     }

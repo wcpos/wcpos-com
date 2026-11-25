@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Section } from '@/components/ui/section'
 import { Skeleton } from '@/components/ui/skeleton'
+import { TextLink } from '@/components/ui/text-link'
 import { DISCORD_INVITE_URL } from '@/lib/discord-invite'
 
 const DiscordWidget = dynamic(
@@ -40,6 +41,11 @@ export function DiscordSection() {
             {t('open')}
           </a>
         </Button>
+        <p className="mt-3 text-sm text-muted-foreground">
+          {t.rich('emailLine', {
+            email: (chunks) => <TextLink href="mailto:support@wcpos.com">{chunks}</TextLink>,
+          })}
+        </p>
       </div>
       <div ref={boxRef} role="region" aria-labelledby="discord-chat-title" className="mx-auto h-[600px] max-w-3xl overflow-hidden rounded-md border">
         {inView ? <DiscordWidget /> : <Skeleton className="h-full w-full" />}

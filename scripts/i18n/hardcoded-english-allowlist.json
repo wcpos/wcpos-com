@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generatedBy": "scripts/i18n/hardcoded-english.ts --update",
-  "updatedAt": "2026-11-23T02:32:31.147Z",
+  "updatedAt": "2026-11-24T22:25:01.387Z",
   "scope": [
     "src/app",
     "src/components",
@@ -511,6 +511,14 @@
       "category": "route/page",
       "attr": null,
       "text": "%s | WCPOS",
+      "count": 1
+    },
+    {
+      "id": "aea7f90faa527bac",
+      "file": "src/app/[locale]/not-found.tsx",
+      "category": "route/page",
+      "attr": null,
+      "text": "| WCPOS",
       "count": 1
     },
     {
@@ -2698,6 +2706,14 @@
       "count": 1
     },
     {
+      "id": "b4de9dc7ffb1071e",
+      "file": "src/components/downloads/pro-price-line.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "use cache",
+      "count": 1
+    },
+    {
       "id": "4301b38cf7662919",
       "file": "src/components/downloads/sync-diagram.tsx",
       "category": "component",
@@ -3354,6 +3370,14 @@
       "count": 1
     },
     {
+      "id": "c8edcd41e5f787cb",
+      "file": "src/components/pro/checkout-client.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "/pro/checkout?product=",
+      "count": 1
+    },
+    {
       "id": "37ffb18c2662c136",
       "file": "src/components/pro/checkout-client.tsx",
       "category": "component",
@@ -3490,11 +3514,11 @@
       "count": 1
     },
     {
-      "id": "9e0f2baa503bb437",
+      "id": "eaafc66ddc5807d7",
       "file": "src/components/pro/checkout/payment-step.tsx",
       "category": "component",
       "attr": null,
-      "text": "border-primary bg-primary [box-shadow:inset_0_0_0_2.5px_var(--card)]",
+      "text": "border-primary bg-primary [box-shadow:inset_0_0_0_2.5px_hsl(var(--card))]",
       "count": 1
     },
     {
@@ -3642,11 +3666,11 @@
       "count": 1
     },
     {
-      "id": "8189a0952a2f8511",
+      "id": "0506b0f5b60ac32d",
       "file": "src/components/pro/pro-buy-box.tsx",
       "category": "component",
       "attr": null,
-      "text": "border-primary bg-primary [box-shadow:inset_0_0_0_2.5px_var(--card)]",
+      "text": "border-primary bg-primary [box-shadow:inset_0_0_0_2.5px_hsl(var(--card))]",
       "count": 1
     },
     {

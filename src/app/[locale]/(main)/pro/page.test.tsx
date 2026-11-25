@@ -60,6 +60,21 @@ vi.mock('next-intl/server', () => ({
   setRequestLocale: vi.fn(),
 }))
 
+// The review quote reads home.trust through the request-scoped hook.
+vi.mock('next-intl', async (importActual) => {
+  const en = (await import('../../../../../messages/en.json')).default
+  return {
+    ...(await importActual<typeof import('next-intl')>()),
+    useTranslations: (namespace: string) => (key: string) =>
+      `${namespace}.${key}`
+        .split('.')
+        .reduce<unknown>(
+          (node, part) => (node as Record<string, unknown>)[part],
+          en
+        ) as string,
+  }
+})
+
 vi.mock('next/cache', () => ({
   cacheLife: vi.fn(),
   cacheTag: vi.fn(),
@@ -227,6 +242,13 @@ describe('ProPage', () => {
     expect(buyBoxColumn).toContainElement(
       screen.getByTestId('pro-buy-box-skeleton')
     )
+    // The home page's wordpress.org review sits under the buy box.
+    const review = screen.getByRole('link', { name: 'Ward, wordpress.org review' })
+    expect(review).toHaveAttribute(
+      'href',
+      'https://wordpress.org/support/topic/does-what-it-says-836/'
+    )
+    expect(buyBoxColumn).toContainElement(review.closest('figure'))
 
     expect(screen.getByText('Questions')).toBeInTheDocument()
     expect(screen.getByText('Do I need the free plugin?')).toBeInTheDocument()

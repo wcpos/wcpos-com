@@ -26,6 +26,7 @@ vi.mock('next-intl', () => ({
       documentation: 'Documentation',
       roadmap: 'Roadmap',
       pro: 'Pro',
+      getPro: 'Get Pro',
       support: 'Support',
       },
       common: {
@@ -184,6 +185,25 @@ describe('SiteHeader', () => {
     })
   })
 
+  it('switches desktop nav, auth buttons and the menu button at lg together', async () => {
+    mockGetCustomer.mockResolvedValue(null)
+    await act(async () => {
+      render(<SiteHeader />)
+    })
+
+    // German labels need more than md's 768px next to Get Pro / Sign In.
+    const desktopNav = screen.getAllByRole('navigation')[0]
+    expect(desktopNav).toHaveClass('hidden', 'lg:flex')
+    expect(desktopNav).not.toHaveClass('md:flex')
+    const auth = screen.getAllByRole('link', { name: 'Translated sign in' })[0]
+      .parentElement!
+    expect(auth).toHaveClass('hidden', 'lg:flex')
+    expect(auth).not.toHaveClass('md:flex')
+    const trigger = screen.getByRole('button', { name: 'Translated open menu' })
+    expect(trigger).toHaveClass('lg:hidden')
+    expect(trigger).not.toHaveClass('md:hidden')
+  })
+
   it('uses a translated accessible label for the mobile menu trigger', async () => {
     mockGetCustomer.mockResolvedValue(null)
     await act(async () => {
@@ -220,6 +240,21 @@ describe('SiteHeader', () => {
     expect(signInLinks.length).toBeGreaterThan(0)
   })
 
+  it('shows Get Pro and Sign In links when not authenticated', async () => {
+    mockGetCustomer.mockResolvedValue(null)
+    await act(async () => {
+      render(<SiteHeader />)
+    })
+
+    expect(screen.getByRole('link', { name: 'Get Pro' })).toHaveAttribute(
+      'href',
+      '/pro'
+    )
+    expect(
+      screen.getByRole('link', { name: 'Translated sign in' })
+    ).toHaveAttribute('href', '/login')
+  })
+
   it('shows the account menu when authenticated', async () => {
     mockGetCustomer.mockResolvedValue({
       id: 'cust_1',
@@ -236,6 +271,7 @@ describe('SiteHeader', () => {
     expect(
       screen.getAllByRole('button', { name: 'Translated account menu' }).length
     ).toBeGreaterThan(0)
+    expect(screen.queryByRole('link', { name: 'Get Pro' })).toBeNull()
   })
 
   it('tracks translated sign-in button clicks', async () => {

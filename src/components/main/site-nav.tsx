@@ -96,7 +96,7 @@ export function DesktopNav({ links }: { links: SiteNavLink[] }) {
   return (
     <nav
       ref={navRef}
-      className="relative hidden items-center gap-1 text-sm font-medium md:flex"
+      className="relative hidden items-center gap-1 text-sm font-medium lg:flex"
       onPointerLeave={() => setHoveredHref(null)}
     >
       <span

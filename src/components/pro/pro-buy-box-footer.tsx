@@ -1,4 +1,10 @@
-import { Bitcoin, CreditCard, Download, MonitorPlay } from 'lucide-react'
+import {
+  Bitcoin,
+  CreditCard,
+  Download,
+  MonitorPlay,
+  ShieldCheck,
+} from 'lucide-react'
 import { Link } from '@/i18n/navigation'
 import { TextLink } from '@/components/ui/text-link'
 import type { TranslateFn } from './pro-buy-box-options'
@@ -33,6 +39,15 @@ export function ProBuyBoxFooter({ t }: { t: TranslateFn }) {
           <span className="flex items-center gap-1">
             {t('buyBox.payments')}
             <Bitcoin className="h-4 w-4" aria-hidden />
+          </span>
+        </p>
+        <p className="flex items-center gap-2 text-xs">
+          <ShieldCheck className="h-4 w-4 shrink-0" aria-hidden />
+          <span>
+            {t('checkout.summary.refundPromise')}{' '}
+            <TextLink asChild>
+              <Link href="/refunds">{t('checkout.summary.refundLink')}</Link>
+            </TextLink>
           </span>
         </p>
       </div>

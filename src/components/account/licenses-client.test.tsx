@@ -537,7 +537,7 @@ describe('LicensesClient', () => {
         entitledVersions={{ 'lic-1': null }}
       />
     )
-    expect(screen.queryByText(/via this licence/)).not.toBeInTheDocument()
+    expect(screen.queryByText(/via this license/)).not.toBeInTheDocument()
   })
 
   it('renders real Discord connected members with a seat cap', () => {

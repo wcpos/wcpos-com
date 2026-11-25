@@ -12,6 +12,7 @@
     "documentation": "文档",
     "roadmap": "路线图",
     "pro": "Pro",
+    "getPro": "购买 Pro",
     "support": "支持",
     "downloads": "下载"
   },
@@ -76,7 +77,7 @@
     },
     "cta": {
       "title": "准备好用 WooCommerce 做店内销售了吗？",
-      "subtitle": "试用在线演示，或下载免费插件开始使用。",
+      "subtitle": "演示直接在浏览器中打开，无需安装任何东西。插件免费。",
       "liveDemo": "试用在线演示",
       "compare": "对比 WooCommerce POS 系统",
       "download": "免费下载"
@@ -164,23 +165,23 @@
       }
     },
     "features": {
-      "heading": "为实体零售的需求而构建",
+      "heading": "收银台能做什么",
       "items": {
         "f1": {
           "title": "快速商品搜索",
-          "description": "通过搜索、筛选和分类浏览即时找到商品。支持条码扫描器。"
+          "description": "搜索、筛选或按分类浏览。结果来自设备上的副本，因此会立即显示。扫描条码即可添加商品。"
         },
         "f2": {
-          "title": "流畅的结账流程",
+          "title": "现金、刷卡和拆分付款",
           "description": "添加商品、应用折扣、接受现金或使用自己的支付终端收取卡款，并拆分付款。Pro 可连接 Stripe Terminal 和 SumUp 等<link>读卡器</link>。"
         },
         "f3": {
-          "title": "客户资料",
-          "description": "直接在 POS 中添加和编辑客户信息。记录常客，提供更好的服务。"
+          "title": "添加和编辑客户",
+          "description": "在收银台添加新客户或修改客户信息。为销售选择现有客户是免费的。"
         },
         "f4": {
           "title": "订单历史与管理",
-          "description": "查看历史订单、处理退货、检查订单状态，无需切换到 WP Admin。"
+          "description": "无需打开 WP Admin，即可查找历史订单、重新打印小票或办理退款。"
         },
         "f5": {
           "title": "即时编辑库存和价格",
@@ -216,12 +217,12 @@
         "intro": "包含免费版全部功能，另外还有：",
         "features": {
           "p8": "更多收银台与多店铺",
-          "p1": "支付终端集成",
+          "p1": "连接读卡器",
           "p2": "在 POS 中编辑库存和价格",
           "p3": "订单历史与管理",
           "p4": "客户管理",
           "p5": "跨日期、收银台和店铺的报表",
-          "p6": "自定义支付网关",
+          "p6": "您的其他 WooCommerce 支付网关",
           "p7": "优先支持",
           "p9": "全额或部分退款",
           "p10": "优惠券管理",
@@ -276,6 +277,7 @@
         "b": "WCPOS 将你的平板、手机或电脑变成收银机——同一个商品目录、同样的库存、同样的价格，即使离线也能使用。",
         "c1": "试用在线演示",
         "c2": "免费下载",
+        "demoLogin": "演示登录：demo / demo",
         "badges": {
           "b1": "5,000+ 活跃安装",
           "b2": "免费且开源",
@@ -284,21 +286,22 @@
       },
       "a2": {
         "k": "你拥有的每块屏幕",
-        "h": "一个 POS。网页、桌面、iOS 和 Android。",
-        "b": "在柜台的平板、店内的手机或后办公室的笔记本上运行收银台——同一个商店，同一份数据。",
+        "h": "一个 POS。在浏览器中，在 Windows、macOS 和 Linux 上。",
+        "b": "在任意平板、手机或电脑的浏览器中运行收银台，或安装桌面应用。同一个商店，同一份数据。iOS 和 Android 应用为测试版。",
         "platforms": {
           "p1": "网页版",
           "p2": "Windows",
           "p3": "macOS",
           "p4": "iOS",
           "p5": "Android",
+          "p6": "Linux",
           "beta": "Beta"
         }
       },
       "a3": {
         "k": "使用你自己的硬件",
-        "h": "兼容你已经拥有的设备。",
-        "b": "接入柜台上的收据打印机和条码扫描器。自有终端刷卡由 WCPOS 记录；Pro 可连接 Stripe Terminal、SumUp 等。"
+        "h": "兼容常见的条码扫描器和收据打印机。",
+        "b": "几乎所有条码扫描器插上或配对后即可使用。Epson、Star 及其他 ESC/POS 收据打印机可根据设备通过 USB、Wi-Fi 或 Bluetooth 连接。自有终端刷卡由 WCPOS 记录；Pro 可连接 Stripe Terminal、SumUp 等。"
       },
       "a4": {
         "k": "你的商店，你的数据",
@@ -352,7 +355,7 @@
         }
       },
       "terminal": {
-        "tapToPay": "轻触付款"
+        "tapToPay": "轻触或插入银行卡"
       },
       "cloudSync": {
         "products": "{count, number} 件商品",
@@ -368,9 +371,9 @@
       "description": "WCPOS 是面向 WooCommerce 的免费销售点插件。这里展示其接下来的计划：进行中和已计划的工作，直接来自 GitHub。"
     },
     "page": {
-      "eyebrow": "发布列车",
+      "eyebrow": "现在、接下来、已发布",
       "title": "WooCommerce 销售点系统路线图",
-      "description": "通往更快速、更可靠离线能力的 WCPOS 的每一站——直接来自我们的 GitHub，最新工作排在最前。",
+      "description": "我们现在正在开发的内容、接下来计划的工作，以及最近发布的成果。列表直接来自我们的 GitHub，会随着工作进展而更新。",
       "changelogLink": "在更新日志中查看已发布的版本"
     },
     "board": {
@@ -416,7 +419,7 @@
     },
     "hero": {
       "title": "WCPOS Pro – WooCommerce 销售点系统",
-      "subtitle": "包含免费 POS 的全部功能，并增加支付终端、收银台店铺管理、完整报告和优先支持。"
+      "subtitle": "包含免费 POS 的全部功能，并增加更多收银台与店铺、读卡器连接、退款、在收银台编辑库存、订单和客户，以及优先支持。"
     },
     "schema": {
       "name": "WCPOS Pro",
@@ -427,14 +430,14 @@
       }
     },
     "features": {
-      "title": "Pro 包含哪些功能？",
+      "title": "Pro 新增功能",
       "stores": {
         "title": "更多收银台与多店铺",
         "description": "在免费收银台之外添加更多收银台，并运营多家店铺，每家店铺都有各自的地址、税率、小票模板、定价和授权用户。"
       },
       "terminal": {
-        "title": "支付终端集成",
-        "description": "通过 Stripe Terminal、Square Terminal、SumUp、Mollie、PayPal Reader 等接受当面刷卡收款。",
+        "title": "连接读卡器",
+        "description": "通过 Stripe Terminal、SumUp、Mollie Terminal、Square Terminal 等接受当面刷卡收款。PayPal Reader (Zettle) 通过你店铺自己的支付页面使用。",
         "link": "查看全部终端扩展"
       },
       "display": {
@@ -462,7 +465,7 @@
         "description": "查看以往日期和日期范围内每个收银台、每家店铺的销售情况。"
       },
       "gateways": {
-        "title": "自定义支付网关",
+        "title": "您的其他 WooCommerce 支付网关",
         "description": "在收银台启用店铺的其他 WooCommerce 支付网关，不限于内置选项。"
       }
     },
@@ -470,7 +473,7 @@
       "heading": "购买 Pro",
       "subheading": "一个许可证，全部功能。只需选择更新时长。",
       "termAriaLabel": "许可证期限",
-      "cta": "开始使用",
+      "cta": "购买 Pro",
       "ctaValueCopy": "立即获取访问权限",
       "yearly": {
         "title": "年付",
@@ -482,7 +485,6 @@
         "title": "终身",
         "subtitle": "永久更新",
         "priceSuffix": "一次性",
-        "ctaNote": "约等于{years}年年付 — 之后永久$0。",
         "ctaNoteSimple": "一次付款 — 永久更新。"
       },
       "tryFreeLink": "先试用免费版",
@@ -498,7 +500,7 @@
       "title": "常见问题",
       "freePlugin": {
         "question": "免费插件有功能限制吗？",
-        "answer": "免费的 WCPOS 插件是 GPL 软件，商品、订单和客户数量不设上限，且无交易手续费；它支持一个收银台，更多收银台和上述工具需要 Pro。"
+        "answer": "它支持一个收银台。商品、订单和客户数量不设上限，也没有交易手续费。更多收银台和上述工具需要 Pro。免费插件是 GPL 软件。"
       },
       "yearlyVsLifetime": {
         "question": "年付和终身版有什么区别？",
@@ -550,10 +552,16 @@
         "quantity": "数量：{quantity}",
         "discount": "优惠",
         "total": "总计",
+        "yearlyTerm": "1年更新和支持",
+        "lifetimeTerm": "永久更新",
+        "sites": "可在2个站点上使用 — 一个正式站点，一个开发站点",
+        "refundPromise": "如果 WCPOS Pro 没有做到我们所说的功能，我们会修好它，或者给你退款。",
+        "refundLink": "退款政策",
         "instantLicense": "许可证即时交付",
         "oneTimePayment": "一次性付款 — 永不自动续订",
         "securePayment": "安全支付处理"
       },
+      "noProduct": { "title": "选择一个套餐进行结账" },
       "promo": {
         "invalid": "此优惠链接已过期或不再有效。当前显示常规价格。"
       },
@@ -565,7 +573,7 @@
         "submitting": "请稍候…",
         "createContinue": "创建账户并继续",
         "signInContinue": "登录并继续",
-        "oauthPrompt": "更愿意使用 Google、GitHub 或 Discord？",
+        "oauthPrompt": "已有账户，或更愿意使用 Google、GitHub 或 Discord？",
         "oauthLink": "在此登录",
         "oauthSuffix": "— 您会直接回到结账。",
         "errors": {
@@ -1635,7 +1643,7 @@
     "hero": {
       "eyebrow": "下载",
       "title": "下载 WooCommerce 销售点系统",
-      "tagline": "一个收银台，适配所有设备。",
+      "tagline": "先安装免费插件，然后在浏览器或应用中打开收银台。",
       "platformChooserLabel": "选择您的平台",
       "versionMeta": "版本 {version} · {platform}",
       "detected": "已检测到",
@@ -1650,11 +1658,11 @@
       "points": {
         "setup": {
           "title": "唯一需要设置的是一个插件",
-          "body": "免费插件会为您的 WooCommerce 商店添加安全的 REST API。这就是全部安装内容——无需为每台设备托管或配置任何东西。"
+          "body": "在您的 WooCommerce 网站上安装免费插件，即可在浏览器中通过 yourdomain.com/pos 使用收银台。无需托管其他任何东西。桌面和移动应用为可选项：添加一次您的商店并登录即可。"
         },
         "sync": {
           "title": "每个应用都读写同一个商店",
-          "body": "在桌面端完成销售，手机上即显示新的库存水平——同一套商品、订单和客户数据，实时更新。"
+          "body": "在桌面端完成销售后，您的其他设备会在下一次检查时获取新的库存水平，默认设置下大约一分钟后。同一套商品、订单和客户数据。"
         },
         "offline": {
           "title": "连接中断时也能继续收银",
@@ -1689,12 +1697,12 @@
       "start": {
         "eyebrow": "开始使用",
         "title": "三步完成第一笔销售",
-        "subtitle": "从开始到完成大约只需两分钟。"
+        "subtitle": "从开始到完成大约五分钟。"
       },
       "steps": {
         "plugin": {
           "title": "安装免费插件",
-          "body": "这是所有内容连接的基础。在您的仪表盘中：插件 → 安装插件，然后搜索“WCPOS”。",
+          "body": "从这里开始：收银台和所有应用都通过该插件运行。在您的仪表盘中：插件 → 安装插件，然后搜索“WCPOS”。",
           "badge": "免费 · GPL",
           "requirements": "WordPress 5.6+ · WooCommerce 9.0+ · PHP 7.4+",
           "requirementsWithVersion": "最新 {version} · WordPress 5.6+ · WooCommerce 9.0+ · PHP 7.4+",
@@ -1711,11 +1719,12 @@
           "webCta": "打开在线演示"
         },
         "pro": {
-          "title": "想要更多功能？升级 Pro",
-          "cardTitle": "解锁更多收银台",
+          "title": "需要多个收银台？",
+          "cardTitle": "WCPOS Pro",
           "cardBody": "更多收银台与多店铺、终端付款、退款、库存和定价、订单管理、完整报表以及优先 Discord 支持。",
           "requirements": "WordPress 5.8+ · WooCommerce 9.0+ · PHP 7.4+",
           "plansCta": "查看 Pro 套餐",
+          "priceLine": "{price}（{currency}）起 — 一次性付款，永不自动续订。",
           "signInCta": "登录以下载"
         }
       }
@@ -1728,11 +1737,9 @@
       "fullHistory": "GitHub 上的完整历史 —",
       "desktop": "桌面版",
       "emptyNotes": "_此版本没有发布说明。_",
-      "fallback": {
-        "v196": "- Cash drawer support — auto-open after payment or via a new Open Drawer button, with per-printer connectors (ESC-POS, Epson, PrintNode, cloud)\n- Fixed analytics events firing too often\n- Updated translations",
-        "v195": "- Fixed a payment-gateways API crash (HTTP 500 with some third-party gateways, e.g. ToyyibPay)",
-        "v194": "- Redesigned Bluetooth printer setup; serial printing for OS-paired Bluetooth Classic printers\n- Improved Windows raw printing; smoother USB flow",
-        "v190": "- New receipt template gallery; thermal printing (58/80mm)\n- Customer Tax IDs; Pro coupons & refunds at the POS"
+      "empty": {
+        "title": "发布列表未能加载",
+        "body": "目前无法在此显示近期发布说明。本页的下载不受影响。"
       },
       "plugin": "免费",
       "showAllNotes": "显示 {version} 的全部发布说明",
@@ -1776,7 +1783,7 @@
       "eyebrow": "来自开发者的一封信",
       "intro": "你好——我是 Paul。我创建了 WCPOS。",
       "p1": "照片里的我，是一切刚开始的时候。2011 年 12 月，我在 Perth 开了 Urban Locavore，当时 WooCommerce 里已经有数百种商品，却没有办法在柜台销售——于是我自己做了一个收银系统。2014 年 4 月店铺关闭后，我把它发布到 WordPress.org，给任何需要它的人使用。<strong>从那以后，面向 WooCommerce 的 POS 插件来来去去。这个没有离开。</strong>十多年持续发布，一个开发者，仍在更新——而免费版依然是真正可用的版本：销售、打印、保持同步。它会继续免费。",
-      "p2": "<strong>Pro 是它仍然存在的原因。</strong>它为经营商店增加了额外工具——读卡器、收银台退款、日终报表、多店铺——并资助每一次发布，包括免费版。没有投资者，也没有等待出售退出。店主们直接支持它。",
+      "p2": "<strong>Pro 是它仍然存在的原因。</strong>它为经营商店增加了额外工具——读卡器、收银台退款、跨日期和收银台的报表、多店铺——并资助每一次发布，包括免费版。没有投资者，也没有等待出售退出。店主们直接支持它。",
       "p3": "Pro 用户还有一条直接沟通渠道：告诉我你的店铺需要什么，这会影响我接下来构建的内容。",
       "signature": {
         "name": "Paul Kilmurray",
@@ -1912,6 +1919,7 @@
       "title": "更想和真人沟通？",
       "subtitle": "加入店主和团队所在的实时 Discord 社区。",
       "open": "打开 Discord",
+      "emailLine": "更喜欢用电子邮件？请发送电子邮件至 <email>support@wcpos.com</email>。",
       "embedTitle": "Discord 聊天"
     },
     "guides": {
@@ -1928,7 +1936,7 @@
     "more": { "title": "更多对比" },
     "disclosure": {
       "title": "这份对比由谁发布",
-      "body": "本页面由 WooCommerce POS 的开发者 WCPOS 发布。我们显然是利益相关方——因此每一个数字都注明来源和日期，我们直接链接到竞争对手自己的定价页面，并且在竞争对手是更好选择时坦率地告诉你。请自行核实所有内容。"
+      "body": "本页面由 WCPOS 发布，所以我们并不中立。正因如此，每一个数字都注明来源和日期，我们直接链接到竞争对手自己的定价页面，并且在竞争对手是更好选择时坦率地告诉你。请自行核实所有内容。"
     },
     "hub": {
       "metadata": {
@@ -1941,7 +1949,7 @@
       },
       "method": {
         "title": "这些对比是如何做出来的",
-        "body": "事实数据来自厂商自己的定价页面和 WordPress.org，在注明的日期抓取，并每季度重新核实。在 WCPOS 落后的类别——自助终端模式、厂商硬件、应用商店的打磨程度——页面会如实说明。发现错误？发邮件到 support@wcpos.com，我们会更正并记录每次修改。"
+        "body": "事实数据来自厂商自己的定价页面和 WordPress.org，在注明的日期抓取；每个页面都会注明其信息最后一次核实的时间。在 WCPOS 落后的类别——自助终端模式、厂商硬件、应用商店的打磨程度——页面会如实说明。发现错误？发邮件到 support@wcpos.com，我们会更正并记录每次修改。"
       },
       "oliverCard": {
         "title": "WCPOS vs Oliver POS",
@@ -2156,7 +2164,7 @@
         },
         "payments": {
           "claim": "集成支付：有限",
-          "response": "WCPOS Pro 集成 Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc 和 Windcave，以及通过二维码或推送通知收款的 Vipps MobilePay，可在扩展目录中一键安装，并在收银台启用你店铺的其他 WooCommerce 支付网关。免费版接受现金并记录在单独的终端上收取的银行卡付款，还可将同一订单拆分为多笔付款。"
+          "response": "WCPOS Pro 集成 Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc 和 Windcave，以及通过二维码或推送通知收款的 Vipps MobilePay，从扩展目录安装，并在收银台启用你店铺的其他 WooCommerce 支付网关。免费版接受现金并记录在单独的终端上收取的银行卡付款，还可将同一订单拆分为多笔付款。"
         },
         "hobbyShops": {
           "claim": "最适合业余小店",
@@ -2290,7 +2298,7 @@
       "payments": {
         "title": "银行卡支付如何运作？",
         "woocommerce": "WooCommerce POS 接受现金，也通过 WooPayments 或 Stripe 配合连接到平板的 Bluetooth 读卡器接受银行卡。使用 WooPayments 时，线下银行卡支付费率低于线上：美国线下为 2.70% + $0.10，线上为 2.90% + $0.30。读卡器每台活跃设备每月收费 $5.00 / £5.00。",
-        "wcpos": "WCPOS 2.0 有自己的结账流程：购物车旁的收款面板可接受现金、记录在单独的终端上收取的银行卡付款，并可将同一订单拆分为多笔付款。使用 Pro，你可以在收银台启用店铺的其他 WooCommerce 支付网关，并添加 Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc 和 Windcave 的刷卡终端集成，以及通过二维码或推送通知收款的 Vipps MobilePay，均可从扩展目录一键安装。WCPOS 目前还没有 iPhone 和 Android 上的 Tap to Pay，将在后续应用更新中提供。WCPOS 不支持 WooPayments 线下支付。"
+        "wcpos": "WCPOS 2.0 有自己的结账流程：购物车旁的收款面板可接受现金、记录在单独的终端上收取的银行卡付款，并可将同一订单拆分为多笔付款。使用 Pro，你可以在收银台启用店铺的其他 WooCommerce 支付网关，并添加 Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc 和 Windcave 的刷卡终端集成，以及通过二维码或推送通知收款的 Vipps MobilePay，均从扩展目录安装。WCPOS 目前还没有 iPhone 和 Android 上的 Tap to Pay，将在后续应用更新中提供。WCPOS 不支持 WooPayments 线下支付。"
       },
       "pricing": {
         "title": "费用是多少？",
@@ -2310,11 +2318,11 @@
         "offline": "无离线模式：需要有效的互联网连接。",
         "multiLocation": "目前尚不支持多地点。",
         "gateways": "银行卡支付需要 WooPayments 或 Stripe。",
-        "outro": "WooCommerce 持续向 WooCommerce 核心添加 POS 功能，因此预计这份清单会缩短——我们每季度重新核实。"
+        "outro": "WooCommerce 持续向 WooCommerce 核心添加 POS 功能，因此预计这份清单会缩短——页面底部注明了最后一次核实的日期。"
       },
       "woocommerceBetter": {
-        "title": "WooCommerce POS 真正更胜一筹的地方",
-        "intro": "诚实的对比要兼顾双方的优点：",
+        "title": "WooCommerce POS 更胜一筹的地方",
+        "intro": "它在三个方面胜出：",
         "price": "它的 POS 软件免费，无需任何许可证——WCPOS Pro 至少要 $129。",
         "official": "它由 WooCommerce 自己开发，就在你可能已经用来管理店铺的 WooCommerce 移动应用中。",
         "wooPayments": "原生 WooPayments 线下支付，费率低于 WooPayments 线上支付（美国线下为 2.70% + $0.10，线上为 2.90% + $0.30）。WCPOS 没有 WooPayments 线下支付集成。",
@@ -2359,7 +2367,7 @@
         }
       },
       "footer": {
-        "factsDated": "有关 WooCommerce POS 的信息已于 2026-10-06 对照 WooCommerce 自身的页面（POS 文档、POS 页面和 WooPayments 费用页面）核实；WCPOS 的信息来自 wcpos.com。WCPOS 信息适用于 2026-11-09 发布的 WCPOS 2.0，应用和插件均需为 2.0 版本。我们每季度重新核实。",
+        "factsDated": "有关 WooCommerce POS 的信息已于 2026-10-06 对照 WooCommerce 自身的页面（POS 文档、POS 页面和 WooPayments 费用页面）核实；WCPOS 的信息来自 wcpos.com。WCPOS 信息适用于 2026-11-09 发布的 WCPOS 2.0，应用和插件均需为 2.0 版本。",
         "corrections": "发现错误？发邮件到 support@wcpos.com——我们会尽快更正并记录每次修改。"
       }
     },
@@ -2439,7 +2447,7 @@
       "payments": {
         "title": "银行卡支付如何运作？",
         "square": "Square 的 POS 通过 Square 接受银行卡付款，包括 iPhone 和 Android 上的 Tap to Pay。在美国使用 Square Free 方案时，一笔线下银行卡付款（轻触、插卡或刷卡）的费用为 2.6% + 15¢。Square 表示，Square 应用的银行卡收款服务可在美国、加拿大、澳大利亚、日本、英国、爱尔兰共和国、法国和西班牙使用；该扩展要求 WooCommerce 的货币与 Square 账户的货币一致。",
-        "wcpos": "WCPOS 2.0 有自己的结账流程：购物车旁的收款面板可接受现金、记录在单独的终端上收取的银行卡付款，并可将同一订单拆分为多笔付款。使用 Pro，你可以在收银台启用店铺的其他 WooCommerce 支付网关，并添加 Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc 和 Windcave 的刷卡终端集成，以及通过二维码或推送通知收款的 Vipps MobilePay，均可从扩展目录一键安装。WCPOS 目前还没有 iPhone 和 Android 上的 Tap to Pay，将在后续应用更新中提供。",
+        "wcpos": "WCPOS 2.0 有自己的结账流程：购物车旁的收款面板可接受现金、记录在单独的终端上收取的银行卡付款，并可将同一订单拆分为多笔付款。使用 Pro，你可以在收银台启用店铺的其他 WooCommerce 支付网关，并添加 Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc 和 Windcave 的刷卡终端集成，以及通过二维码或推送通知收款的 Vipps MobilePay，均从扩展目录安装。WCPOS 目前还没有 iPhone 和 Android 上的 Tap to Pay，将在后续应用更新中提供。",
         "both": "已经有 Square Terminal？WCPOS Pro 的 Square Terminal 网关直接从 WCPOS 收银台在该终端上收取 WooCommerce 订单款项，并将结果写回订单。如果你使用官方 Square for WooCommerce 插件，其环境和地点 ID 会预先填写。已登录 Square POS 或其他集成的 Terminal 必须先从那里退出登录。"
       },
       "pricing": {
@@ -2460,7 +2468,7 @@
         "countries": "Square 可在美国、加拿大、澳大利亚、日本、英国、法国、西班牙和爱尔兰使用，且你的 WooCommerce 货币必须与 Square 账户货币一致。",
         "sku": "每件商品都必须有 SKU。",
         "variations": "从 Square 向 WooCommerce 同步商品时，每件商品最多支持 250 个变体和 6 个属性。",
-        "outro": "我们每季度重新核实这份清单。"
+        "outro": "页面底部注明了这份清单最后一次核实的日期。"
       },
       "squareBetter": {
         "title": "Square 真正更胜一筹的地方",
@@ -2530,7 +2538,7 @@
         }
       },
       "footer": {
-        "factsDated": "Square 相关事实于 2026-10-06 根据 Square 自己的页面（费率页面、价格公告，以及关于离线支付、Tap to Pay、设备和国际可用性的帮助文章）和 WooCommerce 的 Square for WooCommerce 扩展文档核实，并于 2026-11-18 再次核实；WCPOS 相关事实来自 wcpos.com 和 docs.wcpos.com。WCPOS 信息适用于 2026-11-09 发布的 WCPOS 2.0，应用和插件均需为 2.0 版本。我们每季度重新核实。",
+        "factsDated": "Square 相关事实于 2026-10-06 根据 Square 自己的页面（费率页面、价格公告，以及关于离线支付、Tap to Pay、设备和国际可用性的帮助文章）和 WooCommerce 的 Square for WooCommerce 扩展文档核实，并于 2026-11-18 再次核实；WCPOS 相关事实来自 wcpos.com 和 docs.wcpos.com。WCPOS 信息适用于 2026-11-09 发布的 WCPOS 2.0，应用和插件均需为 2.0 版本。",
         "corrections": "发现错误？发邮件到 support@wcpos.com——我们会尽快更正并记录每次修改。"
       }
     },
@@ -2643,7 +2651,7 @@
         }
       },
       "footer": {
-        "factsDated": "有关 Jovvie 的信息截至 2026-07-09，来自我们自己的竞品研究，此后未重新核实；决定前请到 jovvie.com 查看当前价格。WCPOS 信息来自 wcpos.com、docs.wcpos.com 和 WordPress.org。WCPOS 信息适用于 2026-11-09 发布的 WCPOS 2.0，应用和插件均需为 2.0 版本。我们每季度重新核实。",
+        "factsDated": "有关 Jovvie 的信息截至 2026-07-09，来自我们自己的竞品研究，此后未重新核实；决定前请到 jovvie.com 查看当前价格。WCPOS 信息来自 wcpos.com、docs.wcpos.com 和 WordPress.org。WCPOS 信息适用于 2026-11-09 发布的 WCPOS 2.0，应用和插件均需为 2.0 版本。",
         "corrections": "发现错误？发邮件到 support@wcpos.com——我们会尽快更正并记录每次修改。"
       }
     },
@@ -2785,7 +2793,7 @@
         }
       },
       "footer": {
-        "factsDated": "关于 Vitepos 的信息于 2026-10-07 从 vitepos.com 及其 WordPress.org 列表页面查阅（见“来源”）；决定前请在 vitepos.com 查看当前价格。WCPOS 信息来自 wcpos.com、docs.wcpos.com 和 WordPress.org。WCPOS 信息适用于 2026-11-09 发布的 WCPOS 2.0，应用和插件均需为 2.0 版本。我们每季度重新核实。",
+        "factsDated": "关于 Vitepos 的信息于 2026-10-07 从 vitepos.com 及其 WordPress.org 列表页面查阅（见“来源”）；决定前请在 vitepos.com 查看当前价格。WCPOS 信息来自 wcpos.com、docs.wcpos.com 和 WordPress.org。WCPOS 信息适用于 2026-11-09 发布的 WCPOS 2.0，应用和插件均需为 2.0 版本。",
         "corrections": "发现错误？发邮件到 support@wcpos.com——我们会尽快更正并记录每次修改。"
       }
     },
@@ -2930,7 +2938,7 @@
         }
       },
       "footer": {
-        "factsDated": "关于 YITH Point of Sale 的信息于 2026-10-07 从 yithemes.com 和 docs.yithemes.com 查阅（见“来源”）；决定前请在 yithemes.com 查看当前价格。WCPOS 信息来自 wcpos.com、docs.wcpos.com 和 WordPress.org。WCPOS 信息适用于 2026-11-09 发布的 WCPOS 2.0，应用和插件均需为 2.0 版本。我们每季度重新核实。",
+        "factsDated": "关于 YITH Point of Sale 的信息于 2026-10-07 从 yithemes.com 和 docs.yithemes.com 查阅（见“来源”）；决定前请在 yithemes.com 查看当前价格。WCPOS 信息来自 wcpos.com、docs.wcpos.com 和 WordPress.org。WCPOS 信息适用于 2026-11-09 发布的 WCPOS 2.0，应用和插件均需为 2.0 版本。",
         "corrections": "发现错误？发邮件到 support@wcpos.com——我们会尽快更正并记录每次修改。"
       }
     },
@@ -3076,7 +3084,7 @@
         }
       },
       "footer": {
-        "factsDated": "关于 FooSales 的信息于 2026-10-07 从 foosales.com、help.foosales.com 及其 App Store 列表页面查阅（见“来源”）；决定前请在 foosales.com 查看当前价格。WCPOS 信息来自 wcpos.com、docs.wcpos.com 和 WordPress.org。WCPOS 信息适用于 2026-11-09 发布的 WCPOS 2.0，应用和插件均需为 2.0 版本。我们每季度重新核实。",
+        "factsDated": "关于 FooSales 的信息于 2026-10-07 从 foosales.com、help.foosales.com 及其 App Store 列表页面查阅（见“来源”）；决定前请在 foosales.com 查看当前价格。WCPOS 信息来自 wcpos.com、docs.wcpos.com 和 WordPress.org。WCPOS 信息适用于 2026-11-09 发布的 WCPOS 2.0，应用和插件均需为 2.0 版本。",
         "corrections": "发现错误？发邮件到 support@wcpos.com——我们会尽快更正并记录每次修改。"
       }
     }

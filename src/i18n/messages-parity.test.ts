@@ -155,14 +155,7 @@ const receiptPdfEnglishPhrases = [
   'Canceled',
   'Unknown',
 ]
-const releaseNoteFallbackEnglishOnlyKeys = [
-  'downloads.releaseHistory.fallback.v196',
-  'downloads.releaseHistory.fallback.v195',
-  'downloads.releaseHistory.fallback.v194',
-  'downloads.releaseHistory.fallback.v190',
-]
 const globallyLanguageNeutralOrEnglishOnlyKeys = new Set([
-  ...releaseNoteFallbackEnglishOnlyKeys,
   'about.founder.signature.name',
   'about.timeline.dates.range',
   // Brand/technical labels — kept verbatim across locales by design.
@@ -173,6 +166,7 @@ const globallyLanguageNeutralOrEnglishOnlyKeys = new Set([
   'account.profile.taxLabels.partitaIva',
   'account.receiptPdf.sellerIdentityWithAbn',
   'auth.common.emailPlaceholder',
+  'downloads.page.steps.pro.cardTitle',
   // Compare pages — brand names, domains, and URLs shown verbatim in every locale.
   'compare.hub.oliverCard.title',
   'compare.oliver.hero.title',
@@ -267,7 +261,6 @@ const italianIdenticalCopyAllowlist = new Set([
   'account.licenses.pluginVersionLabel',
   'account.licenses.wpVersionLabel',
   'account.licenses.wcVersionLabel',
-  ...releaseNoteFallbackEnglishOnlyKeys,
   'account.orderDetail.emailLabel',
   'account.profile.email',
   'account.profile.taxLabels.abn',
@@ -288,6 +281,7 @@ const italianIdenticalCopyAllowlist = new Set([
   'home.story.a2.platforms.p3',
   'home.story.a2.platforms.p4',
   'home.story.a2.platforms.p5',
+  'home.story.a2.platforms.p6',
   'home.story.pos.registerShort',
   'downloads.platforms.mac-arm.name',
   'downloads.platforms.mac-arm.listLabel',
@@ -316,6 +310,7 @@ const italianIdenticalCopyAllowlist = new Set([
   'downloads.page.steps.plugin.requirements',
   'downloads.page.steps.pro.requirements',
   'downloads.page.steps.plugin.cardTitle',
+  'downloads.page.steps.pro.cardTitle',
   'downloads.page.steps.plugin.wordpressOrgCta',
   'downloads.releaseHistory.desktop',
   'about.founder.signature.name',
@@ -362,7 +357,6 @@ const dutchIdenticalCopyAllowlist = new Set([
   'account.licenses.pluginVersionLabel',
   'account.licenses.wpVersionLabel',
   'account.licenses.wcVersionLabel',
-  ...releaseNoteFallbackEnglishOnlyKeys,
   'about.founder.signature.name',
   'about.timeline.dates.range',
   'home.title',
@@ -379,6 +373,7 @@ const dutchIdenticalCopyAllowlist = new Set([
   'home.story.a2.platforms.p3',
   'home.story.a2.platforms.p4',
   'home.story.a2.platforms.p5',
+  'home.story.a2.platforms.p6',
   'home.story.nav.s1',
   'home.story.pos.registerShort',
   'account.nav.downloads',
@@ -421,6 +416,7 @@ const dutchIdenticalCopyAllowlist = new Set([
   'downloads.page.steps.plugin.requirements',
   'downloads.page.steps.pro.requirements',
   'downloads.page.steps.plugin.cardTitle',
+  'downloads.page.steps.pro.cardTitle',
   'downloads.page.steps.plugin.wordpressOrgCta',
   'downloads.releaseHistory.desktop',
   'header.pro',
@@ -466,7 +462,6 @@ const koreanIdenticalCopyAllowlist = new Set([
   'account.licenses.pluginVersionLabel',
   'account.licenses.wpVersionLabel',
   'account.licenses.wcVersionLabel',
-  ...releaseNoteFallbackEnglishOnlyKeys,
   'about.founder.signature.name',
   'about.timeline.dates.range',
   'home.title',
@@ -481,6 +476,7 @@ const koreanIdenticalCopyAllowlist = new Set([
   'home.story.a2.platforms.p3',
   'home.story.a2.platforms.p4',
   'home.story.a2.platforms.p5',
+  'home.story.a2.platforms.p6',
   'home.story.pos.registerShort',
   'auth.common.emailPlaceholder',
   'downloads.platforms.mac-arm.name',
@@ -507,6 +503,7 @@ const koreanIdenticalCopyAllowlist = new Set([
   'downloads.page.steps.plugin.requirements',
   'downloads.page.steps.pro.requirements',
   'downloads.page.steps.plugin.cardTitle',
+  'downloads.page.steps.pro.cardTitle',
   'downloads.page.steps.plugin.wordpressOrgCta',
   'downloads.releaseHistory.desktop',
   'account.profile.taxLabels.abn',
@@ -596,7 +593,6 @@ const portugueseIdenticalCopyAllowlist = new Set([
   'account.licenses.pluginVersionLabel',
   'account.licenses.wpVersionLabel',
   'account.licenses.wcVersionLabel',
-  ...releaseNoteFallbackEnglishOnlyKeys,
   'header.pro',
   'footer.copyright',
   'footer.discord',
@@ -631,6 +627,7 @@ const portugueseIdenticalCopyAllowlist = new Set([
   'downloads.page.steps.plugin.requirements',
   'downloads.page.steps.pro.requirements',
   'downloads.page.steps.plugin.cardTitle',
+  'downloads.page.steps.pro.cardTitle',
   'downloads.page.steps.plugin.wordpressOrgCta',
   'account.orderDetail.totalLabel',
   'account.profile.githubProvider',
@@ -666,6 +663,7 @@ const portugueseIdenticalCopyAllowlist = new Set([
   'home.story.a2.platforms.p3',
   'home.story.a2.platforms.p4',
   'home.story.a2.platforms.p5',
+  'home.story.a2.platforms.p6',
   'home.story.pos.subtotal',
 ])
 
@@ -693,7 +691,6 @@ const japaneseIdenticalCopyAllowlist = new Set([
   'account.licenses.pluginVersionLabel',
   'account.licenses.wpVersionLabel',
   'account.licenses.wcVersionLabel',
-  ...releaseNoteFallbackEnglishOnlyKeys,
   'auth.common.emailPlaceholder',
   'header.pro',
   'footer.copyright',
@@ -739,6 +736,7 @@ const japaneseIdenticalCopyAllowlist = new Set([
   'downloads.page.steps.plugin.requirements',
   'downloads.page.steps.pro.requirements',
   'downloads.page.steps.plugin.cardTitle',
+  'downloads.page.steps.pro.cardTitle',
   'downloads.page.steps.plugin.wordpressOrgCta',
   'downloads.releaseHistory.desktop',
   'about.founder.signature.name',
@@ -756,6 +754,7 @@ const japaneseIdenticalCopyAllowlist = new Set([
   'home.story.a2.platforms.p3',
   'home.story.a2.platforms.p4',
   'home.story.a2.platforms.p5',
+  'home.story.a2.platforms.p6',
   'home.story.pos.registerShort',
   'legal.privacy.processors.items.p2.label',
   'legal.privacy.processors.items.p3.label',
@@ -793,7 +792,6 @@ const chineseIdenticalCopyAllowlist = new Set([
   'account.licenses.pluginVersionLabel',
   'account.licenses.wpVersionLabel',
   'account.licenses.wcVersionLabel',
-  ...releaseNoteFallbackEnglishOnlyKeys,
   'auth.common.emailPlaceholder',
   'header.pro',
   'footer.copyright',
@@ -839,6 +837,7 @@ const chineseIdenticalCopyAllowlist = new Set([
   'downloads.page.steps.plugin.requirements',
   'downloads.page.steps.pro.requirements',
   'downloads.page.steps.plugin.cardTitle',
+  'downloads.page.steps.pro.cardTitle',
   'downloads.page.steps.plugin.wordpressOrgCta',
   'downloads.releaseHistory.desktop',
   'about.founder.signature.name',
@@ -854,6 +853,7 @@ const chineseIdenticalCopyAllowlist = new Set([
   'home.story.a2.platforms.p3',
   'home.story.a2.platforms.p4',
   'home.story.a2.platforms.p5',
+  'home.story.a2.platforms.p6',
   'home.story.pos.registerShort',
   'legal.privacy.processors.items.p2.label',
   'legal.privacy.processors.items.p3.label',
@@ -893,7 +893,6 @@ const germanIdenticalCopyAllowlist = new Set([
   'account.licenses.pluginVersionLabel',
   'account.licenses.wpVersionLabel',
   'account.licenses.wcVersionLabel',
-  ...releaseNoteFallbackEnglishOnlyKeys,
   'header.pro',
   'footer.copyright',
   'footer.pro',
@@ -944,6 +943,7 @@ const germanIdenticalCopyAllowlist = new Set([
   'downloads.page.steps.plugin.requirements',
   'downloads.page.steps.pro.requirements',
   'downloads.page.steps.plugin.cardTitle',
+  'downloads.page.steps.pro.cardTitle',
   'downloads.page.steps.plugin.wordpressOrgCta',
   'downloads.releaseHistory.desktop',
   'about.founder.signature.name',
@@ -965,6 +965,7 @@ const germanIdenticalCopyAllowlist = new Set([
   'home.story.a2.platforms.p3',
   'home.story.a2.platforms.p4',
   'home.story.a2.platforms.p5',
+  'home.story.a2.platforms.p6',
   'legal.privacy.cookies.title',
   'legal.privacy.processors.items.p2.label',
   'legal.privacy.processors.items.p3.label',
@@ -983,7 +984,6 @@ const spanishIdenticalCopyAllowlist = new Set([
   'account.licenses.pluginVersionLabel',
   'account.licenses.wpVersionLabel',
   'account.licenses.wcVersionLabel',
-  ...releaseNoteFallbackEnglishOnlyKeys,
   'header.pro',
   'footer.copyright',
   'footer.discord',
@@ -1030,6 +1030,7 @@ const spanishIdenticalCopyAllowlist = new Set([
   'downloads.page.steps.plugin.requirements',
   'downloads.page.steps.pro.requirements',
   'downloads.page.steps.plugin.cardTitle',
+  'downloads.page.steps.pro.cardTitle',
   'downloads.page.steps.plugin.wordpressOrgCta',
   'downloads.page.beta',
   'home.story.a2.platforms.beta',
@@ -1052,6 +1053,7 @@ const spanishIdenticalCopyAllowlist = new Set([
   'home.story.a2.platforms.p3',
   'home.story.a2.platforms.p4',
   'home.story.a2.platforms.p5',
+  'home.story.a2.platforms.p6',
   'home.title',
   'home.useCases.cards.retail.attribution',
   'home.useCases.cards.market.attribution',
@@ -1067,6 +1069,7 @@ const spanishIdenticalCopyAllowlist = new Set([
   'home.story.a2.platforms.p3',
   'home.story.a2.platforms.p4',
   'home.story.a2.platforms.p5',
+  'home.story.a2.platforms.p6',
   'home.story.pos.subtotal',
   'legal.privacy.cookies.title',
   'legal.privacy.processors.items.p2.label',
@@ -1089,7 +1092,6 @@ const frenchIdenticalCopyAllowlist = new Set([
   'account.licenses.pluginVersionLabel',
   'account.licenses.wpVersionLabel',
   'account.licenses.wcVersionLabel',
-  ...releaseNoteFallbackEnglishOnlyKeys,
   'downloads.platforms.mac-arm.name',
   'downloads.platforms.mac-arm.listLabel',
   'downloads.platforms.mac-arm.short',
@@ -1115,6 +1117,7 @@ const frenchIdenticalCopyAllowlist = new Set([
   'downloads.page.steps.plugin.requirements',
   'downloads.page.steps.pro.requirements',
   'downloads.page.steps.plugin.cardTitle',
+  'downloads.page.steps.pro.cardTitle',
   'downloads.page.steps.plugin.wordpressOrgCta',
   'legal.privacy.processors.items.p2.label',
   'legal.privacy.processors.items.p3.label',
@@ -1136,6 +1139,7 @@ const frenchIdenticalCopyAllowlist = new Set([
   'home.story.a2.platforms.p3',
   'home.story.a2.platforms.p4',
   'home.story.a2.platforms.p5',
+  'home.story.a2.platforms.p6',
   'about.founder.signature.name',
   'about.timeline.dates.range',
   'home.title',
@@ -1155,6 +1159,7 @@ const frenchIdenticalCopyAllowlist = new Set([
   'home.story.a2.platforms.p3',
   'home.story.a2.platforms.p4',
   'home.story.a2.platforms.p5',
+  'home.story.a2.platforms.p6',
   'account.profile.taxLabels.abn',
   'account.profile.taxLabels.partitaIva',
   'account.profile.googleProvider',
@@ -1347,29 +1352,6 @@ describe('messages key parity', () => {
       expect(
         leakedPhrases,
         `messages/${locale}.json account.receiptPdf copy must not retain high-signal English receipt phrases`
-      ).toEqual([])
-    }
-  )
-
-  it.each(otherLocales)(
-    '%s.json keeps release-note fallback bodies in English',
-    (locale) => {
-      const english = loadMessages(defaultLocale)
-      const localized = loadMessages(locale)
-      const fallbackKeys = enKeys.filter((key) =>
-        key.startsWith('downloads.releaseHistory.fallback.')
-      )
-      const translatedFallbacks = fallbackKeys
-        .map((key) => ({
-          key,
-          english: valueAtPath(english, key),
-          localized: valueAtPath(localized, key),
-        }))
-        .filter(({ english, localized }) => localized !== english)
-
-      expect(
-        translatedFallbacks,
-        `messages/${locale}.json release-note fallbacks must stay English; GitHub release notes are not translated`
       ).toEqual([])
     }
   )

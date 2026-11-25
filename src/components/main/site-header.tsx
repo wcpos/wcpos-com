@@ -19,7 +19,15 @@ import { UserMenu } from '@/components/main/user-menu'
 import { WcposLogo } from '@/components/icons/wcpos-logo'
 import { DesktopNav, MobileNavLinks } from '@/components/main/site-nav'
 
-async function AuthButton({ signInLabel }: { signInLabel: string }) {
+async function AuthButton({
+  signInLabel,
+  getProLabel,
+  className,
+}: {
+  signInLabel: string
+  getProLabel: string
+  className?: string
+}) {
   let customer = null
   try {
     customer = await getCustomer()
@@ -37,12 +45,20 @@ async function AuthButton({ signInLabel }: { signInLabel: string }) {
     )
   }
 
+  // Signed out: Get Pro is the header's one filled button; Sign In steps back
   return (
-    <Button size="sm" asChild>
-      <TrackedLocaleLink href="/login" eventName="click_sign_in">
-        {signInLabel}
-      </TrackedLocaleLink>
-    </Button>
+    <>
+      <Button size="sm" asChild className={className}>
+        <TrackedLocaleLink href="/pro" eventName="click_pro_cta">
+          {getProLabel}
+        </TrackedLocaleLink>
+      </Button>
+      <Button size="sm" variant="ghost" asChild className={className}>
+        <TrackedLocaleLink href="/login" eventName="click_sign_in">
+          {signInLabel}
+        </TrackedLocaleLink>
+      </Button>
+    </>
   )
 }
 
@@ -64,7 +80,7 @@ export function SiteHeader() {
   ]
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/90">
       <div className="container flex h-16 items-center justify-between px-4 mx-auto">
         {/* Logo + Desktop Nav */}
         <div className="flex items-center gap-6">
@@ -75,16 +91,17 @@ export function SiteHeader() {
           <DesktopNav links={navLinks} />
         </div>
 
-        {/* Desktop Auth Button */}
-        <div className="hidden md:block">
+        {/* Desktop nav and auth from lg: the longest locales (de, nl) need
+            more than md's 768px for the labels plus Get Pro / Sign In. */}
+        <div className="hidden lg:flex lg:items-center lg:gap-2">
           <Suspense fallback={<AuthButtonFallback />}>
-            <AuthButton signInLabel={tCommon('signIn')} />
+            <AuthButton signInLabel={tCommon('signIn')} getProLabel={t('getPro')} />
           </Suspense>
         </div>
 
         {/* Mobile Hamburger */}
         <Sheet>
-          <SheetTrigger asChild className="md:hidden">
+          <SheetTrigger asChild className="lg:hidden">
             <Button variant="ghost" size="icon">
               <Menu className="h-5 w-5" />
               <span className="sr-only">{tCommon('openMenu')}</span>
@@ -97,9 +114,13 @@ export function SiteHeader() {
             </SheetTitle>
             <nav className="flex flex-col gap-1 mt-6">
               <MobileNavLinks links={navLinks} />
-              <div className="border-t pt-4 mt-3">
+              <div className="border-t pt-4 mt-3 flex flex-col gap-2">
                 <Suspense fallback={<AuthButtonFallback />}>
-                  <AuthButton signInLabel={tCommon('signIn')} />
+                  <AuthButton
+                    signInLabel={tCommon('signIn')}
+                    getProLabel={t('getPro')}
+                    className="w-full"
+                  />
                 </Suspense>
               </div>
             </nav>

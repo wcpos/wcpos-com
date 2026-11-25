@@ -12,6 +12,7 @@
     "documentation": "Documentatie",
     "roadmap": "Routekaart",
     "pro": "Pro",
+    "getPro": "Koop Pro",
     "support": "Ondersteuning",
     "downloads": "Downloaden"
   },
@@ -76,7 +77,7 @@
     },
     "cta": {
       "title": "Klaar om in de winkel te verkopen met WooCommerce?",
-      "subtitle": "Probeer de live demo of download de gratis plugin om te beginnen.",
+      "subtitle": "De demo opent in je browser, zonder iets te installeren. De plugin is gratis.",
       "liveDemo": "Live demo proberen",
       "compare": "Vergelijk WooCommerce POS-systemen",
       "download": "Gratis downloaden"
@@ -164,23 +165,23 @@
       }
     },
     "features": {
-      "heading": "Gebouwd voor de eisen van fysieke retail",
+      "heading": "Wat de kassa doet",
       "items": {
         "f1": {
           "title": "Snel producten zoeken",
-          "description": "Vind producten direct met zoeken, filters en bladeren door categorieën. Ondersteuning voor barcodescanners."
+          "description": "Zoek, filter of blader per categorie. De resultaten komen uit de kopie op het apparaat, dus ze verschijnen meteen. Scan een barcode om een artikel toe te voegen."
         },
         "f2": {
-          "title": "Soepele checkout-flow",
+          "title": "Contant, kaart en gesplitste betalingen",
           "description": "Voeg artikelen toe, pas kortingen toe, accepteer contant geld of kaartbetalingen via je eigen betaalterminal en splits een betaling. Pro koppelt <link>kaartlezers</link> zoals Stripe Terminal en SumUp."
         },
         "f3": {
-          "title": "Klantprofielen",
-          "description": "Voeg klantgegevens direct in het kassasysteem toe en bewerk ze. Herken vaste klanten en bied betere service."
+          "title": "Klanten toevoegen en bewerken",
+          "description": "Voeg aan de kassa een nieuwe klant toe of corrigeer de klantgegevens. Een bestaande klant kiezen voor een verkoop is gratis."
         },
         "f4": {
           "title": "Bestelgeschiedenis en beheer",
-          "description": "Bekijk eerdere bestellingen, verwerk retouren en controleer de bestelstatus zonder naar WP Admin te schakelen."
+          "description": "Zoek een eerdere bestelling op, druk de bon opnieuw af of betaal hem terug zonder WP Admin te openen."
         },
         "f5": {
           "title": "Voorraad en prijzen direct aanpassen",
@@ -216,12 +217,12 @@
         "intro": "Alles in Gratis, plus:",
         "features": {
           "p8": "Meer kassa's en meerdere winkels",
-          "p1": "Integratie met betaalterminals",
+          "p1": "Gekoppelde kaartlezers",
           "p2": "Voorraad en prijzen bewerken in het kassasysteem",
           "p3": "Bestelgeschiedenis en beheer",
           "p4": "Klantbeheer",
           "p5": "Rapporten over dagen, kassa's en winkels",
-          "p6": "Aangepaste betaalgateways",
+          "p6": "Je andere WooCommerce-gateways",
           "p7": "Prioriteitssupport",
           "p9": "Volledige of gedeeltelijke terugbetalingen",
           "p10": "Kortingsbonbeheer",
@@ -276,6 +277,7 @@
         "b": "WCPOS verandert je tablet, telefoon of computer in een kassa — dezelfde catalogus, dezelfde voorraad, dezelfde prijzen, zelfs offline.",
         "c1": "Live demo proberen",
         "c2": "Gratis downloaden",
+        "demoLogin": "Inloggen op de demo: demo / demo",
         "badges": {
           "b1": "5.000+ actieve installaties",
           "b2": "Gratis en open source",
@@ -284,21 +286,22 @@
       },
       "a2": {
         "k": "Elk scherm dat je hebt",
-        "h": "Eén kassasysteem. Web, desktop, iOS en Android.",
-        "b": "Gebruik de kassa op de tablet aan de toonbank, de telefoon op de winkelvloer of de laptop in het kantoor — dezelfde winkel, dezelfde gegevens.",
+        "h": "Eén kassasysteem. In de browser, op Windows, macOS en Linux.",
+        "b": "Gebruik de kassa in een browser op elke tablet, telefoon of computer, of installeer de desktopapp. Dezelfde winkel, dezelfde gegevens. iOS- en Android-apps zijn in bèta.",
         "platforms": {
           "p1": "Web",
           "p2": "Windows",
           "p3": "macOS",
           "p4": "iOS",
           "p5": "Android",
+          "p6": "Linux",
           "beta": "Bèta"
         }
       },
       "a3": {
         "k": "Gebruik je eigen hardware",
-        "h": "Werkt met de apparatuur die je al hebt.",
-        "b": "Bonprinters en barcodescanners: sluit aan wat al op je toonbank staat. Accepteer kaarten via je eigen betaalterminal en WCPOS registreert ze; Pro koppelt Stripe Terminal, SumUp en meer."
+        "h": "Werkt met gangbare scanners en bonprinters.",
+        "b": "Bijna elke barcodescanner werkt zodra je hem aansluit of koppelt. Epson, Star en andere ESC/POS-bonprinters maken verbinding via USB, wifi of Bluetooth, afhankelijk van het apparaat. Accepteer kaarten via je eigen betaalterminal en WCPOS registreert ze; Pro koppelt Stripe Terminal, SumUp en meer."
       },
       "a4": {
         "k": "Jouw winkel, jouw gegevens",
@@ -352,7 +355,7 @@
         }
       },
       "terminal": {
-        "tapToPay": "Tik om te betalen"
+        "tapToPay": "Tik of steek je kaart in"
       },
       "cloudSync": {
         "products": "{count, number} producten",
@@ -368,9 +371,9 @@
       "description": "Wat er hierna komt voor WCPOS, de gratis kassaplugin voor WooCommerce: werk in uitvoering en gepland werk, rechtstreeks van GitHub."
     },
     "page": {
-      "eyebrow": "De releasetrein",
+      "eyebrow": "Nu, volgende, uitgebracht",
       "title": "Roadmap van het kassasysteem voor WooCommerce",
-      "description": "Elke halte op weg naar een sneller, offline-bestendig WCPOS — rechtstreeks uit onze GitHub gehaald, nieuwste werk eerst.",
+      "description": "Wat we nu bouwen, wat hierna gepland staat en wat als laatste is uitgebracht. De lijst komt rechtstreeks uit onze GitHub, dus hij verandert mee met het werk.",
       "changelogLink": "Bekijk gepubliceerde versies in het wijzigingslogboek"
     },
     "board": {
@@ -416,7 +419,7 @@
     },
     "hero": {
       "title": "WCPOS Pro – Kassasysteem voor WooCommerce",
-      "subtitle": "Alles uit de gratis POS, plus betaalterminals, winkelbeheer aan de kassa, volledige rapporten en prioriteitssupport."
+      "subtitle": "Alles uit de gratis POS, plus meer kassa's en winkels, gekoppelde kaartlezers, terugbetalingen, voorraad-, order- en klantbewerking aan de kassa en prioriteitssupport."
     },
     "schema": {
       "name": "WCPOS Pro",
@@ -427,14 +430,14 @@
       }
     },
     "features": {
-      "title": "Wat zit er in Pro?",
+      "title": "Wat Pro toevoegt",
       "stores": {
         "title": "Meer kassa's en meerdere winkels",
         "description": "Voeg naast de gratis kassa meer kassa's toe en beheer meerdere winkels, elk met een eigen adres, eigen btw-tarieven, een eigen bonsjabloon, eigen prijzen en eigen geautoriseerde gebruikers."
       },
       "terminal": {
-        "title": "Integratie met betaalterminals",
-        "description": "Neem kaartbetalingen ter plaatse aan met Stripe Terminal, Square Terminal, SumUp, Mollie, PayPal Reader en meer.",
+        "title": "Gekoppelde kaartlezers",
+        "description": "Neem kaartbetalingen ter plaatse aan met Stripe Terminal, SumUp, Mollie Terminal, Square Terminal en meer. PayPal Reader (Zettle) werkt via de eigen betaalpagina van je winkel.",
         "link": "Bekijk alle terminalextensies"
       },
       "display": {
@@ -462,7 +465,7 @@
         "description": "Bekijk de verkopen voor eerdere dagen en datumbereiken, voor elke kassa en elke winkel."
       },
       "gateways": {
-        "title": "Aangepaste betaalgateways",
+        "title": "Je andere WooCommerce-gateways",
         "description": "Schakel de andere WooCommerce-betaalgateways van je winkel in aan de kassa, niet alleen de ingebouwde opties."
       }
     },
@@ -470,7 +473,7 @@
       "heading": "Koop Pro",
       "subheading": "Eén licentie, alle functies. Kies alleen hoe lang je updates wilt.",
       "termAriaLabel": "Licentieduur",
-      "cta": "Aan de slag",
+      "cta": "Koop Pro",
       "ctaValueCopy": "Krijg direct toegang",
       "yearly": {
         "title": "Jaarlijks",
@@ -482,7 +485,6 @@
         "title": "Levenslang",
         "subtitle": "Altijd updates",
         "priceSuffix": "eenmalig",
-        "ctaNote": "Ongeveer {years} jaar Jaarlijks — daarna voor altijd $0.",
         "ctaNoteSimple": "Eén keer betalen — voor altijd updates."
       },
       "tryFreeLink": "Probeer eerst de gratis versie",
@@ -498,7 +500,7 @@
       "title": "Veelgestelde vragen",
       "freePlugin": {
         "question": "Is de gratis plugin beperkt?",
-        "answer": "De gratis WCPOS-plugin is GPL-software zonder limieten op producten, bestellingen of klanten en zonder transactiekosten; hij draait één kassa, en voor meer kassa’s en de hierboven genoemde tools is Pro nodig."
+        "answer": "Hij draait één kassa. Er zijn geen limieten op producten, bestellingen of klanten, en geen transactiekosten. Voor meer kassa’s en de hierboven genoemde tools is Pro nodig. De gratis plugin is GPL-software."
       },
       "yearlyVsLifetime": {
         "question": "Wat is het verschil tussen Jaarlijks en Levenslang?",
@@ -550,10 +552,16 @@
         "quantity": "Aantal: {quantity}",
         "discount": "Korting",
         "total": "Totaal",
+        "yearlyTerm": "Updates en support voor 1 jaar",
+        "lifetimeTerm": "Altijd updates",
+        "sites": "Te gebruiken op 2 sites — één live site, één ontwikkelsite",
+        "refundPromise": "Doet WCPOS Pro niet wat wij beloven, dan lossen we het op of betalen we je terug.",
+        "refundLink": "Restitutiebeleid",
         "instantLicense": "Licentie direct geleverd",
         "oneTimePayment": "Eenmalige betaling — nooit automatische verlenging",
         "securePayment": "Veilige betalingsverwerking"
       },
+      "noProduct": { "title": "Kies een licentie om af te rekenen" },
       "promo": {
         "invalid": "Deze kortingslink is verlopen of niet meer geldig. De normale prijs wordt getoond."
       },
@@ -565,7 +573,7 @@
         "submitting": "Een moment…",
         "createContinue": "Account maken en doorgaan",
         "signInContinue": "Inloggen en doorgaan",
-        "oauthPrompt": "Liever Google, GitHub of Discord?",
+        "oauthPrompt": "Heb je al een account, of liever Google, GitHub of Discord?",
         "oauthLink": "Log hier in",
         "oauthSuffix": "— je komt direct terug bij afrekenen.",
         "errors": {
@@ -1635,7 +1643,7 @@
     "hero": {
       "eyebrow": "Downloads",
       "title": "Kassasysteem voor WooCommerce downloaden",
-      "tagline": "Eén kassa, elk apparaat.",
+      "tagline": "Installeer de gratis plugin en open de kassa daarna in een browser of een app.",
       "platformChooserLabel": "Kies je platform",
       "versionMeta": "Versie {version} · {platform}",
       "detected": "Gedetecteerd",
@@ -1650,11 +1658,11 @@
       "points": {
         "setup": {
           "title": "Eén plugin is de enige setup",
-          "body": "De gratis plugin voegt een veilige REST API toe aan je WooCommerce-winkel. Dat is de hele installatie — niets om per apparaat te hosten of configureren."
+          "body": "Installeer de gratis plugin op je WooCommerce-site en de kassa staat klaar in een browser op yourdomain.com/pos. Verder hoef je niets te hosten. De desktop- en mobiele apps zijn optioneel: voeg je winkel één keer toe en meld je aan."
         },
         "sync": {
           "title": "Elke app leest en schrijft naar dezelfde winkel",
-          "body": "Sla een verkoop aan op de desktop en je telefoon toont het nieuwe voorraadniveau — één set producten, bestellingen en klanten, realtime bijgewerkt."
+          "body": "Sla een verkoop aan op de desktop en je andere apparaten halen het nieuwe voorraadniveau op bij hun volgende controle, met de standaardinstelling ongeveer een minuut later. Eén set producten, bestellingen en klanten."
         },
         "offline": {
           "title": "Blijf verkopen aanslaan als de verbinding wegvalt",
@@ -1689,12 +1697,12 @@
       "start": {
         "eyebrow": "Aan de slag",
         "title": "Drie stappen naar je eerste verkoop",
-        "subtitle": "Van begin tot eind duurt het ongeveer twee minuten."
+        "subtitle": "Ongeveer vijf minuten, van begin tot eind."
       },
       "steps": {
         "plugin": {
           "title": "Installeer de gratis plugin",
-          "body": "De basis waar alles mee verbindt. In je dashboard: Plugins → Nieuwe toevoegen, zoek daarna naar “WCPOS”.",
+          "body": "Begin hier: de kassa en elke app draaien via de plugin. In je dashboard: Plugins → Nieuwe toevoegen, zoek daarna naar “WCPOS”.",
           "badge": "Gratis · GPL",
           "requirements": "WordPress 5.6+ · WooCommerce 9.0+ · PHP 7.4+",
           "requirementsWithVersion": "Nieuwste {version} · WordPress 5.6+ · WooCommerce 9.0+ · PHP 7.4+",
@@ -1711,11 +1719,12 @@
           "webCta": "Open de live demo"
         },
         "pro": {
-          "title": "Meer nodig? Kies Pro",
-          "cardTitle": "Ontgrendel meer kassa's",
+          "title": "Meer dan één kassa nodig?",
+          "cardTitle": "WCPOS Pro",
           "cardBody": "Meer kassa's en meerdere winkels, terminalbetalingen, terugbetalingen, voorraad en prijzen, orderbeheer, volledige rapporten en prioritaire Discord-support.",
           "requirements": "WordPress 5.8+ · WooCommerce 9.0+ · PHP 7.4+",
           "plansCta": "Bekijk Pro-abonnementen",
+          "priceLine": "Vanaf {price} ({currency}) — eenmalige betaling, nooit automatische verlenging.",
           "signInCta": "Log in om te downloaden"
         }
       }
@@ -1728,11 +1737,9 @@
       "fullHistory": "Volledige geschiedenis op GitHub —",
       "desktop": "Desktop",
       "emptyNotes": "_Geen release-opmerkingen voor deze versie._",
-      "fallback": {
-        "v196": "- Cash drawer support — auto-open after payment or via a new Open Drawer button, with per-printer connectors (ESC-POS, Epson, PrintNode, cloud)\n- Fixed analytics events firing too often\n- Updated translations",
-        "v195": "- Fixed a payment-gateways API crash (HTTP 500 with some third-party gateways, e.g. ToyyibPay)",
-        "v194": "- Redesigned Bluetooth printer setup; serial printing for OS-paired Bluetooth Classic printers\n- Improved Windows raw printing; smoother USB flow",
-        "v190": "- New receipt template gallery; thermal printing (58/80mm)\n- Customer Tax IDs; Pro coupons & refunds at the POS"
+      "empty": {
+        "title": "De releaselijst is niet geladen",
+        "body": "Recente release-opmerkingen zijn hier op dit moment niet beschikbaar. De downloads op deze pagina werken gewoon."
       },
       "plugin": "Gratis",
       "showAllNotes": "Alle release-opmerkingen van {version} tonen",
@@ -1776,7 +1783,7 @@
       "eyebrow": "Een bericht van de ontwikkelaar",
       "intro": "Hoi — ik ben Paul. Ik heb WCPOS gebouwd.",
       "p1": "Dat ben ik, toen alles begon. Ik opende Urban Locavore in Perth in december 2011 met honderden producten al in WooCommerce en geen manier om ze aan de toonbank te verkopen — dus bouwde ik zelf een kassa. Toen de winkel in april 2014 sloot, zette ik die op WordPress.org voor iedereen die hem nodig had. <strong>POS-plugins voor WooCommerce zijn sindsdien gekomen en gegaan. Deze niet.</strong> Meer dan tien jaar releases, één ontwikkelaar, nog steeds in ontwikkeling — en de gratis versie is nog steeds echt bruikbaar: verkopen, printen, gesynchroniseerd blijven. Die blijft gratis.",
-      "p2": "<strong>Pro is waarom het nog bestaat.</strong> Het voegt extra tools toe voor het runnen van je winkel — kaartlezers, retouren aan de kassa, einde-dagrapporten, meerdere winkels — en financiert elke release, inclusief de gratis versies. Geen investeerders, geen overname-exit die wacht. Winkeliers financieren het rechtstreeks.",
+      "p2": "<strong>Pro is waarom het nog bestaat.</strong> Het voegt extra tools toe voor het runnen van je winkel — kaartlezers, retouren aan de kassa, rapporten over dagen en kassa's, meerdere winkels — en financiert elke release, inclusief de gratis versies. Geen investeerders, geen overname-exit die wacht. Winkeliers financieren het rechtstreeks.",
       "p3": "En Pro-gebruikers hebben een directe lijn: vertel me wat je winkel nodig heeft, en dat bepaalt wat ik hierna bouw.",
       "signature": {
         "name": "Paul Kilmurray",
@@ -1912,6 +1919,7 @@
       "title": "Praat je liever met een mens?",
       "subtitle": "Sluit je aan bij winkeleigenaren en het team in onze live Discord-community.",
       "open": "Discord openen",
+      "emailLine": "Liever e-mail? Mail ons via <email>support@wcpos.com</email>.",
       "embedTitle": "Discord-chat"
     },
     "guides": {
@@ -1928,7 +1936,7 @@
     "more": { "title": "Meer vergelijkingen" },
     "disclosure": {
       "title": "Wie deze vergelijking publiceert",
-      "body": "Deze pagina wordt gepubliceerd door WCPOS, de makers van WooCommerce POS. We hebben uiteraard een belang bij de uitkomst — daarom is elk cijfer voorzien van bron en datum, linken we naar de eigen prijspagina's van concurrenten en zeggen we ronduit wanneer een concurrent de betere keuze is. Controleer alles zelf."
+      "body": "Deze pagina wordt gepubliceerd door WCPOS, dus we zijn niet neutraal. Daarom is elk cijfer voorzien van bron en datum, linken we naar de eigen prijspagina's van concurrenten en zeggen we ronduit wanneer een concurrent de betere keuze is. Controleer alles zelf."
     },
     "hub": {
       "metadata": {
@@ -1941,7 +1949,7 @@
       },
       "method": {
         "title": "Hoe deze vergelijkingen werken",
-        "body": "De feiten komen van de eigen prijspagina's van leveranciers en van WordPress.org, opgehaald op een vermelde datum en elk kwartaal opnieuw gecontroleerd. Waar WCPOS een categorie verliest — kioskmodus, hardware van de leverancier, app-store-afwerking — staat dat gewoon op de pagina. Een fout gezien? Mail naar support@wcpos.com en we corrigeren het en leggen de wijziging vast."
+        "body": "De feiten komen van de eigen prijspagina's van leveranciers en van WordPress.org, opgehaald op een vermelde datum; elke pagina laat zien wanneer de feiten voor het laatst zijn gecontroleerd. Waar WCPOS een categorie verliest — kioskmodus, hardware van de leverancier, app-store-afwerking — staat dat gewoon op de pagina. Een fout gezien? Mail naar support@wcpos.com en we corrigeren het en leggen de wijziging vast."
       },
       "oliverCard": {
         "title": "WCPOS vs Oliver POS",
@@ -2156,7 +2164,7 @@
         },
         "payments": {
           "claim": "Geïntegreerde betalingen: beperkt",
-          "response": "WCPOS Pro integreert Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc en Windcave, evenals Vipps MobilePay via QR-code of push, met één klik te installeren vanuit de extensiecatalogus, en schakelt de andere WooCommerce-betaalgateways van je winkel aan de kassa in. De gratis versie accepteert contant geld en registreert kaartbetalingen die via een aparte terminal zijn verwerkt, en kan één bestelling over meerdere betalingen verdelen."
+          "response": "WCPOS Pro integreert Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc en Windcave, evenals Vipps MobilePay via QR-code of push, geïnstalleerd vanuit de extensiecatalogus, en schakelt de andere WooCommerce-betaalgateways van je winkel aan de kassa in. De gratis versie accepteert contant geld en registreert kaartbetalingen die via een aparte terminal zijn verwerkt, en kan één bestelling over meerdere betalingen verdelen."
         },
         "hobbyShops": {
           "claim": "Het meest geschikt voor hobbywinkels",
@@ -2290,7 +2298,7 @@
       "payments": {
         "title": "Hoe werken kaartbetalingen?",
         "woocommerce": "De POS van WooCommerce accepteert contant geld en kaarten via WooPayments of Stripe met een Bluetooth-kaartlezer die met de tablet is verbonden. Met WooPayments kosten kaartbetalingen ter plaatse minder dan online: in de Verenigde Staten 2.70% + $0.10 tegenover 2.90% + $0.30 online. Een kaartlezer kost $5.00 / £5.00 per actieve lezer per maand.",
-        "wcpos": "WCPOS 2.0 heeft een eigen checkout: een betaalpaneel naast de winkelwagen accepteert contant geld, registreert kaartbetalingen die via een aparte terminal zijn verwerkt en kan één bestelling over meerdere betalingen verdelen. Met Pro kun je de andere WooCommerce-betaalgateways van je winkel aan de kassa inschakelen en integraties met pinterminals toevoegen voor Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc en Windcave, evenals Vipps MobilePay via QR-code of push, alle met één klik te installeren vanuit de extensiecatalogus. Tap to Pay op iPhone en Android zit nog niet in WCPOS; het volgt in een app-update. WCPOS ondersteunt geen WooPayments-betalingen ter plaatse."
+        "wcpos": "WCPOS 2.0 heeft een eigen checkout: een betaalpaneel naast de winkelwagen accepteert contant geld, registreert kaartbetalingen die via een aparte terminal zijn verwerkt en kan één bestelling over meerdere betalingen verdelen. Met Pro kun je de andere WooCommerce-betaalgateways van je winkel aan de kassa inschakelen en integraties met pinterminals toevoegen voor Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc en Windcave, evenals Vipps MobilePay via QR-code of push, alle geïnstalleerd vanuit de extensiecatalogus. Tap to Pay op iPhone en Android zit nog niet in WCPOS; het volgt in een app-update. WCPOS ondersteunt geen WooPayments-betalingen ter plaatse."
       },
       "pricing": {
         "title": "Wat kost het?",
@@ -2310,11 +2318,11 @@
         "offline": "Geen offline modus: een actieve internetverbinding is nodig.",
         "multiLocation": "Nog geen ondersteuning voor meerdere locaties.",
         "gateways": "Voor kaartbetalingen zijn WooPayments of Stripe nodig.",
-        "outro": "WooCommerce blijft POS-functies toevoegen aan WooCommerce zelf, dus deze lijst zal waarschijnlijk korter worden — we controleren hem elk kwartaal opnieuw."
+        "outro": "WooCommerce blijft POS-functies toevoegen aan WooCommerce zelf, dus deze lijst zal waarschijnlijk korter worden — onderaan de pagina staat wanneer hij voor het laatst is gecontroleerd."
       },
       "woocommerceBetter": {
-        "title": "Waar de POS van WooCommerce echt beter is",
-        "intro": "Een eerlijke vergelijking bekijkt beide kanten:",
+        "title": "Waar de POS van WooCommerce beter is",
+        "intro": "Op drie punten wint het:",
         "price": "De POS-software is gratis, zonder enige licentie — WCPOS Pro kost $129 of meer.",
         "official": "Hij is gemaakt door WooCommerce zelf, in de mobiele WooCommerce-app die je misschien al gebruikt om je winkel te beheren.",
         "wooPayments": "Ingebouwde WooPayments-betalingen ter plaatse tegen een lager tarief dan WooPayments online (in de Verenigde Staten 2.70% + $0.10 tegenover 2.90% + $0.30). WCPOS heeft geen WooPayments-integratie voor betalingen ter plaatse.",
@@ -2359,7 +2367,7 @@
         }
       },
       "footer": {
-        "factsDated": "Feiten over de POS van WooCommerce geverifieerd op 2026-10-06 aan de hand van WooCommerce's eigen pagina's (de POS-documentatie, de POS-pagina en de WooPayments-kostenpagina); WCPOS-feiten komen van wcpos.com en hebben betrekking op WCPOS 2.0, uitgebracht op 2026-11-09, waarvoor zowel de app als de plugin op versie 2.0 moeten staan. We controleren ze elk kwartaal opnieuw.",
+        "factsDated": "Feiten over de POS van WooCommerce geverifieerd op 2026-10-06 aan de hand van WooCommerce's eigen pagina's (de POS-documentatie, de POS-pagina en de WooPayments-kostenpagina); WCPOS-feiten komen van wcpos.com en hebben betrekking op WCPOS 2.0, uitgebracht op 2026-11-09, waarvoor zowel de app als de plugin op versie 2.0 moeten staan.",
         "corrections": "Een fout gezien? Mail naar support@wcpos.com — we corrigeren snel en leggen elke wijziging vast."
       }
     },
@@ -2439,7 +2447,7 @@
       "payments": {
         "title": "Hoe werken kaartbetalingen?",
         "square": "De POS van Square accepteert kaarten via Square, waaronder Tap to Pay op iPhone en Android. In de Verenigde Staten kost een fysieke kaartbetaling (contactloos, insteken of doorhalen) met het Square Free-abonnement 2.6% + 15¢. Volgens Square is het accepteren van kaartbetalingen met de Square-app beschikbaar in de Verenigde Staten, Canada, Australië, Japan, het Verenigd Koninkrijk, de Republiek Ierland, Frankrijk en Spanje; de extensie vereist dat je WooCommerce-valuta overeenkomt met die van je Square-account.",
-        "wcpos": "WCPOS 2.0 heeft een eigen checkout: een betaalpaneel naast de winkelwagen accepteert contant geld, registreert kaartbetalingen die via een aparte terminal zijn verwerkt en kan één bestelling over meerdere betalingen verdelen. Met Pro kun je de andere WooCommerce-betaalgateways van je winkel aan de kassa inschakelen en integraties met pinterminals toevoegen voor Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc en Windcave, evenals Vipps MobilePay via QR-code of push, alle met één klik te installeren vanuit de extensiecatalogus. Tap to Pay op iPhone en Android zit nog niet in WCPOS; het volgt in een app-update.",
+        "wcpos": "WCPOS 2.0 heeft een eigen checkout: een betaalpaneel naast de winkelwagen accepteert contant geld, registreert kaartbetalingen die via een aparte terminal zijn verwerkt en kan één bestelling over meerdere betalingen verdelen. Met Pro kun je de andere WooCommerce-betaalgateways van je winkel aan de kassa inschakelen en integraties met pinterminals toevoegen voor Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc en Windcave, evenals Vipps MobilePay via QR-code of push, alle geïnstalleerd vanuit de extensiecatalogus. Tap to Pay op iPhone en Android zit nog niet in WCPOS; het volgt in een app-update.",
         "both": "Heb je al een Square Terminal? De Square Terminal-gateway van WCPOS Pro ontvangt daarop betalingen voor WooCommerce-bestellingen rechtstreeks vanaf de WCPOS-kassa en schrijft het resultaat terug naar de bestelling. Als je de officiële Square for WooCommerce-plugin gebruikt, worden de omgeving en locatie-ID daarvan vooraf ingevuld. Een Terminal die is aangemeld bij Square POS of een andere integratie moet zich daar eerst afmelden."
       },
       "pricing": {
@@ -2460,7 +2468,7 @@
         "countries": "Square is beschikbaar in de Verenigde Staten, Canada, Australië, Japan, het Verenigd Koninkrijk, Frankrijk, Spanje en Ierland, en je WooCommerce-valuta moet overeenkomen met die van je Square-account.",
         "sku": "Elk product moet een SKU hebben.",
         "variations": "Bij het synchroniseren van producten van Square naar WooCommerce zijn maximaal 250 variaties en 6 kenmerken per product toegestaan.",
-        "outro": "We controleren deze lijst elk kwartaal opnieuw."
+        "outro": "Onderaan de pagina staat wanneer deze lijst voor het laatst is gecontroleerd."
       },
       "squareBetter": {
         "title": "Waar Square echt beter is",
@@ -2530,7 +2538,7 @@
         }
       },
       "footer": {
-        "factsDated": "Feiten over Square op 2026-10-06 gecontroleerd en op 2026-11-18 opnieuw gecontroleerd aan de hand van de eigen pagina's van Square (de kostenpagina, de prijsaankondiging en helpartikelen over offline betalingen, Tap to Pay, apparaten en internationale beschikbaarheid) en de WooCommerce-documentatie voor de extensie Square for WooCommerce; WCPOS-feiten komen van wcpos.com en docs.wcpos.com en hebben betrekking op WCPOS 2.0, uitgebracht op 2026-11-09, waarvoor zowel de app als de plugin op versie 2.0 moeten staan. We controleren ze elk kwartaal opnieuw.",
+        "factsDated": "Feiten over Square op 2026-10-06 gecontroleerd en op 2026-11-18 opnieuw gecontroleerd aan de hand van de eigen pagina's van Square (de kostenpagina, de prijsaankondiging en helpartikelen over offline betalingen, Tap to Pay, apparaten en internationale beschikbaarheid) en de WooCommerce-documentatie voor de extensie Square for WooCommerce; WCPOS-feiten komen van wcpos.com en docs.wcpos.com en hebben betrekking op WCPOS 2.0, uitgebracht op 2026-11-09, waarvoor zowel de app als de plugin op versie 2.0 moeten staan.",
         "corrections": "Een fout gezien? Mail naar support@wcpos.com — we corrigeren snel en leggen elke wijziging vast."
       }
     },
@@ -2643,7 +2651,7 @@
         }
       },
       "footer": {
-        "factsDated": "De gegevens over Jovvie dateren van 2026-07-09, komen uit ons eigen onderzoek naar concurrenten en zijn sindsdien niet opnieuw gecontroleerd; kijk op jovvie.com voor de actuele prijzen voordat je beslist. De gegevens over WCPOS komen van wcpos.com, docs.wcpos.com en WordPress.org en hebben betrekking op WCPOS 2.0, uitgebracht op 2026-11-09, waarvoor zowel de app als de plugin op versie 2.0 moeten staan. We controleren ze elk kwartaal opnieuw.",
+        "factsDated": "De gegevens over Jovvie dateren van 2026-07-09, komen uit ons eigen onderzoek naar concurrenten en zijn sindsdien niet opnieuw gecontroleerd; kijk op jovvie.com voor de actuele prijzen voordat je beslist. De gegevens over WCPOS komen van wcpos.com, docs.wcpos.com en WordPress.org en hebben betrekking op WCPOS 2.0, uitgebracht op 2026-11-09, waarvoor zowel de app als de plugin op versie 2.0 moeten staan.",
         "corrections": "Een fout gezien? Mail naar support@wcpos.com — we corrigeren snel en leggen elke wijziging vast."
       }
     },
@@ -2785,7 +2793,7 @@
         }
       },
       "footer": {
-        "factsDated": "De feiten over Vitepos zijn op 2026-10-07 geraadpleegd op vitepos.com en de WordPress.org-vermelding (zie Bronnen); kijk op vitepos.com voor actuele prijzen voordat je beslist. De feiten over WCPOS komen van wcpos.com, docs.wcpos.com en WordPress.org en hebben betrekking op WCPOS 2.0, uitgebracht op 2026-11-09, waarvoor zowel de app als de plugin op versie 2.0 moeten staan. We verifiëren ze elk kwartaal opnieuw.",
+        "factsDated": "De feiten over Vitepos zijn op 2026-10-07 geraadpleegd op vitepos.com en de WordPress.org-vermelding (zie Bronnen); kijk op vitepos.com voor actuele prijzen voordat je beslist. De feiten over WCPOS komen van wcpos.com, docs.wcpos.com en WordPress.org en hebben betrekking op WCPOS 2.0, uitgebracht op 2026-11-09, waarvoor zowel de app als de plugin op versie 2.0 moeten staan.",
         "corrections": "Een fout gezien? Mail naar support@wcpos.com — we corrigeren snel en leggen elke wijziging vast."
       }
     },
@@ -2930,7 +2938,7 @@
         }
       },
       "footer": {
-        "factsDated": "De feiten over YITH Point of Sale zijn op 2026-10-07 geraadpleegd op yithemes.com en docs.yithemes.com (zie Bronnen); kijk op yithemes.com voor de actuele prijs voordat je beslist. De feiten over WCPOS komen van wcpos.com, docs.wcpos.com en WordPress.org en hebben betrekking op WCPOS 2.0, uitgebracht op 2026-11-09, waarvoor zowel de app als de plugin op versie 2.0 moeten staan. We verifiëren ze elk kwartaal opnieuw.",
+        "factsDated": "De feiten over YITH Point of Sale zijn op 2026-10-07 geraadpleegd op yithemes.com en docs.yithemes.com (zie Bronnen); kijk op yithemes.com voor de actuele prijs voordat je beslist. De feiten over WCPOS komen van wcpos.com, docs.wcpos.com en WordPress.org en hebben betrekking op WCPOS 2.0, uitgebracht op 2026-11-09, waarvoor zowel de app als de plugin op versie 2.0 moeten staan.",
         "corrections": "Een fout gezien? Mail naar support@wcpos.com — we corrigeren snel en leggen elke wijziging vast."
       }
     },
@@ -3076,7 +3084,7 @@
         }
       },
       "footer": {
-        "factsDated": "De feiten over FooSales zijn op 2026-10-07 geraadpleegd op foosales.com, help.foosales.com en de App Store-vermelding (zie Bronnen); kijk op foosales.com voor actuele prijzen voordat je beslist. De gegevens over WCPOS komen van wcpos.com, docs.wcpos.com en WordPress.org en hebben betrekking op WCPOS 2.0, uitgebracht op 2026-11-09, waarvoor zowel de app als de plugin op versie 2.0 moeten staan. We controleren ze elk kwartaal opnieuw.",
+        "factsDated": "De feiten over FooSales zijn op 2026-10-07 geraadpleegd op foosales.com, help.foosales.com en de App Store-vermelding (zie Bronnen); kijk op foosales.com voor actuele prijzen voordat je beslist. De gegevens over WCPOS komen van wcpos.com, docs.wcpos.com en WordPress.org en hebben betrekking op WCPOS 2.0, uitgebracht op 2026-11-09, waarvoor zowel de app als de plugin op versie 2.0 moeten staan.",
         "corrections": "Een fout gezien? Mail naar support@wcpos.com — we corrigeren snel en leggen elke wijziging vast."
       }
     }

@@ -1,5 +1,6 @@
 import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
+import { Link } from '@/i18n/navigation'
 import { cn } from '@/lib/utils'
 
 export type CopyTone = 'onDark' | 'onLight'
@@ -31,7 +32,6 @@ const toneStyles = {
 // blur radii read as glow on the grain and are deliberately absent.
 const letterpress = '[text-shadow:1px_1px_0_rgba(255,252,245,0.45)]'
 const demoHref = 'https://demo.wcpos.com/pos'
-const downloadHref = 'https://wordpress.org/plugins/woocommerce-pos/'
 // phone: both CTAs stack at one shared width; from sm they size to content
 const ctaWidth = 'w-full max-w-xs sm:w-auto sm:max-w-none'
 
@@ -126,9 +126,18 @@ export function CopyAct1({
           size="xl"
           className={ctaWidth}
         >
-          <a href={downloadHref}>{copy('a1.c2')}</a>
+          <Link href="/downloads">{copy('a1.c2')}</Link>
         </Button>
       </div>
+      <p
+        className={cn(
+          'mt-3 text-xs',
+          t.sideBody,
+          tone === 'onLight' && letterpress
+        )}
+      >
+        {copy('a1.demoLogin')}
+      </p>
       <div
         className={cn(
           'mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-1 text-xs font-medium',
@@ -164,7 +173,7 @@ export function CopyAct2({ tone = 'onDark' }: { tone?: CopyTone }) {
         {copy('a2.b')}
       </p>
       <div className="flex flex-wrap gap-2">
-        {(['p1', 'p2', 'p3', 'p4', 'p5'] as const).map((platform) => (
+        {(['p1', 'p2', 'p3', 'p6', 'p4', 'p5'] as const).map((platform) => (
           <span
             key={platform}
             className={cn('rounded-full border px-3 py-1 text-[11px] font-semibold', t.chip)}

@@ -183,7 +183,7 @@ describe('DownloadsClient', () => {
     expect(screen.getByText('Latest version')).toBeInTheDocument()
     // The hero attributes the build to the active licence.
     expect(
-      screen.getByText('Available on your active licence')
+      screen.getByText('Available on your active license')
     ).toBeInTheDocument()
   })
 
@@ -197,7 +197,7 @@ describe('DownloadsClient', () => {
     )
 
     expect(
-      screen.getByText('Available on your active Yearly licence')
+      screen.getByText('Available on your active Yearly license')
     ).toBeInTheDocument()
   })
 

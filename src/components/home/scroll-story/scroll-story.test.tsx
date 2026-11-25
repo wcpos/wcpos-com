@@ -56,6 +56,12 @@ const motionMock = vi.hoisted(() => ({
   animate: vi.fn(() => ({ stop: vi.fn() })),
 }))
 
+vi.mock('@/i18n/navigation', () => ({
+  Link: ({ children, href }: { children: React.ReactNode; href: string }) => (
+    <a href={href}>{children}</a>
+  ),
+}))
+
 vi.mock('motion/react', async () => {
   const React = await import('react')
   return {
@@ -120,7 +126,7 @@ describe('DeviceTerminal', () => {
     renderWithIntl(<DeviceTerminal />)
 
     expect(screen.getByText('$69.00')).toBeInTheDocument()
-    expect(screen.getByText('Tap to pay')).toBeInTheDocument()
+    expect(screen.getByText('Tap or insert card')).toBeInTheDocument()
   })
 
   it('renders the tap-to-pay label from locale messages', () => {
@@ -135,7 +141,7 @@ describe('DeviceTerminal', () => {
     })
 
     expect(screen.getByText('Translated tap label')).toBeInTheDocument()
-    expect(screen.queryByText('Tap to pay')).not.toBeInTheDocument()
+    expect(screen.queryByText('Tap or insert card')).not.toBeInTheDocument()
   })
 
   it('keeps the tap-to-pay overlay off screenless models', () => {
@@ -209,7 +215,7 @@ describe('StoryStatic', () => {
     ).toHaveAttribute('href', 'https://demo.wcpos.com/pos')
     expect(
       screen.getByRole('link', { name: story.a1.c2 })
-    ).toHaveAttribute('href', 'https://wordpress.org/plugins/woocommerce-pos/')
+    ).toHaveAttribute('href', '/downloads')
   })
 
   it('keeps a page h1 on static-only renders (mobile, reduced motion)', () => {

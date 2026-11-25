@@ -12,6 +12,7 @@
     "documentation": "ドキュメント",
     "roadmap": "ロードマップ",
     "pro": "Pro",
+    "getPro": "Proを購入",
     "support": "サポート",
     "downloads": "ダウンロード"
   },
@@ -76,7 +77,7 @@
     },
     "cta": {
       "title": "WooCommerceで店頭販売を始める準備はできましたか？",
-      "subtitle": "ライブデモを試すか、無料プラグインをダウンロードして始めましょう。",
+      "subtitle": "デモはブラウザで開き、インストールは不要です。プラグインは無料です。",
       "liveDemo": "ライブデモを試す",
       "compare": "WooCommerce向けPOSシステムを比較",
       "download": "無料でダウンロード"
@@ -164,23 +165,23 @@
       }
     },
     "features": {
-      "heading": "実店舗販売の要求に応える機能",
+      "heading": "レジでできること",
       "items": {
         "f1": {
           "title": "高速な商品検索",
-          "description": "検索、フィルター、カテゴリー閲覧で商品をすぐに見つけられます。バーコードスキャナーにも対応しています。"
+          "description": "検索、フィルター、カテゴリー閲覧で探せます。結果はデバイス上のコピーから表示されるので、すぐに出てきます。バーコードをスキャンして商品を追加できます。"
         },
         "f2": {
-          "title": "スムーズな会計フロー",
+          "title": "現金、カード、分割払い",
           "description": "商品を追加し、割引を適用し、現金やお手持ちの決済端末でのカード払いを受け付け、分割払いにも対応できます。Proでは、Stripe TerminalやSumUpなどの<link>カードリーダー</link>を接続できます。"
         },
         "f3": {
-          "title": "顧客プロフィール",
-          "description": "POSから顧客情報を直接追加・編集できます。常連のお客様を把握し、より良いサービスを提供できます。"
+          "title": "顧客の追加・編集",
+          "description": "レジで新しい顧客を追加したり、顧客情報を修正したりできます。既存の顧客を販売に選択するのは無料です。"
         },
         "f4": {
           "title": "注文履歴と管理",
-          "description": "WP Adminに切り替えずに、過去の注文を表示し、返品を処理し、注文ステータスを確認できます。"
+          "description": "WP Adminを開かずに、過去の注文を探し、レシートを再印刷したり返金したりできます。"
         },
         "f5": {
           "title": "在庫と価格をその場で編集",
@@ -216,12 +217,12 @@
         "intro": "無料版のすべてに加えて：",
         "features": {
           "p8": "レジの追加と複数店舗",
-          "p1": "決済端末連携",
+          "p1": "カードリーダー連携",
           "p2": "POS内での在庫・価格編集",
           "p3": "注文履歴と管理",
           "p4": "顧客管理",
           "p5": "日付・レジ・店舗をまたぐレポート",
-          "p6": "カスタム決済ゲートウェイ",
+          "p6": "お使いのその他のWooCommerce決済ゲートウェイ",
           "p7": "優先サポート",
           "p9": "全額・一部の返金",
           "p10": "クーポン管理",
@@ -276,6 +277,7 @@
         "b": "WCPOSはタブレット、スマートフォン、パソコンをレジに変えます。同じカタログ、同じ在庫、同じ価格を、オフラインでも利用できます。",
         "c1": "ライブデモを試す",
         "c2": "無料でダウンロード",
+        "demoLogin": "デモのログイン：demo / demo",
         "badges": {
           "b1": "5,000以上のアクティブインストール",
           "b2": "無料・オープンソース",
@@ -284,21 +286,22 @@
       },
       "a2": {
         "k": "手持ちのあらゆる画面で",
-        "h": "1つのPOSをウェブ、デスクトップ、iOS、Androidで。",
-        "b": "カウンターのタブレット、売り場のスマートフォン、バックオフィスのノートPCでレジを実行できます。同じストア、同じデータです。",
+        "h": "1つのPOSを、ブラウザでも、Windows、macOS、Linuxでも。",
+        "b": "どのタブレット、スマートフォン、パソコンでも、ブラウザでレジを実行できます。デスクトップアプリをインストールすることもできます。同じストア、同じデータです。iOS、Android向けアプリはベータ版です。",
         "platforms": {
           "p1": "ウェブ",
           "p2": "Windows",
           "p3": "macOS",
           "p4": "iOS",
           "p5": "Android",
+          "p6": "Linux",
           "beta": "Beta"
         }
       },
       "a3": {
         "k": "手持ちのハードウェアを利用",
-        "h": "すでにお持ちの機器で動作します。",
-        "b": "カウンターのレシートプリンターやバーコードスキャナーをそのまま接続。お手持ちの決済端末のカード払いはWCPOSが記録し、ProはStripe Terminal、SumUpなどを接続します。"
+        "h": "一般的なバーコードスキャナーやレシートプリンターで動作します。",
+        "b": "ほぼすべてのバーコードスキャナーは、接続またはペアリングするだけですぐに使えます。Epson、StarなどのESC/POS対応レシートプリンターは、機器に応じてUSB、Wi-Fi、Bluetoothで接続します。お手持ちの決済端末のカード払いはWCPOSが記録し、ProはStripe Terminal、SumUpなどを接続します。"
       },
       "a4": {
         "k": "あなたの店舗、あなたのデータ",
@@ -352,7 +355,7 @@
         }
       },
       "terminal": {
-        "tapToPay": "タップして支払い"
+        "tapToPay": "カードをタッチまたは挿入"
       },
       "cloudSync": {
         "products": "商品 {count, number} 件",
@@ -368,9 +371,9 @@
       "description": "WooCommerce向けの無料POSプラグイン、WCPOSの今後の予定です。進行中の作業と計画中の作業をGitHubから直接お届けします。"
     },
     "page": {
-      "eyebrow": "リリースの流れ",
+      "eyebrow": "現在・次・リリース済み",
       "title": "WooCommerce用POSのロードマップ",
-      "description": "より高速でオフラインにも強いWCPOSへ向かう各ステップを、新しい作業から順にGitHubから直接表示します。",
+      "description": "現在取り組んでいること、次に予定していること、最近リリースしたものをまとめています。リストはGitHubから直接取得しているため、作業の進み具合に合わせて変わります。",
       "changelogLink": "変更履歴で公開済みのバージョンを見る"
     },
     "board": {
@@ -416,7 +419,7 @@
     },
     "hero": {
       "title": "WCPOS Pro – WooCommerce用POS",
-      "subtitle": "無料POSのすべてに加えて、決済端末、レジでの店舗管理、詳細レポート、優先サポートを利用できます。"
+      "subtitle": "無料POSのすべてに加えて、レジの追加と複数店舗、カードリーダーの接続、返金、レジでの在庫・注文・顧客の編集、優先サポートを利用できます。"
     },
     "schema": {
       "name": "WCPOS Pro",
@@ -427,14 +430,14 @@
       }
     },
     "features": {
-      "title": "Proに含まれるもの",
+      "title": "Proで加わる機能",
       "stores": {
         "title": "レジの追加と複数店舗",
         "description": "無料のレジに加えてレジを追加し、複数の店舗を運営できます。店舗ごとに住所、税率、レシートテンプレート、価格設定、権限ユーザーを設定できます。"
       },
       "terminal": {
-        "title": "決済端末との連携",
-        "description": "Stripe Terminal、Square Terminal、SumUp、Mollie、PayPal Readerなどで、対面でのカード決済を受け付けられます。",
+        "title": "カードリーダー連携",
+        "description": "Stripe Terminal、SumUp、Mollie Terminal、Square Terminalなどで、対面でのカード決済を受け付けられます。PayPal Reader (Zettle)は、ストア独自の決済ページを通じて利用できます。",
         "link": "決済端末の拡張機能をすべて見る"
       },
       "display": {
@@ -462,7 +465,7 @@
         "description": "過去の日付や期間の売上を、すべてのレジ・店舗について確認できます。"
       },
       "gateways": {
-        "title": "カスタム決済ゲートウェイ",
+        "title": "お使いのその他のWooCommerce決済ゲートウェイ",
         "description": "組み込みのオプションだけでなく、店舗のその他のWooCommerce決済ゲートウェイをレジで有効にできます。"
       }
     },
@@ -470,7 +473,7 @@
       "heading": "Proを購入",
       "subheading": "1つのライセンスで全機能。アップデート期間を選ぶだけ。",
       "termAriaLabel": "ライセンス期間",
-      "cta": "始める",
+      "cta": "Proを購入",
       "ctaValueCopy": "すぐにアクセス",
       "yearly": {
         "title": "年間",
@@ -482,7 +485,6 @@
         "title": "買い切り",
         "subtitle": "アップデートは永久",
         "priceSuffix": "一回払い",
-        "ctaNote": "年間約{years}年分 — その後は永久に$0。",
         "ctaNoteSimple": "一度の支払いで、アップデートは永久。"
       },
       "tryFreeLink": "まずは無料版をお試しください",
@@ -498,7 +500,7 @@
       "title": "よくある質問",
       "freePlugin": {
         "question": "無料プラグインには制限がありますか？",
-        "answer": "無料のWCPOSプラグインはGPLソフトウェアで、商品、注文、顧客の数に上限はなく、取引手数料もかからず、レジ1台で動作し、レジの追加と上記のツールにはProが必要です。"
+        "answer": "レジ1台で動作します。商品、注文、顧客の数に上限はなく、取引手数料もかかりません。レジの追加と上記のツールにはProが必要です。無料プラグインはGPLソフトウェアです。"
       },
       "yearlyVsLifetime": {
         "question": "年間と買い切りの違いは何ですか？",
@@ -550,10 +552,16 @@
         "quantity": "数量: {quantity}",
         "discount": "割引",
         "total": "合計",
+        "yearlyTerm": "1年間のアップデートとサポート",
+        "lifetimeTerm": "アップデートは永久",
+        "sites": "2つのサイトで利用可能 — 本番サイト1つと開発サイト1つ",
+        "refundPromise": "WCPOS Pro が表示どおりに動作しない場合は、修正するか返金します。",
+        "refundLink": "返金ポリシー",
         "instantLicense": "ライセンスを即時配信",
         "oneTimePayment": "一回払い — 自動更新なし",
         "securePayment": "安全な決済処理"
       },
+      "noProduct": { "title": "チェックアウトするプランを選択してください" },
       "promo": {
         "invalid": "この割引リンクは期限切れか、現在は無効です。通常価格が表示されています。"
       },
@@ -565,7 +573,7 @@
         "submitting": "少々お待ちください…",
         "createContinue": "アカウントを作成して続行",
         "signInContinue": "サインインして続行",
-        "oauthPrompt": "Google、GitHub、Discord を使用しますか？",
+        "oauthPrompt": "すでにアカウントをお持ちですか？それとも Google、GitHub、Discord を使用しますか？",
         "oauthLink": "こちらからサインイン",
         "oauthSuffix": "— チェックアウトに戻ります。",
         "errors": {
@@ -1635,7 +1643,7 @@
     "hero": {
       "eyebrow": "ダウンロード",
       "title": "WooCommerce用POSをダウンロード",
-      "tagline": "1つのレジを、すべてのデバイスで。",
+      "tagline": "無料プラグインをインストールして、ブラウザまたはアプリでレジを開きましょう。",
       "platformChooserLabel": "プラットフォームを選択",
       "versionMeta": "バージョン {version} · {platform}",
       "detected": "検出済み",
@@ -1650,11 +1658,11 @@
       "points": {
         "setup": {
           "title": "必要な設定はプラグイン1つだけ",
-          "body": "無料プラグインがWooCommerceストアに安全なREST APIを追加します。インストールはそれだけです — デバイスごとにホスティングや設定は不要です。"
+          "body": "WooCommerceサイトに無料プラグインをインストールすれば、ブラウザでyourdomain.com/posを開くだけでレジを使えます。ほかにホスティングするものはありません。デスクトップアプリとモバイルアプリは任意です。ストアを一度追加してサインインするだけです。"
         },
         "sync": {
           "title": "すべてのアプリが同じ店舗を読み書き",
-          "body": "デスクトップで販売すると、スマートフォンに新しい在庫数が表示されます — 商品、注文、顧客は1つのセットで、リアルタイムに更新されます。"
+          "body": "デスクトップで販売すると、他のデバイスは次回の確認時に新しい在庫数を取得します。デフォルト設定では約1分後です。商品、注文、顧客は1つのセットです。"
         },
         "offline": {
           "title": "接続が切れても、販売を続けられます",
@@ -1689,12 +1697,12 @@
       "start": {
         "eyebrow": "はじめに",
         "title": "最初の販売まで3ステップ",
-        "subtitle": "最初から最後まで約2分で完了します。"
+        "subtitle": "最初から最後まで約5分です。"
       },
       "steps": {
         "plugin": {
           "title": "無料プラグインをインストール",
-          "body": "すべてが接続する土台です。ダッシュボードで「プラグイン → 新規追加」を開き、「WCPOS」を検索してください。",
+          "body": "まずはここから。レジとすべてのアプリはこのプラグインを通じて動作します。ダッシュボードで「プラグイン → 新規追加」を開き、「WCPOS」を検索してください。",
           "badge": "無料 · GPL",
           "requirements": "WordPress 5.6+ · WooCommerce 9.0+ · PHP 7.4+",
           "requirementsWithVersion": "最新 {version} · WordPress 5.6+ · WooCommerce 9.0+ · PHP 7.4+",
@@ -1711,11 +1719,12 @@
           "webCta": "ライブデモを開く"
         },
         "pro": {
-          "title": "さらに必要ですか？Proへ",
-          "cardTitle": "レジを追加で解放",
+          "title": "レジが2台以上必要ですか？",
+          "cardTitle": "WCPOS Pro",
           "cardBody": "レジの追加と複数店舗、端末決済、返金、在庫と価格、注文管理、詳細レポート、優先Discordサポート。",
           "requirements": "WordPress 5.8+ · WooCommerce 9.0+ · PHP 7.4+",
           "plansCta": "Proプランを見る",
+          "priceLine": "{price}（{currency}）から — 一回払い、自動更新なし。",
           "signInCta": "ログインしてダウンロード"
         }
       }
@@ -1728,11 +1737,9 @@
       "fullHistory": "GitHubで全履歴を見る —",
       "desktop": "デスクトップ",
       "emptyNotes": "_このバージョンのリリースノートはありません。_",
-      "fallback": {
-        "v196": "- Cash drawer support — auto-open after payment or via a new Open Drawer button, with per-printer connectors (ESC-POS, Epson, PrintNode, cloud)\n- Fixed analytics events firing too often\n- Updated translations",
-        "v195": "- Fixed a payment-gateways API crash (HTTP 500 with some third-party gateways, e.g. ToyyibPay)",
-        "v194": "- Redesigned Bluetooth printer setup; serial printing for OS-paired Bluetooth Classic printers\n- Improved Windows raw printing; smoother USB flow",
-        "v190": "- New receipt template gallery; thermal printing (58/80mm)\n- Customer Tax IDs; Pro coupons & refunds at the POS"
+      "empty": {
+        "title": "リリース一覧を読み込めませんでした",
+        "body": "現在、最近のリリースノートをここに表示できません。このページのダウンロードには影響ありません。"
       },
       "plugin": "無料",
       "showAllNotes": "{version} のリリースノートをすべて表示",
@@ -1776,7 +1783,7 @@
       "eyebrow": "開発者からのメッセージ",
       "intro": "こんにちは — Paulです。WCPOSを作りました。",
       "p1": "これが、すべてが始まったころの私です。2011年12月、パースでUrban Locavoreを開店しました。WooCommerceにはすでに何百もの商品がありましたが、店頭で販売する方法がありませんでした — そこで自分でレジを作りました。店が2014年4月に閉店した後、それを必要とする人のためにWordPress.orgで公開しました。<strong>WooCommerce向けPOSプラグインはその後いくつも現れては消えていきました。でもこれは残っています。</strong>10年以上のリリース、1人の開発者、今も出荷を続けています — そして無料版は今も本物です。販売し、印刷し、同期を保てます。無料のままです。",
-      "p2": "<strong>Proがあるから、今も続いています。</strong>Proは店舗運営のための追加ツール — カードリーダー、レジでの返金、日次締めレポート、複数店舗 — を追加し、無料版を含むすべてのリリースを支えています。投資家も、買収による出口戦略もありません。店主たちが直接支えています。",
+      "p2": "<strong>Proがあるから、今も続いています。</strong>Proは店舗運営のための追加ツール — カードリーダー、レジでの返金、日付・レジをまたぐレポート、複数店舗 — を追加し、無料版を含むすべてのリリースを支えています。投資家も、買収による出口戦略もありません。店主たちが直接支えています。",
       "p3": "そしてProユーザーには直接の連絡先があります。あなたの店に必要なものを教えてください。それが次に作るものを形作ります。",
       "signature": {
         "name": "Paul Kilmurray",
@@ -1912,6 +1919,7 @@
       "title": "人と直接話したいですか？",
       "subtitle": "店舗オーナーとチームが参加するライブDiscordコミュニティに参加してください。",
       "open": "Discordを開く",
+      "emailLine": "メールをご希望ですか？<email>support@wcpos.com</email> までメールでご連絡ください。",
       "embedTitle": "Discordチャット"
     },
     "guides": {
@@ -1928,7 +1936,7 @@
     "more": { "title": "その他の比較" },
     "disclosure": {
       "title": "この比較の運営者について",
-      "body": "このページはWooCommerce POSの開発元であるWCPOSが公開しています。当然ながら私たちは当事者です。だからこそ、すべての数字に出典と取得日を明記し、競合他社自身の料金ページへ直接リンクし、競合の方が適している場合ははっきりそう述べます。どうぞすべてご自身で確認してください。"
+      "body": "このページはWCPOSが公開しているため、私たちは中立ではありません。だからこそ、すべての数字に出典と取得日を明記し、競合他社自身の料金ページへ直接リンクし、競合の方が適している場合ははっきりそう述べます。どうぞすべてご自身で確認してください。"
     },
     "hub": {
       "metadata": {
@@ -1941,7 +1949,7 @@
       },
       "method": {
         "title": "この比較の作り方",
-        "body": "事実はベンダー自身の料金ページとWordPress.orgから、明記した日付に取得し、四半期ごとに再検証しています。キオスクモード、ベンダー製ハードウェア、アプリストアでの完成度など、WCPOSが劣るカテゴリーではページ上でそのように記載します。誤りを見つけたら support@wcpos.com までご連絡ください。修正のうえ変更履歴に記録します。"
+        "body": "事実はベンダー自身の料金ページとWordPress.orgから、明記した日付に取得しており、各ページには情報を最後に確認した日付を記載しています。キオスクモード、ベンダー製ハードウェア、アプリストアでの完成度など、WCPOSが劣るカテゴリーではページ上でそのように記載します。誤りを見つけたら support@wcpos.com までご連絡ください。修正のうえ変更履歴に記録します。"
       },
       "oliverCard": {
         "title": "WCPOS vs Oliver POS",
@@ -2156,7 +2164,7 @@
         },
         "payments": {
           "claim": "決済連携：限定的",
-          "response": "WCPOS ProはStripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcaveに加え、QRコードまたはプッシュ通知のVipps MobilePayと連携し、拡張機能カタログからワンクリックでインストールできます。また、店舗のその他のWooCommerce決済ゲートウェイをレジで有効にします。無料版では現金を受け付け、別の端末で受け付けたカード決済を記録でき、1件の注文を複数の支払いに分けられます。"
+          "response": "WCPOS ProはStripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcaveに加え、QRコードまたはプッシュ通知のVipps MobilePayと連携し、拡張機能カタログからインストールします。また、店舗のその他のWooCommerce決済ゲートウェイをレジで有効にします。無料版では現金を受け付け、別の端末で受け付けたカード決済を記録でき、1件の注文を複数の支払いに分けられます。"
         },
         "hobbyShops": {
           "claim": "趣味レベルの店舗向け",
@@ -2290,7 +2298,7 @@
       "payments": {
         "title": "カード決済はどのように機能しますか？",
         "woocommerce": "WooCommerceのPOSは現金のほか、タブレットに接続したBluetoothカードリーダーを使い、WooPaymentsまたはStripe経由でカードを受け付けます。WooPaymentsの対面カード決済手数料はオンラインより低く、米国では対面が2.70% + $0.10、オンラインが2.90% + $0.30です。カードリーダーの費用は稼働中のリーダー1台につき月額$5.00 / £5.00です。",
-        "wcpos": "WCPOS 2.0には独自のチェックアウトがあります。カートの横の支払いパネルで現金を受け付け、別の端末で受け付けたカード決済を記録でき、1件の注文を複数の支払いに分けられます。Proでは、店舗のその他のWooCommerce決済ゲートウェイをレジで有効にし、Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave向けのカード端末連携に加え、QRコードまたはプッシュ通知のVipps MobilePayを追加できます。これらは拡張機能カタログからワンクリックでインストールできます。iPhoneとAndroidでのTap to PayはWCPOSにはまだありません。今後のアプリのアップデートで追加されます。WCPOSはWooPaymentsの対面決済をサポートしません。"
+        "wcpos": "WCPOS 2.0には独自のチェックアウトがあります。カートの横の支払いパネルで現金を受け付け、別の端末で受け付けたカード決済を記録でき、1件の注文を複数の支払いに分けられます。Proでは、店舗のその他のWooCommerce決済ゲートウェイをレジで有効にし、Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave向けのカード端末連携に加え、QRコードまたはプッシュ通知のVipps MobilePayを追加できます。これらは拡張機能カタログからインストールします。iPhoneとAndroidでのTap to PayはWCPOSにはまだありません。今後のアプリのアップデートで追加されます。WCPOSはWooPaymentsの対面決済をサポートしません。"
       },
       "pricing": {
         "title": "料金はいくらですか？",
@@ -2310,11 +2318,11 @@
         "offline": "オフラインモードなし：有効なインターネット接続が必要です。",
         "multiLocation": "複数拠点にはまだ対応していません。",
         "gateways": "カード決済にはWooPaymentsまたはStripeが必要です。",
-        "outro": "WooCommerceはWooCommerce本体にPOS機能を追加し続けているため、このリストは短くなると予想されます。四半期ごとに再確認します。"
+        "outro": "WooCommerceはWooCommerce本体にPOS機能を追加し続けているため、このリストは短くなると予想されます。最後に確認した日付はページ下部に記載しています。"
       },
       "woocommerceBetter": {
-        "title": "WooCommerceのPOSが本当に優れている点",
-        "intro": "正直な比較では両方の長所を示します：",
+        "title": "WooCommerceのPOSが優れている点",
+        "intro": "次の3点で優れています：",
         "price": "POSソフトウェアはライセンス料なしで無料です — WCPOS Proは$129以上かかります。",
         "official": "WooCommerce自身が開発しており、すでに店舗運営に利用しているかもしれないWooCommerceモバイルアプリ内で使えます。",
         "wooPayments": "WooPaymentsのネイティブな対面決済に対応し、手数料はWooPaymentsのオンライン決済より低額です（米国では対面が2.70% + $0.10、オンラインが2.90% + $0.30）。WCPOSにはWooPaymentsの対面決済連携はありません。",
@@ -2359,7 +2367,7 @@
         }
       },
       "footer": {
-        "factsDated": "WooCommerceのPOSに関する情報は2026-10-06にWooCommerce自身のページ（POSのドキュメント、POSのページ、WooPaymentsの手数料ページ）で確認済みです。WCPOSの情報はwcpos.comに基づき、2026-11-09にリリースされたWCPOS 2.0についてのものです。アプリとプラグインの両方がバージョン2.0である必要があります。四半期ごとに再確認します。",
+        "factsDated": "WooCommerceのPOSに関する情報は2026-10-06にWooCommerce自身のページ（POSのドキュメント、POSのページ、WooPaymentsの手数料ページ）で確認済みです。WCPOSの情報はwcpos.comに基づき、2026-11-09にリリースされたWCPOS 2.0についてのものです。アプリとプラグインの両方がバージョン2.0である必要があります。",
         "corrections": "誤りを見つけましたか？ support@wcpos.com までご連絡ください。迅速に修正し、すべての変更を記録します。"
       }
     },
@@ -2439,7 +2447,7 @@
       "payments": {
         "title": "カード決済はどのように機能しますか？",
         "square": "SquareのPOSは、iPhoneとAndroidでのTap to Payを含め、Square経由でカード決済を受け付けます。米国のSquare Freeプランでは、対面でのカード決済（タッチ、差し込み、スワイプ）の手数料は2.6% + 15¢です。Squareによると、Squareアプリでのカード決済受付は米国、カナダ、オーストラリア、日本、英国、アイルランド共和国、フランス、スペインで利用できます。また、拡張機能を利用するにはWooCommerceの通貨をSquareアカウントの通貨と一致させる必要があります。",
-        "wcpos": "WCPOS 2.0には独自のチェックアウトがあります。カートの横の支払いパネルで現金を受け付け、別の端末で受け付けたカード決済を記録でき、1件の注文を複数の支払いに分けられます。Proでは、店舗のその他のWooCommerce決済ゲートウェイをレジで有効にし、Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave向けのカード端末連携に加え、QRコードまたはプッシュ通知のVipps MobilePayを追加できます。これらは拡張機能カタログからワンクリックでインストールできます。iPhoneとAndroidでのTap to PayはWCPOSにはまだありません。今後のアプリのアップデートで追加されます。",
+        "wcpos": "WCPOS 2.0には独自のチェックアウトがあります。カートの横の支払いパネルで現金を受け付け、別の端末で受け付けたカード決済を記録でき、1件の注文を複数の支払いに分けられます。Proでは、店舗のその他のWooCommerce決済ゲートウェイをレジで有効にし、Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave向けのカード端末連携に加え、QRコードまたはプッシュ通知のVipps MobilePayを追加できます。これらは拡張機能カタログからインストールします。iPhoneとAndroidでのTap to PayはWCPOSにはまだありません。今後のアプリのアップデートで追加されます。",
         "both": "すでにSquare Terminalをお持ちですか？WCPOS ProのSquare TerminalゲートウェイはWCPOSのレジから直接、その端末でWooCommerce注文の決済を受け付け、結果を注文に書き戻します。公式のSquare for WooCommerceプラグインを利用している場合、その環境と拠点IDがあらかじめ入力されます。Square POSまたは別の連携にサインインしているTerminalは、先にそこからサインアウトする必要があります。"
       },
       "pricing": {
@@ -2460,7 +2468,7 @@
         "countries": "Squareは米国、カナダ、オーストラリア、日本、英国、フランス、スペイン、アイルランドで利用でき、WooCommerceの通貨はSquareアカウントの通貨と一致する必要があります。",
         "sku": "すべての商品にSKUが必要です。",
         "variations": "SquareからWooCommerceへ商品を同期する場合、商品ごとに最大250バリエーション、6属性までです。",
-        "outro": "この一覧は四半期ごとに再確認します。"
+        "outro": "この一覧を最後に確認した日付はページ下部に記載しています。"
       },
       "squareBetter": {
         "title": "Squareが本当に優れている点",
@@ -2530,7 +2538,7 @@
         }
       },
       "footer": {
-        "factsDated": "Squareに関する事実は2026-10-06にSquare自身のページ（手数料ページ、料金変更の発表、オフライン決済、Tap to Pay、デバイス、国際的な提供状況に関するヘルプ記事）およびSquare for WooCommerce拡張機能のWooCommerceドキュメントで確認し、2026-11-18に再確認しました。WCPOSに関する事実はwcpos.comとdocs.wcpos.comに基づき、2026-11-09にリリースされたWCPOS 2.0についてのものです。アプリとプラグインの両方がバージョン2.0である必要があります。四半期ごとに再確認します。",
+        "factsDated": "Squareに関する事実は2026-10-06にSquare自身のページ（手数料ページ、料金変更の発表、オフライン決済、Tap to Pay、デバイス、国際的な提供状況に関するヘルプ記事）およびSquare for WooCommerce拡張機能のWooCommerceドキュメントで確認し、2026-11-18に再確認しました。WCPOSに関する事実はwcpos.comとdocs.wcpos.comに基づき、2026-11-09にリリースされたWCPOS 2.0についてのものです。アプリとプラグインの両方がバージョン2.0である必要があります。",
         "corrections": "誤りを見つけましたか？ support@wcpos.com までご連絡ください。迅速に修正し、すべての変更を記録します。"
       }
     },
@@ -2643,7 +2651,7 @@
         }
       },
       "footer": {
-        "factsDated": "Jovvieに関する情報は2026-07-09時点の独自の競合調査に基づき、それ以降は再確認していません。判断する前にjovvie.comで現在の価格をご確認ください。WCPOSに関する情報はwcpos.com、docs.wcpos.com、WordPress.orgに基づき、2026-11-09にリリースされたWCPOS 2.0についてのものです。アプリとプラグインの両方がバージョン2.0である必要があります。四半期ごとに再確認します。",
+        "factsDated": "Jovvieに関する情報は2026-07-09時点の独自の競合調査に基づき、それ以降は再確認していません。判断する前にjovvie.comで現在の価格をご確認ください。WCPOSに関する情報はwcpos.com、docs.wcpos.com、WordPress.orgに基づき、2026-11-09にリリースされたWCPOS 2.0についてのものです。アプリとプラグインの両方がバージョン2.0である必要があります。",
         "corrections": "誤りを見つけましたか？ support@wcpos.com までご連絡ください。迅速に修正し、すべての変更を記録します。"
       }
     },
@@ -2785,7 +2793,7 @@
         }
       },
       "footer": {
-        "factsDated": "Viteposの情報は2026-10-07にvitepos.comとWordPress.orgの掲載ページで確認しました（「出典」を参照）。決める前に現在の価格をvitepos.comでご確認ください。WCPOSの情報はwcpos.com、docs.wcpos.com、WordPress.orgに基づき、2026-11-09にリリースされたWCPOS 2.0についてのものです。アプリとプラグインの両方がバージョン2.0である必要があります。四半期ごとに再確認しています。",
+        "factsDated": "Viteposの情報は2026-10-07にvitepos.comとWordPress.orgの掲載ページで確認しました（「出典」を参照）。決める前に現在の価格をvitepos.comでご確認ください。WCPOSの情報はwcpos.com、docs.wcpos.com、WordPress.orgに基づき、2026-11-09にリリースされたWCPOS 2.0についてのものです。アプリとプラグインの両方がバージョン2.0である必要があります。",
         "corrections": "誤りを見つけましたか？ support@wcpos.com までご連絡ください。迅速に修正し、すべての変更を記録します。"
       }
     },
@@ -2930,7 +2938,7 @@
         }
       },
       "footer": {
-        "factsDated": "YITH Point of Saleの情報は2026-10-07にyithemes.comとdocs.yithemes.comで確認しました（「出典」を参照）。決める前に現在の価格をyithemes.comでご確認ください。WCPOSの情報はwcpos.com、docs.wcpos.com、WordPress.orgに基づき、2026-11-09にリリースされたWCPOS 2.0についてのものです。アプリとプラグインの両方がバージョン2.0である必要があります。四半期ごとに再確認しています。",
+        "factsDated": "YITH Point of Saleの情報は2026-10-07にyithemes.comとdocs.yithemes.comで確認しました（「出典」を参照）。決める前に現在の価格をyithemes.comでご確認ください。WCPOSの情報はwcpos.com、docs.wcpos.com、WordPress.orgに基づき、2026-11-09にリリースされたWCPOS 2.0についてのものです。アプリとプラグインの両方がバージョン2.0である必要があります。",
         "corrections": "誤りを見つけましたか？ support@wcpos.com までご連絡ください。迅速に修正し、すべての変更を記録します。"
       }
     },
@@ -3076,7 +3084,7 @@
         }
       },
       "footer": {
-        "factsDated": "FooSalesの情報は2026-10-07にfoosales.com、help.foosales.com、App Storeの掲載ページで確認しました（「出典」を参照）。決める前にfoosales.comで現在の価格をご確認ください。WCPOSに関する情報はwcpos.com、docs.wcpos.com、WordPress.orgに基づき、2026-11-09にリリースされたWCPOS 2.0についてのものです。アプリとプラグインの両方がバージョン2.0である必要があります。四半期ごとに再確認します。",
+        "factsDated": "FooSalesの情報は2026-10-07にfoosales.com、help.foosales.com、App Storeの掲載ページで確認しました（「出典」を参照）。決める前にfoosales.comで現在の価格をご確認ください。WCPOSに関する情報はwcpos.com、docs.wcpos.com、WordPress.orgに基づき、2026-11-09にリリースされたWCPOS 2.0についてのものです。アプリとプラグインの両方がバージョン2.0である必要があります。",
         "corrections": "誤りを見つけましたか？ support@wcpos.com までご連絡ください。迅速に修正し、すべての変更を記録します。"
       }
     }

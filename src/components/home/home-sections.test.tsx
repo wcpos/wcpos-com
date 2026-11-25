@@ -170,9 +170,9 @@ describe('FeaturesSection', () => {
     renderWithIntl(<FeaturesSection />)
 
     expect(screen.getByText('Fast product search')).toBeInTheDocument()
-    expect(screen.getByText('Smooth checkout flow')).toBeInTheDocument()
+    expect(screen.getByText('Cash, card and split payments')).toBeInTheDocument()
     for (const title of [
-      'Customer profiles',
+      'Add and edit customers',
       'Order history & management',
       'Edit stock & prices on the fly',
       'Reports across days, registers & stores',
@@ -192,7 +192,7 @@ describe('FeaturesSection', () => {
   it('leaves checkout unbadged while stock and price editing stays Pro', () => {
     renderWithIntl(<FeaturesSection />)
 
-    const checkout = screen.getByText('Smooth checkout flow').closest('li')!
+    const checkout = screen.getByText('Cash, card and split payments').closest('li')!
     const stock = screen
       .getByRole('heading', { level: 3, name: /^Edit stock & prices on the fly/ })
       .closest('li')!
@@ -204,7 +204,7 @@ describe('FeaturesSection', () => {
   it('links the checkout card readers to /extensions', () => {
     renderWithIntl(<FeaturesSection />)
 
-    const checkout = screen.getByText('Smooth checkout flow').closest('li')!
+    const checkout = screen.getByText('Cash, card and split payments').closest('li')!
 
     expect(within(checkout).getByRole('link', { name: 'card readers' })).toHaveAttribute(
       'href',

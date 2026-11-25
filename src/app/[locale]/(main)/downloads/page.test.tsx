@@ -133,7 +133,7 @@ describe('DownloadsPage', () => {
     expect(
       screen.getByRole('heading', { level: 1, name: 'Download WooCommerce POS' }),
     ).toBeInTheDocument()
-    expect(screen.getByText('One register, every device.')).toBeInTheDocument()
+    expect(screen.getByText('Install the free plugin, then open the register in a browser or an app.')).toBeInTheDocument()
   })
 
   it('sources plugin card labels from translations', async () => {
@@ -149,7 +149,44 @@ describe('DownloadsPage', () => {
     ).toHaveAttribute('href', 'https://wordpress.org/plugins/woocommerce-pos/')
   })
 
-  it('keeps fallback release-note bodies in English while localizing surrounding UI', async () => {
+  it('shows the empty state and no version row when GitHub returns no releases', async () => {
+    const { default: DownloadsPage } = await import(
+      '@/app/[locale]/(main)/downloads/page'
+    )
+
+    render(await DownloadsPage({ params: Promise.resolve({ locale: 'en' }) }))
+
+    expect(screen.getByText('The release list did not load')).toBeInTheDocument()
+    expect(
+      screen.getByText(
+        "Recent release notes aren't available here right now. The downloads on this page are not affected.",
+      ),
+    ).toBeInTheDocument()
+    expect(screen.queryByText(/^\d+\.\d+\.\d+$/)).not.toBeInTheDocument()
+    expect(screen.queryByText('Latest')).not.toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Free' })).toHaveAttribute(
+      'href',
+      'https://github.com/wcpos/woocommerce-pos/releases',
+    )
+    expect(screen.getByRole('link', { name: 'Desktop' })).toHaveAttribute(
+      'href',
+      'https://github.com/wcpos/electron/releases',
+    )
+  })
+
+  it('keeps GitHub release-note bodies in English while localizing surrounding UI', async () => {
+    const { getReleases } = await import('@/services/core/external/github-client')
+    vi.mocked(getReleases).mockResolvedValueOnce([
+      {
+        tagName: 'v2.0.5',
+        name: '2.0.5',
+        body: '- Cash drawer support',
+        publishedAt: '2026-11-01T00:00:00.000Z',
+        draft: false,
+        prerelease: false,
+        assets: [],
+      },
+    ])
     const { default: DownloadsPage } = await import(
       '@/app/[locale]/(main)/downloads/page'
     )
@@ -163,8 +200,8 @@ describe('DownloadsPage', () => {
         'Les notes de version proviennent de GitHub et peuvent s’afficher en anglais.',
       ),
     ).toBeInTheDocument()
-    expect(screen.getByText(/Cash drawer support/)).toBeInTheDocument()
-    expect(screen.queryByText(/Prise en charge du tiroir-caisse/)).not.toBeInTheDocument()
+    expect(screen.getByText('2.0.5')).toBeInTheDocument()
+    expect(screen.queryByText('La liste des versions n’a pas pu être chargée')).not.toBeInTheDocument()
     expect(
       screen.getByText(/Cash drawer support/).closest('[lang="en"]'),
     ).not.toBeNull()
@@ -178,8 +215,8 @@ describe('DownloadsPage', () => {
 
     render(await DownloadsPage({ params: Promise.resolve({ locale: 'en' }) }))
 
-    expect(screen.getByRole('heading', { name: 'Want more? Go Pro' })).toBeInTheDocument()
-    expect(screen.getByText('Unlock more registers')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Need more than one register?' })).toBeInTheDocument()
+    expect(screen.getByText('WCPOS Pro')).toBeInTheDocument()
     expect(screen.queryByText(/on the same foundation/)).not.toBeInTheDocument()
   })
 
@@ -190,7 +227,7 @@ describe('DownloadsPage', () => {
 
     render(await DownloadsPage({ params: Promise.resolve({ locale: 'en' }) }))
 
-    const proCard = screen.getByText('Unlock more registers').parentElement!
+    const proCard = screen.getByText('WCPOS Pro').parentElement!
     expect(
       within(proCard).getByText('WordPress 5.8+ · WooCommerce 9.0+ · PHP 7.4+'),
     ).toBeInTheDocument()
@@ -383,8 +420,10 @@ describe('DownloadsPage', () => {
     const enProCardBody = readMessage(en, 'downloads.page.steps.pro', 'cardBody')
     expect(enProCardBody).toContain('registers')
     const enProCardTitle = readMessage(en, 'downloads.page.steps.pro', 'cardTitle')
-    expect(enProCardTitle).toContain('more registers')
-    expect(enProCardTitle).not.toMatch(/\bevery\b|\ball\b|unlimited/i)
+    expect(enProCardTitle).toBe('WCPOS Pro')
+    const enProTitle = readMessage(en, 'downloads.page.steps.pro', 'title')
+    expect(enProTitle).toContain('more than one register')
+    expect(enProTitle).not.toMatch(/\bevery\b|\ball\b|unlimited/i)
     for (const key of [
       'hero.tagline',
       'howItFits.title',

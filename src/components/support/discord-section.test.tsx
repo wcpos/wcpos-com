@@ -74,6 +74,13 @@ describe('DiscordSection', () => {
     expect(link.getAttribute('rel')).toContain('noopener')
   })
 
+  it('offers support email as a mailto link under the Discord button', () => {
+    renderWithIntl(<DiscordSection />)
+    const email = screen.getByRole('link', { name: 'support@wcpos.com' })
+    expect(email).toHaveAttribute('href', 'mailto:support@wcpos.com')
+    expect(email.closest('p')?.textContent).toBe('Prefer email? Write to support@wcpos.com.')
+  })
+
   it('puts the link before the widget box', () => {
     renderWithIntl(<DiscordSection />)
     const link = screen.getByRole('link', { name: 'Open Discord' })
@@ -87,8 +94,8 @@ describe('DiscordSection', () => {
         <DiscordSection />
       </NextIntlClientProvider>
     )
-    const link = screen.getByRole('link')
-    expect(link.textContent).toBe(all.support.discord.open)
+    const link = screen.getByRole('link', { name: all.support.discord.open })
     expect(link.textContent).not.toContain('support.discord')
+    expect(screen.getByRole('link', { name: 'support@wcpos.com' })).toHaveAttribute('href', 'mailto:support@wcpos.com')
   })
 })

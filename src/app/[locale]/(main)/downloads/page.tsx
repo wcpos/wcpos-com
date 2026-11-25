@@ -1,13 +1,15 @@
 import type { Metadata } from 'next'
+import { Suspense } from 'react'
 import { resolveLocale } from '@/i18n/resolve-locale'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server'
-import { Laptop, Smartphone, Globe, ArrowRight } from 'lucide-react'
+import { Laptop, Smartphone, Globe, ArrowRight, CloudOff } from 'lucide-react'
 import { Section, Container } from '@/components/ui/section'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
+import { EmptyState } from '@/components/ui/empty-state'
 import { TextLink } from '@/components/ui/text-link'
 import { Link } from '@/i18n/navigation'
 import { TrackedLocaleLink } from '@/components/analytics/tracked-locale-link'
@@ -18,6 +20,7 @@ import { formatDateForLocale } from '@/lib/date-format'
 import { DownloadsHero } from '@/components/downloads/download-hero'
 import { PLATFORMS, type PlatformKey } from '@/components/downloads/platforms'
 import { HowItFits } from '@/components/downloads/how-it-fits'
+import { ProPriceLine } from '@/components/downloads/pro-price-line'
 import {
   GetStartedSteps,
   GetStartedStep,
@@ -33,7 +36,6 @@ import {
   versionFor,
   PRODUCT_LABELS,
 } from '@/services/core/external/versions-client'
-import enMessages from '../../../../../messages/en.json'
 import { clientMessages } from '@/i18n/client-messages'
 import { DOWNLOADS_CLIENT_MESSAGES } from '@/components/downloads/client-messages'
 
@@ -55,38 +57,12 @@ export async function generateMetadata({
   })
 }
 
-type FallbackBodyKey = 'v196' | 'v195' | 'v194' | 'v190'
-
-type FallbackRelease = Omit<ReleaseEntry, 'date' | 'body'> & {
-  publishedAt: string
-  bodyKey: FallbackBodyKey
-}
-
-const FALLBACK_RELEASES: FallbackRelease[] = [
-  { version: '1.9.6', publishedAt: '2026-06-17T00:00:00.000Z', latest: true, bodyKey: 'v196' },
-  { version: '1.9.5', publishedAt: '2026-06-15T00:00:00.000Z', bodyKey: 'v195' },
-  { version: '1.9.4', publishedAt: '2026-06-13T00:00:00.000Z', bodyKey: 'v194' },
-  { version: '1.9.0', publishedAt: '2026-05-15T00:00:00.000Z', bodyKey: 'v190' },
-]
-
-const ENGLISH_FALLBACK_RELEASE_BODIES: Record<FallbackBodyKey, string> =
-  enMessages.downloads.releaseHistory.fallback
-
 function formatReleaseDate(iso: string, locale: string): string {
   return formatDateForLocale(iso, locale, {
     month: 'short',
     day: 'numeric',
     year: 'numeric',
   })
-}
-
-function getFallbackReleases(locale: string): ReleaseEntry[] {
-  return FALLBACK_RELEASES.map(({ publishedAt, bodyKey, ...release }) => ({
-    ...release,
-    date: formatReleaseDate(publishedAt, locale),
-    body: ENGLISH_FALLBACK_RELEASE_BODIES[bodyKey],
-    contentLocale: 'en',
-  }))
 }
 
 async function getRecentReleases(
@@ -98,10 +74,6 @@ async function getRecentReleases(
     .filter((release) => !release.draft && !release.prerelease)
     .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))
     .slice(0, 6)
-
-  if (published.length === 0) {
-    return getFallbackReleases(locale)
-  }
 
   return published.map((release, index) => {
     const body = cleanReleaseNotes(release.body, release.tagName)
@@ -333,6 +305,9 @@ export default async function DownloadsPage({
                 <p className="mt-1 text-sm text-muted-foreground">
                   {pageT('steps.pro.requirements')}
                 </p>
+                <Suspense fallback={null}>
+                  <ProPriceLine locale={locale} />
+                </Suspense>
                 <div className="mt-4 flex flex-wrap items-center gap-2">
                   <Button asChild variant="brand" size="sm">
                     <TrackedLocaleLink href="/pro" eventName="click_pro_cta">
@@ -359,6 +334,13 @@ export default async function DownloadsPage({
           title={releaseT('title')}
           subtitle={releaseT('subtitle')}
         />
+        {releases.length === 0 && (
+          <EmptyState
+            icon={<CloudOff />}
+            title={releaseT('empty.title')}
+            description={releaseT('empty.body')}
+          />
+        )}
         <ReleaseHistory
           releases={releases}
           locale={locale}

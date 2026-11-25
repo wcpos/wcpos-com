@@ -25,7 +25,7 @@ test.describe('Pro Page', () => {
 
   test('displays features section', async ({ page }) => {
     await expect(
-      page.getByRole('heading', { name: "What's included in Pro?" })
+      page.getByRole('heading', { name: 'What Pro adds' })
     ).toBeVisible()
   })
 
@@ -81,7 +81,7 @@ test.describe('Pro Page', () => {
       await skipIfPricingUnavailable(page)
       await page.waitForLoadState('networkidle')
       const checkoutButtons = page.getByRole('link', {
-        name: /Get (Started|Instant Access)/,
+        name: /Buy Pro|Get Instant Access/,
       })
       await expect(checkoutButtons.first()).toBeVisible()
 

@@ -24,7 +24,9 @@ import {
   ACT_HOLDS,
   CATCH_RADIUS,
   DEAD_ZONE,
+  QUIET_MS,
   nearestHold,
+  settleHold,
   useActGravity,
 } from './act-gravity'
 
@@ -57,6 +59,36 @@ describe('nearestHold', () => {
 
   it('picks the nearer hold when two are conceivable', () => {
     expect(nearestHold(0.6)).toBe(0.64)
+  })
+})
+
+describe('settleHold', () => {
+  const hold = ACT_HOLDS[0]
+  const near = CATCH_RADIUS / 2
+
+  it('settles forward onto a hold the visitor rested short of', () => {
+    expect(settleHold(hold - near, 0.2)).toBe(hold)
+  })
+
+  it('does not pull back a visitor who scrolled forward past a hold', () => {
+    expect(settleHold(hold + near, hold)).toBeNull()
+  })
+
+  it('does not pull down a visitor who scrolled back above a hold', () => {
+    expect(settleHold(hold - near, 0.5)).toBeNull()
+  })
+
+  it('settles backward onto a hold the visitor rested short of', () => {
+    expect(settleHold(hold + near, 0.5)).toBe(hold)
+  })
+
+  it('does nothing when the visitor has not moved', () => {
+    expect(settleHold(hold - near, hold - near)).toBeNull()
+  })
+
+  it('does nothing outside the catch radius', () => {
+    expect(settleHold(0.2, 0)).toBeNull()
+    expect(settleHold(0.52, 0.6)).toBeNull()
   })
 })
 
@@ -136,7 +168,7 @@ describe('useActGravity', () => {
     const restoreScrollEnd = removeScrollEndSupport()
     const restoreGeometry = stubScrollerGeometry(2000)
     const scrollTo = vi.spyOn(window, 'scrollTo').mockImplementation(() => {})
-    const progress = createProgress(ACT_HOLDS[0] + CATCH_RADIUS / 2)
+    const progress = createProgress(ACT_HOLDS[0] - CATCH_RADIUS / 2)
 
     try {
       render(React.createElement(GravityHarness, { progress }))
@@ -179,6 +211,57 @@ describe('useActGravity', () => {
         expect.objectContaining({ duration: 0.55 })
       )
       expect(scrollTo).toHaveBeenCalledWith(0, target)
+    } finally {
+      restoreGeometry()
+    }
+  })
+
+  it('does not pull back after scrolling forward past a hold', () => {
+    vi.stubGlobal('onscrollend', null)
+    const restoreGeometry = stubScrollerGeometry(2000)
+    vi.spyOn(window, 'scrollTo').mockImplementation(() => {})
+    const progress = createProgress(ACT_HOLDS[0] + CATCH_RADIUS / 2)
+
+    try {
+      render(React.createElement(GravityHarness, { progress }))
+
+      act(() => {
+        window.dispatchEvent(new Event('scrollend'))
+      })
+
+      expect(animateMock).not.toHaveBeenCalled()
+    } finally {
+      restoreGeometry()
+    }
+  })
+
+  it('waits for input to go quiet before settling', () => {
+    vi.useFakeTimers()
+    vi.stubGlobal('onscrollend', null)
+    const restoreGeometry = stubScrollerGeometry(2000)
+    vi.spyOn(window, 'scrollTo').mockImplementation(() => {})
+    const progress = createProgress(ACT_HOLDS[1] - CATCH_RADIUS / 2)
+
+    try {
+      render(React.createElement(GravityHarness, { progress }))
+
+      act(() => {
+        window.dispatchEvent(new Event('wheel'))
+        window.dispatchEvent(new Event('scrollend'))
+      })
+
+      expect(animateMock).not.toHaveBeenCalled()
+
+      act(() => {
+        vi.advanceTimersByTime(QUIET_MS)
+      })
+
+      expect(animateMock).toHaveBeenCalledTimes(1)
+      expect(animateMock).toHaveBeenCalledWith(
+        0,
+        ACT_HOLDS[1] * 1000,
+        expect.objectContaining({ duration: 0.55 })
+      )
     } finally {
       restoreGeometry()
     }
