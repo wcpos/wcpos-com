@@ -49,13 +49,13 @@
     "@vercel/speed-insights": "^2.1.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "lucide-react": "^1.73.0",
+    "lucide-react": "^1.78.0",
     "motion": "14.14.0",
     "next": "16.4.6",
-    "next-intl": "^4.15.1",
+    "next-intl": "^4.16.0",
     "next-themes": "^0.4.6",
     "pdf-lib": "1.17.1",
-    "posthog-js": "^1.450.0",
+    "posthog-js": "^1.454.1",
     "posthog-node": "^5.74.0",
     "react": "19.3.1",
     "react-dom": "19.3.1",
@@ -64,7 +64,7 @@
     "semver": "^7.8.6",
     "server-only": "^0.0.1",
     "sonner": "2.0.8",
-    "tailwind-merge": "^3.7.0",
+    "tailwind-merge": "^3.7.1",
     "zod": "^4.6.7"
   },
   "devDependencies": {
@@ -87,7 +87,7 @@
     "tsx": "^4.23.15",
     "typescript": "^6.0.3",
     "vite": "8.3.8",
-    "vitest": "^5.1.0"
+    "vitest": "^5.1.1"
   },
   "packageManager": "pnpm@11.1.1"
 }
