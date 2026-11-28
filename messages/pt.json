@@ -562,7 +562,14 @@
       "unavailableDescription": "As informações de preços estão indisponíveis no momento. Tente novamente mais tarde.",
       "loading": "A carregar preços…",
       "unconfirmedTitle": "Não foi possível confirmar os preços neste momento",
-      "unconfirmedBody": "Estes são os nossos preços normais. O checkout confirma o preço antes de pagar."
+      "unconfirmedBody": "Estes são os nossos preços normais. O checkout confirma o preço antes de pagar.",
+      "owner": {
+        "title": "Já tem o WCPOS Pro",
+        "body": "Licença Anual · atualizações e suporte prioritário até {date}",
+        "link": "Gerir as suas licenças",
+        "buyNote": "Isto compra uma segunda licença. Cada licença cobre um site em produção e um site de desenvolvimento.",
+        "cta": "Comprar uma segunda licença"
+      }
     },
     "faq": {
       "title": "Perguntas Frequentes",

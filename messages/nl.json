@@ -562,7 +562,14 @@
       "unavailableDescription": "Prijsinformatie is momenteel niet beschikbaar. Probeer het later opnieuw.",
       "loading": "Prijzen laden…",
       "unconfirmedTitle": "De prijzen konden nu niet worden bevestigd",
-      "unconfirmedBody": "Dit zijn onze standaardprijzen. Bij het afrekenen wordt de prijs bevestigd voordat je betaalt."
+      "unconfirmedBody": "Dit zijn onze standaardprijzen. Bij het afrekenen wordt de prijs bevestigd voordat je betaalt.",
+      "owner": {
+        "title": "Je hebt WCPOS Pro al",
+        "body": "Jaarlicentie · updates en prioriteitssupport tot {date}",
+        "link": "Je licenties beheren",
+        "buyNote": "Hiermee koop je een tweede licentie. Elke licentie geldt voor één live site en één ontwikkelsite.",
+        "cta": "Een tweede licentie kopen"
+      }
     },
     "faq": {
       "title": "Veelgestelde vragen",

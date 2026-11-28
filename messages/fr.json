@@ -562,7 +562,14 @@
       "unavailableDescription": "Les informations tarifaires sont actuellement indisponibles. Veuillez réessayer plus tard.",
       "loading": "Chargement des prix…",
       "unconfirmedTitle": "Les prix n’ont pas pu être confirmés pour le moment",
-      "unconfirmedBody": "Ce sont nos prix standard. La page de paiement confirme le prix avant que vous payiez."
+      "unconfirmedBody": "Ce sont nos prix standard. La page de paiement confirme le prix avant que vous payiez.",
+      "owner": {
+        "title": "Vous avez déjà WCPOS Pro",
+        "body": "Licence annuelle · mises à jour et assistance prioritaire jusqu’au {date}",
+        "link": "Gérer vos licences",
+        "buyNote": "Vous achetez ainsi une deuxième licence. Chaque licence couvre un site en production et un site de développement.",
+        "cta": "Acheter une deuxième licence"
+      }
     },
     "faq": {
       "title": "Foire aux questions",

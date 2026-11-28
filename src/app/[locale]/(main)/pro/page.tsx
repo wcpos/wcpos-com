@@ -30,10 +30,12 @@ import { getAnalyticsConfig } from '@/lib/analytics/config'
 import { getRequestStoreEnvironment } from '@/lib/store-environment'
 import type { Metadata } from 'next'
 import { marketingMetadata } from '@/lib/seo'
+import { formatDateForLocale } from '@/lib/date-format'
 import { getProCheckoutCtaLabel } from '@/lib/pro-offer-catalog'
 import { Section, sectionVariants } from '@/components/ui/section'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { getCachedProOfferCatalog } from './pro-offer-data'
+import { getProOwnership } from './pro-ownership'
 import { ProProductJsonLd } from './pro-product-json-ld'
 import type { Locale } from '@/i18n/config'
 
@@ -100,9 +102,10 @@ async function BuyBoxWithExperiment({ locale }: { locale: Locale }) {
     : 'control'
 
   const storeEnv = await getRequestStoreEnvironment()
-  const [t, { offers, source }] = await Promise.all([
+  const [t, { offers, source }, ownership] = await Promise.all([
     getTranslations({ locale, namespace: PRO_MESSAGE_NAMESPACE }),
     getCachedProOfferCatalog(storeEnv.name, locale),
+    getProOwnership(),
   ])
   // next-intl's Translator is key-typed; the options builder takes a plain
   // string-keyed translate function.
@@ -129,30 +132,69 @@ async function BuyBoxWithExperiment({ locale }: { locale: Locale }) {
   return (
     <ProBuyBox
       options={buildProBuyBoxOptions(offers, experimentVariant, translate)}
-      ctaLabel={getProCheckoutCtaLabel(experimentVariant, translate)}
+      ctaLabel={
+        ownership
+          ? t('buyBox.owner.cta')
+          : getProCheckoutCtaLabel(experimentVariant, translate)
+      }
       heading={t('buyBox.heading')}
       subheading={t('buyBox.subheading')}
       termAriaLabel={t('buyBox.termAriaLabel')}
+      buyNote={ownership ? t('buyBox.owner.buyNote') : undefined}
       notice={
-        // Medusa did not answer for every plan: the committed standard
-        // prices stand in, and checkout confirms the price before payment.
-        source === 'fallback' ? (
-          <Alert
-            tone="caution"
-            role="status"
-            icon={
-              <span
-                className={`mt-1.5 block size-1.5 rounded-full ${toneDot.caution}`}
-              />
-            }
-            title={t('buyBox.unconfirmedTitle')}
-          >
-            <p className="text-foreground/80">{t('buyBox.unconfirmedBody')}</p>
-          </Alert>
-        ) : undefined
+        (source === 'fallback' || ownership) && (
+          <div className="space-y-2">
+            {/* Medusa did not answer for every plan: the committed standard
+                prices stand in, and checkout confirms the price before payment. */}
+            {source === 'fallback' && (
+              <BuyBoxNotice tone="caution" title={t('buyBox.unconfirmedTitle')}>
+                <p>{t('buyBox.unconfirmedBody')}</p>
+              </BuyBoxNotice>
+            )}
+            {ownership && (
+              <BuyBoxNotice tone="positive" title={t('buyBox.owner.title')}>
+                {ownership.yearlyUntil && (
+                  <p>
+                    {t('buyBox.owner.body', {
+                      date: formatDateForLocale(ownership.yearlyUntil, locale),
+                    })}
+                  </p>
+                )}
+                <p className="mt-1">
+                  <TextLink asChild>
+                    <Link href="/account/licenses">
+                      {t('buyBox.owner.link')}
+                    </Link>
+                  </TextLink>
+                </p>
+              </BuyBoxNotice>
+            )}
+          </div>
+        )
       }
       footer={<ProBuyBoxFooter t={translate} />}
     />
+  )
+}
+
+function BuyBoxNotice({
+  tone,
+  title,
+  children,
+}: {
+  tone: 'caution' | 'positive'
+  title: string
+  children: ReactNode
+}) {
+  return (
+    <Alert
+      tone={tone}
+      role="status"
+      icon={<span className={`mt-1.5 block size-1.5 rounded-full ${toneDot[tone]}`} />}
+      title={title}
+    >
+      <div className="text-foreground/80">{children}</div>
+    </Alert>
   )
 }
 

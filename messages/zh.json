@@ -562,7 +562,14 @@
       "unavailableDescription": "价格信息当前不可用。请稍后再试。",
       "loading": "正在加载价格…",
       "unconfirmedTitle": "暂时无法确认价格",
-      "unconfirmedBody": "显示的是我们的标准价格。付款前，结账页面会确认价格。"
+      "unconfirmedBody": "显示的是我们的标准价格。付款前，结账页面会确认价格。",
+      "owner": {
+        "title": "你已拥有 WCPOS Pro",
+        "body": "年付许可证 · 更新和优先支持至 {date}",
+        "link": "管理你的许可证",
+        "buyNote": "这将购买第二个许可证。每个许可证适用于一个正式站点和一个开发站点。",
+        "cta": "购买第二个许可证"
+      }
     },
     "faq": {
       "title": "常见问题",
