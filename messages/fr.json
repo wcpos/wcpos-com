@@ -469,7 +469,8 @@
     },
     "hero": {
       "title": "WCPOS Pro – Point de vente pour WooCommerce",
-      "subtitle": "Le POS gratuit gère la vente. Pro ajoute les outils pour gérer votre boutique depuis le comptoir : des caisses et des boutiques supplémentaires, les lecteurs de cartes connectés, les remboursements, les modifications de stock et de prix, et l’assistance prioritaire."
+      "subtitle": "Le POS gratuit gère la vente. Pro ajoute les outils pour gérer votre boutique depuis le comptoir : des caisses et des boutiques supplémentaires, les lecteurs de cartes connectés, les remboursements, les modifications de stock et de prix, et l’assistance prioritaire.",
+      "jumpLink": "Voir ce que Pro ajoute"
     },
     "schema": {
       "name": "WCPOS Pro",
@@ -806,6 +807,30 @@
         "backToCheckout": "Retour au paiement",
         "backToPricing": "Retour aux tarifs"
       }
+    },
+    "yearLine": {
+      "title": "Comment fonctionne la licence annuelle",
+      "today": {
+        "label": "Aujourd’hui",
+        "body": "Un seul paiement. Pas d’abonnement."
+      },
+      "year": {
+        "label": "Les 12 prochains mois",
+        "body": "Toutes les mises à jour et l’assistance prioritaire."
+      },
+      "after": {
+        "label": "Ensuite",
+        "body": "Pro continue de fonctionner. Ne renouvelez que si vous voulez les nouvelles mises à jour."
+      },
+      "short": {
+        "today": "<b>Aujourd’hui :</b> un seul paiement.",
+        "year": "<b>12 mois :</b> toutes les mises à jour, assistance prioritaire.",
+        "after": "<b>Ensuite :</b> Pro continue de fonctionner. Renouvelez seulement si vous voulez de nouvelles mises à jour."
+      }
+    },
+    "freePos": {
+      "title": "Déjà dans le POS gratuit",
+      "body": "Une caisse partagée par tous les appareils, avec les sessions de tiroir-caisse, les paiements fractionnés, les ventes hors ligne en espèces et par carte, les codes promo dans le panier et le rapport du jour."
     }
   },
   "account": {

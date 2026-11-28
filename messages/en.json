@@ -469,7 +469,8 @@
     },
     "hero": {
       "title": "WCPOS Pro",
-      "subtitle": "The free POS handles the sale. Pro adds the tools to run your store from the counter: more registers and stores, connected card readers, refunds, stock and price changes, and priority support."
+      "subtitle": "The free POS handles the sale. Pro adds the tools to run your store from the counter: more registers and stores, connected card readers, refunds, stock and price changes, and priority support.",
+      "jumpLink": "See what Pro adds"
     },
     "schema": {
       "name": "WCPOS Pro",
@@ -806,6 +807,30 @@
         "backToCheckout": "Back to checkout",
         "backToPricing": "Back to pricing"
       }
+    },
+    "yearLine": {
+      "title": "How the Yearly license works",
+      "today": {
+        "label": "Today",
+        "body": "One payment. No subscription."
+      },
+      "year": {
+        "label": "The next 12 months",
+        "body": "Every update, and priority support."
+      },
+      "after": {
+        "label": "After that",
+        "body": "Pro keeps working. Renew only if you want the new updates."
+      },
+      "short": {
+        "today": "<b>Today:</b> one payment.",
+        "year": "<b>12 months:</b> every update, priority support.",
+        "after": "<b>After:</b> Pro keeps working. Renew only if you want new updates."
+      }
+    },
+    "freePos": {
+      "title": "Already in the free POS",
+      "body": "One register that every device shares, with cash-drawer sessions, split payments, offline sales for Cash and Card, coupons in the cart, and today’s report."
     }
   },
   "account": {

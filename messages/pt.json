@@ -469,7 +469,8 @@
     },
     "hero": {
       "title": "WCPOS Pro – Ponto de venda para WooCommerce",
-      "subtitle": "O POS gratuito trata da venda. O Pro acrescenta as ferramentas para gerir a sua loja a partir do balcão: mais caixas e lojas, leitores de cartões ligados, reembolsos, alterações de stock e preços, e suporte prioritário."
+      "subtitle": "O POS gratuito trata da venda. O Pro acrescenta as ferramentas para gerir a sua loja a partir do balcão: mais caixas e lojas, leitores de cartões ligados, reembolsos, alterações de stock e preços, e suporte prioritário.",
+      "jumpLink": "Veja o que o Pro acrescenta"
     },
     "schema": {
       "name": "WCPOS Pro",
@@ -806,6 +807,30 @@
         "backToCheckout": "Voltar ao checkout",
         "backToPricing": "Voltar aos preços"
       }
+    },
+    "yearLine": {
+      "title": "Como funciona a licença Anual",
+      "today": {
+        "label": "Hoje",
+        "body": "Um único pagamento. Sem subscrição."
+      },
+      "year": {
+        "label": "Os próximos 12 meses",
+        "body": "Todas as atualizações e suporte prioritário."
+      },
+      "after": {
+        "label": "Depois disso",
+        "body": "O Pro continua a funcionar. Renove só se quiser as novas atualizações."
+      },
+      "short": {
+        "today": "<b>Hoje:</b> um único pagamento.",
+        "year": "<b>12 meses:</b> todas as atualizações, suporte prioritário.",
+        "after": "<b>Depois:</b> o Pro continua a funcionar. Renove só se quiser novas atualizações."
+      }
+    },
+    "freePos": {
+      "title": "Já incluído no POS gratuito",
+      "body": "Uma caixa partilhada por todos os dispositivos, com sessões de gaveta de dinheiro, pagamentos divididos, vendas offline em numerário e cartão, cupões no carrinho e o relatório do dia."
     }
   },
   "account": {

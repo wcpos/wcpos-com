@@ -15,7 +15,8 @@ vi.mock('react', async (importActual) => {
 })
 
 vi.mock('next-intl/server', () => ({
-  getTranslations: vi.fn(async () => (key: string) => {
+  getTranslations: vi.fn(async () => {
+    const translate = (key: string) => {
     const messages: Record<string, string> = {
       'metadata.title': 'Translated Pro metadata title',
       'metadata.description': 'Translated Pro metadata description',
@@ -56,6 +57,8 @@ vi.mock('next-intl/server', () => ({
     }
 
     return messages[key] ?? key
+    }
+    return Object.assign(translate, { rich: translate })
   }),
   setRequestLocale: vi.fn(),
 }))
@@ -121,6 +124,7 @@ vi.mock('@/lib/pro-offer-catalog', () => ({
 }))
 
 vi.mock('@/components/ui/section', () => ({
+  sectionVariants: () => 'bg-white',
   Section: ({
     children,
     tone = 'default',
@@ -208,19 +212,19 @@ describe('ProPage', () => {
       .toHaveAttribute('data-section-heading-size', 'hero')
     expect(screen.getByText('Translated Pro hero subtitle')).toBeInTheDocument()
 
+    // The hero is a plain <section> so it can dissolve into the phone
+    // order; the features and the FAQ band are Sections.
     const sections = [...document.querySelectorAll('[data-section-tone]')]
     expect(
       sections.map((section) => section.getAttribute('data-section-tone'))
-    ).toEqual(['default', 'default', 'muted'])
+    ).toEqual(['none', 'muted'])
+    const hero = heroHeading.closest('section')
+    expect(hero).not.toHaveAttribute('data-section-tone')
+
+    // The jump link (phone only) points at the features.
     expect(
-      sections.map((section) => section.getAttribute('data-section-spacing'))
-    ).toEqual(['none', 'compact', 'default'])
-    // Phone padding is tight; from sm up the hero matches the `hero` spacing.
-    expect(sections[0]).toHaveAttribute(
-      'data-section-class',
-      'pt-10 pb-6 sm:pt-20 sm:pb-8 md:pt-24 md:pb-10 lg:pt-28 lg:pb-10'
-    )
-    expect(sections[1]).toHaveAttribute('data-section-class', 'pt-4 sm:pt-8 md:pt-10')
+      screen.getByRole('link', { name: 'hero.jumpLink' })
+    ).toHaveAttribute('href', '#what-pro-adds')
 
     // Feature list renders statically (exactly once, next to the buy box).
     expect(screen.getByText('Pro features')).toBeInTheDocument()
@@ -235,20 +239,26 @@ describe('ProPage', () => {
     )
 
     // The buy box is the only suspended region (Suspense is mocked to
-    // render its fallback), so the skeleton stands in for it here.
+    // render its fallback), so the skeleton stands in for it here, in the
+    // hero beside the H1 (second on phones).
     expect(screen.getByTestId('pro-buy-box-skeleton')).toBeInTheDocument()
     const buyBoxColumn = screen.getByTestId('pro-buy-box-column')
-    expect(buyBoxColumn).toHaveClass('order-first', 'lg:order-none')
+    expect(buyBoxColumn).toHaveClass('order-2')
+    expect(hero).toContainElement(buyBoxColumn)
     expect(buyBoxColumn).toContainElement(
       screen.getByTestId('pro-buy-box-skeleton')
     )
-    // The home page's wordpress.org review sits under the buy box.
+    // The year line explains the price; the free-POS note and the
+    // wordpress.org review sit in the hero's left column.
+    expect(hero).toContainElement(screen.getByText('yearLine.title'))
+    expect(hero).toContainElement(screen.getByText('freePos.title'))
     const review = screen.getByRole('link', { name: 'Ward, wordpress.org review' })
     expect(review).toHaveAttribute(
       'href',
       'https://wordpress.org/support/topic/does-what-it-says-836/'
     )
-    expect(buyBoxColumn).toContainElement(review.closest('figure'))
+    expect(hero).toContainElement(review.closest('figure'))
+    expect(buyBoxColumn).not.toContainElement(review)
 
     expect(screen.getByText('Questions')).toBeInTheDocument()
     expect(screen.getByText('Do I need the free plugin?')).toBeInTheDocument()

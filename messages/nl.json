@@ -469,7 +469,8 @@
     },
     "hero": {
       "title": "WCPOS Pro – Kassasysteem voor WooCommerce",
-      "subtitle": "De gratis POS regelt de verkoop. Pro voegt de tools toe om je winkel vanaf de toonbank te beheren: meer kassa's en winkels, gekoppelde kaartlezers, terugbetalingen, voorraad- en prijswijzigingen en prioriteitssupport."
+      "subtitle": "De gratis POS regelt de verkoop. Pro voegt de tools toe om je winkel vanaf de toonbank te beheren: meer kassa's en winkels, gekoppelde kaartlezers, terugbetalingen, voorraad- en prijswijzigingen en prioriteitssupport.",
+      "jumpLink": "Bekijk wat Pro toevoegt"
     },
     "schema": {
       "name": "WCPOS Pro",
@@ -806,6 +807,30 @@
         "backToCheckout": "Terug naar checkout",
         "backToPricing": "Terug naar prijzen"
       }
+    },
+    "yearLine": {
+      "title": "Zo werkt de jaarlicentie",
+      "today": {
+        "label": "Vandaag",
+        "body": "Eén betaling. Geen abonnement."
+      },
+      "year": {
+        "label": "De komende 12 maanden",
+        "body": "Alle updates en prioriteitssupport."
+      },
+      "after": {
+        "label": "Daarna",
+        "body": "Pro blijft werken. Verleng alleen als je de nieuwe updates wilt."
+      },
+      "short": {
+        "today": "<b>Vandaag:</b> één betaling.",
+        "year": "<b>12 maanden:</b> alle updates, prioriteitssupport.",
+        "after": "<b>Daarna:</b> Pro blijft werken. Verleng alleen als je nieuwe updates wilt."
+      }
+    },
+    "freePos": {
+      "title": "Al in de gratis POS",
+      "body": "Eén kassa die alle apparaten delen, met kassalade-sessies, gesplitste betalingen, offline verkopen met contant en kaart, kortingsbonnen in de winkelwagen en het rapport van vandaag."
     }
   },
   "account": {

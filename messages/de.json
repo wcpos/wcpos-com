@@ -469,7 +469,8 @@
     },
     "hero": {
       "title": "WCPOS Pro – Kassensystem für WooCommerce",
-      "subtitle": "Der kostenlose POS wickelt den Verkauf ab. Pro ergänzt alles, um deinen Shop direkt an der Kasse zu führen: weitere Kassen und Filialen, verbundene Kartenlesegeräte, Erstattungen, Bestands- und Preisänderungen und Prioritätssupport."
+      "subtitle": "Der kostenlose POS wickelt den Verkauf ab. Pro ergänzt alles, um deinen Shop direkt an der Kasse zu führen: weitere Kassen und Filialen, verbundene Kartenlesegeräte, Erstattungen, Bestands- und Preisänderungen und Prioritätssupport.",
+      "jumpLink": "Sieh dir an, was Pro ergänzt"
     },
     "schema": {
       "name": "WCPOS Pro",
@@ -806,6 +807,30 @@
         "backToCheckout": "Zurück zur Kasse",
         "backToPricing": "Zurück zu den Preisen"
       }
+    },
+    "yearLine": {
+      "title": "So funktioniert die Jahreslizenz",
+      "today": {
+        "label": "Heute",
+        "body": "Eine Zahlung. Kein Abo."
+      },
+      "year": {
+        "label": "Die nächsten 12 Monate",
+        "body": "Alle Updates und Prioritätssupport."
+      },
+      "after": {
+        "label": "Danach",
+        "body": "Pro läuft weiter. Verlängere nur, wenn du die neuen Updates willst."
+      },
+      "short": {
+        "today": "<b>Heute:</b> eine Zahlung.",
+        "year": "<b>12 Monate:</b> alle Updates, Prioritätssupport.",
+        "after": "<b>Danach:</b> Pro läuft weiter. Verlängere nur, wenn du neue Updates willst."
+      }
+    },
+    "freePos": {
+      "title": "Schon im kostenlosen POS",
+      "body": "Eine Kasse, die alle Geräte teilen, mit Kassensitzungen, geteilten Zahlungen, Offline-Verkäufen für Bar und Karte, Gutscheinen im Warenkorb und dem heutigen Bericht."
     }
   },
   "account": {

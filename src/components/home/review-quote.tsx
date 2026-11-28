@@ -1,4 +1,5 @@
 import { useTranslations } from 'next-intl'
+import { TextLink } from '@/components/ui/text-link'
 import { cn } from '@/lib/utils'
 
 /** Real customer quote — public wordpress.org review, linked below. */
@@ -12,13 +13,14 @@ export function ReviewQuote({ className }: { className?: string }) {
       </blockquote>
       <figcaption className="text-sm text-slate-500 dark:text-slate-400">
         —{' '}
-        <a
-          href="https://wordpress.org/support/topic/does-what-it-says-836/"
-          className="underline underline-offset-4 hover:text-slate-700 dark:hover:text-slate-300"
-          rel="noopener"
-        >
-          {t('attribution')}
-        </a>
+        <TextLink asChild>
+          <a
+            href="https://wordpress.org/support/topic/does-what-it-says-836/"
+            rel="noopener"
+          >
+            {t('attribution')}
+          </a>
+        </TextLink>
       </figcaption>
     </figure>
   )
