@@ -29,6 +29,10 @@ const iconTileVariants = cva(
         brand: 'bg-wcpos-red/10 text-wcpos-red-accent',
         caution:
           'bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400',
+        positive:
+          'bg-green-50 text-green-600 dark:bg-green-500/10 dark:text-green-400',
+        critical:
+          'bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400',
       },
     },
     defaultVariants: { size: 'md', shape: 'square', tone: 'muted' },

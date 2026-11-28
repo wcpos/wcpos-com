@@ -68,8 +68,66 @@ describe('LoginPageClient', () => {
     })
     fireEvent.click(screen.getByRole('button', { name: 'Sign in' }))
 
-    expect(await screen.findByText('Invalid email or password.')).toBeInTheDocument()
+    const alert = await screen.findByRole('alert')
+    expect(alert).toHaveTextContent('That email and password don’t match.')
+    expect(alert).toHaveTextContent('Signed up with Google, GitHub or Discord?')
+    expect(
+      screen.getByRole('link', { name: 'reset your password' })
+    ).toHaveAttribute('href', '/forgot-password')
     expect(mockAssign).not.toHaveBeenCalled()
+  })
+
+  it('names checkout in the title and links to register once when arriving from checkout', () => {
+    mockSearchParams = new URLSearchParams({
+      redirect: '/pro/checkout?product=wcpos-pro-yearly',
+    })
+
+    renderLogin()
+
+    expect(
+      screen.getByRole('heading', { name: 'Sign in to finish buying WCPOS Pro' })
+    ).toBeInTheDocument()
+    const registerLinks = screen.getAllByRole('link', {
+      name: 'Create an account',
+    })
+    expect(registerLinks).toHaveLength(1)
+    expect(registerLinks[0]).toHaveAttribute(
+      'href',
+      '/register?redirect=%2Fpro%2Fcheckout%3Fproduct%3Dwcpos-pro-yearly'
+    )
+  })
+
+  it('keeps the busy submit button disabled and the providers inert while signing in', async () => {
+    mockFetch.mockReturnValueOnce(new Promise(() => {}))
+
+    renderLogin()
+
+    fireEvent.change(screen.getByLabelText('Email'), {
+      target: { value: 'user@example.com' },
+    })
+    fireEvent.change(screen.getByLabelText('Password'), {
+      target: { value: 'secret-password' },
+    })
+    fireEvent.click(screen.getByRole('button', { name: 'Sign in' }))
+
+    const busy = await screen.findByRole('button', { name: 'Signing in…' })
+    expect(busy).toBeDisabled()
+    expect(busy).toHaveAttribute('aria-busy', 'true')
+    expect(screen.getByRole('link', { name: /google/i })).toHaveAttribute(
+      'aria-disabled',
+      'true'
+    )
+  })
+
+  it('reveals and hides the password with the Show control', () => {
+    renderLogin()
+
+    const password = screen.getByLabelText('Password')
+    expect(password).toHaveAttribute('type', 'password')
+    fireEvent.click(screen.getByRole('button', { name: 'Show' }))
+    expect(password).toHaveAttribute('type', 'text')
+    fireEvent.click(screen.getByRole('button', { name: 'Hide' }))
+    expect(password).toHaveAttribute('type', 'password')
   })
 
   it('shows customer-safe support copy for a held email login', async () => {

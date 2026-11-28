@@ -3,22 +3,22 @@
 import { Suspense, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { useLocale, useTranslations } from 'next-intl'
+import { CircleAlert } from 'lucide-react'
 import { Link } from '@/i18n/navigation'
-import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Alert } from '@/components/ui/alert'
+import { TextLink } from '@/components/ui/text-link'
+import { AuthCard } from '@/components/auth/auth-card'
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
-import { trackClientEvent } from '@/lib/analytics/client-events'
+  AuthDivider,
+  AuthHelpLinks,
+  PasswordInput,
+  ProviderButtons,
+  SubmitButton,
+  statusLinkClassName,
+} from '@/components/auth/auth-parts'
 import { navigateAfterAuthChange, sanitizeRedirectPath } from '@/lib/safe-redirect'
-import { DiscordMark, GitHubMark, GoogleMark } from '@/components/auth/provider-marks'
 import { isOAuthErrorCode } from '@/lib/oauth-error-codes'
 
 type LoginErrorCode =
@@ -54,8 +54,7 @@ function LoginPageInner() {
   const locale = useLocale()
   const searchParams = useSearchParams()
   const redirectTo = sanitizeRedirectPath(searchParams.get('redirect'))
-  const oauthHref = (provider: 'google' | 'github' | 'discord') =>
-    `/api/auth/${provider}?locale=${encodeURIComponent(locale)}&redirect=${encodeURIComponent(redirectTo)}`
+  const fromCheckout = redirectTo.startsWith('/pro/checkout')
   const oauthError = searchParams.get('error')
 
   const [email, setEmail] = useState('')
@@ -67,6 +66,8 @@ function LoginPageInner() {
     }
     return t('oauthFailed')
   })
+  // invalid_credentials draws its own Alert (title, reset link, provider hint).
+  const [badCredentials, setBadCredentials] = useState(false)
   const [loading, setLoading] = useState(false)
 
   const getLoginErrorMessage = (errorCode: LoginErrorCode) => {
@@ -89,6 +90,7 @@ function LoginPageInner() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setError('')
+    setBadCredentials(false)
     setLoading(true)
 
     try {
@@ -101,11 +103,15 @@ function LoginPageInner() {
       const data = await response.json()
 
       if (!response.ok) {
-        setError(
-          isLoginErrorCode(data.errorCode)
-            ? getLoginErrorMessage(data.errorCode)
-            : t('loginFailed')
-        )
+        if (data.errorCode === 'invalid_credentials') {
+          setBadCredentials(true)
+        } else {
+          setError(
+            isLoginErrorCode(data.errorCode)
+              ? getLoginErrorMessage(data.errorCode)
+              : t('loginFailed')
+          )
+        }
         setLoading(false)
         return
       }
@@ -121,120 +127,86 @@ function LoginPageInner() {
   }
 
   return (
-    // Centering and page chrome live in the (auth) layout.
-    <div className="w-full max-w-md">
-      <Card elevated>
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl tracking-tight">{t('title')}</CardTitle>
-          <CardDescription>
-            {t('description')}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {error && (
-              <Alert tone="critical" role="alert">
-                {error}
-              </Alert>
-            )}
-
-            <div className="space-y-2">
-              <Label htmlFor="email">{tCommon('email')}</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder={tCommon('emailPlaceholder')}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                autoComplete="email"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <Label htmlFor="password">{tCommon('password')}</Label>
-                <Link
-                  href="/forgot-password"
-                  className="text-sm text-primary hover:underline"
-                >
-                  {t('forgotPassword')}
-                </Link>
-              </div>
-              <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                autoComplete="current-password"
-              />
-            </div>
-
-            <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? t('submitting') : tCommon('signIn')}
-            </Button>
-          </form>
-
-          <div className="relative my-6">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t" />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-card px-2 text-muted-foreground">
-                {t('oauthDivider')}
-              </span>
-            </div>
-          </div>
-
-          {/*
-            Raw <a> (not next/link): these are /api/auth/* route handlers that
-            server-redirect to external OAuth providers, not Next.js pages, so
-            no-html-link-for-pages does not apply and no eslint-disable is needed
-            (an unused directive gets stripped by `eslint --fix`, leaving `{}`).
-          */}
-          <div className="grid gap-2.5">
-            <Button variant="outline" asChild>
-              <a
-                href={oauthHref('google')}
-                onClick={() => trackClientEvent('click_oauth_google')}
-              >
-                <GoogleMark className="mr-2 h-4 w-4" />
-                Google
-              </a>
-            </Button>
-            <Button variant="outline" asChild>
-              <a
-                href={oauthHref('github')}
-                onClick={() => trackClientEvent('click_oauth_github')}
-              >
-                <GitHubMark className="mr-2 h-4 w-4" />
-                GitHub
-              </a>
-            </Button>
-            <Button variant="outline" asChild>
-              <a
-                href={oauthHref('discord')}
-                onClick={() => trackClientEvent('click_oauth_discord')}
-              >
-                <DiscordMark className="mr-2 h-4 w-4" />
-                Discord
-              </a>
-            </Button>
-          </div>
-        </CardContent>
-        <CardFooter className="justify-center">
-          <p className="text-sm text-muted-foreground">
-            {t('noAccount')}{' '}
-            <Link
-              href={`/register?redirect=${encodeURIComponent(redirectTo)}`}
-              className="text-primary hover:underline"
-            >
-              {tCommon('signUp')}
+    <AuthCard
+      title={fromCheckout ? t('checkoutTitle') : t('title')}
+      description={fromCheckout ? t('checkoutDescription') : t('description')}
+      footer={
+        <>
+          {t('noAccount')}{' '}
+          <TextLink asChild>
+            <Link href={`/register?redirect=${encodeURIComponent(redirectTo)}`}>
+              {t('createAccount')}
             </Link>
-          </p>
-        </CardFooter>
-      </Card>
-    </div>
+          </TextLink>
+        </>
+      }
+      below={<AuthHelpLinks help={t('trouble')} />}
+    >
+      <ProviderButtons redirectTo={redirectTo} disabled={loading} />
+      <AuthDivider>{t('oauthDivider')}</AuthDivider>
+
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {badCredentials && (
+          <Alert
+            tone="critical"
+            role="alert"
+            icon={<CircleAlert />}
+            title={t('badCredentialsTitle')}
+          >
+            <p>
+              {t.rich('badCredentialsRetry', {
+                link: (chunks) => (
+                  <Link href="/forgot-password" className={statusLinkClassName}>
+                    {chunks}
+                  </Link>
+                ),
+              })}
+            </p>
+            <p>{t('badCredentialsProvider')}</p>
+          </Alert>
+        )}
+        {error && (
+          <Alert tone="critical" role="alert">
+            {error}
+          </Alert>
+        )}
+
+        <div className="space-y-2">
+          <Label htmlFor="email">{tCommon('email')}</Label>
+          <Input
+            id="email"
+            type="email"
+            className="h-10"
+            placeholder={tCommon('emailPlaceholder')}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            disabled={loading}
+            autoComplete="email"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <div className="flex items-center justify-between gap-3">
+            <Label htmlFor="password">{tCommon('password')}</Label>
+            <TextLink asChild className="text-sm">
+              <Link href="/forgot-password">{t('forgotPassword')}</Link>
+            </TextLink>
+          </div>
+          <PasswordInput
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            disabled={loading}
+            autoComplete="current-password"
+          />
+        </div>
+
+        <SubmitButton busy={loading} busyLabel={t('submitting')}>
+          {tCommon('signIn')}
+        </SubmitButton>
+      </form>
+    </AuthCard>
   )
 }
