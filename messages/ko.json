@@ -412,6 +412,11 @@
       "description": "WCPOS 플러그인의 각 버전에서 바뀐 내용과 업데이트 전에 해야 할 일이 있는지 알려 드립니다.",
       "notesSource": "최신 릴리스 10개와 GitHub의 릴리스 노트.",
       "lineMeta": "최초 출시 {date}. 최신: {version}.",
+      "whatsNew": "{line}의 새 기능",
+      "previousLine": "{next} 이전 버전입니다. {next}(으)로 옮기시나요? 먼저 {version} 단계를 읽어 주세요.",
+      "jump": "1.11에서 업데이트하시나요? 먼저 모든 계산대를 동기화하세요.",
+      "jumpLink": "업그레이드 단계",
+      "majorRelease": "메이저 릴리스",
       "status": {
         "before": "업데이트 전 확인",
         "fixedIn": "{version}에서 수정됨",
@@ -419,6 +424,12 @@
       },
       "noteBefore": "<b>업데이트 전 확인:</b> 아래의 “Upgrade and compatibility”를 읽어 주세요.",
       "noteFixed": "<b>{version}에서 수정됨:</b> 이 릴리스에는 {version}에서 수정된 문제가 있습니다. {version} 이상으로 업데이트하세요.",
+      "upgradeSteps": [
+        "업그레이드 전에 모든 계산대를 동기화하세요. 2.0은 새 로컬 데이터베이스로 시작하며 전송되지 않은 1.11 판매를 옮기지 않습니다.",
+        "플러그인과 모든 앱이 2.0이어야 합니다. 웹과 데스크톱은 이미 2.0입니다. iOS와 Android용 2.0 앱은 아직 나오지 않았습니다. 휴대폰이나 태블릿 앱에서 계산대를 운영한다면 앱이 나올 때까지 1.11을 유지하세요.",
+        "WCPOS 2.0에는 WooCommerce 9.0 이상이 필요합니다.",
+        "바쁜 영업 시간이 아니라 새 화면을 익힐 시간이 있을 때 업데이트하세요."
+      ],
       "releaseNotes": "릴리스 노트",
       "showMore": "{n, plural, other {나머지 노트 #개 보기}}",
       "showFewer": "노트 접기",

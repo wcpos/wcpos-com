@@ -412,6 +412,11 @@
       "description": "What changed in each version of the WCPOS plugin, and whether you need to do anything before you update.",
       "notesSource": "The ten latest releases, with their notes from GitHub.",
       "lineMeta": "First released {date}. Latest: {version}.",
+      "whatsNew": "What’s new in {line}",
+      "previousLine": "The line before {next}. Moving to {next}? Read the {version} steps first.",
+      "jump": "Updating from 1.11? Sync every register first.",
+      "jumpLink": "Upgrade steps",
+      "majorRelease": "Major release",
       "status": {
         "before": "Before you update",
         "fixedIn": "Fixed in {version}",
@@ -419,6 +424,12 @@
       },
       "noteBefore": "<b>Before you update:</b> read Upgrade and compatibility below.",
       "noteFixed": "<b>Fixed in {version}:</b> this release has a problem that {version} fixes. Update to {version} or later.",
+      "upgradeSteps": [
+        "Sync every till before upgrading: 2.0 starts a new local database and does not carry over unsent 1.11 sales.",
+        "The plugin and every app must both be on 2.0. Web and desktop are. The iOS and Android 2.0 apps are not out yet: if a register runs on a phone or tablet app, stay on 1.11 until they ship.",
+        "WCPOS 2.0 needs WooCommerce 9.0 or later.",
+        "Update when you have time to learn the new interface, not during a busy shift."
+      ],
       "releaseNotes": "Release notes",
       "showMore": "{n, plural, one {Show the remaining note} other {Show the remaining # notes}}",
       "showFewer": "Show fewer notes",

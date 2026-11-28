@@ -154,7 +154,7 @@ describe('ChangelogPage', () => {
     )
   })
 
-  it('marks each release with its action status', async () => {
+  it('marks action status, the major release and its upgrade steps', async () => {
     const release = (tagName: string, body: string, day: string) => ({
       ...published[0],
       tagName,
@@ -182,8 +182,13 @@ describe('ChangelogPage', () => {
     // Only the Upgrade and compatibility section opens; the rest is behind a toggle.
     expect(screen.getByText(page.showFewer)).toBeInTheDocument()
     expect(screen.getByText('Fixed in 1.11.9')).toBeInTheDocument()
-    expect(screen.getAllByText(page.status.none)).toHaveLength(2)
+    expect(screen.getAllByText(page.status.none)).toHaveLength(1)
+    expect(screen.getByText(page.majorRelease)).toBeInTheDocument()
     expect(container.querySelector('#v2\\.0\\.0')).not.toBeNull()
+    for (const step of page.upgradeSteps) expect(screen.getByText(step)).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: page.jumpLink })).toHaveAttribute('href', '#v2.0.0')
+    expect(screen.getByText(page.previousLine.replace(/\{next\}/g, '2.0').replace('{version}', '2.0.0')))
+      .toBeInTheDocument()
   })
 
   it('shows the English-notes notice instead of the source line outside English', async () => {

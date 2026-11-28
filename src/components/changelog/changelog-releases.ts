@@ -14,6 +14,7 @@ export interface ChangelogRelease {
   notes: string
   contentLocale: string
   latest: boolean
+  major: boolean
   status: ReleaseStatus
 }
 
@@ -27,6 +28,7 @@ export interface ReleaseLine {
 // Upgrade and compatibility section; the row's status and note say it instead.
 const ACTION_POINTER = /\s*Action may be needed: see Upgrade and compatibility\.?$/
 const REGRESSION_IN = /regression in v?(\d+\.\d+\.\d+)/gi
+const MAJOR = /^\d+\.0\.0$/
 const BLOCK_BREAK = /\n[ \t]*\n/
 
 /**
@@ -80,10 +82,11 @@ export function buildReleaseLines(
 
   const lines: ReleaseLine[] = []
   entries.forEach((entry, index) => {
+    const major = MAJOR.test(entry.version)
     const fix = fixedIn.get(entry.version)
     const status: ReleaseStatus = fix
       ? { kind: 'fixed', version: fix }
-      : UPGRADE_SECTION.test(entry.body)
+      : major || UPGRADE_SECTION.test(entry.body)
         ? { kind: 'before' }
         : { kind: 'none' }
     const { body, ...rest } = entry
@@ -91,6 +94,7 @@ export function buildReleaseLines(
       ...rest,
       ...splitSummary(body),
       latest: index === 0,
+      major,
       status,
     }
     const line = entry.version.split('.').slice(0, 2).join('.')

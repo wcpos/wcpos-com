@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { ArrowDown } from 'lucide-react'
 import type { useTranslations } from 'next-intl'
 import { notesClassName } from '@/components/downloads/release-history'
 import { Alert } from '@/components/ui/alert'
@@ -6,6 +7,7 @@ import { Badge } from '@/components/ui/badge'
 import { Collapsible } from '@/components/ui/collapsible'
 import { Markdown } from '@/components/ui/markdown'
 import { StatusBadge } from '@/components/ui/status-badge'
+import { TextLink } from '@/components/ui/text-link'
 import { cn } from '@/lib/utils'
 import {
   upgradePreview,
@@ -20,6 +22,12 @@ interface Props {
   /** The shared "Latest" badge label. */
   latest: string
 }
+
+// The 2.0 upgrade guide: the page-owned steps and the docs page are written
+// for this line and release only.
+const GUIDE_LINE = '2.0'
+const GUIDE_RELEASE = `${GUIDE_LINE}.0`
+const WHATS_NEW_URL = 'https://docs.wcpos.com/getting-started/whats-new'
 
 const toggleClass =
   'inline-flex justify-start gap-1.5 py-1.5 text-[13px] font-medium text-muted-foreground hover:text-foreground'
@@ -112,19 +120,86 @@ function ReleaseRow({ release, open, t, locale, latest }: Props & { release: Cha
   )
 }
 
-function LineMeta({ line, t }: Pick<Props, 't'> & { line: ReleaseLine }) {
-  const { releases } = line
-  const first = releases.find((release) => release.version === `${line.line}.0`)
+function MajorRelease({ release, t, locale, latest }: Props & { release: ChangelogRelease }) {
   return (
-    first && (
-      <p className="w-full text-sm text-muted-foreground lg:w-auto">
-        {t('lineMeta', { date: first.date, version: releases[0].version })}
-      </p>
-    )
+    <div
+      id={`v${release.version}`}
+      className="scroll-mt-20 border-b py-8 lg:grid lg:grid-cols-[128px_minmax(0,1fr)_176px_120px] lg:gap-x-6 lg:py-9"
+    >
+      <h3 className="flex flex-wrap items-center gap-x-4 gap-y-2 lg:col-span-2">
+        <span className="font-mono text-2xl font-semibold tracking-tight lg:text-[34px] lg:leading-10">
+          {release.version}
+        </span>
+        <Badge variant="muted-tint">{t('majorRelease')}</Badge>
+        {release.latest && <Badge variant="brand-tint">{latest}</Badge>}
+        <span className="text-sm font-normal text-muted-foreground">{release.date}</span>
+      </h3>
+      <div className="mt-2 lg:mt-0 lg:self-center">
+        <Status release={release} t={t} />
+      </div>
+      <div className="mt-4 lg:col-span-3 lg:col-start-2">
+        <p className="max-w-2xl text-lg lg:text-xl lg:leading-[30px]" lang={release.contentLocale}>
+          {release.summary}
+        </p>
+        {release.version === GUIDE_RELEASE && (
+          <Alert tone="caution" title={t('status.before')} className="mt-5 max-w-3xl">
+            <ul className="mt-2 grid list-disc gap-x-7 gap-y-1.5 pl-3.5 sm:grid-cols-2">
+              {(t.raw('upgradeSteps') as string[]).map((step) => (
+                <li key={step}>{step}</li>
+              ))}
+            </ul>
+          </Alert>
+        )}
+        <Collapsible
+          className="mt-4"
+          summaryClassName={toggleClass}
+          summary={<span>{t('releaseNotes')}</span>}
+        >
+          <div className="max-w-3xl pt-3">
+            <Notes release={release} t={t} locale={locale} />
+          </div>
+        </Collapsible>
+      </div>
+    </div>
   )
 }
 
-/** The changelog's releases grouped by line ("2.0", "1.11"): one disclosure row per release. */
+function LineMeta({ line, previous, t }: Pick<Props, 't'> & { line: ReleaseLine; previous?: string }) {
+  const { releases } = line
+  const first = releases.find((release) => release.version === `${line.line}.0`)
+  const meta = 'w-full text-sm text-muted-foreground lg:w-auto'
+  return (
+    <>
+      {first && (
+        <p className={meta}>
+          {t('lineMeta', { date: first.date, version: releases[0].version })}
+          {line.line === GUIDE_LINE && (
+            <>
+              {' '}
+              <TextLink href={WHATS_NEW_URL} arrow>
+                {t('whatsNew', { line: line.line })}
+              </TextLink>
+            </>
+          )}
+        </p>
+      )}
+      {!first && previous === GUIDE_LINE && (
+        <p className={meta}>{t('previousLine', { next: GUIDE_LINE, version: GUIDE_RELEASE })}</p>
+      )}
+      {first?.version === GUIDE_RELEASE && (
+        <p className="mt-1 w-full text-sm lg:w-auto">
+          {t('jump')}{' '}
+          <TextLink href={`#v${GUIDE_RELEASE}`} className="inline-flex items-center gap-1">
+            {t('jumpLink')}
+            <ArrowDown className="size-4" aria-hidden="true" />
+          </TextLink>
+        </p>
+      )}
+    </>
+  )
+}
+
+/** The changelog's releases grouped by line ("2.0", "1.11"): one disclosure row per release, the major release as the line's anchor. */
 export function ReleaseLines({ lines, t, locale, latest }: Props & { lines: ReleaseLine[] }) {
   return lines.map((line, index) => (
     <section key={line.line} className="mt-12 first:mt-0 lg:mt-16">
@@ -142,19 +217,23 @@ export function ReleaseLines({ lines, t, locale, latest }: Props & { lines: Rele
           <h2 className="text-[17px] leading-6 font-semibold tracking-tight lg:text-xl">
             {`WCPOS ${line.line}`}
           </h2>
-          <LineMeta line={line} t={t} />
+          <LineMeta line={line} previous={lines[index - 1]?.line} t={t} />
         </div>
       </div>
-      {line.releases.map((release) => (
-        <ReleaseRow
-          key={release.version}
-          release={release}
-          open={release.latest}
-          t={t}
-          locale={locale}
-          latest={latest}
-        />
-      ))}
+      {line.releases.map((release) =>
+        release.major ? (
+          <MajorRelease key={release.version} release={release} t={t} locale={locale} latest={latest} />
+        ) : (
+          <ReleaseRow
+            key={release.version}
+            release={release}
+            open={release.latest}
+            t={t}
+            locale={locale}
+            latest={latest}
+          />
+        ),
+      )}
     </section>
   ))
 }

@@ -72,10 +72,12 @@ describe('buildReleaseLines', () => {
     )
     expect(statuses).toEqual({
       '2.0.1': { kind: 'before' },
-      '2.0.0': { kind: 'none' },
+      '2.0.0': { kind: 'before' },
       '1.11.9': { kind: 'none' },
       '1.11.8': { kind: 'fixed', version: '1.11.9' },
       '1.11.7': { kind: 'none' },
     })
+    expect(lines[0].releases[1].major).toBe(true)
+    expect(lines[0].releases[0].major).toBe(false)
   })
 })

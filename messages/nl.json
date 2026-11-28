@@ -412,6 +412,11 @@
       "description": "Wat er in elke versie van de WCPOS-plugin is veranderd, en of je iets moet doen voordat je bijwerkt.",
       "notesSource": "De tien nieuwste versies, met hun opmerkingen van GitHub.",
       "lineMeta": "Eerst uitgebracht op {date}. Nieuwste: {version}.",
+      "whatsNew": "Nieuw in {line}",
+      "previousLine": "De versie vóór {next}. Overstappen op {next}? Lees eerst de stappen bij {version}.",
+      "jump": "Kom je van 1.11? Synchroniseer eerst elke kassa.",
+      "jumpLink": "Upgradestappen",
+      "majorRelease": "Hoofdversie",
       "status": {
         "before": "Vóór het bijwerken",
         "fixedIn": "Opgelost in {version}",
@@ -419,6 +424,12 @@
       },
       "noteBefore": "<b>Vóór het bijwerken:</b> lees hieronder „Upgrade and compatibility”.",
       "noteFixed": "<b>Opgelost in {version}:</b> deze versie heeft een probleem dat {version} oplost. Werk bij naar {version} of nieuwer.",
+      "upgradeSteps": [
+        "Synchroniseer elke kassa voor de upgrade: 2.0 begint met een nieuwe lokale database en neemt niet-verzonden 1.11-verkopen niet over.",
+        "De plugin en elke app moeten op 2.0 staan. Web en desktop zijn dat al. De iOS- en Android-apps voor 2.0 zijn nog niet uit: draait een kassa in een telefoon- of tablet-app, blijf dan op 1.11 tot ze uitkomen.",
+        "WCPOS 2.0 vereist WooCommerce 9.0 of nieuwer.",
+        "Werk bij als je tijd hebt om de nieuwe interface te leren, niet tijdens een drukke dienst."
+      ],
       "releaseNotes": "Release-opmerkingen",
       "showMore": "{n, plural, one {De laatste opmerking tonen} other {De overige # opmerkingen tonen}}",
       "showFewer": "Minder opmerkingen tonen",

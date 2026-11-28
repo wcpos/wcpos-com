@@ -412,6 +412,11 @@
       "description": "O que mudou em cada versão do plugin WCPOS e se precisa de fazer alguma coisa antes de atualizar.",
       "notesSource": "As dez versões mais recentes, com as notas do GitHub.",
       "lineMeta": "Lançada pela primeira vez a {date}. Mais recente: {version}.",
+      "whatsNew": "Novidades da {line}",
+      "previousLine": "A versão anterior à {next}. Vai passar para a {next}? Leia primeiro os passos da {version}.",
+      "jump": "Vem da 1.11? Sincronize primeiro cada caixa.",
+      "jumpLink": "Passos de atualização",
+      "majorRelease": "Versão principal",
       "status": {
         "before": "Antes de atualizar",
         "fixedIn": "Corrigido na {version}",
@@ -419,6 +424,12 @@
       },
       "noteBefore": "<b>Antes de atualizar:</b> leia «Upgrade and compatibility» abaixo.",
       "noteFixed": "<b>Corrigido na {version}:</b> esta versão tem um problema que a {version} corrige. Atualize para a {version} ou posterior.",
+      "upgradeSteps": [
+        "Sincronize cada caixa antes de atualizar: a 2.0 começa com uma nova base de dados local e não transfere as vendas 1.11 por enviar.",
+        "O plugin e todas as aplicações têm de estar na 2.0. A web e o computador já estão. As aplicações iOS e Android 2.0 ainda não saíram: se uma caixa funciona numa aplicação de telemóvel ou tablet, fique na 1.11 até saírem.",
+        "O WCPOS 2.0 precisa do WooCommerce 9.0 ou posterior.",
+        "Atualize quando tiver tempo para aprender a nova interface, não durante um turno movimentado."
+      ],
       "releaseNotes": "Notas de lançamento",
       "showMore": "{n, plural, one {Mostrar a nota restante} other {Mostrar as # notas restantes}}",
       "showFewer": "Mostrar menos notas",
