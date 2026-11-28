@@ -1748,11 +1748,11 @@
   },
   "extensions": {
     "metadata": {
-      "title": "WooCommerce POS: Erweiterungen & Zahlungsterminals",
+      "title": "Kassensystem für WooCommerce: Erweiterungen & Zahlungsterminals",
       "description": "WooCommerce-Kassensystem-Erweiterungen: Zahlungsterminals mit WCPOS Pro (Stripe, Square, SumUp, PayPal, Mollie, Windcave und mehr), plus WPML, Polylang, ATUM."
     },
     "hero": {
-      "title": "Erweiterungen für WooCommerce POS",
+      "title": "Erweiterungen für WCPOS",
       "subtitle": "Erweitere WCPOS um Kartenterminals, Zahlungsgateways, Integrationen für Lagerbestand und Gutscheine sowie mehrsprachige Kataloge. Jede Erweiterung verlinkt auf ihre Dokumentation."
     },
     "proNote": "Mit Pro markierte Erweiterungen benötigen <link>WCPOS Pro</link>.",
@@ -1868,11 +1868,11 @@
   "support": {
     "meta": {
       "title": "Hilfe & Support – Kassensystem für WooCommerce",
-      "description": "WooCommerce POS-Hilfe: Frag zu WCPOS-Einrichtung, Lizenzen, Scannern, Druckern oder Synchronisierung und erhalte sofort Antwort aus der Doku oder auf Discord."
+      "description": "WCPOS-Hilfe für WooCommerce: Frag zu Einrichtung, Lizenzen, Scannern, Druckern oder Synchronisierung und erhalte sofort Antwort aus der Doku oder auf Discord."
     },
     "chat": {
       "hero": {
-        "title": "Hilfe und Support für WooCommerce\u00a0POS",
+        "title": "WCPOS für WooCommerce: Hilfe und Support",
         "subtitle": "Frage alles über WCPOS — Einrichtung, Lizenzierung, Hardware, Synchronisierung, Drucken. Du erhältst sofort eine Antwort aus unserer Dokumentation."
       },
       "examples": {
@@ -1940,7 +1940,7 @@
     },
     "hub": {
       "metadata": {
-        "title": "WooCommerce-POS vergleichen: Square, FooSales & mehr",
+        "title": "WooCommerce-Kassen im Vergleich: Square, FooSales",
         "description": "Vergleiche WCPOS mit Square, FooSales, Oliver POS, dem offiziellen POS von WooCommerce: Offline-Unterstützung und wann welches System die richtige Wahl ist."
       },
       "hero": {
@@ -2088,7 +2088,7 @@
         },
         "longevity": {
           "title": "Langlebigkeit",
-          "body": "WCPOS ist Open Source mit einer Lifetime-Lizenz-Option: Verschwände das Unternehmen morgen, liefe Ihre Kasse weiter, und der Code ließe sich forken. Machte Oliver dicht, stünde die Kasse still. Das ist in dieser Kategorie keine bloße Hypothese — Olivers eigenes Plugin blieb rund ein Jahr ohne Updates, bevor die Entwicklung 2026 wieder aufgenommen wurde, und andere WooCommerce-POS-Produkte wurden komplett eingestellt."
+          "body": "WCPOS ist Open Source: Verschwände das Unternehmen morgen, liefe Ihre Kasse weiter, und der Code ließe sich forken. Machte Oliver dicht, stünde die Kasse still. Das ist in dieser Kategorie keine bloße Hypothese — Olivers eigenes Plugin blieb rund ein Jahr ohne Updates, bevor die Entwicklung 2026 wieder aufgenommen wurde, und andere Kassensysteme für WooCommerce wurden komplett eingestellt."
         }
       },
       "freeTier": {
@@ -2234,9 +2234,9 @@
       },
       "glance": {
         "title": "Auf einen Blick",
-        "caption": "Fakten zum WooCommerce POS am 2026-10-06 auf woocommerce.com überprüft; WCPOS-Fakten von wcpos.com/pro.",
+        "caption": "Fakten zum offiziellen POS von WooCommerce am 2026-10-06 auf woocommerce.com überprüft; WCPOS-Fakten von wcpos.com/pro.",
         "colWcpos": "WCPOS",
-        "colWoocommerce": "WooCommerce POS (offiziell)",
+        "colWoocommerce": "Offizielles POS von WooCommerce",
         "rows": {
           "where": {
             "label": "Wo es läuft",

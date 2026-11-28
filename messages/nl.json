@@ -79,7 +79,7 @@
       "title": "Klaar om in de winkel te verkopen met WooCommerce?",
       "subtitle": "De demo opent in je browser, zonder iets te installeren. De plugin is gratis.",
       "liveDemo": "Live demo proberen",
-      "compare": "Vergelijk WooCommerce POS-systemen",
+      "compare": "Vergelijk kassasystemen voor WooCommerce",
       "download": "Gratis downloaden"
     },
     "trust": {
@@ -1748,11 +1748,11 @@
   },
   "extensions": {
     "metadata": {
-      "title": "WooCommerce POS: extensies & betaalterminals",
+      "title": "Kassasysteem voor WooCommerce: extensies & betaalterminals",
       "description": "WooCommerce-kassasysteem-extensies: betaalterminals met WCPOS Pro van Stripe, Square, SumUp, PayPal, Mollie, Windcave en meer, plus WPML, Polylang en ATUM."
     },
     "hero": {
-      "title": "Extensies voor WooCommerce POS",
+      "title": "Extensies voor WCPOS",
       "subtitle": "Voeg kaartterminals, betaalgateways, integraties voor voorraad en kortingsbonnen en meertalige catalogi toe aan WCPOS. Elke extensie linkt naar de documentatie."
     },
     "proNote": "Extensies met het label Pro vereisen <link>WCPOS Pro</link>.",
@@ -1868,11 +1868,11 @@
   "support": {
     "meta": {
       "title": "Hulp & ondersteuning – Kassasysteem voor WooCommerce",
-      "description": "Hulp bij WooCommerce POS: vraag over WCPOS-installatie, licenties, scanners, printers of synchronisatie en krijg direct antwoord uit onze docs, of op Discord."
+      "description": "Hulp bij WCPOS voor WooCommerce: vraag over installatie, licenties, scanners, printers of synchronisatie en krijg direct antwoord uit onze docs, of op Discord."
     },
     "chat": {
       "hero": {
-        "title": "Hulp en ondersteuning voor WooCommerce\u00a0POS",
+        "title": "WCPOS voor WooCommerce: hulp en ondersteuning",
         "subtitle": "Vraag alles over WCPOS — installatie, licenties, hardware, synchronisatie, afdrukken. Je krijgt direct een antwoord op basis van onze documentatie."
       },
       "examples": {
@@ -1940,12 +1940,12 @@
     },
     "hub": {
       "metadata": {
-        "title": "Vergelijk WooCommerce POS: Square, FooSales en meer",
+        "title": "Vergelijk kassa's voor WooCommerce: Square, FooSales",
         "description": "Vergelijk WCPOS met Square, FooSales, Oliver POS, de officiële POS van WooCommerce: prijzen, offline ondersteuning en wanneer je welk systeem kiest."
       },
       "hero": {
-        "title": "Vergelijk WooCommerce POS-systemen",
-        "subtitle": "Onderbouwde, gedateerde vergelijkingen met Square, FooSales, Oliver POS en andere WooCommerce POS-systemen, geschreven door de maker van WCPOS."
+        "title": "Vergelijk kassasystemen voor WooCommerce",
+        "subtitle": "Onderbouwde, gedateerde vergelijkingen met Square, FooSales, Oliver POS en andere kassasystemen voor WooCommerce, geschreven door de maker van WCPOS."
       },
       "method": {
         "title": "Hoe deze vergelijkingen werken",
@@ -1990,7 +1990,7 @@
     },
     "oliver": {
       "metadata": {
-        "title": "WCPOS vs Oliver POS: WooCommerce POS vergeleken (2026)",
+        "title": "WCPOS vs Oliver POS: WooCommerce-kassa's vergeleken (2026)",
         "description": "Wanneer Oliver POS de betere keuze is en wanneer WCPOS: limieten van gratis abonnementen, prijzen en offline gebruik. Vergeleken door de maker van WCPOS."
       },
       "hero": {
@@ -2088,7 +2088,7 @@
         },
         "longevity": {
           "title": "Levensduur",
-          "body": "WCPOS is open source met een optie voor een levenslange licentie: als het bedrijf morgen zou verdwijnen, blijft je POS gewoon werken en kan de code geforkt worden. Als Oliver stopt, stopt de kassa. Dat is in deze categorie geen hypothetisch scenario — de eigen plugin van Oliver bleef ongeveer een jaar zonder updates voordat de ontwikkeling in 2026 werd hervat, en andere WooCommerce POS-producten zijn definitief uit de handel genomen."
+          "body": "WCPOS is open source: als het bedrijf morgen zou verdwijnen, blijft je POS gewoon werken en kan de code geforkt worden. Als Oliver stopt, stopt de kassa. Dat is in deze categorie geen hypothetisch scenario — de eigen plugin van Oliver bleef ongeveer een jaar zonder updates voordat de ontwikkeling in 2026 werd hervat, en andere kassasystemen voor WooCommerce zijn definitief uit de handel genomen."
         }
       },
       "freeTier": {
@@ -2234,9 +2234,9 @@
       },
       "glance": {
         "title": "In één oogopslag",
-        "caption": "Feiten over de WooCommerce POS geverifieerd op 2026-10-06 op woocommerce.com; WCPOS-feiten van wcpos.com/pro.",
+        "caption": "Feiten over de officiële POS van WooCommerce geverifieerd op 2026-10-06 op woocommerce.com; WCPOS-feiten van wcpos.com/pro.",
         "colWcpos": "WCPOS",
-        "colWoocommerce": "WooCommerce POS (officieel)",
+        "colWoocommerce": "Officiële POS van WooCommerce",
         "rows": {
           "where": {
             "label": "Waar het werkt",
@@ -2544,7 +2544,7 @@
     },
     "jovvie": {
       "metadata": {
-        "title": "WCPOS vs Jovvie: WooCommerce POS vergeleken (2026)",
+        "title": "WCPOS vs Jovvie: WooCommerce-kassa's vergeleken (2026)",
         "description": "Wanneer Jovvie de betere keuze is en wanneer WCPOS: prijzen, kosten per transactie, apps en kaartbetalingen. Vergeleken door de maker van WCPOS."
       },
       "hero": {
@@ -2657,7 +2657,7 @@
     },
     "vitepos": {
       "metadata": {
-        "title": "WCPOS vs Vitepos: WooCommerce POS vergeleken (2026)",
+        "title": "WCPOS vs Vitepos: WooCommerce-kassa's vergeleken (2026)",
         "description": "Wanneer Vitepos de betere keuze is en wanneer WCPOS: prijzen, offline bestellingen, restaurantmodi, apps en betaalterminals. Vergeleken door de maker van WCPOS."
       },
       "hero": {
@@ -2944,7 +2944,7 @@
     },
     "foosales": {
       "metadata": {
-        "title": "WCPOS vs FooSales: WooCommerce POS vergeleken (2026)",
+        "title": "WCPOS vs FooSales: WooCommerce-kassa's vergeleken (2026)",
         "description": "Wanneer FooSales de betere keuze is en wanneer WCPOS: prijzen, apps en wat er gebeurt als je stopt met betalen. Vergeleken door de maker van WCPOS."
       },
       "hero": {

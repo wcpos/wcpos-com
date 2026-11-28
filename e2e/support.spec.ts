@@ -20,7 +20,7 @@ test('support page answers a question and shows Discord', async ({ page }) => {
   })
 
   await page.goto('/en/support')
-  await expect(page.getByRole('heading', { level: 1, name: /woocommerce pos help & support/i })).toBeVisible()
+  await expect(page.getByRole('heading', { level: 1, name: /wcpos for woocommerce: help & support/i })).toBeVisible()
 
   await page.getByRole('textbox').pressSequentially('How do I print receipts?')
   await page.getByRole('button', { name: /^ask$/i }).click()

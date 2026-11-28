@@ -30,7 +30,7 @@ const cards = [
   },
   {
     slug: 'compare',
-    title: 'Compare WooCommerce POS systems',
+    title: 'Compare WooCommerce point of sale systems',
     line: 'Honest, sourced comparisons: architecture, pricing and offline support.',
   },
   {

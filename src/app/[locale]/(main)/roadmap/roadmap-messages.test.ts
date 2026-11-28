@@ -16,7 +16,7 @@ type Messages = typeof en
 // same head term as that locale's changelog title. The layout appends
 // " | WCPOS" to meta.title, hence the shorter title limits.
 const LOCALES = [
-  { locale: 'en', messages: en, head: 'WooCommerce POS', old: 'Roadmap', title: 52, description: 155 },
+  { locale: 'en', messages: en, head: 'Point of Sale for WooCommerce', pageHead: 'WCPOS', old: 'Roadmap', title: 52, description: 155 },
   { locale: 'de', messages: de, head: 'WooCommerce-Kassensystem', old: 'Produktplanung', title: 52, description: 160 },
   { locale: 'nl', messages: nl, head: 'Kassasysteem voor WooCommerce', old: 'Routekaart', title: 52, description: 160 },
   { locale: 'fr', messages: fr, head: 'Point de vente WooCommerce', old: 'Feuille de route', title: 52, description: 160 },
@@ -30,6 +30,7 @@ const LOCALES = [
   locale: string
   messages: Messages
   head: string
+  pageHead?: string
   old: string
   title: number
   description: number
@@ -38,18 +39,19 @@ const LOCALES = [
 const length = (value: string) => [...value].length
 
 describe('roadmap messages', () => {
-  it('en title and H1 name WooCommerce POS', () => {
-    expect(en.roadmap.meta.title).toBe("WooCommerce POS Roadmap: What's Next")
-    expect(en.roadmap.page.title).toBe('WooCommerce POS Roadmap')
+  // The product is WCPOS; "WooCommerce POS" is never its name.
+  it('en title describes the product and the H1 names WCPOS', () => {
+    expect(en.roadmap.meta.title).toBe("Point of Sale for WooCommerce Roadmap: What's Next")
+    expect(en.roadmap.page.title).toBe('WCPOS Roadmap')
   })
 
-  describe.each(LOCALES)('$locale', ({ messages, head, old, title, description }) => {
+  describe.each(LOCALES)('$locale', ({ messages, head, pageHead, old, title, description }) => {
     const { meta, page } = messages.roadmap
 
     it('title and H1 contain the head term', () => {
       // Mid-sentence H1s lower-case the head term (nl "het kassasysteem voor WooCommerce").
       expect(meta.title.toLowerCase()).toContain(head.toLowerCase())
-      expect(page.title.toLowerCase()).toContain(head.toLowerCase())
+      expect(page.title.toLowerCase()).toContain((pageHead ?? head).toLowerCase())
     })
 
     it('title and description fit the search result limits', () => {

@@ -56,7 +56,7 @@
     "title": "WCPOS",
     "subtitle": "A fast point of sale for WooCommerce",
     "meta": {
-      "description": "Free, open-source WooCommerce POS for your tablet, phone or computer. Cash sales work offline; split payments and register open/close are free in 2.0."
+      "description": "Free, open-source WooCommerce point of sale for tablet, phone or computer. Cash sales work offline; split payments and register open/close are free in 2.0."
     },
     "problem": {
       "title": "Running a WooCommerce store and a physical shop shouldn't mean double the work",
@@ -79,7 +79,7 @@
       "title": "Ready to sell in-store with WooCommerce?",
       "subtitle": "The demo opens in your browser with nothing to install. The plugin is free.",
       "liveDemo": "Try Live Demo",
-      "compare": "Compare WooCommerce POS systems",
+      "compare": "Compare WooCommerce point of sale systems",
       "download": "Download Free"
     },
     "trust": {
@@ -367,12 +367,12 @@
   },
   "roadmap": {
     "meta": {
-      "title": "WooCommerce POS Roadmap: What's Next",
+      "title": "Point of Sale for WooCommerce Roadmap: What's Next",
       "description": "What's coming next for WCPOS, the free point of sale plugin for WooCommerce: work in progress and planned, straight from GitHub."
     },
     "page": {
       "eyebrow": "Now, next, shipped",
-      "title": "WooCommerce POS Roadmap",
+      "title": "WCPOS Roadmap",
       "description": "What we are building now, what is planned next and what shipped last. The list comes straight from our GitHub, so it changes as the work does.",
       "changelogLink": "See released versions in the changelog"
     },
@@ -404,17 +404,17 @@
   },
   "changelog": {
     "meta": {
-      "title": "WooCommerce POS Changelog & Release Notes",
+      "title": "Changelog & Release Notes: Point of Sale for WooCommerce",
       "description": "Release notes for the latest published versions of WCPOS, the free point of sale plugin for WooCommerce, straight from GitHub."
     },
     "page": {
-      "title": "WooCommerce POS Changelog",
-      "description": "The latest published releases of WCPOS, the free WooCommerce POS plugin, with their release notes from GitHub."
+      "title": "WCPOS Changelog",
+      "description": "The latest published releases of WCPOS, the free point of sale plugin for WooCommerce, with their release notes from GitHub."
     }
   },
   "pro": {
     "metadata": {
-      "title": "Pro Features & Pricing for WooCommerce POS",
+      "title": "Pro Features & Pricing: WooCommerce Point of Sale",
       "description": "WCPOS Pro for WooCommerce: more registers and multiple stores, terminal payments, stock and price editing, order and customer management, and full reports."
     },
     "hero": {
@@ -1593,7 +1593,7 @@
   },
   "downloads": {
     "meta": {
-      "title": "Download WooCommerce POS: Mac, Windows, Linux & Web",
+      "title": "Download WooCommerce Point of Sale for Mac & Windows",
       "description": "Download WCPOS: the free WordPress plugin, the web app, and desktop apps for Mac, Windows and Linux. iOS and Android apps are in beta. Plus release notes."
     },
     "platforms": {
@@ -1642,7 +1642,7 @@
     },
     "hero": {
       "eyebrow": "Downloads",
-      "title": "Download WooCommerce POS",
+      "title": "Download WCPOS for WooCommerce",
       "tagline": "Install the free plugin, then open the register in a browser or an app.",
       "platformChooserLabel": "Choose your platform",
       "versionMeta": "Version {version} · {platform}",
@@ -1748,11 +1748,11 @@
   },
   "extensions": {
     "metadata": {
-      "title": "WooCommerce POS Extensions & Card Terminals",
-      "description": "WooCommerce POS extensions: card terminals with WCPOS Pro, from Stripe, Square, SumUp, PayPal, Mollie, Windcave and more, plus WPML, Polylang and ATUM."
+      "title": "Point of Sale Extensions & Card Terminals for WooCommerce",
+      "description": "WCPOS extensions: card terminals with WCPOS Pro, from Stripe, Square, SumUp, PayPal, Mollie, Windcave and more, plus WPML, Polylang and ATUM."
     },
     "hero": {
-      "title": "Extensions for WooCommerce POS",
+      "title": "Extensions for WCPOS",
       "subtitle": "Add card terminals, payment gateways, stock and coupon integrations, and multilingual catalogs to WCPOS. Each one links to its documentation."
     },
     "proNote": "Extensions marked Pro need <link>WCPOS Pro</link>.",
@@ -1769,7 +1769,7 @@
   },
   "about": {
     "meta": {
-      "title": "About Us: An Independent WooCommerce POS Since 2014",
+      "title": "About Us: An Independent WooCommerce Point of Sale Since 2014",
       "description": "The story behind WCPOS — an independent point of sale built by a former shopkeeper and funded by shopkeepers, not investors."
     },
     "hero": {
@@ -1867,12 +1867,12 @@
   },
   "support": {
     "meta": {
-      "title": "WooCommerce POS Help & Support",
-      "description": "WooCommerce POS help: ask about WCPOS setup, licensing, scanners, printers or syncing and get an instant answer from our docs, or ask on Discord."
+      "title": "Point of Sale for WooCommerce: Help & Support",
+      "description": "WCPOS help for WooCommerce stores: ask about setup, licensing, scanners, printers or syncing and get an instant answer from our docs, or ask on Discord."
     },
     "chat": {
       "hero": {
-        "title": "WooCommerce\u00a0POS help & support",
+        "title": "WCPOS for WooCommerce: help & support",
         "subtitle": "Ask anything about WCPOS — setup, licensing, hardware, syncing, printing. You'll get an instant answer drawn from our docs."
       },
       "examples": {
@@ -1940,12 +1940,12 @@
     },
     "hub": {
       "metadata": {
-        "title": "Compare WooCommerce POS: Square, FooSales & More",
+        "title": "WooCommerce Point of Sale Compared: Square, FooSales",
         "description": "Compare WCPOS with Square, FooSales, Oliver POS, WooCommerce’s official POS and more: pricing, free-tier limits, offline use and when to choose each."
       },
       "hero": {
-        "title": "Compare WooCommerce POS systems",
-        "subtitle": "Sourced, dated comparisons with Square, FooSales, Oliver POS and other WooCommerce POS options, written by the maker of WCPOS."
+        "title": "Compare WooCommerce point of sale systems",
+        "subtitle": "Sourced, dated comparisons with Square, FooSales, Oliver POS and other point of sale options for WooCommerce, written by the maker of WCPOS."
       },
       "method": {
         "title": "How these comparisons work",
@@ -1990,7 +1990,7 @@
     },
     "oliver": {
       "metadata": {
-        "title": "WCPOS vs Oliver POS: WooCommerce POS Compared (2026)",
+        "title": "WCPOS vs Oliver POS: WooCommerce Point of Sale (2026)",
         "description": "When Oliver POS is the better choice, and when WCPOS is: free-tier limits, pricing, terminals and offline use. Compared by the maker of WCPOS."
       },
       "hero": {
@@ -2088,7 +2088,7 @@
         },
         "longevity": {
           "title": "Longevity",
-          "body": "WCPOS is open source with a lifetime-license option: if the company disappeared tomorrow, your POS keeps working and the code is forkable. If Oliver shut down, the register stops. This is not hypothetical in this category — Oliver's own plugin went roughly a year without updates before development resumed in 2026, and other WooCommerce POS products have been retired outright."
+          "body": "WCPOS is open source: if the company disappeared tomorrow, your POS keeps working and the code is forkable. If Oliver shut down, the register stops. This is not hypothetical in this category — Oliver's own plugin went roughly a year without updates before development resumed in 2026, and other WooCommerce point of sale products have been retired outright."
         }
       },
       "freeTier": {
@@ -2234,9 +2234,9 @@
       },
       "glance": {
         "title": "At a glance",
-        "caption": "WooCommerce POS facts verified 2026-10-06 on woocommerce.com; WCPOS facts from wcpos.com/pro.",
+        "caption": "Facts about WooCommerce's official POS verified 2026-10-06 on woocommerce.com; WCPOS facts from wcpos.com/pro.",
         "colWcpos": "WCPOS",
-        "colWoocommerce": "WooCommerce POS (official)",
+        "colWoocommerce": "WooCommerce's official POS",
         "rows": {
           "where": {
             "label": "Where it runs",
@@ -2544,7 +2544,7 @@
     },
     "jovvie": {
       "metadata": {
-        "title": "WCPOS vs Jovvie: WooCommerce POS Compared (2026)",
+        "title": "WCPOS vs Jovvie: WooCommerce Point of Sale Compared (2026)",
         "description": "When Jovvie is the better choice, and when WCPOS is: pricing, per-transaction fees, apps and card payments. Compared by the maker of WCPOS."
       },
       "hero": {
@@ -2657,7 +2657,7 @@
     },
     "vitepos": {
       "metadata": {
-        "title": "WCPOS vs Vitepos: WooCommerce POS Compared (2026)",
+        "title": "WCPOS vs Vitepos: WooCommerce Point of Sale Compared (2026)",
         "description": "When Vitepos is the better choice, and when WCPOS is: pricing, offline orders, restaurant modes, apps and card terminals. Compared by the maker of WCPOS."
       },
       "hero": {
@@ -2944,7 +2944,7 @@
     },
     "foosales": {
       "metadata": {
-        "title": "WCPOS vs FooSales: WooCommerce POS Compared (2026)",
+        "title": "WCPOS vs FooSales: WooCommerce Point of Sale Compared (2026)",
         "description": "When FooSales is the better choice, and when WCPOS is: pricing, what happens if you stop paying, offline orders and apps. Compared by the maker of WCPOS."
       },
       "hero": {

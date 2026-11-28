@@ -72,7 +72,7 @@ describe('ChangelogPage', () => {
     )
 
     expect(getReleases).toHaveBeenCalledWith('woocommerce-pos')
-    expect(screen.getByRole('heading', { level: 1, name: 'WooCommerce POS Changelog' }))
+    expect(screen.getByRole('heading', { level: 1, name: 'WCPOS Changelog' }))
       .toBeInTheDocument()
     expect(screen.getByText(enMessages.changelog.page.description))
       .toBeInTheDocument()
@@ -133,7 +133,7 @@ describe('ChangelogPage', () => {
       await ChangelogPage({ params: Promise.resolve({ locale: 'en' }) }),
     )
 
-    expect(screen.getByRole('heading', { level: 1, name: 'WooCommerce POS Changelog' }))
+    expect(screen.getByRole('heading', { level: 1, name: 'WCPOS Changelog' }))
       .toBeInTheDocument()
     expect(container.querySelectorAll('summary')).toHaveLength(0)
   })
@@ -151,7 +151,7 @@ describe('ChangelogPage', () => {
       params: Promise.resolve({ locale: 'en' }),
     })
 
-    expect(metadata.title).toBe('WooCommerce POS Changelog & Release Notes')
+    expect(metadata.title).toBe('Changelog & Release Notes: Point of Sale for WooCommerce')
     expect(metadata.description).toBe(
       'Release notes for the latest published versions of WCPOS, the free point of sale plugin for WooCommerce, straight from GitHub.',
     )

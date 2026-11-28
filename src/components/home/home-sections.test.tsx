@@ -316,7 +316,7 @@ describe('CtaSection', () => {
       screen.getByRole('link', { name: 'Download Free' })
     ).toHaveAttribute('href', '/downloads')
     expect(
-      screen.getByRole('link', { name: 'Compare WooCommerce POS systems' })
+      screen.getByRole('link', { name: 'Compare WooCommerce point of sale systems' })
     ).toHaveAttribute('href', '/compare')
   })
 

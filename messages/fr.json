@@ -1593,7 +1593,7 @@
   },
   "downloads": {
     "meta": {
-      "title": "Télécharger WooCommerce POS – Mac, Windows et Web",
+      "title": "Télécharger la caisse WooCommerce – Mac et Windows",
       "description": "Téléchargez WCPOS : le plugin WordPress gratuit, l’app web et les apps de bureau pour Mac, Windows et Linux. Les apps iOS et Android sont en bêta."
     },
     "platforms": {
@@ -1748,11 +1748,11 @@
   },
   "extensions": {
     "metadata": {
-      "title": "WooCommerce POS : extensions et terminaux de paiement",
+      "title": "Point de vente WooCommerce : extensions et terminaux de paiement",
       "description": "Extensions de point de vente WooCommerce : terminaux de paiement avec WCPOS Pro (Stripe, Square, SumUp, PayPal, Mollie, Windcave, etc.), WPML, Polylang et ATUM."
     },
     "hero": {
-      "title": "Extensions pour WooCommerce POS",
+      "title": "Extensions pour WCPOS",
       "subtitle": "Ajoutez à WCPOS des terminaux de carte, des passerelles de paiement, des intégrations de stock et de codes promo, et des catalogues multilingues. Chaque extension renvoie à sa documentation."
     },
     "proNote": "Les extensions marquées Pro nécessitent <link>WCPOS Pro</link>.",
@@ -1868,11 +1868,11 @@
   "support": {
     "meta": {
       "title": "Aide et assistance – Point de vente pour WooCommerce",
-      "description": "Aide WooCommerce POS : configuration de WCPOS, licences, scanners, imprimantes ou synchro. Réponse immédiate de nos docs, ou posez la question sur Discord."
+      "description": "Aide WCPOS pour WooCommerce : configuration, licences, scanners, imprimantes ou synchro. Réponse immédiate de nos docs, ou posez la question sur Discord."
     },
     "chat": {
       "hero": {
-        "title": "Aide et assistance pour WooCommerce\u00a0POS",
+        "title": "WCPOS pour WooCommerce : aide et assistance",
         "subtitle": "Posez n’importe quelle question sur WCPOS — configuration, licences, matériel, synchronisation, impression. Vous recevrez une réponse instantanée issue de notre documentation."
       },
       "examples": {
@@ -2088,7 +2088,7 @@
         },
         "longevity": {
           "title": "Pérennité",
-          "body": "WCPOS est open source avec une option de licence à vie : si l'entreprise disparaissait demain, votre caisse continuerait de fonctionner et le code pourrait être forké. Si Oliver fermait, la caisse s'arrête. Ce n'est pas une hypothèse d'école dans cette catégorie — le plugin d'Oliver lui-même est resté environ un an sans mise à jour avant que le développement ne reprenne en 2026, et d'autres POS WooCommerce ont été purement et simplement retirés."
+          "body": "WCPOS est open source : si l'entreprise disparaissait demain, votre caisse continuerait de fonctionner et le code pourrait être forké. Si Oliver fermait, la caisse s'arrête. Ce n'est pas une hypothèse d'école dans cette catégorie — le plugin d'Oliver lui-même est resté environ un an sans mise à jour avant que le développement ne reprenne en 2026, et d'autres points de vente pour WooCommerce ont été purement et simplement retirés."
         }
       },
       "freeTier": {

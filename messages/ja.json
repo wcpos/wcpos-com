@@ -1769,7 +1769,7 @@
   },
   "about": {
     "meta": {
-      "title": "概要：2014年から開発の独立系WooCommerce POS",
+      "title": "概要：2014年から開発の独立系WooCommerce用POS",
       "description": "WCPOSの背景 — 元店主が作り、投資家ではなく店主たちによって支えられている独立系POSの物語。"
     },
     "hero": {
@@ -1868,11 +1868,11 @@
   "support": {
     "meta": {
       "title": "ヘルプとサポート – WooCommerce用POS",
-      "description": "WooCommerce POSのヘルプ：WCPOSの設定、ライセンス、スキャナー、プリンター、同期について質問すると、ドキュメントから即座に回答が得られます。Discordでも質問できます。"
+      "description": "WooCommerce向けWCPOSのヘルプ：設定、ライセンス、スキャナー、プリンター、同期について質問すると、ドキュメントから即座に回答が得られます。Discordでも質問できます。"
     },
     "chat": {
       "hero": {
-        "title": "WooCommerce\u00a0POSのヘルプとサポート",
+        "title": "WooCommerce向けWCPOS：ヘルプとサポート",
         "subtitle": "WCPOSについて何でも質問してください — セットアップ、ライセンス、ハードウェア、同期、印刷など。ドキュメントに基づいた回答をすぐに表示します。"
       },
       "examples": {
@@ -2088,7 +2088,7 @@
         },
         "longevity": {
           "title": "長期的な存続性",
-          "body": "WCPOSはオープンソースで、ライフタイムライセンスも選べます。仮に会社が明日消えても、POSは動き続け、コードはフォーク可能です。Oliverがサービスを終了すれば、レジは止まります。この分野では机上の空論ではありません。Oliver自身のプラグインは、2026年に開発が再開されるまで約1年間更新が止まっていましたし、他のWooCommerce向けPOS製品には完全に廃止されたものもあります。"
+          "body": "WCPOSはオープンソースです。仮に会社が明日消えても、POSは動き続け、コードはフォーク可能です。Oliverがサービスを終了すれば、レジは止まります。この分野では机上の空論ではありません。Oliver自身のプラグインは、2026年に開発が再開されるまで約1年間更新が止まっていましたし、他のWooCommerce向けPOS製品には完全に廃止されたものもあります。"
         }
       },
       "freeTier": {
@@ -2234,9 +2234,9 @@
       },
       "glance": {
         "title": "ひと目でわかる比較",
-        "caption": "WooCommerce POSの情報は2026-10-06にwoocommerce.comで確認済みです。WCPOSの情報はwcpos.com/proに基づきます。",
+        "caption": "WooCommerce公式POSの情報は2026-10-06にwoocommerce.comで確認済みです。WCPOSの情報はwcpos.com/proに基づきます。",
         "colWcpos": "WCPOS",
-        "colWoocommerce": "WooCommerce POS（公式）",
+        "colWoocommerce": "WooCommerce公式POS",
         "rows": {
           "where": {
             "label": "動作環境",

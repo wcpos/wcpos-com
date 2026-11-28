@@ -21,7 +21,7 @@ vi.mock('next-intl/server', () => ({
       'metadata.description': 'Translated Pro metadata description',
       'hero.title': 'Translated WCPOS Pro hero',
       'hero.subtitle': 'Translated Pro hero subtitle',
-      'hub.hero.title': 'Compare WooCommerce POS systems',
+      'hub.hero.title': 'Compare WooCommerce point of sale systems',
       'schema.name': 'Translated WCPOS Pro schema name',
       'schema.description': 'Translated Pro schema description',
       'features.title': 'Pro features',
@@ -179,7 +179,7 @@ describe('ProPage', () => {
     render(await ProPage({ params: Promise.resolve({ locale: 'en' }) }))
 
     expect(
-      screen.getByRole('link', { name: 'Compare WooCommerce POS systems' })
+      screen.getByRole('link', { name: 'Compare WooCommerce point of sale systems' })
     ).toHaveAttribute('href', '/compare')
   })
 
