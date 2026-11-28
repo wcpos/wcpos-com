@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generatedBy": "scripts/i18n/hardcoded-english.ts --update",
-  "updatedAt": "2026-11-24T22:25:01.387Z",
+  "updatedAt": "2026-11-28T05:34:48.842Z",
   "scope": [
     "src/app",
     "src/components",
@@ -4896,6 +4896,14 @@
       "attr": null,
       "text": "total",
       "count": 1
+    },
+    {
+      "id": "7d2d81afab8b0e40",
+      "file": "src/lib/defer-sentry-client.ts",
+      "category": "error/status",
+      "attr": null,
+      "text": "error",
+      "count": 3
     },
     {
       "id": "993867d4056c1a57",
