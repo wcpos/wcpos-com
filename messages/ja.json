@@ -559,7 +559,10 @@
       "payments": "カード、PayPal、Bitcoin",
       "proof": "WordPress.orgで5,000以上のアクティブインストール",
       "unavailableTitle": "価格情報を一時的に取得できません",
-      "unavailableDescription": "現在、価格情報を取得できません。しばらくしてからもう一度お試しください。"
+      "unavailableDescription": "現在、価格情報を取得できません。しばらくしてからもう一度お試しください。",
+      "loading": "価格を読み込んでいます…",
+      "unconfirmedTitle": "現在、価格を確認できませんでした",
+      "unconfirmedBody": "表示しているのは標準価格です。お支払い前にチェックアウトで価格を確認します。"
     },
     "faq": {
       "title": "よくある質問",

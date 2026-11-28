@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 
 vi.mock('react', async (importActual) => {
   const actual = await importActual<typeof import('react')>()
@@ -99,13 +99,15 @@ vi.mock('@/i18n/navigation', () => ({
   Link: ({
     children,
     href,
+    prefetch,
     ...props
   }: {
     children: React.ReactNode
     href: string
+    prefetch?: boolean
     [key: string]: unknown
   }) => (
-    <a href={href} {...props}>
+    <a href={href} data-prefetch={String(prefetch)} {...props}>
       {children}
     </a>
   ),
@@ -259,6 +261,12 @@ describe('ProPage', () => {
     expect(buyBoxColumn).toContainElement(
       screen.getByTestId('pro-buy-box-skeleton')
     )
+    // While prices load the button is already there and goes to checkout.
+    expect(
+      within(screen.getByTestId('pro-buy-box-skeleton')).getByRole('link', {
+        name: 'Get Started',
+      })
+    ).toHaveAttribute('href', '/pro/checkout?product=wcpos-pro-yearly')
     // The year line explains the price; the free-POS note and the
     // wordpress.org review sit in the hero's left column.
     expect(hero).toContainElement(screen.getByText('yearLine.title'))

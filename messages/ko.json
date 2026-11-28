@@ -559,7 +559,10 @@
       "payments": "카드, PayPal 또는 Bitcoin",
       "proof": "WordPress.org 기준 활성 설치 5,000건 이상",
       "unavailableTitle": "가격 정보를 일시적으로 사용할 수 없습니다",
-      "unavailableDescription": "현재 가격 정보를 사용할 수 없습니다. 나중에 다시 시도해 주세요."
+      "unavailableDescription": "현재 가격 정보를 사용할 수 없습니다. 나중에 다시 시도해 주세요.",
+      "loading": "가격을 불러오는 중…",
+      "unconfirmedTitle": "지금은 가격을 확인할 수 없습니다",
+      "unconfirmedBody": "표시된 가격은 표준 가격입니다. 결제 전에 체크아웃에서 가격을 확인합니다."
     },
     "faq": {
       "title": "자주 묻는 질문",

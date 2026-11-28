@@ -559,7 +559,10 @@
       "payments": "银行卡、PayPal 或 Bitcoin",
       "proof": "WordPress.org 上 5,000+ 活跃安装",
       "unavailableTitle": "价格信息暂时不可用",
-      "unavailableDescription": "价格信息当前不可用。请稍后再试。"
+      "unavailableDescription": "价格信息当前不可用。请稍后再试。",
+      "loading": "正在加载价格…",
+      "unconfirmedTitle": "暂时无法确认价格",
+      "unconfirmedBody": "显示的是我们的标准价格。付款前，结账页面会确认价格。"
     },
     "faq": {
       "title": "常见问题",

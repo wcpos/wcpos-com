@@ -16,36 +16,36 @@ export function ProBuyBoxFooter({ t }: { t: TranslateFn }) {
   return (
     <>
       <div className="mt-5 space-y-2 border-t pt-4 text-sm text-muted-foreground">
-        <p className="flex items-center gap-2">
-          <Download className="h-4 w-4 shrink-0" aria-hidden />
+        <p className="flex items-start gap-2">
+          <Download className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
           <span>
-            <TextLink asChild>
+            <TextLink asChild className="underline">
               <Link href="/downloads">{t('buyBox.tryFreeLink')}</Link>
             </TextLink>
             {t('buyBox.tryFreeSuffix')}
           </span>
         </p>
-        <p className="flex items-center gap-2">
-          <MonitorPlay className="h-4 w-4 shrink-0" aria-hidden />
+        <p className="flex items-start gap-2">
+          <MonitorPlay className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
           <span>
-            <TextLink asChild>
+            <TextLink asChild className="underline">
               <a href={DEMO_URL}>{t('buyBox.demoLink')}</a>
             </TextLink>
             {t('buyBox.demoSuffix')}
           </span>
         </p>
-        <p className="flex items-center gap-2">
-          <CreditCard className="h-4 w-4 shrink-0" aria-hidden />
+        <p className="flex items-start gap-2">
+          <CreditCard className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
           <span className="flex items-center gap-1">
             {t('buyBox.payments')}
             <Bitcoin className="h-4 w-4" aria-hidden />
           </span>
         </p>
-        <p className="flex items-center gap-2 text-xs">
-          <ShieldCheck className="h-4 w-4 shrink-0" aria-hidden />
+        <p className="flex items-start gap-2 text-xs">
+          <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
           <span>
             {t('checkout.summary.refundPromise')}{' '}
-            <TextLink asChild>
+            <TextLink asChild className="underline">
               <Link href="/refunds">{t('checkout.summary.refundLink')}</Link>
             </TextLink>
           </span>

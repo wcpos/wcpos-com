@@ -559,7 +559,10 @@
       "payments": "Carta, PayPal o Bitcoin",
       "proof": "Oltre 5.000 installazioni attive su WordPress.org",
       "unavailableTitle": "Prezzi temporaneamente non disponibili",
-      "unavailableDescription": "Le informazioni sui prezzi non sono al momento disponibili. Riprova più tardi."
+      "unavailableDescription": "Le informazioni sui prezzi non sono al momento disponibili. Riprova più tardi.",
+      "loading": "Caricamento dei prezzi…",
+      "unconfirmedTitle": "Non è stato possibile confermare i prezzi in questo momento",
+      "unconfirmedBody": "Questi sono i nostri prezzi standard. Il checkout conferma il prezzo prima che tu paghi."
     },
     "faq": {
       "title": "Domande frequenti",

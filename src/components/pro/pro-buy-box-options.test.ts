@@ -1,5 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { buildProBuyBoxOptions } from './pro-buy-box-options'
+import {
+  buildPendingProBuyBoxOptions,
+  buildProBuyBoxOptions,
+} from './pro-buy-box-options'
 import { buildProOfferCatalog } from '@/lib/pro-offer-catalog'
 import type { MedusaProduct } from '@/types/medusa'
 
@@ -121,5 +124,19 @@ describe('buildProBuyBoxOptions', () => {
       product: 'wcpos-pro-lifetime',
       plan: 'lifetime',
     })
+  })
+
+  it('builds the loading placeholder from the plans, with plain checkout links', () => {
+    const pending = buildPendingProBuyBoxOptions(t)
+
+    expect(pending.map((option) => option.planId)).toEqual(['yearly', 'lifetime'])
+    expect(pending.map((option) => option.checkoutHref)).toEqual([
+      '/pro/checkout?product=wcpos-pro-yearly',
+      '/pro/checkout?product=wcpos-pro-lifetime',
+    ])
+    for (const option of pending) {
+      expect(option.priceText).toBe('')
+      expect(option.eventProperties).toBeUndefined()
+    }
   })
 })

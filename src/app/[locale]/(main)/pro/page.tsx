@@ -7,7 +7,11 @@ import { Link } from '@/i18n/navigation'
 import { ProBuyBox } from '@/components/pro/pro-buy-box'
 import { ProBuyBoxFooter } from '@/components/pro/pro-buy-box-footer'
 import { ReviewQuote } from '@/components/home/review-quote'
-import { buildProBuyBoxOptions } from '@/components/pro/pro-buy-box-options'
+import {
+  buildPendingProBuyBoxOptions,
+  buildProBuyBoxOptions,
+  type TranslateFn,
+} from '@/components/pro/pro-buy-box-options'
 import {
   PRO_FEATURE_GROUPS,
   PRO_FEATURE_KEYS,
@@ -17,7 +21,8 @@ import { ProYearLine } from '@/components/pro/pro-year-line'
 import { Card } from '@/components/ui/card'
 import { Collapsible } from '@/components/ui/collapsible'
 import { EmptyState } from '@/components/ui/empty-state'
-import { Skeleton } from '@/components/ui/skeleton'
+import { Alert } from '@/components/ui/alert'
+import { toneDot } from '@/components/ui/status-tone'
 import { TextLink } from '@/components/ui/text-link'
 import { resolveProCheckoutVariant } from '@/services/core/analytics/posthog-service'
 import { ANALYTICS_DISTINCT_ID_COOKIE } from '@/lib/analytics/distinct-id'
@@ -60,19 +65,22 @@ export async function generateMetadata({
   })
 }
 
-function BuyBoxSkeleton() {
+/**
+ * The buy box as it stands while prices load: terms, labels and Buy Pro are
+ * all there; only the two figures wait. The button goes to the plan's
+ * checkout, which confirms the price before payment.
+ */
+function BuyBoxPending({ t }: { t: TranslateFn }) {
   return (
-    <Card
-      elevated
-      data-testid="pro-buy-box-skeleton"
-      className="space-y-4 p-6"
-    >
-      <Skeleton className="h-6 w-24" />
-      <Skeleton className="h-4 w-56" />
-      <Skeleton className="h-20" />
-      <Skeleton className="h-20" />
-      <Skeleton className="h-11" />
-    </Card>
+    <ProBuyBox
+      options={buildPendingProBuyBoxOptions(t)}
+      loadingLabel={t('buyBox.loading')}
+      ctaLabel={t('buyBox.cta')}
+      heading={t('buyBox.heading')}
+      subheading={t('buyBox.subheading')}
+      termAriaLabel={t('buyBox.termAriaLabel')}
+      footer={<ProBuyBoxFooter t={t} />}
+    />
   )
 }
 
@@ -92,7 +100,7 @@ async function BuyBoxWithExperiment({ locale }: { locale: Locale }) {
     : 'control'
 
   const storeEnv = await getRequestStoreEnvironment()
-  const [t, { offers }] = await Promise.all([
+  const [t, { offers, source }] = await Promise.all([
     getTranslations({ locale, namespace: PRO_MESSAGE_NAMESPACE }),
     getCachedProOfferCatalog(storeEnv.name, locale),
   ])
@@ -125,6 +133,24 @@ async function BuyBoxWithExperiment({ locale }: { locale: Locale }) {
       heading={t('buyBox.heading')}
       subheading={t('buyBox.subheading')}
       termAriaLabel={t('buyBox.termAriaLabel')}
+      notice={
+        // Medusa did not answer for every plan: the committed standard
+        // prices stand in, and checkout confirms the price before payment.
+        source === 'fallback' ? (
+          <Alert
+            tone="caution"
+            role="status"
+            icon={
+              <span
+                className={`mt-1.5 block size-1.5 rounded-full ${toneDot.caution}`}
+              />
+            }
+            title={t('buyBox.unconfirmedTitle')}
+          >
+            <p className="text-foreground/80">{t('buyBox.unconfirmedBody')}</p>
+          </Alert>
+        ) : undefined
+      }
       footer={<ProBuyBoxFooter t={translate} />}
     />
   )
@@ -139,6 +165,8 @@ export default async function ProPage({
   setRequestLocale(locale)
   const t = await getTranslations({ locale, namespace: PRO_MESSAGE_NAMESPACE })
   const compareT = await getTranslations({ locale, namespace: 'compare' })
+  const translate: TranslateFn = (key, values) =>
+    t(key as Parameters<typeof t>[0], values)
 
   const featureGroups = PRO_FEATURE_GROUPS.map((group) => ({
     title: t(`features.groups.${group}.title`),
@@ -234,7 +262,7 @@ export default async function ProPage({
                 className={`order-2 min-w-0 pt-5 lg:pt-0 ${PHONE_GUTTER}`}
                 data-testid="pro-buy-box-column"
               >
-                <Suspense fallback={<BuyBoxSkeleton />}>
+                <Suspense fallback={<BuyBoxPending t={translate} />}>
                   <BuyBoxWithExperiment locale={locale} />
                 </Suspense>
               </div>

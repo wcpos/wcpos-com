@@ -559,7 +559,10 @@
       "payments": "Karte, PayPal oder Bitcoin",
       "proof": "5.000+ aktive Installationen auf WordPress.org",
       "unavailableTitle": "Preise vorübergehend nicht verfügbar",
-      "unavailableDescription": "Die Preisinformationen sind derzeit nicht verfügbar. Bitte versuche es später erneut."
+      "unavailableDescription": "Die Preisinformationen sind derzeit nicht verfügbar. Bitte versuche es später erneut.",
+      "loading": "Preise werden geladen…",
+      "unconfirmedTitle": "Die Preise konnten gerade nicht bestätigt werden",
+      "unconfirmedBody": "Angezeigt sind unsere Standardpreise. Der Checkout bestätigt den Preis, bevor du bezahlst."
     },
     "faq": {
       "title": "Häufig gestellte Fragen",

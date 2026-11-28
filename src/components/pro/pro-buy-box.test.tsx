@@ -234,17 +234,74 @@ describe('ProBuyBox', () => {
     expect(screen.getByTestId('pro-buy-box')).toContainElement(heading)
   })
 
-  it('puts each price on its own full-width row below sm', () => {
+  it('keeps each price beside its term with the suffix under the figure', () => {
     renderBuyBox()
 
-    const radios = screen.getAllByRole('radio')
-    expect(radios).toHaveLength(options.length)
     for (const option of options) {
-      const priceWrapper = screen
-        .getByText(option.priceText)
-        .closest('.basis-full, .ml-auto')
-      expect(priceWrapper).not.toBeNull()
-      expect(priceWrapper).toHaveClass('basis-full', 'sm:basis-auto')
+      const figure = screen.getByText(option.priceText)
+      const suffix = screen.getByText(option.priceSuffix)
+      expect(figure.parentElement).toBe(suffix.parentElement)
+      expect(suffix).toHaveClass('block')
     }
+  })
+
+  it('draws Lifetime as the quieter second row, highlighted only when chosen', () => {
+    renderBuyBox()
+
+    const [yearly, lifetime] = screen.getAllByRole('radio')
+    expect(yearly).toHaveClass('py-3', 'lg:py-4', 'border-primary')
+    expect(lifetime).toHaveClass('py-2', 'lg:py-2.5', 'border-border')
+    expect(lifetime).not.toHaveClass('border-primary')
+    // The idle dot is a full-strength ring in dark mode so it reads on the card.
+    expect(lifetime.querySelector('span[aria-hidden]')).toHaveClass(
+      'border-muted-foreground/40',
+      'dark:border-muted-foreground'
+    )
+
+    fireEvent.click(lifetime)
+    expect(lifetime).toHaveClass('border-primary', 'bg-primary/5')
+  })
+
+  it('shows skeleton figures and a visible status while prices load, with a working button', () => {
+    renderBuyBox({
+      loadingLabel: 'Loading prices…',
+      options: options.map(({ eventProperties, ...option }) => ({
+        ...option,
+        priceText: '',
+        currencyCode: '',
+        checkoutHref: `/pro/checkout?product=${eventProperties?.product}`,
+      })),
+    })
+
+    expect(screen.getByTestId('pro-buy-box-skeleton')).toBeInTheDocument()
+    expect(screen.queryByTestId('pro-buy-box')).toBeNull()
+    expect(screen.getByRole('status')).toHaveTextContent('Loading prices…')
+    expect(screen.queryByText('USD')).toBeNull()
+
+    const cta = screen.getByRole('link', { name: 'Buy Pro' })
+    expect(cta).toHaveAttribute('href', '/pro/checkout?product=wcpos-pro-yearly')
+    fireEvent.click(screen.getByRole('radio', { name: /Lifetime/ }))
+    expect(cta).toHaveAttribute('href', '/pro/checkout?product=wcpos-pro-lifetime')
+
+    // The placeholder never reports a checkout click.
+    vi.mocked(trackClientEvent).mockClear()
+    fireEvent.click(cta)
+    expect(trackClientEvent).not.toHaveBeenCalled()
+  })
+
+  it('places a notice above the plans and a buy note above the button', () => {
+    renderBuyBox({
+      notice: <p>Prices could not be confirmed just now</p>,
+      buyNote: 'This buys a second license.',
+    })
+
+    const notice = screen.getByText('Prices could not be confirmed just now')
+    const firstRadio = screen.getAllByRole('radio')[0]
+    expect(
+      notice.compareDocumentPosition(firstRadio) & Node.DOCUMENT_POSITION_FOLLOWING
+    ).toBeTruthy()
+    const note = screen.getByText('This buys a second license.')
+    const cta = screen.getByRole('link', { name: 'Buy Pro' })
+    expect(note.nextElementSibling).toBe(cta)
   })
 })

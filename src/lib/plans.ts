@@ -37,7 +37,7 @@ export const YEARLY_PRO_POLICY_ID = '261cb7e2-6e80-476e-98bd-fe7f406f258d'
 export const LIFETIME_PRO_POLICY_ID = '1203b973-eb59-4965-9c19-12788212f827'
 export const YEARLY_PRO_HANDLE = 'wcpos-pro-yearly'
 
-const PLANS: readonly Plan[] = [
+export const PLANS: readonly Plan[] = [
   {
     id: 'yearly',
     handle: YEARLY_PRO_HANDLE,

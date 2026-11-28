@@ -559,7 +559,10 @@
       "payments": "Kaart, PayPal of Bitcoin",
       "proof": "5.000+ actieve installaties op WordPress.org",
       "unavailableTitle": "Prijzen tijdelijk niet beschikbaar",
-      "unavailableDescription": "Prijsinformatie is momenteel niet beschikbaar. Probeer het later opnieuw."
+      "unavailableDescription": "Prijsinformatie is momenteel niet beschikbaar. Probeer het later opnieuw.",
+      "loading": "Prijzen laden…",
+      "unconfirmedTitle": "De prijzen konden nu niet worden bevestigd",
+      "unconfirmedBody": "Dit zijn onze standaardprijzen. Bij het afrekenen wordt de prijs bevestigd voordat je betaalt."
     },
     "faq": {
       "title": "Veelgestelde vragen",
