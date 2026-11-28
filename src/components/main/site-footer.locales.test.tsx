@@ -45,7 +45,7 @@ const messages: Record<Locale, typeof en> = {
 describe('SiteFooter locales', () => {
   expect(locales).toHaveLength(10)
 
-  it.each(locales)('links Compare in the Product column for %s', (locale) => {
+  it.each(locales)('links Compare in the Use WCPOS column for %s', (locale) => {
     render(
       <NextIntlClientProvider
         locale={locale}

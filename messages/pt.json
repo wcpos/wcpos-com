@@ -28,11 +28,10 @@
     "themeLight": "Claro",
     "themeDark": "Escuro",
     "themeSystem": "Sistema",
-    "productHeading": "Produto",
-    "communityHeading": "Comunidade",
-    "supportHeading": "Suporte",
-    "companyHeading": "Empresa",
-    "downloadHeading": "Baixar",
+    "useHeading": "Usar o WCPOS",
+    "appsHeading": "Aplicações",
+    "helpHeading": "Ajuda",
+    "projectHeading": "Projeto",
     "pro": "WCPOS Pro",
     "compare": "Comparar",
     "roadmap": "Roteiro",
@@ -47,7 +46,7 @@
     "status": "Status",
     "wordpressForum": "Fórum do WordPress",
     "wordpressPlugin": "Plugin do WordPress",
-    "appFor": "WCPOS para {platform}",
+    "installFirst": "instale primeiro",
     "socialGithubAria": "WCPOS no GitHub",
     "socialDiscordAria": "Entre no Discord do WCPOS",
     "socialWordpressAria": "WCPOS no WordPress.org"
@@ -1246,7 +1245,7 @@
   },
   "consent": {
     "label": "Consentimento de cookies",
-    "message": "Usamos um cookie de análise anónimo para compreender como o site é utilizado. Sem anúncios, sem rastreamento de terceiros. <privacyLink>Política de privacidade</privacyLink>",
+    "message": "Usamos um único cookie de análise anónimo para ver como o site é utilizado, sem anúncios nem rastreamento de terceiros. <privacyLink>Política de privacidade</privacyLink>",
     "privacyPolicy": "Política de privacidade",
     "decline": "Recusar",
     "accept": "Aceitar"

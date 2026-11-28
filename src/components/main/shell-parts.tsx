@@ -26,3 +26,24 @@ export function ExternalMark({ className }: { className?: string }) {
     />
   )
 }
+
+/**
+ * A labelled shell setting (Language, Theme): label above a full-width
+ * control below lg (footer at 390, phone menu), beside it from lg.
+ */
+export function ShellSetting({
+  label,
+  children,
+}: {
+  label: string
+  children: React.ReactNode
+}) {
+  return (
+    <div className="flex flex-col gap-1.5 lg:flex-row lg:items-center lg:gap-2.5">
+      <span className="text-xs font-medium text-muted-foreground lg:text-[13px]">
+        {label}
+      </span>
+      {children}
+    </div>
+  )
+}

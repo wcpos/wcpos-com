@@ -6,20 +6,19 @@ import { render, screen } from '@testing-library/react'
 // platform metadata names.
 vi.mock('next-intl', () => ({
   useTranslations:
-    (namespace: string) => (key: string, values?: Record<string, string>) => {
+    (namespace: string) => (key: string) => {
       const labels: Record<string, Record<string, string>> = {
         footer: {
-          productHeading: 'Product',
-          communityHeading: 'Community',
-          supportHeading: 'Support',
-          companyHeading: 'Company',
-          downloadHeading: 'Download',
+          useHeading: 'Use WCPOS',
+          appsHeading: 'Apps',
+          helpHeading: 'Help',
+          projectHeading: 'Project',
           downloads: 'Downloads',
           pro: 'WCPOS Pro',
           compare: 'Compare',
           roadmap: 'Roadmap',
           changelog: 'Changelog',
-          demo: 'Live Demo',
+          demo: 'Live demo',
           extensions: 'Extensions',
           discord: 'Discord',
           github: 'GitHub',
@@ -27,8 +26,11 @@ vi.mock('next-intl', () => ({
           documentation: 'Documentation',
           getSupport: 'Support',
           status: 'Status',
-          wordpressForum: 'WordPress Forum',
-          wordpressPlugin: 'WordPress Plugin',
+          wordpressForum: 'WordPress forum',
+          wordpressPlugin: 'WordPress plugin',
+          installFirst: 'install first',
+          language: 'Language',
+          theme: 'Theme',
           about: 'About',
           privacy: 'Privacy',
           terms: 'Terms',
@@ -47,9 +49,7 @@ vi.mock('next-intl', () => ({
           'mac-intel.name': 'Translated Intel macOS',
           'web.name': 'Translated Web',
         },
-      }
-      if (namespace === 'footer' && key === 'appFor') {
-        return `WCPOS for ${values?.platform ?? ''}`
+        'downloads.page': { beta: 'Translated beta' },
       }
       return labels[namespace]?.[key] ?? key
     }
@@ -88,15 +88,9 @@ function hrefOf(label: string): string | null | undefined {
 }
 
 describe('SiteFooter', () => {
-  it('renders all five column headings', () => {
+  it('renders the four task-grouped column headings', () => {
     render(<SiteFooter />)
-    for (const heading of [
-      'Product',
-      'Community',
-      'Support',
-      'Company',
-      'Download',
-    ]) {
+    for (const heading of ['Use WCPOS', 'Apps', 'Help', 'Project']) {
       expect(
         screen.getByRole('heading', { name: heading })
       ).toBeInTheDocument()
@@ -140,24 +134,57 @@ describe('SiteFooter', () => {
     expect(discord?.getAttribute('rel')).toBe('noopener noreferrer')
   })
 
-  it('lists one translated download entry per shipped platform (minus Intel + Web)', () => {
+  it('lists one translated app entry per shipped platform (minus Intel + Web)', () => {
     render(<SiteFooter />)
     // macOS, Windows, Linux, iOS & iPad, Android — the mac-intel and web
-    // keys are deliberately omitted.
-    expect(hrefOf('WCPOS for Translated macOS')).toBe(
-      PLATFORMS['mac-arm'].href
+    // keys are deliberately omitted; the column heading says they are apps.
+    expect(hrefOf('Translated macOS')).toBe(PLATFORMS['mac-arm'].href)
+    expect(hrefOf('Translated Windows')).toBe(PLATFORMS.win.href)
+    expect(hrefOf('Translated Linux')).toBe(PLATFORMS.linux.href)
+    expect(hrefOf('Translated iPhone and iPad')).toBe(PLATFORMS.ios.href)
+    expect(hrefOf('Translated Android')).toBe(PLATFORMS.android.href)
+    expect(screen.queryByText('Translated Intel macOS')).toBeNull()
+    expect(screen.queryByText('Translated Web')).toBeNull()
+  })
+
+  it('marks only the mobile store apps as Beta, outside their link names', () => {
+    render(<SiteFooter />)
+    const badges = screen.getAllByText('Translated beta')
+    expect(badges).toHaveLength(2)
+    for (const label of ['Translated iPhone and iPad', 'Translated Android']) {
+      const link = screen.getByText(label).closest('a')!
+      expect(link.closest('li')).toHaveTextContent('Translated beta')
+      expect(link).not.toHaveTextContent('Translated beta')
+    }
+    expect(
+      screen.getByText('Translated macOS').closest('li')
+    ).not.toHaveTextContent('Translated beta')
+  })
+
+  it('captions the WordPress plugin as the one to install first', () => {
+    render(<SiteFooter />)
+    const plugin = screen.getByRole('link', { name: 'WordPress plugin' })
+    expect(plugin).toHaveAttribute(
+      'href',
+      'https://wordpress.org/plugins/woocommerce-pos/'
     )
-    expect(hrefOf('WCPOS for Translated Windows')).toBe(PLATFORMS.win.href)
-    expect(hrefOf('WCPOS for Translated Linux')).toBe(PLATFORMS.linux.href)
-    expect(hrefOf('WCPOS for Translated iPhone and iPad')).toBe(
-      PLATFORMS.ios.href
-    )
-    expect(hrefOf('WCPOS for Translated Android')).toBe(
-      PLATFORMS.android.href
-    )
-    expect(screen.queryByText('WCPOS for Translated Intel macOS')).toBeNull()
-    expect(screen.queryByText('WCPOS for Translated Web')).toBeNull()
-    expect(screen.queryByText('WCPOS for iOS & iPad')).toBeNull()
+    expect(plugin.closest('li')).toHaveTextContent('install first')
+  })
+
+  it('opens Documentation in a new tab with the external mark', () => {
+    render(<SiteFooter />)
+    const docs = screen.getByRole('link', { name: 'Documentation' })
+    expect(docs).toHaveAttribute('href', 'https://docs.wcpos.com')
+    expect(docs).toHaveAttribute('target', '_blank')
+    expect(docs.querySelector('svg[aria-hidden="true"]')).not.toBeNull()
+  })
+
+  it('keeps all 24 links and labels the settings in words', () => {
+    render(<SiteFooter />)
+    // 24 text links + 3 social icons.
+    expect(screen.getAllByRole('link')).toHaveLength(27)
+    expect(screen.getByText('Language')).toBeInTheDocument()
+    expect(screen.getByText('Theme')).toBeInTheDocument()
   })
 
   it('links Status at the external status page in a new tab', () => {
@@ -181,7 +208,7 @@ describe('SiteFooter', () => {
     ).toBe('https://wordpress.org/plugins/woocommerce-pos/')
   })
 
-  it('groups the legal links under Company', () => {
+  it('keeps About and the legal links', () => {
     render(<SiteFooter />)
     for (const label of ['Privacy', 'Terms', 'Refunds', 'About']) {
       expect(screen.getByText(label)).toBeInTheDocument()

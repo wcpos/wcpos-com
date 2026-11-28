@@ -87,7 +87,17 @@ describe('ConsentBanner', () => {
     const message = screen.getByText(/anonymous analytics cookie/)
 
     expect(message.tagName).toBe('P')
-    expect(message).toHaveClass('text-xs', 'sm:text-sm')
-    expect(banner).toHaveClass('sm:p-4')
+    expect(message).toHaveClass('text-[13px]', 'lg:text-sm')
+    expect(banner).toHaveClass('lg:py-2.5')
+  })
+
+  it('gives Decline and Accept the same outline weight', () => {
+    render(<ConsentBanner />)
+    const decline = screen.getByRole('button', { name: 'Decline' })
+    const accept = screen.getByRole('button', { name: 'Accept' })
+
+    expect(accept.className).toBe(decline.className)
+    expect(accept).toHaveClass('border')
+    expect(accept.className).not.toContain('bg-wcpos-red')
   })
 })

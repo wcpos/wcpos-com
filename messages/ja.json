@@ -28,11 +28,10 @@
     "themeLight": "ライト",
     "themeDark": "ダーク",
     "themeSystem": "システム",
-    "productHeading": "製品",
-    "communityHeading": "コミュニティ",
-    "supportHeading": "サポート",
-    "companyHeading": "会社情報",
-    "downloadHeading": "ダウンロード",
+    "useHeading": "WCPOS を使う",
+    "appsHeading": "アプリ",
+    "helpHeading": "ヘルプ",
+    "projectHeading": "プロジェクト",
     "pro": "WCPOS Pro",
     "compare": "比較",
     "roadmap": "ロードマップ",
@@ -47,7 +46,7 @@
     "status": "ステータス",
     "wordpressForum": "WordPress フォーラム",
     "wordpressPlugin": "WordPress プラグイン",
-    "appFor": "{platform} 版 WCPOS",
+    "installFirst": "最初にインストール",
     "socialGithubAria": "GitHub の WCPOS",
     "socialDiscordAria": "WCPOS の Discord に参加",
     "socialWordpressAria": "WordPress.org の WCPOS"
@@ -1246,7 +1245,7 @@
   },
   "consent": {
     "label": "Cookieの同意",
-    "message": "サイトの利用状況を理解するため、匿名の分析Cookieを使用します。広告や第三者トラッキングはありません。<privacyLink>プライバシーポリシー</privacyLink>",
+    "message": "サイトの利用状況を把握するために匿名の分析Cookieを1つだけ使用しており、広告や第三者トラッキングはありません。<privacyLink>プライバシーポリシー</privacyLink>",
     "privacyPolicy": "プライバシーポリシー",
     "decline": "拒否",
     "accept": "同意"

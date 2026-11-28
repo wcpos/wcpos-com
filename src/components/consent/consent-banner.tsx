@@ -54,39 +54,45 @@ export function ConsentBanner() {
     setDismissed(true)
   }
 
+  // One line at desktop, the sentence above two side-by-side buttons on
+  // phones. Decline and Accept are both outline: equal weight, and the
+  // header's Get Pro stays the one filled button in view.
   return (
     <div
       role="region"
       aria-label={t('label')}
       data-consent-banner=""
       data-testid="consent-banner"
-      className="fixed inset-x-0 bottom-0 z-50 border-t bg-background px-3 py-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] shadow-lg sm:p-4"
+      className="fixed inset-x-0 bottom-0 z-50 border-t bg-background px-4 pb-[max(0.875rem,env(safe-area-inset-bottom))] pt-3 shadow-lg lg:py-2.5"
     >
-      <div className="mx-auto flex max-w-3xl items-center gap-3 sm:justify-between">
-        <p className="min-w-0 flex-1 text-xs leading-snug text-muted-foreground sm:text-sm sm:leading-5">
+      <div className="mx-auto flex max-w-7xl flex-col gap-2.5 lg:flex-row lg:items-center lg:justify-center lg:gap-6">
+        <p className="text-[13px] leading-snug text-muted-foreground lg:text-sm">
           {t.rich('message', {
             privacyLink: (chunks) => (
-              <Link href="/privacy" className="underline underline-offset-4">
+              <Link
+                href="/privacy"
+                className="text-foreground underline underline-offset-4"
+              >
                 {chunks}
               </Link>
             ),
           })}
         </p>
-        {/* One row beside the text, Decline then Accept; phones get 36px tap targets. */}
-        <div className="flex shrink-0 gap-1.5 sm:gap-2">
+        <div className="grid shrink-0 grid-cols-2 gap-2">
           <Button
             type="button"
             variant="outline"
             size="sm"
-            className="h-9 sm:h-8"
+            className="h-10 min-w-24 lg:h-8"
             onClick={() => decide('denied')}
           >
             {t('decline')}
           </Button>
           <Button
             type="button"
+            variant="outline"
             size="sm"
-            className="h-9 sm:h-8"
+            className="h-10 min-w-24 lg:h-8"
             onClick={() => decide('granted')}
           >
             {t('accept')}

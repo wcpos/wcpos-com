@@ -28,11 +28,10 @@
     "themeLight": "라이트",
     "themeDark": "다크",
     "themeSystem": "시스템",
-    "productHeading": "제품",
-    "communityHeading": "커뮤니티",
-    "supportHeading": "지원",
-    "companyHeading": "회사",
-    "downloadHeading": "다운로드",
+    "useHeading": "WCPOS 사용하기",
+    "appsHeading": "앱",
+    "helpHeading": "도움말",
+    "projectHeading": "프로젝트",
     "pro": "WCPOS Pro",
     "compare": "비교",
     "roadmap": "로드맵",
@@ -47,7 +46,7 @@
     "status": "상태",
     "wordpressForum": "WordPress 포럼",
     "wordpressPlugin": "WordPress 플러그인",
-    "appFor": "{platform}용 WCPOS",
+    "installFirst": "먼저 설치",
     "socialGithubAria": "GitHub의 WCPOS",
     "socialDiscordAria": "WCPOS Discord 참여",
     "socialWordpressAria": "WordPress.org의 WCPOS"
@@ -1246,7 +1245,7 @@
   },
   "consent": {
     "label": "쿠키 동의",
-    "message": "사이트 사용 방식을 이해하기 위해 익명 분석 쿠키를 사용합니다. 광고도, 타사 추적도 없습니다. <privacyLink>개인정보 처리방침</privacyLink>",
+    "message": "사이트 이용 방식을 파악하기 위해 익명 분석 쿠키 하나만 사용하며, 광고나 타사 추적은 없습니다. <privacyLink>개인정보 처리방침</privacyLink>",
     "privacyPolicy": "개인정보 처리방침",
     "decline": "거부",
     "accept": "동의"

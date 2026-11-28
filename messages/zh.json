@@ -28,11 +28,10 @@
     "themeLight": "浅色",
     "themeDark": "深色",
     "themeSystem": "跟随系统",
-    "productHeading": "产品",
-    "communityHeading": "社区",
-    "supportHeading": "支持",
-    "companyHeading": "公司",
-    "downloadHeading": "下载",
+    "useHeading": "使用 WCPOS",
+    "appsHeading": "应用",
+    "helpHeading": "帮助",
+    "projectHeading": "项目",
     "pro": "WCPOS Pro",
     "compare": "比较",
     "roadmap": "路线图",
@@ -47,7 +46,7 @@
     "status": "状态",
     "wordpressForum": "WordPress 论坛",
     "wordpressPlugin": "WordPress 插件",
-    "appFor": "{platform} 版 WCPOS",
+    "installFirst": "请先安装",
     "socialGithubAria": "GitHub 上的 WCPOS",
     "socialDiscordAria": "加入 WCPOS Discord",
     "socialWordpressAria": "WordPress.org 上的 WCPOS"
@@ -1246,7 +1245,7 @@
   },
   "consent": {
     "label": "Cookie 同意",
-    "message": "我们使用匿名分析 Cookie 来了解网站的使用情况。没有广告，也没有第三方跟踪。<privacyLink>隐私政策</privacyLink>",
+    "message": "我们只使用一个匿名分析 Cookie 来了解网站的使用情况，没有广告，也没有第三方跟踪。<privacyLink>隐私政策</privacyLink>",
     "privacyPolicy": "隐私政策",
     "decline": "拒绝",
     "accept": "接受"

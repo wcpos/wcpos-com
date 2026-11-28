@@ -17,6 +17,7 @@ import { WcposLogo } from '@/components/icons/wcpos-logo'
 import { DesktopNav, MobileMenu, MobileNavLinks } from '@/components/main/site-nav'
 import { LanguageSelector } from '@/components/main/language-selector'
 import { ThemeToggle } from '@/components/main/theme-toggle'
+import { ShellSetting } from '@/components/main/shell-parts'
 
 interface AuthLabels {
   signIn: string
@@ -97,21 +98,6 @@ function AuthButtonFallback() {
   return <div className="h-9 w-9" />
 }
 
-function MenuSetting({
-  label,
-  children,
-}: {
-  label: string
-  children: React.ReactNode
-}) {
-  return (
-    <div className="flex flex-col gap-1.5">
-      <span className="text-xs font-medium text-muted-foreground">{label}</span>
-      {children}
-    </div>
-  )
-}
-
 export function SiteHeader() {
   const t = useTranslations('header')
   const tCommon = useTranslations('common')
@@ -168,12 +154,12 @@ export function SiteHeader() {
               <AuthButton labels={authLabels} inMenu />
             </Suspense>
             <div className="mt-auto flex flex-col gap-3.5 pt-5">
-              <MenuSetting label={tFooter('language')}>
+              <ShellSetting label={tFooter('language')}>
                 <LanguageSelector />
-              </MenuSetting>
-              <MenuSetting label={tFooter('theme')}>
+              </ShellSetting>
+              <ShellSetting label={tFooter('theme')}>
                 <ThemeToggle />
-              </MenuSetting>
+              </ShellSetting>
             </div>
           </div>
         </MobileMenu>

@@ -353,6 +353,9 @@ const auditedDutchNamespacePrefixes = [
   'about.',
 ]
 const dutchIdenticalCopyAllowlist = new Set([
+  // 'Apps' and 'Project' are the Dutch words too (footer headings).
+  'footer.appsHeading',
+  'footer.projectHeading',
   // 'Menu' is the Dutch word too (phone menu button).
   'common.menu',
   'downloads.page.mobileApps',
@@ -895,6 +898,8 @@ const auditedGermanNamespacePrefixes = [
   'home.ecosystem.',
 ]
 const germanIdenticalCopyAllowlist = new Set([
+  // 'Apps' is the German word too (footer heading).
+  'footer.appsHeading',
   'downloads.page.mobileApps',
   // 'Downloads' is the standard German term (account facts row).
   'account.licenses.factDownloads',

@@ -38,4 +38,20 @@ describe('LanguageSelector', () => {
       body: JSON.stringify({ locale: 'fr' }),
     })
   })
+
+  it('marks the current language in the desktop list and switches from it', () => {
+    render(<LanguageSelector />)
+
+    fireEvent.pointerDown(
+      screen.getByRole('button', { name: 'Language: English' }),
+      { button: 0, ctrlKey: false }
+    )
+
+    const current = screen.getByRole('menuitem', { name: 'English' })
+    expect(current).toHaveAttribute('aria-current', 'true')
+    expect(current).toHaveClass('text-wcpos-red-accent', 'bg-primary/10')
+
+    fireEvent.click(screen.getByRole('menuitem', { name: 'Deutsch' }))
+    expect(mockReplace).toHaveBeenCalledWith('/pro', { locale: 'de' })
+  })
 })
