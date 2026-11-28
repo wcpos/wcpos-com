@@ -37,7 +37,7 @@ export const ROOT_FALLBACK_MESSAGES = {
       goHome: 'Zur Startseite',
       notFoundTitle: 'Seite nicht gefunden',
       notFoundDescription:
-        'Die gesuchte Seite existiert nicht oder wurde verschoben.',
+        'Unter dieser Adresse gibt es keine Seite. Sie wurde vielleicht verschoben, oder der Link ist falsch.',
     },
     support: 'Hilfe',
   },
@@ -50,7 +50,7 @@ export const ROOT_FALLBACK_MESSAGES = {
       goHome: 'Go to homepage',
       notFoundTitle: 'Page not found',
       notFoundDescription:
-        'The page you are looking for does not exist or may have moved.',
+        'There is no page at this address. It may have moved, or the link may be wrong.',
     },
     support: 'Support',
   },
@@ -63,7 +63,7 @@ export const ROOT_FALLBACK_MESSAGES = {
       goHome: 'Ir a la página de inicio',
       notFoundTitle: 'Página no encontrada',
       notFoundDescription:
-        'La página que buscas no existe o puede haberse movido.',
+        'No hay ninguna página en esta dirección. Puede que se haya movido o que el enlace sea incorrecto.',
     },
     support: 'Soporte',
   },
@@ -76,7 +76,7 @@ export const ROOT_FALLBACK_MESSAGES = {
       goHome: 'Aller à l’accueil',
       notFoundTitle: 'Page introuvable',
       notFoundDescription:
-        'La page que vous recherchez n’existe pas ou a peut-être été déplacée.',
+        'Il n’y a pas de page à cette adresse. Elle a peut-être été déplacée, ou le lien est erroné.',
     },
     support: 'Assistance',
   },
@@ -89,7 +89,7 @@ export const ROOT_FALLBACK_MESSAGES = {
       goHome: 'Vai alla home',
       notFoundTitle: 'Pagina non trovata',
       notFoundDescription:
-        'La pagina che cerchi non esiste o potrebbe essere stata spostata.',
+        'Non c’è nessuna pagina a questo indirizzo. Potrebbe essere stata spostata, oppure il link è sbagliato.',
     },
     support: 'Supporto',
   },
@@ -102,7 +102,7 @@ export const ROOT_FALLBACK_MESSAGES = {
       goHome: 'ホームへ移動',
       notFoundTitle: 'ページが見つかりません',
       notFoundDescription:
-        'お探しのページは存在しないか、移動された可能性があります。',
+        'このアドレスにはページがありません。移動したか、リンクが間違っている可能性があります。',
     },
     support: 'サポート',
   },
@@ -115,7 +115,7 @@ export const ROOT_FALLBACK_MESSAGES = {
       goHome: '홈으로 이동',
       notFoundTitle: '페이지를 찾을 수 없습니다',
       notFoundDescription:
-        '찾고 있는 페이지가 없거나 이동되었을 수 있습니다.',
+        '이 주소에는 페이지가 없습니다. 페이지가 이동했거나 링크가 잘못되었을 수 있습니다.',
     },
     support: '지원',
   },
@@ -128,7 +128,7 @@ export const ROOT_FALLBACK_MESSAGES = {
       goHome: 'Ga naar de startpagina',
       notFoundTitle: 'Pagina niet gevonden',
       notFoundDescription:
-        'De pagina die je zoekt bestaat niet of is mogelijk verplaatst.',
+        'Op dit adres staat geen pagina. Misschien is die verplaatst, of klopt de link niet.',
     },
     support: 'Ondersteuning',
   },
@@ -141,7 +141,7 @@ export const ROOT_FALLBACK_MESSAGES = {
       goHome: 'Ir para a página inicial',
       notFoundTitle: 'Página não encontrada',
       notFoundDescription:
-        'A página que procura não existe ou pode ter sido movida.',
+        'Não existe nenhuma página neste endereço. Pode ter sido movida, ou a ligação pode estar errada.',
     },
     support: 'Suporte',
   },
@@ -152,7 +152,7 @@ export const ROOT_FALLBACK_MESSAGES = {
       tryAgain: '重试',
       goHome: '前往首页',
       notFoundTitle: '页面未找到',
-      notFoundDescription: '您要查找的页面不存在，或可能已被移动。',
+      notFoundDescription: '此地址没有页面。页面可能已移动，或者链接有误。',
     },
     support: '支持',
   },

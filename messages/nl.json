@@ -1241,7 +1241,12 @@
     "tryAgain": "Opnieuw proberen",
     "goHome": "Ga naar de startpagina",
     "notFoundTitle": "Pagina niet gevonden",
-    "notFoundDescription": "De pagina die je zoekt bestaat niet of is mogelijk verplaatst."
+    "notFoundDescription": "Op dit adres staat geen pagina. Misschien is die verplaatst, of klopt de link niet.",
+    "notFoundAskedFor": "Gevraagd adres",
+    "notFoundDownloadsLine": "De gratis plug-in en de apps voor Mac, Windows en Linux. iOS en Android zijn in bèta.",
+    "notFoundProLine": "Koppel betaalterminals en voeg meer kassa’s en winkels toe.",
+    "notFoundDocsLine": "Zo installeer, stel je in en verkoop je met WCPOS.",
+    "notFoundSupportLine": "Stel een vraag en krijg een antwoord uit de documentatie, of vraag het op Discord."
   },
   "consent": {
     "label": "Cookie-toestemming",

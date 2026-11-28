@@ -35,7 +35,7 @@ const attributePattern = new RegExp(
  * explicit localization boundary) before it reaches rendered JSX.
  */
 const allowed = new Set([
-  'src/app/[locale]/not-found.tsx|text|WCPOS Pro',
+  'src/components/main/not-found-content.tsx|text|WCPOS Pro',
   'src/app/not-found.tsx|text|WCPOS Pro',
   'src/app/[locale]/(auth)/login/login-page-client.tsx|text|Google',
   'src/app/[locale]/(auth)/login/login-page-client.tsx|text|GitHub',

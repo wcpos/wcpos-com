@@ -1241,7 +1241,12 @@
     "tryAgain": "Try again",
     "goHome": "Go to homepage",
     "notFoundTitle": "Page not found",
-    "notFoundDescription": "The page you are looking for does not exist or may have moved."
+    "notFoundDescription": "There is no page at this address. It may have moved, or the link may be wrong.",
+    "notFoundAskedFor": "You asked for",
+    "notFoundDownloadsLine": "The free plugin and the apps for Mac, Windows and Linux. iOS and Android are in beta.",
+    "notFoundProLine": "Connect payment terminals and add more registers and stores.",
+    "notFoundDocsLine": "How to install, set up and sell with WCPOS.",
+    "notFoundSupportLine": "Ask a question and get an answer from the docs, or ask on Discord."
   },
   "consent": {
     "label": "Cookie consent",

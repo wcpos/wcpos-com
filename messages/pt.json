@@ -1241,7 +1241,12 @@
     "tryAgain": "Tentar novamente",
     "goHome": "Ir para a página inicial",
     "notFoundTitle": "Página não encontrada",
-    "notFoundDescription": "A página que procura não existe ou pode ter sido movida."
+    "notFoundDescription": "Não existe nenhuma página neste endereço. Pode ter sido movida, ou a ligação pode estar errada.",
+    "notFoundAskedFor": "Endereço pedido",
+    "notFoundDownloadsLine": "O plugin gratuito e as aplicações para Mac, Windows e Linux. iOS e Android estão em beta.",
+    "notFoundProLine": "Ligue terminais de pagamento e adicione mais caixas e lojas.",
+    "notFoundDocsLine": "Como instalar, configurar e vender com o WCPOS.",
+    "notFoundSupportLine": "Faça uma pergunta e obtenha uma resposta da documentação, ou pergunte no Discord."
   },
   "consent": {
     "label": "Consentimento de cookies",

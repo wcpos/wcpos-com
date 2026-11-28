@@ -1241,7 +1241,12 @@
     "tryAgain": "Erneut versuchen",
     "goHome": "Zur Startseite",
     "notFoundTitle": "Seite nicht gefunden",
-    "notFoundDescription": "Die gesuchte Seite existiert nicht oder wurde verschoben."
+    "notFoundDescription": "Unter dieser Adresse gibt es keine Seite. Sie wurde vielleicht verschoben, oder der Link ist falsch.",
+    "notFoundAskedFor": "Angefragte Adresse",
+    "notFoundDownloadsLine": "Das kostenlose Plugin und die Apps für Mac, Windows und Linux. iOS und Android sind in der Beta.",
+    "notFoundProLine": "Kartenterminals anbinden und weitere Kassen und Shops hinzufügen.",
+    "notFoundDocsLine": "So installieren, einrichten und verkaufen Sie mit WCPOS.",
+    "notFoundSupportLine": "Stellen Sie eine Frage und erhalten Sie eine Antwort aus der Dokumentation, oder fragen Sie auf Discord."
   },
   "consent": {
     "label": "Cookie-Zustimmung",

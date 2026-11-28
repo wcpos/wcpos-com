@@ -1241,7 +1241,12 @@
     "tryAgain": "重试",
     "goHome": "前往首页",
     "notFoundTitle": "页面未找到",
-    "notFoundDescription": "您要查找的页面不存在，或可能已被移动。"
+    "notFoundDescription": "此地址没有页面。页面可能已移动，或者链接有误。",
+    "notFoundAskedFor": "您请求的地址",
+    "notFoundDownloadsLine": "免费插件，以及适用于 Mac、Windows 和 Linux 的应用。iOS 和 Android 版处于测试阶段。",
+    "notFoundProLine": "连接支付终端，并添加更多收银台和店铺。",
+    "notFoundDocsLine": "如何安装、设置并使用 WCPOS 销售。",
+    "notFoundSupportLine": "提出问题并从文档中获得解答，或在 Discord 上提问。"
   },
   "consent": {
     "label": "Cookie 同意",

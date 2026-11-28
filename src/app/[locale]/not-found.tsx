@@ -1,50 +1,21 @@
-'use client'
-
-import { useTranslations } from 'next-intl'
-import { SearchX } from 'lucide-react'
-import { Link } from '@/i18n/navigation'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
+import { SiteHeader } from '@/components/main/site-header'
+import { SiteFooter } from '@/components/main/site-footer'
+import { NotFoundContent } from '@/components/main/not-found-content'
 
 /**
- * Localized 404 page. Rendered when notFound() is triggered within the
+ * Localized 404 page, inside the site shell so a lost visitor keeps the
+ * header and footer. Rendered when notFound() is triggered within the
  * [locale] segment — including unknown URLs caught by the [...rest]
- * catch-all route.
- *
- * Client component so that next-intl's Link resolves the locale from
- * NextIntlClientProvider context instead of request headers (which would
- * force dynamic rendering during static generation).
+ * catch-all route. The [locale] layout has already set the request locale
+ * (falling back to the default for an invalid one), which the shell's
+ * translations read.
  */
 export default function NotFoundPage() {
-  const t = useTranslations('errors')
-  const tHeader = useTranslations('header')
-
   return (
-    <main className="flex min-h-screen items-center justify-center p-8">
-      <title>{`${t('notFoundTitle')} | WCPOS`}</title>
-      <Card className="w-full max-w-md">
-        <CardContent className="py-8 text-center text-muted-foreground">
-          <SearchX className="h-8 w-8 mx-auto mb-2 opacity-50" />
-          <h1 className="font-medium text-foreground">{t('notFoundTitle')}</h1>
-          <p className="text-sm mt-1">
-            {t('notFoundDescription')}
-          </p>
-          <div className="mt-4 flex flex-wrap justify-center gap-2">
-            <Button asChild>
-              <Link href="/">{t('goHome')}</Link>
-            </Button>
-            <Button variant="outline" asChild>
-              <Link href="/pro">WCPOS Pro</Link>
-            </Button>
-            <Button variant="outline" asChild>
-              <Link href="/downloads">{tHeader('downloads')}</Link>
-            </Button>
-            <Button variant="outline" asChild>
-              <Link href="/support">{tHeader('support')}</Link>
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-    </main>
+    <div className="flex min-h-screen flex-col">
+      <SiteHeader />
+      <NotFoundContent />
+      <SiteFooter />
+    </div>
   )
 }

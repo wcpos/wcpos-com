@@ -1241,7 +1241,12 @@
     "tryAgain": "Riprova",
     "goHome": "Vai alla home",
     "notFoundTitle": "Pagina non trovata",
-    "notFoundDescription": "La pagina che cerchi non esiste o potrebbe essere stata spostata."
+    "notFoundDescription": "Non c’è nessuna pagina a questo indirizzo. Potrebbe essere stata spostata, oppure il link è sbagliato.",
+    "notFoundAskedFor": "Indirizzo richiesto",
+    "notFoundDownloadsLine": "Il plugin gratuito e le app per Mac, Windows e Linux. iOS e Android sono in beta.",
+    "notFoundProLine": "Collega i terminali di pagamento e aggiungi altre casse e negozi.",
+    "notFoundDocsLine": "Come installare, configurare e vendere con WCPOS.",
+    "notFoundSupportLine": "Fai una domanda e ricevi una risposta dalla documentazione, oppure chiedi su Discord."
   },
   "consent": {
     "label": "Consenso cookie",

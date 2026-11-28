@@ -1241,7 +1241,12 @@
     "tryAgain": "再試行",
     "goHome": "ホームへ移動",
     "notFoundTitle": "ページが見つかりません",
-    "notFoundDescription": "お探しのページは存在しないか、移動された可能性があります。"
+    "notFoundDescription": "このアドレスにはページがありません。移動したか、リンクが間違っている可能性があります。",
+    "notFoundAskedFor": "リクエストされたアドレス",
+    "notFoundDownloadsLine": "無料のプラグインと、Mac・Windows・Linux 用のアプリ。iOS と Android はベータ版です。",
+    "notFoundProLine": "決済端末を接続し、レジやストアを追加できます。",
+    "notFoundDocsLine": "WCPOS のインストール、設定、販売の方法。",
+    "notFoundSupportLine": "質問するとドキュメントから回答が得られます。Discord で質問することもできます。"
   },
   "consent": {
     "label": "Cookieの同意",
