@@ -1,7 +1,8 @@
 import { useTranslations } from 'next-intl'
 import { cn } from '@/lib/utils'
-import { Section } from '@/components/ui/section'
+import { Container, Section } from '@/components/ui/section'
 import { CloudSync } from './acts/cloud-sync'
+import { FreeInTwoStrip } from './free-in-two-strip'
 import {
   CopyAct1,
   CopyAct2,
@@ -27,9 +28,11 @@ export const COUNTER_CARD_SIZES =
   '(min-width: 768px) 672px, (min-width: 640px) 608px, calc(100vw - 2rem)'
 
 /**
- * The scroll story without the scroll: four stacked dark sections with the
- * same copy and device tableaus. Serves small viewports (the fixed-size
- * choreography doesn't fit) and prefers-reduced-motion users.
+ * The scroll story without the scroll: four stacked sections with the same
+ * copy and device tableaus. Serves small viewports (the fixed-size
+ * choreography doesn't fit) and prefers-reduced-motion users. Act 1 is the
+ * counter, always light; acts 2-4 follow the page theme and, from md up,
+ * split copy and stage, alternating sides.
  */
 
 function StageStrip({
@@ -43,14 +46,45 @@ function StageStrip({
     <div
       aria-hidden="true"
       className={cn(
-        'relative mt-10 flex items-center justify-center overflow-hidden',
+        'relative mt-8 flex items-center justify-center overflow-hidden md:mt-0',
         className
       )}
     >
-      <div className="flex origin-center scale-[0.55] items-center justify-center gap-8 sm:scale-75 lg:scale-100">
+      <div className="flex origin-center scale-[0.55] items-center justify-center gap-8 sm:scale-75 md:scale-[0.6] xl:scale-75">
         {children}
       </div>
     </div>
+  )
+}
+
+/** One stacked act: copy and stage, side by side from md up. */
+function StoryAct({
+  copy,
+  stage,
+  stageFirst = false,
+}: {
+  copy: React.ReactNode
+  stage: React.ReactNode
+  stageFirst?: boolean
+}) {
+  return (
+    <Section
+      tone="none"
+      spacing="default"
+      bare
+      className={cn('relative overflow-hidden', styles.studioThemed)}
+    >
+      <div aria-hidden="true" className={styles.studioGrid} />
+      <Container
+        className={cn(
+          'relative grid items-center gap-2 md:gap-10',
+          stageFirst ? 'md:grid-cols-[7fr_5fr]' : 'md:grid-cols-[5fr_7fr]'
+        )}
+      >
+        <div className={cn('max-w-2xl', stageFirst && 'md:order-last')}>{copy}</div>
+        {stage}
+      </Container>
+    </Section>
   )
 }
 
@@ -86,50 +120,48 @@ export function StoryStatic() {
         </div>
       </Section>
 
-      <Section tone="none" spacing="default" className={cn('overflow-hidden', styles.lightStudio)}>
-        <div className="mx-auto max-w-2xl text-center">
-          <CopyAct2 tone="onLight" />
-        </div>
-        <StageStrip className="h-[220px] sm:h-[280px]">
-          <DevicePhone />
-          <DeviceTablet className="h-[240px] w-[348px]" />
-          <DeviceLaptop className="w-[340px]" />
-        </StageStrip>
-      </Section>
+      <FreeInTwoStrip />
 
-      <Section
-        tone="none"
-        spacing="default"
-        className={cn('overflow-hidden', styles.lightStudio)}
-      >
-        <div className="mx-auto max-w-2xl text-center">
-          <CopyAct3 tone="onLight" />
-        </div>
-        <StageStrip className="h-[220px] sm:h-[260px]">
-          <DevicePrinter />
-          <DeviceTerminal />
-          <DeviceScanner />
-        </StageStrip>
-      </Section>
+      <StoryAct
+        stageFirst
+        copy={<CopyAct2 tone="themed" />}
+        stage={
+          <StageStrip className="h-[220px] sm:h-[280px]">
+            <DevicePhone />
+            <DeviceTablet className="h-[240px] w-[348px]" />
+            <DeviceLaptop className="w-[340px]" />
+          </StageStrip>
+        }
+      />
 
-      <Section
-        tone="none"
-        spacing="default"
-        className={cn('overflow-hidden', styles.lightStudio)}
-      >
-        <div className="mx-auto max-w-2xl text-center">
-          <CopyAct4 tone="onLight" />
-        </div>
-        {/* the sync arcs point at the register — without the tablet the
-            cloud syncs with nothing (the pinned variant keeps its persistent
-            tablet on stage here; this variant has to bring its own) */}
-        <StageStrip className="h-[300px] sm:h-[400px]">
-          <div className="flex flex-col items-center">
-            <CloudSync light />
-            <DeviceTablet className="-mt-9 h-[210px] w-[304px]" />
-          </div>
-        </StageStrip>
-      </Section>
+      <StoryAct
+        copy={<CopyAct3 tone="themed" />}
+        stage={
+          <StageStrip className="h-[220px] sm:h-[260px]">
+            <DevicePrinter />
+            <DeviceTerminal />
+            <DeviceScanner />
+          </StageStrip>
+        }
+      />
+
+      {/* the sync arcs point at the register — without the tablet the
+          cloud syncs with nothing (the pinned variant keeps its persistent
+          tablet on stage here; this variant has to bring its own) */}
+      <StoryAct
+        stageFirst
+        copy={<CopyAct4 tone="themed" />}
+        stage={
+          <StageStrip className="h-[300px] sm:h-[400px]">
+            <div className="flex flex-col items-center">
+              {/* the cloud's light and dark drawings, switched by theme */}
+              <CloudSync light className="dark:hidden" />
+              <CloudSync className="hidden dark:block" />
+              <DeviceTablet className="-mt-9 h-[210px] w-[304px]" />
+            </div>
+          </StageStrip>
+        }
+      />
     </div>
   )
 }

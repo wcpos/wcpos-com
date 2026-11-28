@@ -3,7 +3,9 @@ import { Button } from '@/components/ui/button'
 import { Link } from '@/i18n/navigation'
 import { cn } from '@/lib/utils'
 
-export type CopyTone = 'onDark' | 'onLight'
+// onLight: the pinned stage, light in both themes. themed: the stacked acts,
+// which follow the page theme (the dark stage under .dark).
+export type CopyTone = 'onDark' | 'onLight' | 'themed'
 
 const toneStyles = {
   onDark: {
@@ -12,11 +14,20 @@ const toneStyles = {
     sideBody: 'text-slate-400',
     chip: 'border-slate-600 text-slate-300',
     badges: 'text-slate-300/90',
+    kicker: 'text-white',
   },
   onLight: {
     heading: 'text-slate-900',
     sideBody: 'text-slate-600',
     chip: 'border-slate-300 text-slate-600',
+    // --foreground's light value: this stage never turns dark
+    kicker: 'text-slate-900',
+  },
+  themed: {
+    heading: 'text-slate-900 dark:text-white',
+    sideBody: 'text-slate-600 dark:text-slate-300',
+    chip: 'border-slate-300 text-slate-600 dark:border-slate-600 dark:text-slate-300',
+    kicker: 'text-foreground',
   },
 } as const
 
@@ -35,26 +46,16 @@ const demoHref = 'https://demo.wcpos.com/pos'
 // phone: both CTAs stack at one shared width; from sm they size to content
 const ctaWidth = 'w-full max-w-xs sm:w-auto sm:max-w-none'
 
+// Eyebrows are ink, never brand red: red on the wood measured 2.65:1.
 function Kicker({
   children,
-  tone = 'onDark',
   className,
 }: {
   children: React.ReactNode
-  tone?: CopyTone
-  className?: string
+  className: string
 }) {
-  // fixed red-400: the stage is always dark, but --wcpos-red-accent only
-  // lightens under .dark — in light mode it would sit at 42% lightness on
-  // slate-900 and fail contrast
   return (
-    <p
-      className={cn(
-        'mb-3 text-xs font-bold uppercase tracking-[0.18em]',
-        tone === 'onLight' ? 'text-wcpos-red' : 'text-red-400',
-        className
-      )}
-    >
+    <p className={cn('mb-3 text-xs font-bold uppercase tracking-[0.18em]', className)}>
       {children}
     </p>
   )
@@ -69,35 +70,20 @@ export function CopyAct1({
 }) {
   const Heading = headingLevel === 1 ? 'h1' : 'h2'
   const t = toneStyles[tone]
+  const onPhoto = tone !== 'onDark'
   const copy = useTranslations('home.story')
   return (
     <>
-      <p
-        className={cn(
-          'mx-auto mb-4 max-w-xl text-sm',
-          tone === 'onLight'
-            ? cn('font-medium text-[#2a1e10]', letterpress)
-            : toneStyles.onDark.body
-        )}
-      >
-        <span
-          className={cn(
-            'font-bold',
-            tone === 'onLight' ? 'text-wcpos-red' : 'text-red-400'
-          )}
-        >
-          {copy('a1.v2.label')}
-        </span>
-        <span aria-hidden="true"> · </span>
-        {copy('a1.v2.text')}
-      </p>
-      <Kicker tone={tone} className={tone === 'onLight' ? letterpress : undefined}>
+      <Kicker className={onPhoto ? cn('text-[#3b2a17]', letterpress) : t.kicker}>
         {copy('a1.k')}
       </Kicker>
       <Heading
         className={cn(
           'mb-4 sm:text-balance text-4xl font-bold leading-[1.05] tracking-tight md:text-5xl',
-          tone === 'onLight' ? cn('text-[#3b2a17]', letterpress) : t.heading
+          // German binds "Dein WooCommerce-Shop" and steps down so it breaks
+          // as two balanced lines in the phone column
+          'max-md:[&:lang(de)]:text-[28px]',
+          onPhoto ? cn('text-[#3b2a17]', letterpress) : t.heading
         )}
       >
         {copy('a1.h')}
@@ -108,21 +94,36 @@ export function CopyAct1({
       <p
         className={cn(
           'mx-auto mb-7 max-w-xl text-base md:text-lg',
-          tone === 'onLight'
+          onPhoto
             ? cn('font-medium text-[#2a1e10]', letterpress)
             : toneStyles.onDark.body
         )}
       >
         {copy('a1.b')}
       </p>
+      <p
+        className={cn(
+          'mx-auto -mt-3 mb-4 max-w-xl text-[13px] font-medium leading-[18px]',
+          onPhoto ? cn('text-[#2a1e10]', letterpress) : toneStyles.onDark.body
+        )}
+      >
+        {copy.rich('a1.v2', {
+          b: (chunks) => (
+            <span className={cn('font-semibold', onPhoto && 'text-[#3b2a17]')}>
+              {chunks}
+            </span>
+          ),
+        })}
+      </p>
       <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
         <Button asChild variant="brand-on-dark" size="xl" className={ctaWidth}>
           <a href={demoHref}>{copy('a1.c1')}</a>
         </Button>
-        {/* brand-outline is white-on-dark; flip to neutral outline on light */}
+        {/* the counter photo is always light: the secondary is the filled
+            white inverse there, one drawing in both themes */}
         <Button
           asChild
-          variant={tone === 'onLight' ? 'outline' : 'brand-outline'}
+          variant={onPhoto ? 'inverse' : 'brand-outline'}
           size="xl"
           className={ctaWidth}
         >
@@ -132,8 +133,7 @@ export function CopyAct1({
       <p
         className={cn(
           'mt-3 text-xs',
-          t.sideBody,
-          tone === 'onLight' && letterpress
+          onPhoto ? cn('text-[#2a1e10]', letterpress) : t.sideBody
         )}
       >
         {copy('a1.demoLogin')}
@@ -141,7 +141,7 @@ export function CopyAct1({
       <div
         className={cn(
           'mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-1 text-xs font-medium',
-          tone === 'onLight'
+          onPhoto
             ? cn('font-semibold text-[#2a1e10]', letterpress)
             : toneStyles.onDark.badges
         )}
@@ -165,7 +165,7 @@ export function CopyAct2({ tone = 'onDark' }: { tone?: CopyTone }) {
   const copy = useTranslations('home.story')
   return (
     <>
-      <Kicker tone={tone}>{copy('a2.k')}</Kicker>
+      <Kicker className={t.kicker}>{copy('a2.k')}</Kicker>
       <h2 className={cn('mb-3 text-3xl font-bold leading-[1.1] tracking-tight md:text-4xl', t.heading)}>
         {copy('a2.h')}
       </h2>
@@ -197,7 +197,7 @@ export function CopyAct3({ tone = 'onDark' }: { tone?: CopyTone }) {
   const copy = useTranslations('home.story')
   return (
     <>
-      <Kicker tone={tone}>{copy('a3.k')}</Kicker>
+      <Kicker className={t.kicker}>{copy('a3.k')}</Kicker>
       <h2 className={cn('mb-3 text-3xl font-bold leading-[1.1] tracking-tight md:text-4xl', t.heading)}>
         {copy('a3.h')}
       </h2>
@@ -213,7 +213,7 @@ export function CopyAct4({ tone = 'onDark' }: { tone?: CopyTone }) {
   const copy = useTranslations('home.story')
   return (
     <>
-      <Kicker tone={tone}>{copy('a4.k')}</Kicker>
+      <Kicker className={t.kicker}>{copy('a4.k')}</Kicker>
       <h2 className={cn('mb-3 text-3xl font-bold leading-[1.1] tracking-tight md:text-4xl', t.heading)}>
         {copy('a4.h')}
       </h2>

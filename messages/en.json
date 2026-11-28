@@ -268,12 +268,9 @@
     "story": {
       "a1": {
         "k": "Point of Sale for WooCommerce",
-        "v2": {
-          "label": "New in 2.0",
-          "text": "Open and close your register, split payments and see today's sales — free."
-        },
+        "v2": "<b>Free in 2.0</b>: split payments, sell when the internet drops, today’s sales.",
         "h": "Your WooCommerce store, at the counter.",
-        "b": "WCPOS turns your tablet, phone or computer into a register — same catalog, same stock, same prices, even offline.",
+        "b": "WCPOS turns your tablet, phone or computer into a register. Products, stock and prices come straight from your store, and a cash sale still goes through when the internet drops.",
         "c1": "Try Live Demo",
         "c2": "Download Free",
         "demoLogin": "Demo login: demo / demo",
@@ -283,10 +280,34 @@
           "b3": "Since 2014"
         }
       },
+      "free2": {
+        "title": "Free in WCPOS 2.0",
+        "since": "Out since 9 November 2026: plugin, desktop and web.",
+        "register": {
+          "title": "Open and close your register",
+          "line": "Count the cash drawer at the start and end of a shift. One register, shared by every device."
+        },
+        "split": {
+          "title": "Split payments",
+          "line": "Part cash, part card, in one sale."
+        },
+        "offline": {
+          "title": "Sell when the internet drops",
+          "line": "Cash sales, and card payments taken on your own terminal, still go through, then sync to WooCommerce."
+        },
+        "coupon": {
+          "title": "Apply a coupon",
+          "line": "In the cart, at the register. Was Pro."
+        },
+        "today": {
+          "title": "Today’s sales on this register",
+          "line": "Export CSV or print it. Was Pro."
+        }
+      },
       "a2": {
         "k": "Every screen you own",
-        "h": "One POS. In the browser, on Windows, macOS and Linux.",
-        "b": "Run the register in a browser on any tablet, phone or computer, or install the desktop app. Same store, same data. iOS and Android apps are in beta.",
+        "h": "The same register in the browser and on Windows, macOS and Linux.",
+        "b": "Open the register in a browser on any tablet, phone or computer, or install the desktop app. Every device sells from the same store. The iOS and Android apps are in beta; their 2.0 versions are not in the app stores yet.",
         "platforms": {
           "p1": "Web",
           "p2": "Windows",
@@ -300,12 +321,12 @@
       "a3": {
         "k": "Bring your own hardware",
         "h": "Works with common scanners and receipt printers.",
-        "b": "Almost every barcode scanner works the moment you plug it in or pair it. Epson, Star and other ESC/POS receipt printers connect by USB, Wi-Fi or Bluetooth, depending on the device. Take cards on your own terminal and WCPOS records them; Pro connects Stripe Terminal, SumUp and more."
+        "b": "Almost every barcode scanner works the moment you plug it in or pair it. Epson, Star and other ESC/POS receipt printers connect by USB, Wi-Fi or Bluetooth, depending on the device. Take cards on your own terminal and WCPOS records the payment. With Pro, checkout drives Stripe Terminal, SumUp and Mollie Terminal readers."
       },
       "a4": {
         "k": "Your store, your data",
-        "h": "Synced with WooCommerce. Yours, even offline.",
-        "b": "Every sale lands in your WooCommerce store — you own the data, no middleman. Internet drops? Keep selling; WCPOS syncs when you’re back online."
+        "h": "Every sale lands in WooCommerce, even the offline ones.",
+        "b": "Each sale is a WooCommerce order in your own store, with no middleman holding your data. If the internet drops, cash sales, and card payments taken on your own terminal, are still recorded, and WCPOS sends them to WooCommerce when you are back online."
       },
       "nav": {
         "s1": "Scroll ↓",

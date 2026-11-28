@@ -29,6 +29,7 @@ import {
   DeviceTablet,
   DeviceTerminal,
 } from './devices'
+import { FreeInTwoStrip } from './free-in-two-strip'
 import { K, ACT_BOUNDS, type Track } from './keyframes'
 import {
   COUNTER_CARD_SRC,
@@ -293,7 +294,14 @@ function PinnedStory() {
   if (reducedMotion) {
     return <StoryStatic />
   }
-  return <PinnedStoryScroller />
+  // The counter photo fills the pinned frame, so the 2.0 strip follows the
+  // story here; the stacked story carries it straight after Act 1.
+  return (
+    <>
+      <PinnedStoryScroller />
+      <FreeInTwoStrip />
+    </>
+  )
 }
 
 function PinnedStoryScroller() {
@@ -436,21 +444,8 @@ function PinnedStoryScroller() {
           )}
           style={{ opacity: bgSlateOpacity }}
         >
-          {/* the one continuous background: a slow-breathing brand gradient
-              that ties acts 2-4 together (per-act patterns removed — the
-              acts now illustrate their point with foreground animation) */}
-          <div
-            className={cn(
-              'absolute -inset-x-[10%] -inset-y-[20%]',
-              styles.ribbonWrap
-            )}
-          >
-            <div className={cn('absolute left-[8%] top-[-18%] h-[70%] w-[55%] rounded-full', styles.ribbonBlob1)} />
-            <div className={cn('absolute right-[-6%] top-[6%] h-[75%] w-[60%] rounded-full', styles.ribbonBlob2)} />
-            <div className={cn('absolute bottom-[-22%] left-[34%] h-[60%] w-[46%] rounded-full', styles.ribbonBlob3)} />
-            <div className={cn('absolute bottom-[-8%] left-[-8%] h-[52%] w-[38%] rounded-full', styles.ribbonBlob4)} />
-          </div>
-          <div className={cn('absolute inset-0', styles.ribbonMask)} />
+          {/* acts 2-4 share one calm backdrop: the studio grid, held still */}
+          <div className={styles.studioGrid} />
         </motion.div>
 
         {/* the tablet — one element across all four acts. Translate lives on
@@ -551,7 +546,7 @@ function PinnedStoryScroller() {
         <motion.div
           {...copy1InteractionProps}
           className={cn(
-            'absolute left-1/2 top-[10%] z-20 w-full max-w-2xl -translate-x-1/2 text-center',
+            'absolute left-1/2 top-[7%] z-20 w-full max-w-2xl -translate-x-1/2 text-center',
             !copy1Interactive && 'pointer-events-none'
           )}
           style={{ opacity: copy1Opacity }}

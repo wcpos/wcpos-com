@@ -268,12 +268,9 @@
     "story": {
       "a1": {
         "k": "Punto vendita per WooCommerce",
-        "v2": {
-          "label": "Novità in 2.0",
-          "text": "Apri e chiudi la cassa, suddividi i pagamenti e consulta le vendite di oggi — gratis."
-        },
+        "v2": "<b>Gratis nella 2.0</b>: pagamenti suddivisi, vendite quando cade internet, vendite di oggi.",
         "h": "Il tuo negozio WooCommerce, al banco.",
-        "b": "WCPOS trasforma il tuo tablet, telefono o computer in un registratore — stesso catalogo, stesso stock, stessi prezzi, anche offline.",
+        "b": "WCPOS trasforma il tuo tablet, telefono o computer in una cassa. Prodotti, stock e prezzi arrivano direttamente dal tuo negozio, e una vendita in contanti va a buon fine anche quando cade internet.",
         "c1": "Prova la demo live",
         "c2": "Scarica gratis",
         "demoLogin": "Accesso alla demo: demo / demo",
@@ -283,10 +280,34 @@
           "b3": "Dal 2014"
         }
       },
+      "free2": {
+        "title": "Gratis in WCPOS 2.0",
+        "since": "Disponibile dal 9 novembre 2026: plugin, desktop e web.",
+        "register": {
+          "title": "Apri e chiudi la cassa",
+          "line": "Conta il cassetto all’inizio e alla fine di un turno. Una cassa, condivisa da tutti i dispositivi."
+        },
+        "split": {
+          "title": "Pagamenti suddivisi",
+          "line": "Parte in contanti, parte con carta, in una sola vendita."
+        },
+        "offline": {
+          "title": "Vendi quando cade internet",
+          "line": "Le vendite in contanti e i pagamenti con carta presi sul tuo terminale vanno comunque a buon fine, poi si sincronizzano con WooCommerce."
+        },
+        "coupon": {
+          "title": "Applica un coupon",
+          "line": "Nel carrello, alla cassa. Prima era Pro."
+        },
+        "today": {
+          "title": "Vendite di oggi su questa cassa",
+          "line": "Esporta in CSV o stampa. Prima era Pro."
+        }
+      },
       "a2": {
         "k": "Ogni schermo che possiedi",
-        "h": "Un solo POS. Nel browser, su Windows, macOS e Linux.",
-        "b": "Usa la cassa in un browser su qualsiasi tablet, telefono o computer, oppure installa l’app desktop. Stesso negozio, stessi dati. Le app iOS e Android sono in beta.",
+        "h": "La stessa cassa nel browser e su Windows, macOS e Linux.",
+        "b": "Apri la cassa in un browser su qualsiasi tablet, telefono o computer, oppure installa l’app desktop. Ogni dispositivo vende dallo stesso negozio. Le app iOS e Android sono in beta; le loro versioni 2.0 non sono ancora negli app store.",
         "platforms": {
           "p1": "Web",
           "p2": "Windows",
@@ -300,12 +321,12 @@
       "a3": {
         "k": "Usa il tuo hardware",
         "h": "Funziona con i lettori di codici a barre e le stampanti per ricevute più diffusi.",
-        "b": "Quasi tutti i lettori di codici a barre funzionano non appena li colleghi o li abbini. Le stampanti per ricevute Epson, Star e altre ESC/POS si collegano via USB, Wi-Fi o Bluetooth, a seconda del dispositivo. Accetta carte sul tuo terminale di pagamento e WCPOS le registra; Pro collega Stripe Terminal, SumUp e altri."
+        "b": "Quasi tutti i lettori di codici a barre funzionano non appena li colleghi o li abbini. Le stampanti per ricevute Epson, Star e altre ESC/POS si collegano via USB, Wi-Fi o Bluetooth, a seconda del dispositivo. Accetta carte sul tuo terminale e WCPOS registra il pagamento. Con Pro, il checkout gestisce i lettori Stripe Terminal, SumUp e Mollie Terminal."
       },
       "a4": {
         "k": "Il tuo negozio, i tuoi dati",
-        "h": "Sincronizzato con WooCommerce. Tuo, anche offline.",
-        "b": "Ogni vendita arriva nel tuo negozio WooCommerce — i dati sono tuoi, senza intermediari. Internet cade? Continua a vendere; WCPOS sincronizza quando torni online."
+        "h": "Ogni vendita arriva in WooCommerce, anche quelle offline.",
+        "b": "Ogni vendita è un ordine WooCommerce nel tuo negozio, senza intermediari che custodiscono i tuoi dati. Se cade internet, le vendite in contanti e i pagamenti con carta presi sul tuo terminale vengono comunque registrati, e WCPOS li invia a WooCommerce quando torni online."
       },
       "nav": {
         "s1": "Scorri ↓",

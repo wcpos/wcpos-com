@@ -27,18 +27,35 @@ describe('CopyAct1', () => {
   it.each([
     { name: 'onLight', ui: <CopyAct1 tone="onLight" /> },
     { name: 'default', ui: <CopyAct1 /> },
-  ])('shows the 2.0 copy before the kicker with $name tone', ({ ui }) => {
-    render(
+  ])('drops the 2.0 caption above the kicker and keeps one 2.0 line above the CTAs with $name tone', ({ ui }) => {
+    const { container } = render(
       <NextIntlClientProvider locale="en" messages={messages}>
         {ui}
       </NextIntlClientProvider>
     )
 
-    const label = screen.getByText(messages.home.story.a1.v2.label)
     const kicker = screen.getByText(messages.home.story.a1.k)
-    expect(label).toBeInTheDocument()
-    expect(screen.getByText(messages.home.story.a1.v2.text)).toBeInTheDocument()
-    expect(label.compareDocumentPosition(kicker) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+    expect(container.firstElementChild).toBe(kicker)
+    const line = screen.getByText('Free in 2.0').closest('p')!
+    expect(line).toHaveTextContent(
+      'Free in 2.0: split payments, sell when the internet drops, today’s sales.'
+    )
+    const demo = screen.getByRole('link', { name: messages.home.story.a1.c1 })
+    expect(line.compareDocumentPosition(demo) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+  })
+
+  it('draws the counter-photo CTAs and eyebrow in ink, the secondary as the white inverse', () => {
+    render(
+      <NextIntlClientProvider locale="en" messages={messages}>
+        <CopyAct1 tone="onLight" />
+      </NextIntlClientProvider>
+    )
+
+    const { a1 } = messages.home.story
+    expect(screen.getByRole('link', { name: a1.c2 })).toHaveClass('bg-white', 'text-slate-900')
+    expect(screen.getByText(a1.k)).toHaveClass('text-[#3b2a17]')
+    expect(screen.getByText(a1.k)).not.toHaveClass('text-wcpos-red')
+    expect(screen.getByText(a1.demoLogin)).toHaveClass('text-[#2a1e10]')
   })
 
   it.each([
@@ -85,6 +102,21 @@ describe('CopyAct1', () => {
 })
 
 describe('CopyAct2', () => {
+  it.each([
+    { tone: 'onLight', ink: 'text-slate-900' },
+    { tone: 'themed', ink: 'text-foreground' },
+  ] as const)('sets the $tone eyebrow in ink, not brand red', ({ tone, ink }) => {
+    render(
+      <NextIntlClientProvider locale="en" messages={messages}>
+        <CopyAct2 tone={tone} />
+      </NextIntlClientProvider>
+    )
+
+    const kicker = screen.getByText(messages.home.story.a2.k)
+    expect(kicker).toHaveClass(ink)
+    expect(kicker.className).not.toMatch(/red/)
+  })
+
   it('labels only the iOS and Android chips as beta', () => {
     render(
       <NextIntlClientProvider locale="en" messages={messages}>

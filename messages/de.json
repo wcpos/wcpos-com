@@ -268,12 +268,9 @@
     "story": {
       "a1": {
         "k": "Kassensystem für WooCommerce",
-        "v2": {
-          "label": "Neu in 2.0",
-          "text": "Öffne und schließe deine Kasse, teile Zahlungen auf und sieh die heutigen Verkäufe – kostenlos."
-        },
-        "h": "Dein WooCommerce-Shop an der Ladentheke.",
-        "b": "WCPOS macht dein Tablet, dein Telefon oder deinen Computer zur Kasse — derselbe Katalog, derselbe Bestand, dieselben Preise, sogar offline.",
+        "v2": "<b>Kostenlos in 2.0</b>: geteilte Zahlungen, verkaufen ohne Internet, heutige Verkäufe.",
+        "h": "Dein WooCommerce‑Shop an der Ladentheke.",
+        "b": "WCPOS macht dein Tablet, dein Telefon oder deinen Computer zur Kasse. Produkte, Bestand und Preise kommen direkt aus deinem Shop, und ein Barverkauf geht auch ohne Internet durch.",
         "c1": "Live-Demo testen",
         "c2": "Kostenlos herunterladen",
         "demoLogin": "Demo-Login: demo / demo",
@@ -283,10 +280,34 @@
           "b3": "Seit 2014"
         }
       },
+      "free2": {
+        "title": "Kostenlos in WCPOS 2.0",
+        "since": "Seit 9. November 2026: Plugin, Desktop und Web.",
+        "register": {
+          "title": "Kasse öffnen und schließen",
+          "line": "Zähle die Kassenlade zu Beginn und am Ende einer Schicht. Eine Kasse, die alle Geräte teilen."
+        },
+        "split": {
+          "title": "Geteilte Zahlungen",
+          "line": "Teils bar, teils Karte, in einem Verkauf."
+        },
+        "offline": {
+          "title": "Verkaufen ohne Internet",
+          "line": "Barverkäufe und Kartenzahlungen über dein eigenes Terminal gehen trotzdem durch und werden dann mit WooCommerce synchronisiert."
+        },
+        "coupon": {
+          "title": "Gutschein einlösen",
+          "line": "Im Warenkorb, an der Kasse. Bisher Pro."
+        },
+        "today": {
+          "title": "Heutige Verkäufe an dieser Kasse",
+          "line": "Als CSV exportieren oder drucken. Bisher Pro."
+        }
+      },
       "a2": {
         "k": "Jeder Bildschirm, den du besitzt",
-        "h": "Ein POS. Im Browser, unter Windows, macOS und Linux.",
-        "b": "Nutze die Kasse im Browser auf jedem Tablet, Telefon oder Computer, oder installiere die Desktop-App. Derselbe Shop, dieselben Daten. iOS- und Android-Apps sind in der Beta.",
+        "h": "Dieselbe Kasse im Browser und unter Windows, macOS und Linux.",
+        "b": "Öffne die Kasse im Browser auf jedem Tablet, Telefon oder Computer, oder installiere die Desktop-App. Jedes Gerät verkauft aus demselben Shop. Die Apps für iOS und Android sind in der Beta; ihre 2.0-Versionen sind noch nicht in den App-Stores.",
         "platforms": {
           "p1": "Web",
           "p2": "Windows",
@@ -300,12 +321,12 @@
       "a3": {
         "k": "Bring deine eigene Hardware mit",
         "h": "Funktioniert mit gängigen Scannern und Bondruckern.",
-        "b": "Fast jeder Barcodescanner funktioniert, sobald du ihn anschließt oder koppelst. Epson, Star und andere ESC/POS-Bondrucker verbinden sich je nach Gerät per USB, WLAN oder Bluetooth. Nimm Karten über dein eigenes Zahlungsterminal an, WCPOS erfasst sie; Pro verbindet Stripe Terminal, SumUp und mehr."
+        "b": "Fast jeder Barcodescanner funktioniert, sobald du ihn anschließt oder koppelst. Epson, Star und andere ESC/POS-Bondrucker verbinden sich je nach Gerät per USB, WLAN oder Bluetooth. Nimm Karten über dein eigenes Terminal an, WCPOS erfasst die Zahlung. Mit Pro steuert der Checkout Lesegeräte von Stripe Terminal, SumUp und Mollie Terminal."
       },
       "a4": {
         "k": "Dein Shop, deine Daten",
-        "h": "Mit WooCommerce synchronisiert. Gehört dir, sogar offline.",
-        "b": "Jeder Verkauf landet in deinem WooCommerce-Shop — die Daten gehören dir, ohne Mittelsmann. Internet weg? Verkaufe weiter; WCPOS synchronisiert, sobald du wieder online bist."
+        "h": "Jeder Verkauf landet in WooCommerce, auch die Offline-Verkäufe.",
+        "b": "Jeder Verkauf ist eine WooCommerce-Bestellung in deinem eigenen Shop, ohne Mittelsmann. Fällt das Internet aus, erfasst WCPOS Barverkäufe und Kartenzahlungen, die du über dein eigenes Terminal annimmst, trotzdem und überträgt sie an WooCommerce, sobald du wieder online bist."
       },
       "nav": {
         "s1": "Scrollen ↓",

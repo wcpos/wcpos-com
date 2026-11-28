@@ -268,12 +268,9 @@
     "story": {
       "a1": {
         "k": "Kassasysteem voor WooCommerce",
-        "v2": {
-          "label": "Nieuw in 2.0",
-          "text": "Open en sluit je kassa, splits betalingen en bekijk de verkopen van vandaag — gratis."
-        },
+        "v2": "<b>Gratis in 2.0</b>: gesplitste betalingen, verkopen als het internet wegvalt, verkopen van vandaag.",
         "h": "Je WooCommerce-winkel, aan de toonbank.",
-        "b": "WCPOS verandert je tablet, telefoon of computer in een kassa — dezelfde catalogus, dezelfde voorraad, dezelfde prijzen, zelfs offline.",
+        "b": "WCPOS verandert je tablet, telefoon of computer in een kassa. Producten, voorraad en prijzen komen rechtstreeks uit je winkel, en een contante verkoop gaat gewoon door als het internet wegvalt.",
         "c1": "Live demo proberen",
         "c2": "Gratis downloaden",
         "demoLogin": "Inloggen op de demo: demo / demo",
@@ -283,10 +280,34 @@
           "b3": "Sinds 2014"
         }
       },
+      "free2": {
+        "title": "Gratis in WCPOS 2.0",
+        "since": "Uit sinds 9 november 2026: plugin, desktop en web.",
+        "register": {
+          "title": "Je kassa openen en sluiten",
+          "line": "Tel de kassalade aan het begin en einde van een dienst. Eén kassa, gedeeld door elk apparaat."
+        },
+        "split": {
+          "title": "Gesplitste betalingen",
+          "line": "Deels contant, deels met kaart, in één verkoop."
+        },
+        "offline": {
+          "title": "Verkopen als het internet wegvalt",
+          "line": "Contante verkopen en kaartbetalingen op je eigen terminal gaan gewoon door en synchroniseren daarna met WooCommerce."
+        },
+        "coupon": {
+          "title": "Een kortingscode toepassen",
+          "line": "In de winkelwagen, aan de kassa. Was Pro."
+        },
+        "today": {
+          "title": "Verkopen van vandaag op deze kassa",
+          "line": "Exporteer als CSV of print het. Was Pro."
+        }
+      },
       "a2": {
         "k": "Elk scherm dat je hebt",
-        "h": "Eén kassasysteem. In de browser, op Windows, macOS en Linux.",
-        "b": "Gebruik de kassa in een browser op elke tablet, telefoon of computer, of installeer de desktopapp. Dezelfde winkel, dezelfde gegevens. iOS- en Android-apps zijn in bèta.",
+        "h": "Dezelfde kassa in de browser en op Windows, macOS en Linux.",
+        "b": "Open de kassa in een browser op elke tablet, telefoon of computer, of installeer de desktopapp. Elk apparaat verkoopt vanuit dezelfde winkel. De iOS- en Android-apps zijn in bèta; hun 2.0-versies staan nog niet in de appwinkels.",
         "platforms": {
           "p1": "Web",
           "p2": "Windows",
@@ -300,12 +321,12 @@
       "a3": {
         "k": "Gebruik je eigen hardware",
         "h": "Werkt met gangbare scanners en bonprinters.",
-        "b": "Bijna elke barcodescanner werkt zodra je hem aansluit of koppelt. Epson, Star en andere ESC/POS-bonprinters maken verbinding via USB, wifi of Bluetooth, afhankelijk van het apparaat. Accepteer kaarten via je eigen betaalterminal en WCPOS registreert ze; Pro koppelt Stripe Terminal, SumUp en meer."
+        "b": "Bijna elke barcodescanner werkt zodra je hem aansluit of koppelt. Epson, Star en andere ESC/POS-bonprinters maken verbinding via USB, wifi of Bluetooth, afhankelijk van het apparaat. Neem kaarten aan op je eigen terminal en WCPOS registreert de betaling. Met Pro stuurt het afrekenen de lezers van Stripe Terminal, SumUp en Mollie Terminal aan."
       },
       "a4": {
         "k": "Jouw winkel, jouw gegevens",
-        "h": "Gesynchroniseerd met WooCommerce. Van jou, ook offline.",
-        "b": "Elke verkoop komt in je WooCommerce-winkel terecht — jij bezit de gegevens, zonder tussenpersoon. Internet valt weg? Blijf verkopen; WCPOS synchroniseert zodra je weer online bent."
+        "h": "Elke verkoop komt in WooCommerce terecht, ook de offline verkopen.",
+        "b": "Elke verkoop is een WooCommerce-bestelling in je eigen winkel, zonder tussenpersoon die je gegevens beheert. Valt het internet weg, dan worden contante verkopen en kaartbetalingen op je eigen terminal toch vastgelegd, en WCPOS stuurt ze naar WooCommerce zodra je weer online bent."
       },
       "nav": {
         "s1": "Scroll ↓",

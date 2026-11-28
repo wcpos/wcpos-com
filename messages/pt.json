@@ -268,12 +268,9 @@
     "story": {
       "a1": {
         "k": "Ponto de venda para WooCommerce",
-        "v2": {
-          "label": "Novidade na 2.0",
-          "text": "Abra e feche a sua caixa, divida pagamentos e veja as vendas de hoje — grátis."
-        },
+        "v2": "<b>Grátis na 2.0</b>: pagamentos divididos, vender quando a internet cai, vendas de hoje.",
         "h": "A sua loja WooCommerce no balcão.",
-        "b": "O WCPOS transforma o seu tablet, telemóvel ou computador numa caixa — o mesmo catálogo, o mesmo stock, os mesmos preços, mesmo offline.",
+        "b": "O WCPOS transforma o seu tablet, telemóvel ou computador numa caixa. Os produtos, o stock e os preços vêm diretamente da sua loja, e uma venda em dinheiro continua a funcionar quando a internet cai.",
         "c1": "Experimentar demonstração",
         "c2": "Descarregar grátis",
         "demoLogin": "Início de sessão na demonstração: demo / demo",
@@ -283,10 +280,34 @@
           "b3": "Desde 2014"
         }
       },
+      "free2": {
+        "title": "Grátis no WCPOS 2.0",
+        "since": "Disponível desde 9 de novembro de 2026: plugin, computador e web.",
+        "register": {
+          "title": "Abrir e fechar a sua caixa",
+          "line": "Conte a gaveta do dinheiro no início e no fim de um turno. Uma caixa, partilhada por todos os dispositivos."
+        },
+        "split": {
+          "title": "Pagamentos divididos",
+          "line": "Parte em dinheiro, parte com cartão, numa só venda."
+        },
+        "offline": {
+          "title": "Vender quando a internet cai",
+          "line": "As vendas em dinheiro e os pagamentos com cartão feitos no seu próprio terminal continuam a funcionar e depois sincronizam com o WooCommerce."
+        },
+        "coupon": {
+          "title": "Aplicar um cupão",
+          "line": "No carrinho, na caixa. Era Pro."
+        },
+        "today": {
+          "title": "Vendas de hoje nesta caixa",
+          "line": "Exporte em CSV ou imprima. Era Pro."
+        }
+      },
       "a2": {
         "k": "Todos os seus ecrãs",
-        "h": "Um POS. No navegador, em Windows, macOS e Linux.",
-        "b": "Use a caixa num navegador em qualquer tablet, telemóvel ou computador, ou instale a aplicação de computador. A mesma loja, os mesmos dados. As aplicações iOS e Android estão em beta.",
+        "h": "A mesma caixa no navegador e em Windows, macOS e Linux.",
+        "b": "Abra a caixa num navegador em qualquer tablet, telemóvel ou computador, ou instale a aplicação de computador. Cada dispositivo vende a partir da mesma loja. As aplicações iOS e Android estão em beta; as versões 2.0 ainda não estão nas lojas de aplicações.",
         "platforms": {
           "p1": "Web",
           "p2": "Windows",
@@ -300,12 +321,12 @@
       "a3": {
         "k": "Use o seu próprio hardware",
         "h": "Funciona com os leitores de códigos de barras e as impressoras de recibos mais comuns.",
-        "b": "Quase todos os leitores de códigos de barras funcionam assim que os liga ou emparelha. As impressoras de recibos Epson, Star e outras ESC/POS ligam-se por USB, Wi-Fi ou Bluetooth, consoante o dispositivo. Aceite cartões no seu próprio terminal de pagamento e o WCPOS regista-os; Pro liga Stripe Terminal, SumUp e outros."
+        "b": "Quase todos os leitores de códigos de barras funcionam assim que os liga ou emparelha. As impressoras de recibos Epson, Star e outras ESC/POS ligam-se por USB, Wi-Fi ou Bluetooth, consoante o dispositivo. Aceite cartões no seu próprio terminal e o WCPOS regista o pagamento. Com o Pro, o checkout controla os leitores Stripe Terminal, SumUp e Mollie Terminal."
       },
       "a4": {
         "k": "A sua loja, os seus dados",
-        "h": "Sincronizado com WooCommerce. Seu, mesmo offline.",
-        "b": "Cada venda fica na sua loja WooCommerce — os dados são seus, sem intermediários. A internet caiu? Continue a vender; o WCPOS sincroniza quando voltar a estar online."
+        "h": "Cada venda chega ao WooCommerce, mesmo as feitas offline.",
+        "b": "Cada venda é uma encomenda WooCommerce na sua própria loja, sem intermediários a guardar os seus dados. Se a internet cair, as vendas em dinheiro e os pagamentos com cartão feitos no seu próprio terminal continuam a ser registados, e o WCPOS envia-os para o WooCommerce quando voltar a estar online."
       },
       "nav": {
         "s1": "Deslizar ↓",

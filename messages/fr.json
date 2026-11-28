@@ -268,12 +268,9 @@
     "story": {
       "a1": {
         "k": "Point de vente pour WooCommerce",
-        "v2": {
-          "label": "Nouveau dans 2.0",
-          "text": "Ouvrez et clôturez votre caisse, fractionnez les paiements et consultez les ventes du jour — gratuitement."
-        },
+        "v2": "<b>Gratuit dans la 2.0</b> : paiements fractionnés, vente sans connexion, ventes du jour.",
         "h": "Votre boutique WooCommerce, au comptoir.",
-        "b": "WCPOS transforme votre tablette, votre téléphone ou votre ordinateur en caisse — même catalogue, même stock, mêmes prix, même hors ligne.",
+        "b": "WCPOS transforme votre tablette, votre téléphone ou votre ordinateur en caisse. Les produits, le stock et les prix viennent directement de votre boutique, et une vente en espèces passe même quand la connexion tombe.",
         "c1": "Essayer la démo en direct",
         "c2": "Télécharger gratuitement",
         "demoLogin": "Identifiants de la démo : demo / demo",
@@ -283,10 +280,34 @@
           "b3": "Depuis 2014"
         }
       },
+      "free2": {
+        "title": "Gratuit dans WCPOS 2.0",
+        "since": "Disponible depuis le 9 novembre 2026 : plugin, bureau et web.",
+        "register": {
+          "title": "Ouvrir et clôturer votre caisse",
+          "line": "Comptez le tiroir-caisse au début et à la fin d’un service. Une seule caisse, partagée par tous les appareils."
+        },
+        "split": {
+          "title": "Paiements fractionnés",
+          "line": "Une partie en espèces, une partie par carte, dans une seule vente."
+        },
+        "offline": {
+          "title": "Vendre quand la connexion tombe",
+          "line": "Les ventes en espèces et les paiements par carte pris sur votre propre terminal passent quand même, puis se synchronisent avec WooCommerce."
+        },
+        "coupon": {
+          "title": "Appliquer un code promo",
+          "line": "Dans le panier, à la caisse. Auparavant Pro."
+        },
+        "today": {
+          "title": "Ventes du jour sur cette caisse",
+          "line": "Exportez en CSV ou imprimez. Auparavant Pro."
+        }
+      },
       "a2": {
         "k": "Tous vos écrans",
-        "h": "Une seule caisse. Dans le navigateur, sous Windows, macOS et Linux.",
-        "b": "Utilisez la caisse dans un navigateur sur n’importe quelle tablette, téléphone ou ordinateur, ou installez l’application de bureau. Même boutique, mêmes données. Les apps iOS et Android sont en bêta.",
+        "h": "La même caisse dans le navigateur et sous Windows, macOS et Linux.",
+        "b": "Ouvrez la caisse dans un navigateur sur n’importe quelle tablette, téléphone ou ordinateur, ou installez l’application de bureau. Chaque appareil vend depuis la même boutique. Les apps iOS et Android sont en bêta ; leurs versions 2.0 ne sont pas encore dans les magasins d’applications.",
         "platforms": {
           "p1": "Web",
           "p2": "Windows",
@@ -300,12 +321,12 @@
       "a3": {
         "k": "Apportez votre propre matériel",
         "h": "Fonctionne avec les lecteurs de codes-barres et les imprimantes de reçus courants.",
-        "b": "Presque tous les lecteurs de codes-barres fonctionnent dès que vous les branchez ou les appairez. Les imprimantes de reçus Epson, Star et autres ESC/POS se connectent en USB, Wi-Fi ou Bluetooth, selon l’appareil. Acceptez les cartes sur votre propre terminal de paiement et WCPOS les enregistre ; Pro connecte Stripe Terminal, SumUp et d’autres."
+        "b": "Presque tous les lecteurs de codes-barres fonctionnent dès que vous les branchez ou les appairez. Les imprimantes de reçus Epson, Star et autres ESC/POS se connectent en USB, Wi-Fi ou Bluetooth, selon l’appareil. Acceptez les cartes sur votre propre terminal et WCPOS enregistre le paiement. Avec Pro, l’encaissement pilote les lecteurs Stripe Terminal, SumUp et Mollie Terminal."
       },
       "a4": {
         "k": "Votre boutique, vos données",
-        "h": "Synchronisé avec WooCommerce. À vous, même hors ligne.",
-        "b": "Chaque vente arrive dans votre boutique WooCommerce — vous possédez les données, sans intermédiaire. La connexion tombe ? Continuez à vendre ; WCPOS synchronise dès votre retour en ligne."
+        "h": "Chaque vente arrive dans WooCommerce, même celles faites hors ligne.",
+        "b": "Chaque vente est une commande WooCommerce dans votre propre boutique, sans intermédiaire qui détient vos données. Si la connexion tombe, les ventes en espèces et les paiements par carte pris sur votre propre terminal sont quand même enregistrés, et WCPOS les envoie à WooCommerce dès votre retour en ligne."
       },
       "nav": {
         "s1": "Faire défiler ↓",
