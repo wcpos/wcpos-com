@@ -1775,9 +1775,22 @@
     "hero": {
       "eyebrow": "A nossa história",
       "title": "Um ponto de venda independente para WooCommerce",
-      "subtitle": "Criado por um antigo lojista, financiado por lojistas — não por investidores. Um programador, mais de uma década de lançamentos, ainda em desenvolvimento."
+      "subtitle": "Criado por um antigo lojista, financiado por lojistas — não por investidores. Um programador, mais de uma década de lançamentos e o WCPOS 2.0 disponível desde 9 de novembro de 2026."
+    },
+    "answers": {
+      "who": "Um programador e antigo lojista. Criou a primeira versão para a sua própria loja em Perth.",
+      "whoShort": "Paul Kilmurray, um programador e antigo lojista.",
+      "whoLink": "Ler a carta dele",
+      "released": "grátis no WordPress.org",
+      "howLongShort": "Criado em 2011 para a loja do Paul. Download gratuito desde 2014.",
+      "howLongLink": "Ver a cronologia",
+      "paid": "Pelos lojistas que compram o Pro. É assim que cada lançamento é pago, incluindo os gratuitos. Sem investidores.",
+      "paidShort": "Pelos lojistas que compram o Pro. Sem investidores.",
+      "paidLink": "O que isso significa na prática"
     },
     "founder": {
+      "heading": "Quem o desenvolve",
+      "lead": "Paul Kilmurray criou o WCPOS para a sua própria loja em Perth. Esta é a carta dele, nas suas palavras.",
       "photoAlt": "Paul na Urban Locavore, a sua loja em Perth",
       "photoCaption": "Urban Locavore, Perth — a loja onde tudo começou",
       "eyebrow": "Uma nota do programador",
@@ -1794,14 +1807,14 @@
         "withPrice": "— O Pro custa <price></price>.",
         "fallback": "— O Pro está disponível na página Pro.",
         "licence": "Se uma licença expirar, o Pro continua a funcionar; apenas deixa de receber atualizações.",
-        "priceSummary": "{yearly}/ano ou {lifetime} uma vez"
+        "priceSummary": "{yearly}/ano"
       }
     },
     "timeline": {
-      "heading": "Como começou e porque continua aqui",
+      "heading": "Há quanto tempo existe",
+      "lead": "De um balcão de loja em Perth até ao WCPOS 2.0.",
       "dates": {
-        "range": "{start} – {end}",
-        "today": "Hoje"
+        "range": "{start} – {end}"
       },
       "items": {
         "m1": {
@@ -1829,13 +1842,15 @@
           "body": "A aposta em React Native compensa: o WCPOS chega ao iOS e ao Android em beta aberta — a mesma caixa, agora no hardware que já está na loja."
         },
         "m7": {
-          "title": "Ainda em desenvolvimento",
-          "body": "Mais de uma década depois. Um programador, financiado pelo Pro, ainda a lançar versões — e a versão gratuita continua a ser real."
+          "title": "WCPOS 2.0",
+          "body": "O plugin, a aplicação de desktop e a aplicação web passam para a 2.0, com um ecrã de caixa reconstruído. As aplicações 2.0 para iOS e Android ainda não estão nas lojas de aplicações."
         }
       }
     },
     "values": {
-      "heading": "O que representa",
+      "heading": "Como é financiado",
+      "lead": "As licenças Pro pagam o trabalho. Estas são as condições que vêm com isso.",
+      "more": "Ver o que o Pro acrescenta",
       "items": {
         "v1": {
           "title": "Independente",
@@ -1843,11 +1858,11 @@
         },
         "v2": {
           "title": "Financiado pelo Pro",
-          "body": "As ferramentas Pro financiam todos os lançamentos, incluindo os gratuitos. Os lojistas pagam diretamente por elas, e é isso que mantém a versão gratuita sem custos."
+          "body": "As ferramentas Pro financiam o desenvolvimento. Os lojistas pagam diretamente por elas, e é isso que mantém a versão gratuita sem custos."
         },
         "v3": {
           "title": "Aberto e GPL",
-          "body": "Lançado no WordPress.org sob a GPL. É seu para usar, inspecionar e manter — onde quer que o WooCommerce funcione."
+          "body": "O plugin gratuito está no WordPress.org sob a GPL: é seu para usar, inspecionar e manter — onde quer que o WooCommerce funcione."
         },
         "v4": {
           "title": "Uma licença justa",

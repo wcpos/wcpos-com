@@ -8,7 +8,8 @@ import {
   type ProOffer,
 } from '@/lib/pro-offer-catalog'
 import { getLiveStoreEnvironment } from '@/lib/store-environment'
-import { Section } from '@/components/ui/section'
+import { cn } from '@/lib/utils'
+import { QuestionSection } from './question-section'
 
 export function FounderLetterFallback() {
   return <FounderLetterContent offers={null} />
@@ -34,6 +35,41 @@ export async function FounderLetter() {
   return <FounderLetterContent offers={offers} />
 }
 
+/** The PK initials disc: the letter's signature, and the hero's "who" answer. */
+export function FounderInitials({ className }: { className: string }) {
+  return (
+    <span
+      aria-hidden="true"
+      className={cn(
+        'flex shrink-0 items-center justify-center rounded-full bg-[#323A46] font-bold text-[#F5E5C0]',
+        className
+      )}
+    >
+      PK
+    </span>
+  )
+}
+
+/** The shop photo as a tilted polaroid, at its real 592 × 800 ratio. */
+function Polaroid({ className, sizes }: { className: string; sizes: string }) {
+  const t = useTranslations('about.founder')
+  return (
+    <figure className={cn('rotate-[1.6deg] bg-white shadow-lg', className)}>
+      <Image
+        src="/paul-urban-locavore.jpg"
+        alt={t('photoAlt')}
+        width={592}
+        height={800}
+        sizes={sizes}
+        className="w-full"
+      />
+      <figcaption className="mt-2 text-center text-[11px] text-slate-500">
+        {t('photoCaption')}
+      </figcaption>
+    </figure>
+  )
+}
+
 function Strong({ children }: { children: React.ReactNode }) {
   return (
     <strong className="font-semibold text-slate-900 dark:text-slate-100">
@@ -55,30 +91,24 @@ function FounderLetterContent({
     : null
 
   return (
-    <Section tone="muted" spacing="default">
-      <article className="mx-auto max-w-2xl rounded-sm bg-[#fffefb] p-8 shadow-lg md:p-12 dark:bg-slate-800">
+    <QuestionSection
+      id="who"
+      tone="muted"
+      title={t('heading')}
+      lead={t('lead')}
+      aside={
+        <Polaroid className="mt-10 hidden w-60 p-2.5 lg:block" sizes="240px" />
+      }
+    >
+      <article className="max-w-180 rounded-sm bg-[#fffefb] px-6 py-8 shadow-lg md:p-12 dark:bg-slate-800">
         <div
           aria-hidden="true"
-          className="-mx-8 -mt-8 mb-8 h-[5px] rounded-t-sm md:-mx-12 md:-mt-12"
+          className="-mx-6 -mt-8 mb-7 h-[5px] rounded-t-sm md:-mx-12 md:-mt-12 md:mb-8"
           style={{
             background:
               'repeating-linear-gradient(90deg,#CD2C24 0 22px,#F5E5C0 22px 44px)',
           }}
         />
-
-        <figure className="float-right mb-3 ml-5 w-[180px] rotate-[1.6deg] bg-white p-2.5 shadow-lg md:w-[218px]">
-          <Image
-            src="/paul-urban-locavore.jpg"
-            alt={t('photoAlt')}
-            width={592}
-            height={800}
-            sizes="(min-width: 768px) 218px, 180px"
-            className="w-full"
-          />
-          <figcaption className="mt-2 text-center text-[11px] text-slate-500">
-            {t('photoCaption')}
-          </figcaption>
-        </figure>
 
         <p className="mb-5 text-xs uppercase tracking-wide text-slate-600 dark:text-slate-400">
           {t('eyebrow')}
@@ -86,6 +116,7 @@ function FounderLetterContent({
         <p className="mb-4 text-xl font-semibold text-slate-900 dark:text-slate-100">
           {t('intro')}
         </p>
+        <Polaroid className="mx-auto mb-5 w-35 p-2 lg:hidden" sizes="140px" />
 
         <p className="mb-4 leading-relaxed text-slate-700 dark:text-slate-300">
           {t.rich('p1', {
@@ -104,9 +135,7 @@ function FounderLetterContent({
         </p>
 
         <div className="mt-6 flex items-center gap-3.5">
-          <span className="flex h-[52px] w-[52px] items-center justify-center rounded-full bg-[#323A46] font-bold text-[#F5E5C0]">
-            PK
-          </span>
+          <FounderInitials className="size-13" />
           <div>
             <div className="text-sm font-semibold text-slate-900 dark:text-slate-100">
               {t('signature.name')}
@@ -138,6 +167,6 @@ function FounderLetterContent({
           {t('ps.licence')}
         </p>
       </article>
-    </Section>
+    </QuestionSection>
   )
 }

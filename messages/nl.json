@@ -1775,9 +1775,22 @@
     "hero": {
       "eyebrow": "Ons verhaal",
       "title": "Een onafhankelijk kassasysteem voor WooCommerce",
-      "subtitle": "Gebouwd door een voormalige winkelier, gefinancierd door winkeliers — niet door investeerders. Eén ontwikkelaar, meer dan tien jaar releases, nog steeds in ontwikkeling."
+      "subtitle": "Gebouwd door een voormalige winkelier, gefinancierd door winkeliers — niet door investeerders. Eén ontwikkelaar, meer dan tien jaar releases, en sinds 9 november 2026 is WCPOS 2.0 er."
+    },
+    "answers": {
+      "who": "Eén ontwikkelaar en voormalige winkelier. Hij bouwde de eerste versie voor zijn eigen winkel in Perth.",
+      "whoShort": "Paul Kilmurray, één ontwikkelaar en voormalige winkelier.",
+      "whoLink": "Lees zijn brief",
+      "released": "gratis op WordPress.org",
+      "howLongShort": "In 2011 gebouwd voor Pauls eigen winkel. Sinds 2014 gratis te downloaden.",
+      "howLongLink": "Bekijk de tijdlijn",
+      "paid": "Door de winkeliers die Pro kopen. Zo wordt elke release betaald, ook de gratis releases. Geen investeerders.",
+      "paidShort": "Door winkeliers die Pro kopen. Geen investeerders.",
+      "paidLink": "Wat dat voor jou betekent"
     },
     "founder": {
+      "heading": "Wie het bouwt",
+      "lead": "Paul Kilmurray bouwde WCPOS voor zijn eigen winkel in Perth. Dit is zijn brief, in zijn eigen woorden.",
       "photoAlt": "Paul bij Urban Locavore, zijn winkel in Perth",
       "photoCaption": "Urban Locavore, Perth — de winkel waarmee alles begon",
       "eyebrow": "Een bericht van de ontwikkelaar",
@@ -1794,14 +1807,14 @@
         "withPrice": "— Pro kost <price></price>.",
         "fallback": "— Pro is beschikbaar via de Pro-pagina.",
         "licence": "Als een licentie verloopt, blijft Pro werken; je ontvangt alleen geen updates meer.",
-        "priceSummary": "{yearly}/jaar of {lifetime} eenmalig"
+        "priceSummary": "{yearly}/jaar"
       }
     },
     "timeline": {
-      "heading": "Hoe het begon, en waarom het er nog steeds is",
+      "heading": "Hoe lang het al bestaat",
+      "lead": "Van één winkeltoonbank in Perth tot WCPOS 2.0.",
       "dates": {
-        "range": "{start} – {end}",
-        "today": "Vandaag"
+        "range": "{start} – {end}"
       },
       "items": {
         "m1": {
@@ -1829,13 +1842,15 @@
           "body": "De gok op React Native betaalt zich uit: WCPOS komt in open bèta naar iOS en Android — dezelfde kassa, nu op de hardware die al in de winkel ligt."
         },
         "m7": {
-          "title": "Nog steeds in ontwikkeling",
-          "body": "Meer dan tien jaar later. Eén ontwikkelaar, gefinancierd door Pro, nog steeds releases — en de gratis versie is nog steeds echt bruikbaar."
+          "title": "WCPOS 2.0",
+          "body": "De plugin, de desktop-app en de web-app gaan naar 2.0, met een opnieuw gebouwd kassascherm. De 2.0-apps voor iOS en Android staan nog niet in de stores."
         }
       }
     },
     "values": {
-      "heading": "Waar het voor staat",
+      "heading": "Hoe het betaald wordt",
+      "lead": "Pro-licenties betalen het werk. Dit zijn de voorwaarden die daarbij horen.",
+      "more": "Bekijk wat Pro toevoegt",
       "items": {
         "v1": {
           "title": "Onafhankelijk",
@@ -1843,11 +1858,11 @@
         },
         "v2": {
           "title": "Gefinancierd door Pro",
-          "body": "Pro-tools financieren elke release, inclusief de gratis versies. Winkeliers betalen er rechtstreeks voor, en daardoor blijft de gratis versie gratis."
+          "body": "Pro-tools financieren de ontwikkeling. Winkeliers betalen er rechtstreeks voor, en daardoor blijft de gratis versie gratis."
         },
         "v3": {
           "title": "Open en GPL",
-          "body": "Uitgebracht op WordPress.org onder de GPL. Van jou om te gebruiken, te inspecteren en te houden — overal waar WooCommerce draait."
+          "body": "De gratis plugin staat op WordPress.org onder de GPL: van jou om te gebruiken, te inspecteren en te houden, overal waar WooCommerce draait."
         },
         "v4": {
           "title": "Een eerlijke licentie",

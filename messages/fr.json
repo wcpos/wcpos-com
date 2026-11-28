@@ -1775,9 +1775,22 @@
     "hero": {
       "eyebrow": "Notre histoire",
       "title": "Un point de vente indépendant pour WooCommerce",
-      "subtitle": "Créé par un ancien commerçant, financé par des commerçants — pas par des investisseurs. Un seul développeur, plus de dix ans de versions, et toujours en évolution."
+      "subtitle": "Créé par un ancien commerçant, financé par des commerçants — pas par des investisseurs. Un seul développeur, plus de dix ans de versions, et WCPOS 2.0 disponible depuis le 9 novembre 2026."
+    },
+    "answers": {
+      "who": "Un seul développeur, ancien commerçant. Il a créé la première version pour sa propre boutique à Perth.",
+      "whoShort": "Paul Kilmurray, développeur et ancien commerçant.",
+      "whoLink": "Lire sa lettre",
+      "released": "gratuit sur WordPress.org",
+      "howLongShort": "Créé en 2011 pour la boutique de Paul. Téléchargement gratuit depuis 2014.",
+      "howLongLink": "Voir la chronologie",
+      "paid": "Par les commerçants qui achètent Pro. Chaque version, y compris les gratuites, est financée ainsi. Aucun investisseur.",
+      "paidShort": "Par les commerçants qui achètent Pro. Aucun investisseur.",
+      "paidLink": "Ce que cela signifie pour vous"
     },
     "founder": {
+      "heading": "Qui le développe",
+      "lead": "Paul Kilmurray a créé WCPOS pour sa propre boutique à Perth. Voici sa lettre, avec ses mots.",
       "photoAlt": "Paul chez Urban Locavore, sa boutique à Perth",
       "photoCaption": "Urban Locavore, Perth — la boutique qui a tout lancé",
       "eyebrow": "Un mot du développeur",
@@ -1794,14 +1807,14 @@
         "withPrice": "— Pro est à <price></price>.",
         "fallback": "— Pro est disponible depuis la page Pro.",
         "licence": "Si une licence expire, Pro continue de fonctionner ; vous cessez simplement de recevoir les mises à jour.",
-        "priceSummary": "{yearly}/an ou {lifetime} une seule fois"
+        "priceSummary": "{yearly}/an"
       }
     },
     "timeline": {
-      "heading": "Comment tout a commencé, et pourquoi le projet est toujours là",
+      "heading": "Depuis quand il existe",
+      "lead": "D’un comptoir de boutique à Perth jusqu’à WCPOS 2.0.",
       "dates": {
-        "range": "{start} – {end}",
-        "today": "Aujourd’hui"
+        "range": "{start} – {end}"
       },
       "items": {
         "m1": {
@@ -1829,13 +1842,15 @@
           "body": "Le pari React Native porte ses fruits : WCPOS arrive sur iOS et Android en bêta ouverte — la même caisse, désormais sur le matériel déjà présent dans la boutique."
         },
         "m7": {
-          "title": "Toujours en évolution",
-          "body": "Plus de dix ans plus tard. Un seul développeur, financé par Pro, qui publie encore — et la version gratuite reste une vraie caisse."
+          "title": "WCPOS 2.0",
+          "body": "Le plugin, l’application de bureau et l’application web passent à la 2.0, avec un écran de caisse reconstruit. Les applications 2.0 pour iOS et Android ne sont pas encore sorties sur les stores."
         }
       }
     },
     "values": {
-      "heading": "Ce que le projet défend",
+      "heading": "Comment il est financé",
+      "lead": "Les licences Pro financent le travail. Voici les conditions qui vont avec.",
+      "more": "Voir ce qu’ajoute Pro",
       "items": {
         "v1": {
           "title": "Indépendant",
@@ -1843,11 +1858,11 @@
         },
         "v2": {
           "title": "Financé par Pro",
-          "body": "Les outils Pro financent chaque version, y compris les gratuites. Les commerçants paient directement, et cela permet à la version gratuite de rester gratuite."
+          "body": "Les outils Pro financent le développement. Les commerçants paient directement, et cela permet à la version gratuite de rester gratuite."
         },
         "v3": {
           "title": "Ouvert et GPL",
-          "body": "Publié sur WordPress.org sous GPL. À vous de l’utiliser, de l’inspecter et de le conserver — partout où WooCommerce fonctionne."
+          "body": "Le plugin gratuit est sur WordPress.org sous GPL : à vous de l’utiliser, de l’inspecter et de le conserver, partout où WooCommerce fonctionne."
         },
         "v4": {
           "title": "Une licence équitable",

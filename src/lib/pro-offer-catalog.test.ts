@@ -345,9 +345,9 @@ describe('offer presentation helpers', () => {
     ).toBe('$129 translated $399 (USD)')
     expect(
       formatFounderProPriceSummary(offers, (values) =>
-        `${values.yearly} founder ${values.lifetime}`
+        `${values.yearly} founder`
       )
-    ).toBe('$129 founder $399')
+    ).toBe('$129 founder')
   })
 
   it('builds schema.org offers from translated plan names and catalog facts', () => {

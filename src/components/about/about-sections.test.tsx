@@ -113,7 +113,7 @@ vi.mock('@/lib/pro-offer-catalog', () => ({
     source: 'medusa',
   })),
   applyProOfferCatalogCachePolicy: vi.fn(),
-  formatFounderProPriceSummary: vi.fn(() => '$129/yr or $399 once'),
+  formatFounderProPriceSummary: vi.fn(() => '$129/yr'),
 }))
 import { StoryTimeline } from './story-timeline'
 import { ValuesSection } from './values-section'
@@ -138,7 +138,7 @@ describe('AboutHero', () => {
     ).toBeInTheDocument()
   })
 
-  it('uses the canonical dark hero section seam', () => {
+  it('sits on the default band with the default heading tone', () => {
     renderWithIntl(<AboutHero />)
 
     const heading = screen.getByRole('heading', {
@@ -147,13 +147,36 @@ describe('AboutHero', () => {
     })
     const section = heading.closest('[data-section-tone]')
 
-    expect(section).toHaveAttribute('data-section-tone', 'dark')
-    expect(section).toHaveAttribute('data-section-spacing', 'hero')
-    expect(section).toHaveAttribute('data-section-bare', 'true')
+    expect(section).toHaveAttribute('data-section-tone', 'default')
     expect(heading.closest('[data-section-heading-tone]')).toHaveAttribute(
       'data-section-heading-tone',
-      'inverse'
+      'default'
     )
+  })
+
+  it('answers the three questions with jump links to their sections', () => {
+    renderWithIntl(<AboutHero />)
+    for (const [name, href] of [
+      ['Read his letter', '#who'],
+      ['See the timeline', '#how-long'],
+      ['What that means for you', '#paid'],
+    ]) {
+      expect(screen.getByRole('link', { name })).toHaveAttribute('href', href)
+    }
+    // The questions are labels here; the section H2s ask them once.
+    expect(screen.queryByRole('heading', { level: 2 })).toBeNull()
+    expect(screen.getByText('Who builds it').tagName).toBe('P')
+  })
+
+  it('dates the answer-row milestones like the timeline, newest in red', () => {
+    renderWithIntl(<AboutHero />)
+    expect(screen.getByText('December 2011')).toHaveClass('text-muted-foreground')
+    expect(screen.getByText('May 11, 2014')).toHaveClass('text-muted-foreground')
+    expect(screen.getByText('November 9, 2026')).toHaveClass(
+      'font-semibold',
+      'text-wcpos-red-accent'
+    )
+    expect(screen.getByText('free on WordPress.org')).toBeInTheDocument()
   })
 })
 
@@ -165,15 +188,28 @@ describe('FounderLetter', () => {
     ).toBeInTheDocument()
     // next/image rewrites src through the optimizer (/_next/image?url=…), so
     // assert on the encoded original path rather than the literal URL.
-    expect(screen.getByRole('img')).toHaveAttribute(
-      'src',
-      expect.stringContaining(encodeURIComponent('/paul-urban-locavore.jpg'))
-    )
+    // One frame in the question column (desktop), one in the letter (phone).
+    const photos = screen.getAllByRole('img')
+    expect(photos).toHaveLength(2)
+    for (const photo of photos) {
+      expect(photo).toHaveAttribute(
+        'src',
+        expect.stringContaining(encodeURIComponent('/paul-urban-locavore.jpg'))
+      )
+    }
   })
 
-  it('states the Pro pricing', async () => {
+  it('asks "Who builds it" over the letter', async () => {
     renderWithIntl(await FounderLetter())
-    expect(screen.getByText(/\$129\/yr or \$399 once/)).toBeInTheDocument()
+    expect(
+      screen.getByRole('heading', { level: 2, name: 'Who builds it' })
+    ).toBeInTheDocument()
+  })
+
+  it('states the Yearly price only', async () => {
+    renderWithIntl(await FounderLetter())
+    expect(screen.getByText('$129/yr')).toBeInTheDocument()
+    expect(screen.queryByText(/\$399|once/)).toBeNull()
   })
 
   it('renders a non-price fallback while pricing loads', () => {
@@ -221,39 +257,51 @@ describe('StoryTimeline', () => {
     expect(screen.getByText(/Backbone\.js and an in-browser IndexedDB/)).toBeInTheDocument()
   })
 
+  it('ends on WCPOS 2.0, the only current milestone', () => {
+    renderWithIntl(<StoryTimeline />)
+    expect(screen.getByText('November 9, 2026')).toHaveClass(
+      'text-wcpos-red-accent'
+    )
+    expect(
+      screen.getByRole('heading', { name: 'WCPOS 2.0 Latest' })
+    ).toBeInTheDocument()
+    expect(screen.getByText('May 11, 2014')).toHaveClass('text-muted-foreground')
+    expect(screen.queryByText('Today')).toBeNull()
+    expect(screen.getAllByText('Latest')).toHaveLength(1)
+  })
+
   it('uses the canonical default section seam for the story band', () => {
     renderWithIntl(<StoryTimeline />)
 
     const section = screen
-      .getByRole('heading', { name: "How it started, and why it's still here" })
+      .getByRole('heading', { name: 'How long it has been going' })
       .closest('[data-section-tone]')
 
     expect(section).toHaveAttribute('data-section-tone', 'default')
     expect(section).toHaveAttribute('data-section-spacing', 'default')
-    expect(section).toHaveAttribute('data-section-bare', 'true')
   })
 })
 
 describe('ValuesSection', () => {
-  it('renders the four principles', () => {
+  it('renders the four principles, funding first', () => {
     renderWithIntl(<ValuesSection />)
-    for (const title of [
-      'Independent',
-      'Funded by Pro',
-      'Open & GPL',
-      'A fair license',
-    ]) {
-      expect(
-        screen.getByRole('heading', { name: title })
-      ).toBeInTheDocument()
-    }
+    expect(
+      screen.getAllByRole('heading', { level: 3 }).map((h) => h.textContent)
+    ).toEqual(['Funded by Pro', 'A fair license', 'Independent', 'Open & GPL'])
+  })
+
+  it('links to what Pro adds', () => {
+    renderWithIntl(<ValuesSection />)
+    expect(
+      screen.getByRole('link', { name: 'See what Pro adds' })
+    ).toHaveAttribute('href', '/pro')
   })
 
   it('uses the canonical muted section seam for the values band', () => {
     renderWithIntl(<ValuesSection />)
 
     const section = screen
-      .getByRole('heading', { name: 'What it stands for' })
+      .getByRole('heading', { name: 'How it is paid for' })
       .closest('[data-section-tone]')
 
     expect(section).toHaveAttribute('data-section-tone', 'muted')
@@ -262,8 +310,13 @@ describe('ValuesSection', () => {
 })
 
 describe('AboutCta', () => {
-  it('links the demo, download, and Pro CTAs', () => {
+  it('links the download, demo, and Pro CTAs, download first', () => {
     renderWithIntl(<AboutCta />)
+    expect(screen.getAllByRole('link').map((a) => a.textContent)).toEqual([
+      'Download Free',
+      'Try Live Demo',
+      'See Pro',
+    ])
     expect(
       screen.getByRole('link', { name: 'Try Live Demo' })
     ).toHaveAttribute('href', 'https://demo.wcpos.com/pos')
@@ -290,12 +343,13 @@ describe('AboutCta', () => {
       'data-section-heading-tone',
       'inverse'
     )
-    expect(
-      screen.getByRole('link', { name: 'Try Live Demo' }).parentElement
-    ).toHaveAttribute('data-button-variant', 'brand-on-dark')
+    // Download Free is the only filled button.
     expect(
       screen.getByRole('link', { name: 'Download Free' }).parentElement
-    ).toHaveAttribute('data-button-variant', 'inverse')
+    ).toHaveAttribute('data-button-variant', 'brand-on-dark')
+    expect(
+      screen.getByRole('link', { name: 'Try Live Demo' }).parentElement
+    ).toHaveAttribute('data-button-variant', 'brand-outline')
     expect(screen.getByRole('link', { name: 'See Pro' }).parentElement)
       .toHaveAttribute('data-button-variant', 'brand-outline')
   })

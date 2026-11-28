@@ -1,6 +1,5 @@
-import { NextIntlClientProvider } from 'next-intl'
 import { resolveLocale } from '@/i18n/resolve-locale'
-import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
 import { marketingMetadata } from '@/lib/seo'
@@ -12,7 +11,6 @@ import {
 import { StoryTimeline } from '@/components/about/story-timeline'
 import { ValuesSection } from '@/components/about/values-section'
 import { AboutCta } from '@/components/about/about-cta'
-import { clientMessages } from '@/i18n/client-messages'
 
 export async function generateMetadata({
   params,
@@ -36,21 +34,16 @@ export default async function AboutPage({
 }) {
   const locale = resolveLocale((await params).locale)
   setRequestLocale(locale)
-  const messages = await getMessages()
 
   return (
-    <NextIntlClientProvider
-      messages={clientMessages(messages, ['about.timeline'])}
-    >
-      <main>
-        <AboutHero />
-        <Suspense fallback={<FounderLetterFallback />}>
-          <FounderLetter />
-        </Suspense>
-        <StoryTimeline />
-        <ValuesSection />
-        <AboutCta />
-      </main>
-    </NextIntlClientProvider>
+    <main>
+      <AboutHero />
+      <Suspense fallback={<FounderLetterFallback />}>
+        <FounderLetter />
+      </Suspense>
+      <StoryTimeline />
+      <ValuesSection />
+      <AboutCta />
+    </main>
   )
 }

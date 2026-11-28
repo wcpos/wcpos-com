@@ -1775,9 +1775,22 @@
     "hero": {
       "eyebrow": "Our story",
       "title": "An independent point of sale for WooCommerce",
-      "subtitle": "Built by a former shopkeeper, funded by shopkeepers — not investors. One developer, more than a decade of releases, still shipping."
+      "subtitle": "Built by a former shopkeeper, funded by shopkeepers — not investors. One developer, more than a decade of releases, and WCPOS 2.0 out since November 9, 2026."
+    },
+    "answers": {
+      "who": "One developer and a former shopkeeper. He built the first version for his own shop in Perth.",
+      "whoShort": "Paul Kilmurray, one developer and a former shopkeeper.",
+      "whoLink": "Read his letter",
+      "released": "free on WordPress.org",
+      "howLongShort": "Built for Paul's own shop in 2011. Free to download since 2014.",
+      "howLongLink": "See the timeline",
+      "paid": "By the shopkeepers who buy Pro. Every release, free ones included, is paid for that way. No investors.",
+      "paidShort": "By shopkeepers who buy Pro. No investors.",
+      "paidLink": "What that means for you"
     },
     "founder": {
+      "heading": "Who builds it",
+      "lead": "Paul Kilmurray built WCPOS for his own shop in Perth. This is his letter, in his words.",
       "photoAlt": "Paul at Urban Locavore, his Perth shop",
       "photoCaption": "Urban Locavore, Perth — the store that started it all",
       "eyebrow": "A note from the developer",
@@ -1794,14 +1807,14 @@
         "withPrice": "— Pro is <price></price>.",
         "fallback": "— Pro is available from the Pro page.",
         "licence": "If a license lapses, Pro keeps working; you just stop getting updates.",
-        "priceSummary": "{yearly}/yr or {lifetime} once"
+        "priceSummary": "{yearly}/yr"
       }
     },
     "timeline": {
-      "heading": "How it started, and why it's still here",
+      "heading": "How long it has been going",
+      "lead": "From one shop counter in Perth to WCPOS 2.0.",
       "dates": {
-        "range": "{start} – {end}",
-        "today": "Today"
+        "range": "{start} – {end}"
       },
       "items": {
         "m1": {
@@ -1829,13 +1842,15 @@
           "body": "The React Native bet pays off: WCPOS arrives on iOS and Android in open beta — the same register, now on the hardware already in the shop."
         },
         "m7": {
-          "title": "Still shipping",
-          "body": "More than a decade on. One developer, funded by Pro, still releasing — and the free version is still the real thing."
+          "title": "WCPOS 2.0",
+          "body": "The plugin, the desktop app and the web app move to 2.0, with a rebuilt register screen. The iOS and Android 2.0 store apps are not out yet."
         }
       }
     },
     "values": {
-      "heading": "What it stands for",
+      "heading": "How it is paid for",
+      "lead": "Pro licenses pay for the work. These are the terms that come with that.",
+      "more": "See what Pro adds",
       "items": {
         "v1": {
           "title": "Independent",
@@ -1843,11 +1858,11 @@
         },
         "v2": {
           "title": "Funded by Pro",
-          "body": "Pro tools fund every release, free ones included. Shopkeepers pay for it directly, and that keeps the free version free."
+          "body": "Pro tools fund the development. Shopkeepers pay for it directly, and that keeps the free version free."
         },
         "v3": {
           "title": "Open & GPL",
-          "body": "Released on WordPress.org under the GPL. Yours to use, inspect, and keep — wherever WooCommerce runs."
+          "body": "The free plugin is on WordPress.org under the GPL: yours to use, inspect and keep, wherever WooCommerce runs."
         },
         "v4": {
           "title": "A fair license",

@@ -1775,9 +1775,22 @@
     "hero": {
       "eyebrow": "Unsere Geschichte",
       "title": "Ein unabhängiges Kassensystem für WooCommerce",
-      "subtitle": "Gebaut von einem ehemaligen Ladenbesitzer, finanziert von Ladenbesitzern — nicht von Investoren. Ein Entwickler, mehr als ein Jahrzehnt Veröffentlichungen, und es geht weiter."
+      "subtitle": "Gebaut von einem ehemaligen Ladenbesitzer, finanziert von Ladenbesitzern — nicht von Investoren. Ein Entwickler, mehr als ein Jahrzehnt Veröffentlichungen, und seit dem 9. November 2026 gibt es WCPOS 2.0."
+    },
+    "answers": {
+      "who": "Ein Entwickler und ehemaliger Ladenbesitzer. Die erste Version baute er für seinen eigenen Laden in Perth.",
+      "whoShort": "Paul Kilmurray, ein Entwickler und ehemaliger Ladenbesitzer.",
+      "whoLink": "Seinen Brief lesen",
+      "released": "kostenlos auf WordPress.org",
+      "howLongShort": "2011 für Pauls eigenen Laden gebaut. Seit 2014 kostenlos zum Herunterladen.",
+      "howLongLink": "Zur Zeitleiste",
+      "paid": "Von den Ladenbesitzern, die Pro kaufen. So wird jede Veröffentlichung bezahlt, auch die kostenlosen. Keine Investoren.",
+      "paidShort": "Von Ladenbesitzern, die Pro kaufen. Keine Investoren.",
+      "paidLink": "Was das für dich bedeutet"
     },
     "founder": {
+      "heading": "Wer es baut",
+      "lead": "Paul Kilmurray baute WCPOS für seinen eigenen Laden in Perth. Das ist sein Brief, in seinen Worten.",
       "photoAlt": "Paul in Urban Locavore, seinem Laden in Perth",
       "photoCaption": "Urban Locavore, Perth — der Laden, mit dem alles begann",
       "eyebrow": "Eine Notiz vom Entwickler",
@@ -1794,14 +1807,14 @@
         "withPrice": "— Pro kostet <price></price>.",
         "fallback": "— Pro ist auf der Pro-Seite verfügbar.",
         "licence": "Wenn eine Lizenz abläuft, funktioniert Pro weiter; du erhältst nur keine Updates mehr.",
-        "priceSummary": "{yearly}/Jahr oder {lifetime} einmalig"
+        "priceSummary": "{yearly}/Jahr"
       }
     },
     "timeline": {
-      "heading": "Wie es begann und warum es noch hier ist",
+      "heading": "Seit wann es das gibt",
+      "lead": "Von einer Ladentheke in Perth bis zu WCPOS 2.0.",
       "dates": {
-        "range": "{start} – {end}",
-        "today": "Heute"
+        "range": "{start} – {end}"
       },
       "items": {
         "m1": {
@@ -1829,13 +1842,15 @@
           "body": "Die React-Native-Wette zahlt sich aus: WCPOS kommt als offene Beta auf iOS und Android — dieselbe Kasse, jetzt auf der Hardware, die bereits im Laden ist."
         },
         "m7": {
-          "title": "Immer noch aktiv",
-          "body": "Mehr als ein Jahrzehnt später. Ein Entwickler, finanziert durch Pro, veröffentlicht weiter — und die kostenlose Version ist weiterhin echt."
+          "title": "WCPOS 2.0",
+          "body": "Das Plugin, die Desktop-App und die Web-App wechseln auf 2.0, mit einem neu gebauten Kassenbildschirm. Die 2.0-Apps für iOS und Android sind in den Stores noch nicht erschienen."
         }
       }
     },
     "values": {
-      "heading": "Wofür es steht",
+      "heading": "Wie es finanziert wird",
+      "lead": "Pro-Lizenzen bezahlen die Arbeit. Das sind die Bedingungen, die dazugehören.",
+      "more": "Sieh dir an, was Pro ergänzt",
       "items": {
         "v1": {
           "title": "Unabhängig",
@@ -1843,11 +1858,11 @@
         },
         "v2": {
           "title": "Finanziert durch Pro",
-          "body": "Pro-Werkzeuge finanzieren jede Veröffentlichung, auch die kostenlosen. Ladenbesitzer bezahlen direkt dafür, und das hält die kostenlose Version kostenlos."
+          "body": "Pro-Werkzeuge finanzieren die Entwicklung. Ladenbesitzer bezahlen direkt dafür, und das hält die kostenlose Version kostenlos."
         },
         "v3": {
           "title": "Offen & GPL",
-          "body": "Auf WordPress.org unter der GPL veröffentlicht. Du kannst es nutzen, prüfen und behalten — überall dort, wo WooCommerce läuft."
+          "body": "Das kostenlose Plugin steht auf WordPress.org unter der GPL: Du kannst es nutzen, prüfen und behalten — überall dort, wo WooCommerce läuft."
         },
         "v4": {
           "title": "Eine faire Lizenz",

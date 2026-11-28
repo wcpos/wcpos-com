@@ -1775,9 +1775,22 @@
     "hero": {
       "eyebrow": "我们的故事",
       "title": "面向 WooCommerce 的独立销售点系统",
-      "subtitle": "由前店主打造，由店主们资助——不是投资者。一个开发者，十多年持续发布，至今仍在更新。"
+      "subtitle": "由前店主打造，由店主们资助——不是投资者。一个开发者，十多年持续发布，WCPOS 2.0 已于 2026 年 11 月 9 日发布。"
+    },
+    "answers": {
+      "who": "一个开发者，也是前店主。他为自己在 Perth 的店铺做出了第一个版本。",
+      "whoShort": "Paul Kilmurray，一个开发者，也是前店主。",
+      "whoLink": "阅读他的信",
+      "released": "在 WordPress.org 免费发布",
+      "howLongShort": "2011 年为 Paul 自己的店铺打造，2014 年起可免费下载。",
+      "howLongLink": "查看时间线",
+      "paid": "由购买 Pro 的店主们支付。每一次发布，包括免费版，都是这样支付的。没有投资者。",
+      "paidShort": "由购买 Pro 的店主们支付。没有投资者。",
+      "paidLink": "这对你意味着什么"
     },
     "founder": {
+      "heading": "谁在开发它",
+      "lead": "Paul Kilmurray 为自己在 Perth 的店铺打造了 WCPOS。这是他的信，用他自己的话写成。",
       "photoAlt": "Paul 在他位于 Perth 的 Urban Locavore 店内",
       "photoCaption": "Perth 的 Urban Locavore——一切开始的那家店",
       "eyebrow": "来自开发者的一封信",
@@ -1794,14 +1807,14 @@
         "withPrice": "— Pro 的价格为 <price></price>。",
         "fallback": "— Pro 可在 Pro 页面获取。",
         "licence": "如果许可证到期，Pro 会继续运行；你只是停止接收更新。",
-        "priceSummary": "{yearly}/年或一次性 {lifetime}"
+        "priceSummary": "{yearly}/年"
       }
     },
     "timeline": {
-      "heading": "它如何开始，以及为什么仍然存在",
+      "heading": "它已经存在多久",
+      "lead": "从 Perth 的一个店铺柜台，到 WCPOS 2.0。",
       "dates": {
-        "range": "{start} – {end}",
-        "today": "今天"
+        "range": "{start} – {end}"
       },
       "items": {
         "m1": {
@@ -1829,13 +1842,15 @@
           "body": "React Native 的选择开始见效：WCPOS 以开放测试版登陆 iOS 和 Android——同一个收银系统，现在运行在店里已有的设备上。"
         },
         "m7": {
-          "title": "仍在持续发布",
-          "body": "十多年过去了。一个开发者，由 Pro 资助，仍在发布——而免费版依然是真正可用的版本。"
+          "title": "WCPOS 2.0",
+          "body": "插件、桌面应用和网页应用升级到 2.0，收银界面经过重建。iOS 和 Android 的 2.0 应用尚未在应用商店上线。"
         }
       }
     },
     "values": {
-      "heading": "它坚持的原则",
+      "heading": "它如何获得资金",
+      "lead": "Pro 许可证为这项工作付费。以下是随之而来的条款。",
+      "more": "查看 Pro 增加了什么",
       "items": {
         "v1": {
           "title": "独立",
@@ -1843,11 +1858,11 @@
         },
         "v2": {
           "title": "由 Pro 资助",
-          "body": "Pro 工具资助每一次发布，包括免费版。店主们直接付费支持它，这也让免费版得以保持免费。"
+          "body": "Pro 工具资助开发。店主们直接付费支持它，这也让免费版得以保持免费。"
         },
         "v3": {
           "title": "开放且遵循 GPL",
-          "body": "在 WordPress.org 上以 GPL 发布。无论 WooCommerce 在哪里运行，你都可以使用、检查并保留它。"
+          "body": "免费插件在 WordPress.org 上以 GPL 发布：无论 WooCommerce 在哪里运行，你都可以使用、检查并保留它。"
         },
         "v4": {
           "title": "公平的许可证",

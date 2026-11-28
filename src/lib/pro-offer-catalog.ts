@@ -342,20 +342,14 @@ export function formatHomeProPriceSummary(
   })
 }
 
+// The founder letter's P.S. names the Yearly price only: Lifetime is on a
+// sunset path and is never advertised.
 export function formatFounderProPriceSummary(
   offers: ProOffer[],
-  t: ProPriceSummaryTranslateFn
+  t: (values: { yearly: string }) => string
 ): string | null {
   const yearly = getOffer(offers, 'yearly')
-  const lifetime = getOffer(offers, 'lifetime')
-  if (!yearly || !lifetime) return null
-
-  const currency = yearly.price.currencyCode.toUpperCase()
-  return t({
-    yearly: yearly.price.compact,
-    lifetime: lifetime.price.compact,
-    currency,
-  })
+  return yearly ? t({ yearly: yearly.price.compact }) : null
 }
 
 export function buildProOfferSchemaOffers(
