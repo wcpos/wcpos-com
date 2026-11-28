@@ -1600,7 +1600,7 @@
       "mac-arm": {
         "name": "macOS",
         "listLabel": "macOS (Apple Silicon)",
-        "short": "Apple Silicon · .dmg",
+        "short": "Apple Silicon · .dmg · macOS 13 or later",
         "action": "Download for macOS"
       },
       "mac-intel": {
@@ -1612,7 +1612,7 @@
       "win": {
         "name": "Windows",
         "listLabel": "Windows",
-        "short": "Windows 10/11 · .exe",
+        "short": ".exe · Windows 10 / 11",
         "action": "Download for Windows"
       },
       "linux": {
@@ -1637,20 +1637,23 @@
         "name": "Web",
         "listLabel": "Web",
         "short": "No install needed",
-        "action": "Open the web demo"
+        "action": "Set up on your store"
       }
     },
     "hero": {
       "eyebrow": "Downloads",
       "title": "Download WCPOS for WooCommerce",
-      "tagline": "Install the free plugin, then open the register in a browser or an app.",
+      "tagline": "Three steps, about five minutes. Everything on this page is free except Pro.",
       "platformChooserLabel": "Choose your platform",
       "versionMeta": "Version {version} · {platform}",
       "detected": "Detected",
       "intelMac": "On an Intel Mac? <intel>Get the Intel build</intel>",
       "macos12": "On macOS 12 Monterey? WCPOS 2.0 needs macOS 13 or later. Version {version} still runs on macOS 12 with the 1.11 plugin: <arm>Apple Silicon</arm> · <intel>Intel</intel>",
-      "pluginNotice": "Every app connects to the free WordPress plugin — install it first.",
-      "upgradeNote": "Upgrading from 1.11? Sync every register first: 2.0 starts a new local database and does not carry over unsent sales."
+      "upgradeNote": "<title>Updating from 1.11?</title> Sync every register first: 2.0 starts a new local database and does not carry over unsent sales. The plugin and every app must both be on 2.0. <notes>Read the 2.0.0 notes</notes>",
+      "pickTitle": "Pick the device at your counter",
+      "pickBody": "We could not tell which device this is. Every option is free.",
+      "iosNote": "The 2.0 App Store release is not out yet. Until it is, the iPhone and iPad app is a public beta on TestFlight.",
+      "webNote": "There is nothing to download. Once the free plugin is installed, the register opens in any browser at yourdomain.com/pos. Want to look first? <demo>Open the live demo</demo>"
     },
     "howItFits": {
       "eyebrow": "How it fits together",
@@ -1694,38 +1697,35 @@
     },
     "page": {
       "beta": "Beta",
-      "start": {
-        "eyebrow": "Get started",
-        "title": "Three steps to your first sale",
-        "subtitle": "About five minutes, start to finish."
-      },
+      "versionsTitle": "Versions and requirements",
+      "freePlugin": "Free plugin",
+      "macosMin": "13 or later",
+      "mobileApps": "iOS & Android",
       "steps": {
         "plugin": {
-          "title": "Install the free plugin",
-          "body": "Start here: the register and every app run through it. In your dashboard: Plugins → Add New, then search “WCPOS”.",
+          "title": "Install the free plugin on your WordPress site",
+          "body": "The register and every app run through it. In your dashboard: <k>Plugins</k> → <k>Add New</k> → search “WCPOS” → <k>Install Now</k> → <k>Activate</k>",
           "badge": "Free · GPL",
           "requirements": "WordPress 5.6+ · WooCommerce 9.0+ · PHP 7.4+",
-          "requirementsWithVersion": "Latest {version} · WordPress 5.6+ · WooCommerce 9.0+ · PHP 7.4+",
           "cardTitle": "WCPOS",
           "wordpressOrgCta": "WordPress.org"
         },
         "device": {
-          "title": "Pick your device",
-          "body": "All free, all in sync. Grab the one we detected up top, or any of these.",
-          "desktopTitle": "Desktop app",
-          "iosCta": "Join the TestFlight beta",
-          "androidCta": "Join on Google Play",
-          "webSetupCta": "Set up on your store",
-          "webCta": "Open the live demo"
+          "title": "Get the register for this device",
+          "desktopTitle": "Desktop app"
+        },
+        "store": {
+          "title": "Add your store and sign in",
+          "body": "Open the app, add your store once and sign in. In a browser, the register is at yourdomain.com/pos. Then take your first sale.",
+          "guideCta": "Read the setup guide",
+          "demoCta": "Try the live demo first"
         },
         "pro": {
           "title": "Need more than one register?",
-          "cardTitle": "WCPOS Pro",
-          "cardBody": "More registers & stores, terminal payments, refunds, stock & pricing, order management, full reports and priority Discord support.",
-          "requirements": "WordPress 5.8+ · WooCommerce 9.0+ · PHP 7.4+",
+          "cardBody": "Free runs one register that every device shares. WCPOS Pro adds more registers and stores, refunds, card readers driven from checkout and a customer-facing display.",
           "plansCta": "View Pro plans",
-          "priceLine": "From {price} ({currency}) — one-time payment, never auto-renews.",
-          "signInCta": "Sign in to download"
+          "priceLine": "<b>{price} ({currency})</b> for a year of updates and priority support. It never renews by itself, and Pro keeps working after the year ends.",
+          "signInCta": "Sign in to download Pro"
         }
       }
     },

@@ -1600,7 +1600,7 @@
       "mac-arm": {
         "name": "macOS",
         "listLabel": "macOS (Apple Silicon)",
-        "short": "Apple Silicon · .dmg",
+        "short": "Apple Silicon · .dmg · macOS 13 o successivo",
         "action": "Scarica per macOS"
       },
       "mac-intel": {
@@ -1612,7 +1612,7 @@
       "win": {
         "name": "Windows",
         "listLabel": "Windows",
-        "short": "Windows 10/11 · .exe",
+        "short": ".exe · Windows 10 / 11",
         "action": "Scarica per Windows"
       },
       "linux": {
@@ -1637,20 +1637,23 @@
         "name": "Web",
         "listLabel": "Web",
         "short": "Nessuna installazione necessaria",
-        "action": "Apri la demo web"
+        "action": "Configura nel tuo negozio"
       }
     },
     "hero": {
       "eyebrow": "Download",
       "title": "Scarica il punto vendita per WooCommerce",
-      "tagline": "Installa il plugin gratuito, poi apri la cassa in un browser o in un’app.",
+      "tagline": "Tre passaggi, circa cinque minuti. Tutto in questa pagina è gratuito, tranne Pro.",
       "platformChooserLabel": "Scegli la piattaforma",
       "versionMeta": "Versione {version} · {platform}",
       "detected": "Rilevata",
       "intelMac": "Hai un Mac Intel? <intel>Scarica la build Intel</intel>",
       "macos12": "Usi macOS 12 Monterey? WCPOS 2.0 richiede macOS 13 o successivo. La versione {version} funziona ancora su macOS 12 con il plugin 1.11: <arm>Apple Silicon</arm> · <intel>Intel</intel>",
-      "pluginNotice": "Ogni app si collega al plugin WordPress gratuito — installalo prima.",
-      "upgradeNote": "Aggiorni dalla 1.11? Sincronizza prima tutte le casse: la versione 2.0 crea un nuovo database locale e non trasferisce le vendite non ancora inviate."
+      "upgradeNote": "<title>Aggiorni dalla 1.11?</title> Sincronizza prima tutte le casse: la versione 2.0 crea un nuovo database locale e non trasferisce le vendite non ancora inviate. Il plugin e ogni app devono essere entrambi sulla 2.0. <notes>Leggi le note della 2.0.0</notes>",
+      "pickTitle": "Scegli il dispositivo del tuo bancone",
+      "pickBody": "Non siamo riusciti a capire quale dispositivo sia questo. Ogni opzione è gratuita.",
+      "iosNote": "La versione 2.0 sull’App Store non è ancora uscita. Fino ad allora, l’app per iPhone e iPad è una beta pubblica su TestFlight.",
+      "webNote": "Non c’è nulla da scaricare. Una volta installato il plugin gratuito, la cassa si apre in qualsiasi browser all’indirizzo yourdomain.com/pos. Vuoi vederla prima? <demo>Apri la demo live</demo>"
     },
     "howItFits": {
       "eyebrow": "Come funziona insieme",
@@ -1694,38 +1697,35 @@
     },
     "page": {
       "beta": "Beta",
-      "start": {
-        "eyebrow": "Inizia",
-        "title": "Tre passaggi per la prima vendita",
-        "subtitle": "Circa cinque minuti, dall’inizio alla fine."
-      },
+      "versionsTitle": "Versioni e requisiti",
+      "freePlugin": "Plugin gratuito",
+      "macosMin": "13 o successivo",
+      "mobileApps": "iOS e Android",
       "steps": {
         "plugin": {
-          "title": "Installa il plugin gratuito",
-          "body": "Inizia da qui: la cassa e tutte le app passano dal plugin. Nella tua bacheca: Plugin → Aggiungi nuovo, poi cerca “WCPOS”.",
+          "title": "Installa il plugin gratuito sul tuo sito WordPress",
+          "body": "La cassa e tutte le app passano dal plugin. Nella tua bacheca: <k>Plugin</k> → <k>Aggiungi nuovo</k> → cerca “WCPOS” → <k>Installa ora</k> → <k>Attiva</k>",
           "badge": "Gratis · GPL",
           "requirements": "WordPress 5.6+ · WooCommerce 9.0+ · PHP 7.4+",
-          "requirementsWithVersion": "Ultima {version} · WordPress 5.6+ · WooCommerce 9.0+ · PHP 7.4+",
           "cardTitle": "WCPOS",
           "wordpressOrgCta": "WordPress.org"
         },
         "device": {
-          "title": "Scegli il dispositivo",
-          "body": "Tutti gratuiti, tutti sincronizzati. Scarica quello rilevato sopra oppure uno di questi.",
-          "desktopTitle": "App desktop",
-          "iosCta": "Partecipa alla beta TestFlight",
-          "androidCta": "Partecipa su Google Play",
-          "webSetupCta": "Configura nel tuo negozio",
-          "webCta": "Apri la demo live"
+          "title": "Scarica la cassa per questo dispositivo",
+          "desktopTitle": "App desktop"
+        },
+        "store": {
+          "title": "Aggiungi il negozio e accedi",
+          "body": "Apri l’app, aggiungi il tuo negozio una volta e accedi. In un browser, la cassa si trova su yourdomain.com/pos. Poi registra la tua prima vendita.",
+          "guideCta": "Leggi la guida all’installazione",
+          "demoCta": "Prova prima la demo live"
         },
         "pro": {
           "title": "Ti serve più di una cassa?",
-          "cardTitle": "WCPOS Pro",
-          "cardBody": "Più casse e più negozi, pagamenti con terminale, rimborsi, stock e prezzi, gestione ordini, report completi e supporto Discord prioritario.",
-          "requirements": "WordPress 5.8+ · WooCommerce 9.0+ · PHP 7.4+",
+          "cardBody": "Free gestisce una cassa condivisa da tutti i dispositivi. WCPOS Pro aggiunge più casse e negozi, rimborsi, lettori di carte comandati dal checkout e un display per il cliente.",
           "plansCta": "Vedi i piani Pro",
-          "priceLine": "A partire da {price} ({currency}) — pagamento unico, nessun rinnovo automatico.",
-          "signInCta": "Accedi per scaricare"
+          "priceLine": "<b>{price} ({currency})</b> per un anno di aggiornamenti e supporto prioritario. Non si rinnova mai da solo, e Pro continua a funzionare alla fine dell’anno.",
+          "signInCta": "Accedi per scaricare Pro"
         }
       }
     },

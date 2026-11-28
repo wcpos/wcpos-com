@@ -25,7 +25,13 @@ const StepsContext = React.createContext<{
   register: (index: number, el: HTMLSpanElement | null) => void
 } | null>(null)
 
-export function GetStartedSteps({ children }: { children: React.ReactNode }) {
+export function GetStartedSteps({
+  children,
+  className,
+}: {
+  children: React.ReactNode
+  className?: string
+}) {
   const listRef = React.useRef<HTMLOListElement>(null)
   const trackRef = React.useRef<HTMLSpanElement>(null)
   const markerRefs = React.useRef<(HTMLSpanElement | null)[]>([])
@@ -110,7 +116,10 @@ export function GetStartedSteps({ children }: { children: React.ReactNode }) {
     <StepsContext.Provider value={ctx}>
       {/* pt-2 lets the line start above step 1's circle, so the scroll-drawn
           fill visibly arrives at it rather than starting on it */}
-      <ol className="relative mx-auto mt-12 max-w-2xl space-y-10 pl-12 pt-2" ref={listRef}>
+      <ol
+        className={cn('relative mx-auto mt-12 max-w-2xl space-y-10 pl-12 pt-2', className)}
+        ref={listRef}
+      >
         {/* line track + scroll-drawn fill + traveling tip, centered behind
             the w-8 circles (whose centers sit 16px from the list edge) */}
         <span

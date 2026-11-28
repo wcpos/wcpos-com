@@ -3,12 +3,11 @@ import { Suspense } from 'react'
 import { resolveLocale } from '@/i18n/resolve-locale'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server'
-import { Laptop, Smartphone, Globe, ArrowRight, CloudOff } from 'lucide-react'
-import { Section, Container } from '@/components/ui/section'
+import { ArrowRight, CloudOff, Plug } from 'lucide-react'
+import { Section } from '@/components/ui/section'
 import { SectionHeading } from '@/components/ui/section-heading'
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
+import { Eyebrow } from '@/components/ui/eyebrow'
 import { EmptyState } from '@/components/ui/empty-state'
 import { TextLink } from '@/components/ui/text-link'
 import { Link } from '@/i18n/navigation'
@@ -17,8 +16,8 @@ import { TrackedExternalLink } from '@/components/analytics/tracked-external-lin
 import { localeUrl, marketingMetadata } from '@/lib/seo'
 import { wcposSoftwareApplication } from '@/lib/software-application-json-ld'
 import { formatDateForLocale } from '@/lib/date-format'
-import { DownloadsHero } from '@/components/downloads/download-hero'
-import { PLATFORMS, type PlatformKey } from '@/components/downloads/platforms'
+import { PlatformPicker } from '@/components/downloads/download-hero'
+import { PLATFORMS, WEB_SETUP_GUIDE_URL } from '@/components/downloads/platforms'
 import { HowItFits } from '@/components/downloads/how-it-fits'
 import { ProPriceLine } from '@/components/downloads/pro-price-line'
 import {
@@ -39,8 +38,15 @@ import {
 import { clientMessages } from '@/i18n/client-messages'
 import { DOWNLOADS_CLIENT_MESSAGES } from '@/components/downloads/client-messages'
 
-// Docs guide for installing the free plugin, which serves the web register from the store.
-const WEB_SETUP_GUIDE_URL = 'https://docs.wcpos.com/getting-started/installation'
+// Requirement values for the rail table; the plugin line in messages states the same numbers.
+const REQUIREMENTS: [string, string][] = [
+  ['WordPress', '5.6+ (Pro 5.8+)'],
+  ['WooCommerce', '9.0+'],
+  ['PHP', '7.4+'],
+]
+// One class string for the step-1 path chips (Plugins → Add New → …).
+const KEY_CHIP =
+  'rounded-sm border border-b-2 bg-card px-1.5 font-sans text-[13px] font-medium text-foreground md:text-sm'
 
 export async function generateMetadata({
   params,
@@ -87,39 +93,6 @@ async function getRecentReleases(
   })
 }
 
-function DeviceCard({
-  icon: Icon,
-  title,
-  beta,
-  betaLabel,
-  children,
-}: {
-  icon: typeof Laptop
-  title: string
-  beta?: boolean
-  betaLabel: string
-  children: React.ReactNode
-}) {
-  return (
-    <Card className="flex items-start gap-3 p-4">
-      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground">
-        <Icon className="h-[18px] w-[18px]" aria-hidden="true" />
-      </span>
-      <div className="min-w-0">
-        <p className="font-medium">
-          {title}
-          {beta && (
-            <Badge variant="muted-tint" className="ml-2">
-              {betaLabel}
-            </Badge>
-          )}
-        </p>
-        <div className="mt-1 text-sm text-muted-foreground">{children}</div>
-      </div>
-    </Card>
-  )
-}
-
 export default async function DownloadsPage({
   params,
 }: {
@@ -128,12 +101,12 @@ export default async function DownloadsPage({
   const locale = resolveLocale((await params).locale)
   setRequestLocale(locale)
 
-  const [messages, metaT, pageT, platformT, releaseT, howItFitsT, versions] =
+  const [messages, metaT, pageT, heroT, releaseT, howItFitsT, versions] =
     await Promise.all([
       getMessages(),
       getTranslations({ locale, namespace: 'downloads.meta' }),
       getTranslations({ locale, namespace: 'downloads.page' }),
-      getTranslations({ locale, namespace: 'downloads.platforms' }),
+      getTranslations({ locale, namespace: 'downloads.hero' }),
       getTranslations({ locale, namespace: 'downloads.releaseHistory' }),
       getTranslations({ locale, namespace: 'downloads.howItFits' }),
       getProductVersions(),
@@ -141,7 +114,17 @@ export default async function DownloadsPage({
   const releases = await getRecentReleases(locale, releaseT)
   const desktopVersion = versionFor(versions, PRODUCT_LABELS.desktop)
   const freeVersion = versionFor(versions, PRODUCT_LABELS.free)
-  const desktopLinks: PlatformKey[] = ['mac-arm', 'mac-intel', 'win', 'linux']
+  const facts: [string, string | null][] = [
+    [pageT('freePlugin'), freeVersion],
+    [pageT('steps.device.desktopTitle'), desktopVersion],
+    ...REQUIREMENTS,
+    ['macOS', pageT('macosMin')],
+    ['Windows', '10 / 11'],
+    [pageT('mobileApps'), pageT('beta')],
+  ]
+  const stepTitle = 'text-xl font-semibold tracking-tight'
+  const stepBody = 'mt-1.5 text-[15px] text-muted-foreground md:text-base'
+  const railTitle = 'mb-2 text-xs font-semibold text-foreground'
 
   return (
     <NextIntlClientProvider
@@ -159,7 +142,119 @@ export default async function DownloadsPage({
             })),
           }}
         />
-        <DownloadsHero desktopVersion={desktopVersion} />
+        <Section
+          tone="none"
+          spacing="none"
+          className="border-b bg-gradient-to-b from-muted/40 to-background pb-12 pt-4 md:pb-20 md:pt-16"
+        >
+          <div className="mx-auto max-w-6xl">
+            <Eyebrow className="max-md:hidden">{heroT('eyebrow')}</Eyebrow>
+            <h1 className="text-4xl font-bold leading-tight tracking-tight md:mt-3 md:text-5xl">
+              {heroT('title')}
+            </h1>
+            <p className="mt-2 max-w-2xl text-muted-foreground md:mt-3 md:text-lg">
+              {heroT('tagline')}
+            </p>
+
+            <div className="mt-4 grid items-start gap-9 md:mt-6 lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-14">
+              <GetStartedSteps className="mx-0 mt-0 max-w-none space-y-4 md:space-y-9">
+                <GetStartedStep step={1}>
+                  <h2 className={stepTitle}>{pageT('steps.plugin.title')}</h2>
+                  <p className={stepBody}>
+                    {pageT.rich('steps.plugin.body', {
+                      k: (chunks) => <kbd className={KEY_CHIP}>{chunks}</kbd>,
+                    })}
+                  </p>
+                  <div className="mt-2 flex flex-wrap items-center gap-2 md:mt-4">
+                    <Button asChild variant="outline">
+                      <TrackedExternalLink
+                        href="https://wordpress.org/plugins/woocommerce-pos/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        eventName="download_clicked"
+                        eventProperties={{ plugin: 'free', source: 'wordpress_org', page: '/downloads' }}
+                      >
+                        <Plug aria-hidden="true" />
+                        {pageT('steps.plugin.wordpressOrgCta')}
+                      </TrackedExternalLink>
+                    </Button>
+                    <Button asChild variant="outline">
+                      <TrackedExternalLink
+                        href="https://github.com/wcpos/woocommerce-pos/releases"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        eventName="download_clicked"
+                        eventProperties={{ plugin: 'free', source: 'github_zip', page: '/downloads' }}
+                      >
+                        .zip
+                      </TrackedExternalLink>
+                    </Button>
+                    {freeVersion && (
+                      <span className="ml-2 text-[13px] text-muted-foreground max-md:hidden">
+                        {`${pageT('steps.plugin.cardTitle')} ${freeVersion} · ${pageT('steps.plugin.badge')}`}
+                      </span>
+                    )}
+                  </div>
+                  <p className="mt-1 text-[13px] text-muted-foreground lg:hidden">
+                    {pageT('steps.plugin.requirements')}
+                  </p>
+                </GetStartedStep>
+
+                <GetStartedStep step={2}>
+                  <h2 className={stepTitle}>{pageT('steps.device.title')}</h2>
+                  <PlatformPicker desktopVersion={desktopVersion} />
+                </GetStartedStep>
+
+                <GetStartedStep step={3}>
+                  <h2 className={stepTitle}>{pageT('steps.store.title')}</h2>
+                  <p className={stepBody}>{pageT('steps.store.body')}</p>
+                  <div className="mt-2 flex flex-col items-start gap-1.5 sm:flex-row sm:items-center sm:gap-2 md:mt-4">
+                    <TextLink href={WEB_SETUP_GUIDE_URL}>{pageT('steps.store.guideCta')}</TextLink>
+                    <span aria-hidden="true" className="hidden text-muted-foreground sm:inline">·</span>
+                    <TextLink href={PLATFORMS.web.href}>{pageT('steps.store.demoCta')}</TextLink>
+                  </div>
+                </GetStartedStep>
+              </GetStartedSteps>
+
+              <aside className="flex flex-col gap-7 lg:sticky lg:top-22">
+                <div>
+                  <h2 className={railTitle}>{pageT('versionsTitle')}</h2>
+                  <dl className="border-t">
+                    {facts.map(([label, value]) =>
+                      value ? (
+                        <div key={label} className="flex justify-between gap-3 border-b py-2 text-[13px]">
+                          <dt className="text-muted-foreground">{label}</dt>
+                          <dd className="text-right font-medium">{value}</dd>
+                        </div>
+                      ) : null,
+                    )}
+                  </dl>
+                </div>
+                <div className="text-[13px] text-muted-foreground">
+                  <h2 className={railTitle}>{pageT('steps.pro.title')}</h2>
+                  <p>{pageT('steps.pro.cardBody')}</p>
+                  <Suspense fallback={null}>
+                    <ProPriceLine locale={locale} />
+                  </Suspense>
+                  <div className="mt-2 flex flex-col items-start gap-1 text-sm">
+                    <TextLink asChild className="inline-flex items-center gap-1">
+                      <TrackedLocaleLink href="/pro" eventName="click_pro_cta">
+                        {pageT('steps.pro.plansCta')}
+                        <ArrowRight className="size-3.5" aria-hidden="true" />
+                      </TrackedLocaleLink>
+                    </TextLink>
+                    <TextLink asChild className="inline-flex items-center gap-1">
+                      <Link href="/account/downloads">
+                        {pageT('steps.pro.signInCta')}
+                        <ArrowRight className="size-3.5" aria-hidden="true" />
+                      </Link>
+                    </TextLink>
+                  </div>
+                </div>
+              </aside>
+            </div>
+          </div>
+        </Section>
         <HowItFits
           copy={{
             eyebrow: howItFitsT('eyebrow'),
@@ -203,131 +298,7 @@ export default async function DownloadsPage({
           }}
         />
 
-      <Section tone="default" spacing="default" bare>
-        <Container width="content">
-          <SectionHeading
-            eyebrow={pageT('start.eyebrow')}
-            title={pageT('start.title')}
-            subtitle={pageT('start.subtitle')}
-          />
-          <GetStartedSteps>
-            <GetStartedStep step={1}>
-              <h3 className="text-xl font-semibold tracking-tight">
-                {pageT('steps.plugin.title')}
-              </h3>
-              <p className="mt-1 text-muted-foreground">
-                {pageT('steps.plugin.body')}
-              </p>
-              <Card className="mt-4 flex flex-wrap items-center justify-between gap-4 p-5">
-                <div>
-                  <p className="font-medium">
-                    {pageT('steps.plugin.cardTitle')}
-                    <Badge variant="brand-tint" className="ml-2">
-                      {pageT('steps.plugin.badge')}
-                    </Badge>
-                  </p>
-                  <p className="mt-1 text-sm text-muted-foreground">
-                    {freeVersion
-                      ? pageT('steps.plugin.requirementsWithVersion', { version: freeVersion })
-                      : pageT('steps.plugin.requirements')}
-                  </p>
-                </div>
-                <div className="flex gap-2">
-                  <Button asChild variant="brand" size="sm">
-                    <TrackedExternalLink
-                      href="https://wordpress.org/plugins/woocommerce-pos/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      eventName="download_clicked"
-                      eventProperties={{ plugin: 'free', source: 'wordpress_org', page: '/downloads' }}
-                    >
-                      {pageT('steps.plugin.wordpressOrgCta')}
-                    </TrackedExternalLink>
-                  </Button>
-                  <Button asChild variant="outline" size="sm">
-                    <TrackedExternalLink
-                      href="https://github.com/wcpos/woocommerce-pos/releases"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      eventName="download_clicked"
-                      eventProperties={{ plugin: 'free', source: 'github_zip', page: '/downloads' }}
-                    >
-                      .zip
-                    </TrackedExternalLink>
-                  </Button>
-                </div>
-              </Card>
-            </GetStartedStep>
-
-            <GetStartedStep step={2}>
-              <h3 className="text-xl font-semibold tracking-tight">
-                {pageT('steps.device.title')}
-              </h3>
-              <p className="mt-1 text-muted-foreground">
-                {pageT('steps.device.body')}
-              </p>
-              <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                <DeviceCard icon={Laptop} title={pageT('steps.device.desktopTitle')} betaLabel={pageT('beta')}>
-                  <div className="flex flex-col gap-1 sm:flex-row sm:flex-wrap sm:gap-x-1 sm:gap-y-1">
-                    {desktopLinks.map((key, index) => (
-                      <span key={PLATFORMS[key].href}>
-                        <TextLink href={PLATFORMS[key].href}>{platformT(`${key}.listLabel`)}</TextLink>
-                        {index < desktopLinks.length - 1 && <span aria-hidden="true" className="hidden px-1 text-muted-foreground sm:inline">·</span>}
-                      </span>
-                    ))}
-                  </div>
-                </DeviceCard>
-                <DeviceCard icon={Smartphone} title={platformT('ios.name')} beta betaLabel={pageT('beta')}>
-                  <TextLink href={PLATFORMS.ios.href}>{pageT('steps.device.iosCta')}</TextLink>
-                </DeviceCard>
-                <DeviceCard icon={Smartphone} title={platformT('android.name')} beta betaLabel={pageT('beta')}>
-                  <TextLink href={PLATFORMS.android.href}>{pageT('steps.device.androidCta')}</TextLink>
-                </DeviceCard>
-                <DeviceCard icon={Globe} title={platformT('web.name')} betaLabel={pageT('beta')}>
-                  <div className="flex flex-col gap-1 sm:flex-row sm:flex-wrap sm:gap-x-1 sm:gap-y-1">
-                    <TextLink href={WEB_SETUP_GUIDE_URL}>{pageT('steps.device.webSetupCta')}</TextLink>
-                    <span aria-hidden="true" className="hidden px-1 text-muted-foreground sm:inline">·</span>
-                    <TextLink href={PLATFORMS.web.href}>{pageT('steps.device.webCta')}</TextLink>
-                  </div>
-                </DeviceCard>
-              </div>
-            </GetStartedStep>
-
-            <GetStartedStep step={3}>
-              <h3 className="text-xl font-semibold tracking-tight">
-                {pageT('steps.pro.title')}
-              </h3>
-              <Card className="mt-4 p-5">
-                <p className="font-medium">{pageT('steps.pro.cardTitle')}</p>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  {pageT('steps.pro.cardBody')}
-                </p>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  {pageT('steps.pro.requirements')}
-                </p>
-                <Suspense fallback={null}>
-                  <ProPriceLine locale={locale} />
-                </Suspense>
-                <div className="mt-4 flex flex-wrap items-center gap-2">
-                  <Button asChild variant="brand" size="sm">
-                    <TrackedLocaleLink href="/pro" eventName="click_pro_cta">
-                      {pageT('steps.pro.plansCta')}
-                    </TrackedLocaleLink>
-                  </Button>
-                  <Button asChild variant="ghost" size="sm">
-                    <Link href="/account/downloads">
-                      {pageT('steps.pro.signInCta')}
-                      <ArrowRight aria-hidden="true" />
-                    </Link>
-                  </Button>
-                </div>
-              </Card>
-            </GetStartedStep>
-          </GetStartedSteps>
-        </Container>
-      </Section>
-
-      <Section tone="muted" spacing="default">
+      <Section tone="default" spacing="default">
         <SectionHeading
           className="mb-10"
           eyebrow={releaseT('eyebrow')}

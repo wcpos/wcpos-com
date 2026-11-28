@@ -43,10 +43,12 @@ describe('ProPriceLine', () => {
 
     renderWithIntl(await ProPriceLine({ locale: 'en' }))
 
-    const line = screen.getByText(/one-time payment/)
+    const line = screen.getByText(/a year of updates/)
     expect(line).toHaveTextContent(
-      'From $129 (USD) — one-time payment, never auto-renews.'
+      '$129 (USD) for a year of updates and priority support. It never renews by itself, and Pro keeps working after the year ends.'
     )
+    expect(line.querySelector('b')).toHaveTextContent('$129 (USD)')
+    expect(line.textContent).not.toMatch(/stops? working/i)
     expect(line.textContent).toContain('$129')
     expect(line.textContent).toContain('USD')
     expect(line.textContent).not.toMatch(/\/yr|per year/)

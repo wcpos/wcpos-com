@@ -1600,7 +1600,7 @@
       "mac-arm": {
         "name": "macOS",
         "listLabel": "macOS (Apple Silicon)",
-        "short": "Apple Silicon · .dmg",
+        "short": "Apple Silicon · .dmg · macOS 13以降",
         "action": "macOS版をダウンロード"
       },
       "mac-intel": {
@@ -1612,7 +1612,7 @@
       "win": {
         "name": "Windows",
         "listLabel": "Windows",
-        "short": "Windows 10/11 · .exe",
+        "short": ".exe · Windows 10 / 11",
         "action": "Windows版をダウンロード"
       },
       "linux": {
@@ -1637,20 +1637,23 @@
         "name": "ウェブ",
         "listLabel": "ウェブ",
         "short": "インストール不要",
-        "action": "ウェブデモを開く"
+        "action": "自分のストアで設定"
       }
     },
     "hero": {
       "eyebrow": "ダウンロード",
       "title": "WooCommerce用POSをダウンロード",
-      "tagline": "無料プラグインをインストールして、ブラウザまたはアプリでレジを開きましょう。",
+      "tagline": "3つのステップで、約5分。このページのものはPro以外すべて無料です。",
       "platformChooserLabel": "プラットフォームを選択",
       "versionMeta": "バージョン {version} · {platform}",
       "detected": "検出済み",
       "intelMac": "Intel Macをお使いですか？ <intel>Intel版を入手</intel>",
       "macos12": "macOS 12 Montereyをお使いですか？ WCPOS 2.0にはmacOS 13以降が必要です。バージョン{version}は1.11プラグインと組み合わせてmacOS 12で引き続き使えます：<arm>Apple Silicon</arm> · <intel>Intel</intel>",
-      "pluginNotice": "すべてのアプリは無料のWordPressプラグインに接続します — まずインストールしてください。",
-      "upgradeNote": "1.11からアップグレードしますか？ 先にすべてのレジを同期してください：2.0は新しいローカルデータベースを作成し、未送信の売上は引き継ぎません。"
+      "upgradeNote": "<title>1.11からアップデートしますか？</title> 先にすべてのレジを同期してください：2.0は新しいローカルデータベースを作成し、未送信の売上は引き継ぎません。プラグインとすべてのアプリの両方を2.0にする必要があります。<notes>2.0.0のリリースノートを読む</notes>",
+      "pickTitle": "レジで使うデバイスを選んでください",
+      "pickBody": "このデバイスを判別できませんでした。どれも無料です。",
+      "iosNote": "2.0のApp Store版はまだ公開されていません。公開までは、iPhone・iPad版アプリはTestFlightの公開ベータです。",
+      "webNote": "ダウンロードは不要です。無料プラグインをインストールすれば、どのブラウザでもyourdomain.com/posでレジが開きます。先に見てみますか？<demo>ライブデモを開く</demo>"
     },
     "howItFits": {
       "eyebrow": "全体の仕組み",
@@ -1694,38 +1697,35 @@
     },
     "page": {
       "beta": "Beta",
-      "start": {
-        "eyebrow": "はじめに",
-        "title": "最初の販売まで3ステップ",
-        "subtitle": "最初から最後まで約5分です。"
-      },
+      "versionsTitle": "バージョンと動作要件",
+      "freePlugin": "無料プラグイン",
+      "macosMin": "13以降",
+      "mobileApps": "iOS・Android",
       "steps": {
         "plugin": {
-          "title": "無料プラグインをインストール",
-          "body": "まずはここから。レジとすべてのアプリはこのプラグインを通じて動作します。ダッシュボードで「プラグイン → 新規追加」を開き、「WCPOS」を検索してください。",
+          "title": "WordPressサイトに無料プラグインをインストール",
+          "body": "レジとすべてのアプリはこのプラグインを通じて動作します。ダッシュボードで：<k>プラグイン</k> → <k>新規追加</k> → 「WCPOS」を検索 → <k>今すぐインストール</k> → <k>有効化</k>",
           "badge": "無料 · GPL",
           "requirements": "WordPress 5.6+ · WooCommerce 9.0+ · PHP 7.4+",
-          "requirementsWithVersion": "最新 {version} · WordPress 5.6+ · WooCommerce 9.0+ · PHP 7.4+",
           "cardTitle": "WCPOS",
           "wordpressOrgCta": "WordPress.org"
         },
         "device": {
-          "title": "デバイスを選択",
-          "body": "すべて無料で、すべて同期します。上で検出されたもの、または以下のいずれかを入手してください。",
-          "desktopTitle": "デスクトップアプリ",
-          "iosCta": "TestFlightベータに参加",
-          "androidCta": "Google Playで参加",
-          "webSetupCta": "自分のストアで設定",
-          "webCta": "ライブデモを開く"
+          "title": "このデバイス用のレジを入手",
+          "desktopTitle": "デスクトップアプリ"
+        },
+        "store": {
+          "title": "ストアを追加してサインイン",
+          "body": "アプリを開き、ストアを一度追加してサインインします。ブラウザでは、レジはyourdomain.com/posにあります。その後、最初の販売を行います。",
+          "guideCta": "セットアップガイドを読む",
+          "demoCta": "先にライブデモを試す"
         },
         "pro": {
           "title": "レジが2台以上必要ですか？",
-          "cardTitle": "WCPOS Pro",
-          "cardBody": "レジの追加と複数店舗、端末決済、返金、在庫と価格、注文管理、詳細レポート、優先Discordサポート。",
-          "requirements": "WordPress 5.8+ · WooCommerce 9.0+ · PHP 7.4+",
+          "cardBody": "無料版は、すべてのデバイスで共有する1台のレジで動作します。WCPOS Proでは、レジと店舗の追加、返金、チェックアウトから操作するカードリーダー、顧客向けディスプレイが使えます。",
           "plansCta": "Proプランを見る",
-          "priceLine": "{price}（{currency}）から — 一回払い、自動更新なし。",
-          "signInCta": "ログインしてダウンロード"
+          "priceLine": "<b>{price}（{currency}）</b>で1年間のアップデートと優先サポート。自動で更新されることはなく、1年が過ぎてもProはそのまま使えます。",
+          "signInCta": "ログインしてProをダウンロード"
         }
       }
     },

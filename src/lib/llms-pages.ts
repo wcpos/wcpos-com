@@ -15,7 +15,7 @@ const pageMessageKeys: Record<
     ],
   },
   '/downloads': { title: 'downloads.meta.title', description: 'downloads.meta.description',
-    content: ['downloads.hero.title', 'downloads.hero.pluginNotice', 'downloads.page.start', 'downloads.page.steps', 'downloads.howItFits'],
+    content: ['downloads.hero.title', 'downloads.hero.tagline', 'downloads.page.steps', 'downloads.howItFits'],
   },
   '/pro': { title: 'pro.metadata.title', description: 'pro.metadata.description',
     content: ['pro.hero', 'pro.features', 'pro.faq'],

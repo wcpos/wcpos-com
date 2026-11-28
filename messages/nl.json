@@ -1600,7 +1600,7 @@
       "mac-arm": {
         "name": "macOS",
         "listLabel": "macOS (Apple Silicon)",
-        "short": "Apple Silicon · .dmg",
+        "short": "Apple Silicon · .dmg · macOS 13 of nieuwer",
         "action": "Download voor macOS"
       },
       "mac-intel": {
@@ -1612,7 +1612,7 @@
       "win": {
         "name": "Windows",
         "listLabel": "Windows",
-        "short": "Windows 10/11 · .exe",
+        "short": ".exe · Windows 10 / 11",
         "action": "Download voor Windows"
       },
       "linux": {
@@ -1637,20 +1637,23 @@
         "name": "Web",
         "listLabel": "Web",
         "short": "Geen installatie nodig",
-        "action": "Open de webdemo"
+        "action": "Instellen in je eigen winkel"
       }
     },
     "hero": {
       "eyebrow": "Downloads",
       "title": "Kassasysteem voor WooCommerce downloaden",
-      "tagline": "Installeer de gratis plugin en open de kassa daarna in een browser of een app.",
+      "tagline": "Drie stappen, ongeveer vijf minuten. Alles op deze pagina is gratis, behalve Pro.",
       "platformChooserLabel": "Kies je platform",
       "versionMeta": "Versie {version} · {platform}",
       "detected": "Gedetecteerd",
       "intelMac": "Op een Intel Mac? <intel>Download de Intel-build</intel>",
       "macos12": "Op macOS 12 Monterey? WCPOS 2.0 vereist macOS 13 of nieuwer. Versie {version} werkt nog op macOS 12 met de 1.11-plugin: <arm>Apple Silicon</arm> · <intel>Intel</intel>",
-      "pluginNotice": "Elke app maakt verbinding met de gratis WordPress-plugin — installeer die eerst.",
-      "upgradeNote": "Upgrade je vanaf 1.11? Synchroniseer eerst elke kassa: 2.0 maakt een nieuwe lokale database aan en neemt niet-verzonden verkopen niet over."
+      "upgradeNote": "<title>Upgrade je vanaf 1.11?</title> Synchroniseer eerst elke kassa: 2.0 maakt een nieuwe lokale database aan en neemt niet-verzonden verkopen niet over. De plugin en elke app moeten allebei op 2.0 staan. <notes>Lees de notities van 2.0.0</notes>",
+      "pickTitle": "Kies het apparaat aan je toonbank",
+      "pickBody": "We konden niet zien welk apparaat dit is. Elke optie is gratis.",
+      "iosNote": "De 2.0-versie in de App Store is nog niet uit. Tot die tijd is de app voor iPhone en iPad een openbare bèta via TestFlight.",
+      "webNote": "Er valt niets te downloaden. Zodra de gratis plugin is geïnstalleerd, opent de kassa in elke browser op yourdomain.com/pos. Eerst even kijken? <demo>Open de live demo</demo>"
     },
     "howItFits": {
       "eyebrow": "Hoe het samenwerkt",
@@ -1694,38 +1697,35 @@
     },
     "page": {
       "beta": "Bèta",
-      "start": {
-        "eyebrow": "Aan de slag",
-        "title": "Drie stappen naar je eerste verkoop",
-        "subtitle": "Ongeveer vijf minuten, van begin tot eind."
-      },
+      "versionsTitle": "Versies en vereisten",
+      "freePlugin": "Gratis plugin",
+      "macosMin": "13 of nieuwer",
+      "mobileApps": "iOS & Android",
       "steps": {
         "plugin": {
-          "title": "Installeer de gratis plugin",
-          "body": "Begin hier: de kassa en elke app draaien via de plugin. In je dashboard: Plugins → Nieuwe toevoegen, zoek daarna naar “WCPOS”.",
+          "title": "Installeer de gratis plugin op je WordPress-site",
+          "body": "De kassa en elke app draaien via de plugin. In je dashboard: <k>Plugins</k> → <k>Nieuwe toevoegen</k> → zoek naar “WCPOS” → <k>Nu installeren</k> → <k>Activeren</k>",
           "badge": "Gratis · GPL",
           "requirements": "WordPress 5.6+ · WooCommerce 9.0+ · PHP 7.4+",
-          "requirementsWithVersion": "Nieuwste {version} · WordPress 5.6+ · WooCommerce 9.0+ · PHP 7.4+",
           "cardTitle": "WCPOS",
           "wordpressOrgCta": "WordPress.org"
         },
         "device": {
-          "title": "Kies je apparaat",
-          "body": "Allemaal gratis, allemaal synchroon. Download degene die we hierboven hebben gedetecteerd, of een van deze.",
-          "desktopTitle": "Desktop-app",
-          "iosCta": "Doe mee met de TestFlight-bèta",
-          "androidCta": "Doe mee op Google Play",
-          "webSetupCta": "Instellen in je eigen winkel",
-          "webCta": "Open de live demo"
+          "title": "Haal de kassa voor dit apparaat",
+          "desktopTitle": "Desktop-app"
+        },
+        "store": {
+          "title": "Voeg je winkel toe en meld je aan",
+          "body": "Open de app, voeg je winkel één keer toe en meld je aan. In een browser staat de kassa op yourdomain.com/pos. Sla daarna je eerste verkoop aan.",
+          "guideCta": "Lees de installatiegids",
+          "demoCta": "Probeer eerst de live demo"
         },
         "pro": {
           "title": "Meer dan één kassa nodig?",
-          "cardTitle": "WCPOS Pro",
-          "cardBody": "Meer kassa's en meerdere winkels, terminalbetalingen, terugbetalingen, voorraad en prijzen, orderbeheer, volledige rapporten en prioritaire Discord-support.",
-          "requirements": "WordPress 5.8+ · WooCommerce 9.0+ · PHP 7.4+",
+          "cardBody": "Free draait één kassa die alle apparaten delen. WCPOS Pro voegt meer kassa's en winkels toe, terugbetalingen, kaartlezers die je vanuit de checkout aanstuurt en een klantdisplay.",
           "plansCta": "Bekijk Pro-abonnementen",
-          "priceLine": "Vanaf {price} ({currency}) — eenmalige betaling, nooit automatische verlenging.",
-          "signInCta": "Log in om te downloaden"
+          "priceLine": "<b>{price} ({currency})</b> voor een jaar updates en prioritaire support. Het verlengt nooit vanzelf, en Pro blijft werken na afloop van het jaar.",
+          "signInCta": "Log in om Pro te downloaden"
         }
       }
     },

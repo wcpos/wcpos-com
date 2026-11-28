@@ -1600,7 +1600,7 @@
       "mac-arm": {
         "name": "macOS",
         "listLabel": "macOS (Apple Silicon)",
-        "short": "Apple Silicon · .dmg",
+        "short": "Apple Silicon · .dmg · macOS 13 或更高版本",
         "action": "下载 macOS 版"
       },
       "mac-intel": {
@@ -1612,7 +1612,7 @@
       "win": {
         "name": "Windows",
         "listLabel": "Windows",
-        "short": "Windows 10/11 · .exe",
+        "short": ".exe · Windows 10 / 11",
         "action": "下载 Windows 版"
       },
       "linux": {
@@ -1637,20 +1637,23 @@
         "name": "网页版",
         "listLabel": "网页版",
         "short": "无需安装",
-        "action": "打开网页演示"
+        "action": "在你的商店中设置"
       }
     },
     "hero": {
       "eyebrow": "下载",
       "title": "下载 WooCommerce 销售点系统",
-      "tagline": "先安装免费插件，然后在浏览器或应用中打开收银台。",
+      "tagline": "三个步骤，约五分钟。除 Pro 外，本页内容全部免费。",
       "platformChooserLabel": "选择您的平台",
       "versionMeta": "版本 {version} · {platform}",
       "detected": "已检测到",
       "intelMac": "使用 Intel Mac？<intel>获取 Intel 版本</intel>",
       "macos12": "使用 macOS 12 Monterey？WCPOS 2.0 需要 macOS 13 或更高版本。{version} 版本仍可在 macOS 12 上配合 1.11 插件使用：<arm>Apple Silicon</arm> · <intel>Intel</intel>",
-      "pluginNotice": "每个应用都连接到免费的 WordPress 插件——请先安装它。",
-      "upgradeNote": "从 1.11 升级？请先同步每个收银台：2.0 会创建新的本地数据库，不会迁移尚未发送的销售记录。"
+      "upgradeNote": "<title>从 1.11 升级？</title>请先同步每个收银台：2.0 会创建新的本地数据库，不会迁移尚未发送的销售记录。插件和每个应用都必须升级到 2.0。<notes>阅读 2.0.0 发布说明</notes>",
+      "pickTitle": "选择您柜台上的设备",
+      "pickBody": "我们无法识别此设备。所有选项均免费。",
+      "iosNote": "2.0 的 App Store 版本尚未发布。在此之前，iPhone 和 iPad 应用通过 TestFlight 提供公开测试版。",
+      "webNote": "无需下载。安装免费插件后，即可在任意浏览器中通过 yourdomain.com/pos 打开收银台。想先看看？<demo>打开在线演示</demo>"
     },
     "howItFits": {
       "eyebrow": "它如何协同工作",
@@ -1694,38 +1697,35 @@
     },
     "page": {
       "beta": "Beta",
-      "start": {
-        "eyebrow": "开始使用",
-        "title": "三步完成第一笔销售",
-        "subtitle": "从开始到完成大约五分钟。"
-      },
+      "versionsTitle": "版本和要求",
+      "freePlugin": "免费插件",
+      "macosMin": "13 或更高版本",
+      "mobileApps": "iOS 和 Android",
       "steps": {
         "plugin": {
-          "title": "安装免费插件",
-          "body": "从这里开始：收银台和所有应用都通过该插件运行。在您的仪表盘中：插件 → 安装插件，然后搜索“WCPOS”。",
+          "title": "在您的 WordPress 网站上安装免费插件",
+          "body": "收银台和所有应用都通过该插件运行。在您的仪表盘中：<k>插件</k> → <k>安装插件</k> → 搜索“WCPOS” → <k>现在安装</k> → <k>启用</k>",
           "badge": "免费 · GPL",
           "requirements": "WordPress 5.6+ · WooCommerce 9.0+ · PHP 7.4+",
-          "requirementsWithVersion": "最新 {version} · WordPress 5.6+ · WooCommerce 9.0+ · PHP 7.4+",
           "cardTitle": "WCPOS",
           "wordpressOrgCta": "WordPress.org"
         },
         "device": {
-          "title": "选择您的设备",
-          "body": "全部免费，全部同步。下载上方检测到的版本，或选择以下任意一个。",
-          "desktopTitle": "桌面应用",
-          "iosCta": "加入 TestFlight 测试版",
-          "androidCta": "在 Google Play 加入测试",
-          "webSetupCta": "在你的商店中设置",
-          "webCta": "打开在线演示"
+          "title": "获取此设备的收银台",
+          "desktopTitle": "桌面应用"
+        },
+        "store": {
+          "title": "添加您的商店并登录",
+          "body": "打开应用，添加一次您的商店并登录。在浏览器中，收银台位于 yourdomain.com/pos。然后完成您的第一笔销售。",
+          "guideCta": "阅读设置指南",
+          "demoCta": "先试用在线演示"
         },
         "pro": {
           "title": "需要多个收银台？",
-          "cardTitle": "WCPOS Pro",
-          "cardBody": "更多收银台与多店铺、终端付款、退款、库存和定价、订单管理、完整报表以及优先 Discord 支持。",
-          "requirements": "WordPress 5.8+ · WooCommerce 9.0+ · PHP 7.4+",
+          "cardBody": "免费版运行一个由所有设备共享的收银台。WCPOS Pro 增加更多收银台和店铺、退款、从结账界面控制的读卡器以及面向顾客的显示屏。",
           "plansCta": "查看 Pro 套餐",
-          "priceLine": "{price}（{currency}）起 — 一次性付款，永不自动续订。",
-          "signInCta": "登录以下载"
+          "priceLine": "<b>{price}（{currency}）</b>享一年更新和优先支持。不会自动续订，一年期满后 Pro 仍可继续使用。",
+          "signInCta": "登录以下载 Pro"
         }
       }
     },

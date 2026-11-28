@@ -35,6 +35,9 @@ export const PLATFORMS: Record<PlatformKey, Platform> = {
   web: { kind: 'web', icon: Globe, href: 'https://demo.wcpos.com/pos' },
 }
 
+/** Docs guide for installing the free plugin, which serves the web register from the store. */
+export const WEB_SETUP_GUIDE_URL = 'https://docs.wcpos.com/getting-started/installation'
+
 /**
  * The last desktop build that runs on macOS 12 Monterey. WCPOS 2.0 is built on
  * Electron 45, which needs macOS 13, so Monterey users are sent to 1.11.12 (not
@@ -55,14 +58,14 @@ export function tileFor(key: PlatformKey): PlatformKey {
 }
 
 /**
- * Map a browser environment to the best-fit platform. Pure so it can be
- * unit-tested without a DOM.
+ * Map a browser environment to the best-fit platform, or null when nothing
+ * matches. Pure so it can be unit-tested without a DOM.
  */
 export function resolvePlatform(
   userAgent: string,
   platform: string,
   maxTouchPoints: number,
-): PlatformKey {
+): PlatformKey | null {
   const ua = userAgent || ''
   const p = platform || ''
   // iPadOS 13+ reports as "MacIntel" with touch points — treat as iOS.
@@ -73,5 +76,5 @@ export function resolvePlatform(
   if (/Win/i.test(p) || /Windows/i.test(ua)) return 'win'
   if (/Linux/i.test(p) && !/Android/i.test(ua)) return 'linux'
   if (/Mac/i.test(p)) return 'mac-arm'
-  return 'mac-arm'
+  return null
 }

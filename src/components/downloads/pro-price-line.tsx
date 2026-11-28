@@ -11,7 +11,7 @@ async function getCachedOffers(locale: string) {
   return catalog.offers
 }
 
-/** Starting Pro price for the downloads step-3 card, from the live yearly offer. */
+/** The Pro yearly price line for the downloads rail, from the live yearly offer. */
 export async function ProPriceLine({ locale }: { locale: string }) {
   const yearly = (await getCachedOffers(locale)).find((offer) => offer.planId === 'yearly')
   if (!yearly) return null
@@ -20,5 +20,13 @@ export async function ProPriceLine({ locale }: { locale: string }) {
 
 function ProPriceLineText({ price, currency }: { price: string; currency: string }) {
   const t = useTranslations('downloads.page')
-  return <p className="mt-1 text-sm text-muted-foreground">{t('steps.pro.priceLine', { price, currency })}</p>
+  return (
+    <p className="mt-2">
+      {t.rich('steps.pro.priceLine', {
+        price,
+        currency,
+        b: (chunks) => <b className="font-semibold text-foreground">{chunks}</b>,
+      })}
+    </p>
+  )
 }

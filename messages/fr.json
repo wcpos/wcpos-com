@@ -1600,7 +1600,7 @@
       "mac-arm": {
         "name": "macOS",
         "listLabel": "macOS (Apple Silicon)",
-        "short": "Apple Silicon · .dmg",
+        "short": "Apple Silicon · .dmg · macOS 13 ou ultérieur",
         "action": "Télécharger pour macOS"
       },
       "mac-intel": {
@@ -1612,7 +1612,7 @@
       "win": {
         "name": "Windows",
         "listLabel": "Windows",
-        "short": "Windows 10/11 · .exe",
+        "short": ".exe · Windows 10 / 11",
         "action": "Télécharger pour Windows"
       },
       "linux": {
@@ -1637,20 +1637,23 @@
         "name": "Web",
         "listLabel": "Web",
         "short": "Aucune installation nécessaire",
-        "action": "Ouvrir la démo web"
+        "action": "Installer sur votre boutique"
       }
     },
     "hero": {
       "eyebrow": "Téléchargements",
       "title": "Télécharger le point de vente WooCommerce",
-      "tagline": "Installez le plugin gratuit, puis ouvrez la caisse dans un navigateur ou une application.",
+      "tagline": "Trois étapes, environ cinq minutes. Tout sur cette page est gratuit, sauf Pro.",
       "platformChooserLabel": "Choisissez votre plateforme",
       "versionMeta": "Version {version} · {platform}",
       "detected": "Détecté",
       "intelMac": "Sur un Mac Intel ? <intel>Téléchargez la version Intel</intel>",
       "macos12": "Sous macOS 12 Monterey ? WCPOS 2.0 nécessite macOS 13 ou une version ultérieure. La version {version} fonctionne toujours sous macOS 12 avec l’extension 1.11 : <arm>Apple Silicon</arm> · <intel>Intel</intel>",
-      "pluginNotice": "Chaque application se connecte au plugin WordPress gratuit — installez-le d’abord.",
-      "upgradeNote": "Mise à niveau depuis la 1.11 ? Synchronisez d’abord toutes les caisses : la version 2.0 crée une nouvelle base de données locale et ne reprend pas les ventes non envoyées."
+      "upgradeNote": "<title>Mise à niveau depuis la 1.11 ?</title> Synchronisez d’abord toutes les caisses : la version 2.0 crée une nouvelle base de données locale et ne reprend pas les ventes non envoyées. Le plugin et chaque application doivent tous deux être en 2.0. <notes>Lire les notes de la 2.0.0</notes>",
+      "pickTitle": "Choisissez l’appareil de votre comptoir",
+      "pickBody": "Nous n’avons pas pu identifier cet appareil. Toutes les options sont gratuites.",
+      "iosNote": "La version 2.0 sur l’App Store n’est pas encore sortie. En attendant, l’application iPhone et iPad est une bêta publique sur TestFlight.",
+      "webNote": "Il n’y a rien à télécharger. Une fois le plugin gratuit installé, la caisse s’ouvre dans n’importe quel navigateur à l’adresse yourdomain.com/pos. Envie de voir d’abord ? <demo>Ouvrir la démo en direct</demo>"
     },
     "howItFits": {
       "eyebrow": "Comment tout s’assemble",
@@ -1694,38 +1697,35 @@
     },
     "page": {
       "beta": "Bêta",
-      "start": {
-        "eyebrow": "Premiers pas",
-        "title": "Trois étapes jusqu’à votre première vente",
-        "subtitle": "Environ cinq minutes, du début à la fin."
-      },
+      "versionsTitle": "Versions et prérequis",
+      "freePlugin": "Plugin gratuit",
+      "macosMin": "13 ou ultérieur",
+      "mobileApps": "iOS et Android",
       "steps": {
         "plugin": {
-          "title": "Installez le plugin gratuit",
-          "body": "Commencez ici : la caisse et toutes les applications passent par le plugin. Dans votre tableau de bord : Extensions → Ajouter, puis recherchez « WCPOS ».",
+          "title": "Installez le plugin gratuit sur votre site WordPress",
+          "body": "La caisse et toutes les applications passent par le plugin. Dans votre tableau de bord : <k>Extensions</k> → <k>Ajouter</k> → recherchez « WCPOS » → <k>Installer maintenant</k> → <k>Activer</k>",
           "badge": "Gratuit · GPL",
           "requirements": "WordPress 5.6+ · WooCommerce 9.0+ · PHP 7.4+",
-          "requirementsWithVersion": "Dernière version {version} · WordPress 5.6+ · WooCommerce 9.0+ · PHP 7.4+",
           "cardTitle": "WCPOS",
           "wordpressOrgCta": "WordPress.org"
         },
         "device": {
-          "title": "Choisissez votre appareil",
-          "body": "Tous gratuits, tous synchronisés. Prenez celui détecté ci-dessus, ou l’un de ceux-ci.",
-          "desktopTitle": "Application de bureau",
-          "iosCta": "Rejoindre la bêta TestFlight",
-          "androidCta": "Rejoindre sur Google Play",
-          "webSetupCta": "Installer sur votre boutique",
-          "webCta": "Ouvrir la démo en direct"
+          "title": "Obtenez la caisse pour cet appareil",
+          "desktopTitle": "Application de bureau"
+        },
+        "store": {
+          "title": "Ajoutez votre boutique et connectez-vous",
+          "body": "Ouvrez l’application, ajoutez votre boutique une fois et connectez-vous. Dans un navigateur, la caisse se trouve à l’adresse yourdomain.com/pos. Encaissez ensuite votre première vente.",
+          "guideCta": "Lire le guide d’installation",
+          "demoCta": "Essayer d’abord la démo en direct"
         },
         "pro": {
           "title": "Besoin de plus d’une caisse ?",
-          "cardTitle": "WCPOS Pro",
-          "cardBody": "Davantage de caisses et plusieurs boutiques, paiements par terminal, remboursements, stock et prix, gestion des commandes, rapports complets et assistance prioritaire sur Discord.",
-          "requirements": "WordPress 5.8+ · WooCommerce 9.0+ · PHP 7.4+",
+          "cardBody": "Free gère une seule caisse, partagée par tous les appareils. WCPOS Pro ajoute plus de caisses et de boutiques, les remboursements, des lecteurs de cartes pilotés depuis le paiement et un écran client.",
           "plansCta": "Voir les offres Pro",
-          "priceLine": "À partir de {price} ({currency}) — paiement unique, jamais de renouvellement automatique.",
-          "signInCta": "Connectez-vous pour télécharger"
+          "priceLine": "<b>{price} ({currency})</b> pour un an de mises à jour et d’assistance prioritaire. Il ne se renouvelle jamais tout seul, et Pro continue de fonctionner après la fin de l’année.",
+          "signInCta": "Connectez-vous pour télécharger Pro"
         }
       }
     },

@@ -36,7 +36,7 @@ describe('resolvePlatform', () => {
     ).toBe('android')
   })
 
-  it('falls back to macOS for an unknown environment', () => {
-    expect(resolvePlatform('', '', 0)).toBe('mac-arm')
+  it('detects nothing for an unknown environment', () => {
+    expect(resolvePlatform('', '', 0)).toBeNull()
   })
 })

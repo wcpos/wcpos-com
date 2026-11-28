@@ -1,151 +1,116 @@
-import { describe, expect, it, vi } from 'vitest'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { afterEach, describe, expect, it, vi } from 'vitest'
+import { fireEvent, render, screen, within } from '@testing-library/react'
 
-vi.mock('@/lib/analytics/client-events', () => ({
-  trackClientEvent: vi.fn(),
-}))
-
-vi.mock('next-intl', () => {
+vi.mock('next-intl', async () => {
+  const { Fragment } = await import('react')
+  type Rich = Record<string, string | ((chunks: string) => React.ReactNode)>
   return {
     useTranslations: (namespace: string) => {
       const t = (key: string) => `${namespace}.${key}`
-      t.rich = (key: string) => `${namespace}.${key}`
+      // Render every tag function with a marker chunk so its element is visible.
+      t.rich = (key: string, values: Rich = {}) => (
+        <>
+          {`${namespace}.${key}`}
+          {Object.entries(values).map(([tag, render]) =>
+            typeof render === 'function' ? (
+              <Fragment key={tag}>{render(`${namespace}.${key}.${tag}`)}</Fragment>
+            ) : null,
+          )}
+        </>
+      )
       return t
     },
   }
 })
 
-import { trackClientEvent } from '@/lib/analytics/client-events'
-import { DownloadsHero } from './download-hero'
-import de from '../../../messages/de.json'
+import { PlatformPicker } from './download-hero'
 import en from '../../../messages/en.json'
-import es from '../../../messages/es.json'
-import fr from '../../../messages/fr.json'
-import it_ from '../../../messages/it.json'
-import ja from '../../../messages/ja.json'
-import ko from '../../../messages/ko.json'
-import nl from '../../../messages/nl.json'
-import pt from '../../../messages/pt.json'
-import zh from '../../../messages/zh.json'
 
-const LOCALES = { en, de, nl, fr, es, it: it_, pt, ja, ko, zh }
-const PLUGIN_URL = 'https://wordpress.org/plugins/woocommerce-pos/'
-const PLUGIN_BUTTON = 'downloads.page.steps.plugin.title'
+const SETUP_GUIDE = 'https://docs.wcpos.com/getting-started/installation'
 
-const mockTrackClientEvent = vi.mocked(trackClientEvent)
-
-function getPluginLink() {
-  return screen.getByRole('link', { name: PLUGIN_BUTTON })
+function onPlatform(platform: string) {
+  vi.spyOn(navigator, 'platform', 'get').mockReturnValue(platform)
 }
 
-describe('DownloadsHero', () => {
-  it('renders the tagline after the level-1 heading', () => {
-    render(<DownloadsHero desktopVersion="2.0.0" />)
-    const heading = screen.getByRole('heading', {
-      level: 1,
-      name: 'downloads.hero.title',
-    })
-    const tagline = screen.getByText('downloads.hero.tagline')
-    expect(
-      heading.compareDocumentPosition(tagline) &
-        Node.DOCUMENT_POSITION_FOLLOWING,
-    ).toBeTruthy()
-  })
+function primaryLink() {
+  return screen.getByRole('link', { name: /^downloads\.platforms\.[\w-]+\.action$/ })
+}
 
-  it('links to the plugin exactly once, from the plugin button', () => {
-    render(<DownloadsHero desktopVersion="2.0.0" />)
-    const pluginLinks = screen
-      .getAllByRole('link')
-      .filter((link) => link.getAttribute('href') === PLUGIN_URL)
-    expect(pluginLinks).toHaveLength(1)
-    expect(pluginLinks[0]).toBe(getPluginLink())
-  })
+afterEach(() => vi.restoreAllMocks())
 
-  it('puts the plugin button inside the card, above the primary download link', () => {
-    render(<DownloadsHero desktopVersion="2.0.0" />)
-    const pluginLink = getPluginLink()
-    const primaryLink = screen.getByRole('link', {
-      name: /^downloads\.platforms\.[\w-]+\.action$/,
-    })
-    const card = primaryLink.closest('[aria-live="polite"]')
-    expect(card).not.toBeNull()
-    expect(card).toContainElement(pluginLink)
-    expect(
-      pluginLink.compareDocumentPosition(primaryLink) &
-        Node.DOCUMENT_POSITION_FOLLOWING,
-    ).toBeTruthy()
-  })
-
-  it('tracks a click on the plugin button', () => {
-    render(<DownloadsHero desktopVersion="2.0.0" />)
-    fireEvent.click(getPluginLink())
-    expect(mockTrackClientEvent).toHaveBeenCalledWith('download_clicked', {
-      plugin: 'free',
-      source: 'wordpress_org',
-      page: '/downloads',
-    })
-  })
-
-  it('shows the en upgrade note for the default platform and for web', () => {
-    expect(en.downloads.hero.upgradeNote).toBe(
-      'Upgrading from 1.11? Sync every register first: 2.0 starts a new local database and does not carry over unsent sales.',
-    )
-    render(<DownloadsHero desktopVersion="2.0.0" />)
-    expect(screen.getByTestId('upgrade-note')).toHaveTextContent(
-      'downloads.hero.upgradeNote',
-    )
-    fireEvent.click(
-      screen.getByRole('button', { name: 'downloads.platforms.web.name' }),
-    )
-    screen.getByRole('link', { name: 'downloads.platforms.web.action' })
-    expect(screen.getByTestId('upgrade-note')).toHaveTextContent(
-      'downloads.hero.upgradeNote',
+describe('PlatformPicker', () => {
+  it('presses the detected macOS tile and marks it Detected', () => {
+    onPlatform('MacIntel')
+    render(<PlatformPicker desktopVersion="2.0.6" />)
+    expect(screen.getByRole('button', { name: /mac-arm\.name/ })).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByText('downloads.hero.detected')).toBeInTheDocument()
+    expect(primaryLink()).toHaveAttribute(
+      'href',
+      'https://updates.wcpos.com/v1/electron/download/darwin-arm64',
     )
   })
 
-  it('puts the upgrade note before the platform download button', () => {
-    render(<DownloadsHero desktopVersion="2.0.0" />)
-    const primaryLink = screen.getByRole('link', {
-      name: /^downloads\.platforms\.[\w-]+\.action$/,
-    })
+  it('puts the upgrade notice above the download, with a link to the 2.0.0 notes', () => {
+    onPlatform('MacIntel')
+    render(<PlatformPicker desktopVersion="2.0.6" />)
     const note = screen.getByTestId('upgrade-note')
+    expect(note).toHaveClass('bg-amber-50')
     expect(
-      primaryLink.compareDocumentPosition(note) &
-        Node.DOCUMENT_POSITION_PRECEDING,
+      note.compareDocumentPosition(primaryLink()) & Node.DOCUMENT_POSITION_FOLLOWING,
     ).toBeTruthy()
-    expect(
-      getPluginLink().compareDocumentPosition(note) &
-        Node.DOCUMENT_POSITION_FOLLOWING,
-    ).toBeTruthy()
-  })
-
-  it('uses tighter hero padding on phone and the old hero padding from sm up', () => {
-    render(<DownloadsHero desktopVersion="2.0.0" />)
-    const section = screen
-      .getByRole('heading', { level: 1, name: 'downloads.hero.title' })
-      .closest('section')
-    expect(section).not.toBeNull()
-    const classes = section!.classList
-    for (const cls of ['pt-10', 'pb-10', 'sm:py-20', 'md:py-24', 'lg:py-28']) {
-      expect(classes).toContain(cls)
-    }
-    expect(classes).not.toContain('py-20')
-  })
-
-  it('hides the eyebrow on phone', () => {
-    render(<DownloadsHero desktopVersion="2.0.0" />)
-    expect(screen.getByText('downloads.hero.eyebrow')).toHaveClass(
-      'max-sm:hidden',
+    expect(within(note).getByRole('link')).toHaveAttribute(
+      'href',
+      'https://github.com/wcpos/woocommerce-pos/releases/tag/v2.0.0',
     )
   })
 
-  it.each(Object.entries(LOCALES))(
-    '%s: plugin notice is plain text and the button label exists',
-    (_locale, messages) => {
-      expect(messages.downloads.hero.pluginNotice).not.toMatch(/<\/?plugin>/)
-      const label = messages.downloads.page.steps.plugin.title
-      expect(typeof label).toBe('string')
-      expect(label.trim()).not.toBe('')
-    },
-  )
+  it('drops the Detected badge when another tile is picked', () => {
+    onPlatform('MacIntel')
+    render(<PlatformPicker desktopVersion="2.0.6" />)
+    fireEvent.click(screen.getByRole('button', { name: /win\.name/ }))
+    expect(screen.queryByText('downloads.hero.detected')).toBeNull()
+    expect(primaryLink()).toHaveAttribute(
+      'href',
+      'https://updates.wcpos.com/v1/electron/download/win32-x64',
+    )
+  })
+
+  it('sends Web to the setup guide, with the live demo in the note', () => {
+    onPlatform('MacIntel')
+    render(<PlatformPicker desktopVersion="2.0.6" />)
+    fireEvent.click(screen.getByRole('button', { name: /web\.name/ }))
+    expect(primaryLink()).toHaveAttribute('href', SETUP_GUIDE)
+    expect(screen.getByRole('link', { name: /webNote\.demo/ })).toHaveAttribute(
+      'href',
+      'https://demo.wcpos.com/pos',
+    )
+    expect(screen.getByTestId('upgrade-note')).toBeInTheDocument()
+  })
+
+  it('marks iOS as a beta and explains the TestFlight wait', () => {
+    vi.spyOn(navigator, 'userAgent', 'get').mockReturnValue('Mozilla/5.0 (iPhone; CPU iPhone OS 17_0)')
+    render(<PlatformPicker desktopVersion="2.0.6" />)
+    expect(screen.getByText('downloads.page.beta')).toBeInTheDocument()
+    expect(screen.getByText('downloads.hero.iosNote')).toBeInTheDocument()
+  })
+
+  it('lists every build, presses no tile and keeps the notice when the device is unknown', () => {
+    onPlatform('')
+    vi.spyOn(navigator, 'userAgent', 'get').mockReturnValue('')
+    render(<PlatformPicker desktopVersion="2.0.6" />)
+    for (const tile of screen.getAllByRole('button')) {
+      expect(tile).toHaveAttribute('aria-pressed', 'false')
+    }
+    expect(screen.getByText('downloads.hero.pickTitle')).toBeInTheDocument()
+    expect(screen.queryByText('downloads.hero.detected')).toBeNull()
+    expect(screen.queryByRole('link', { name: /\.action$/ })).toBeNull()
+    expect(screen.getAllByRole('link', { name: /\.listLabel$/ })).toHaveLength(6)
+    expect(screen.getByTestId('upgrade-note')).toBeInTheDocument()
+  })
+
+  it('keeps the en upgrade wording and adds the both-on-2.0 line', () => {
+    expect(en.downloads.hero.upgradeNote).toBe(
+      '<title>Updating from 1.11?</title> Sync every register first: 2.0 starts a new local database and does not carry over unsent sales. The plugin and every app must both be on 2.0. <notes>Read the 2.0.0 notes</notes>',
+    )
+  })
 })
