@@ -145,7 +145,7 @@ test.describe('Journey: new customer buys with Bitcoin', () => {
     // 6. License delivery: the completed order surfaces the license in the
     //    brand-new account (keys render masked to their last group).
     await page.goto('/account/licenses')
-    await expect(page.getByText('****-****-7777')).toBeVisible({
+    await expect(page.getByText('••••-••••-7777')).toBeVisible({
       timeout: 15000,
     })
     await expect(page.getByText('active', { exact: true })).toBeVisible()

@@ -6,6 +6,7 @@ import {
   ChevronRight,
   Download,
   FileText,
+  Lock,
 } from 'lucide-react'
 import { useLocale, useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
@@ -13,13 +14,7 @@ import { Button } from '@/components/ui/button'
 import { AccountNotice } from '@/components/account/account-notice'
 import { Badge } from '@/components/ui/badge'
 import { Alert } from '@/components/ui/alert'
-import { DividedList, Row } from '@/components/ui/row'
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { toneSurface, toneText } from '@/components/ui/status-tone'
 import {
   Dialog,
   DialogContent,
@@ -67,6 +62,12 @@ interface DownloadsClientProps {
    * policy ids.
    */
   entitlingPlanLabel?: string | null
+  /**
+   * True while the account-wide expiry banner (and its filled Renew) shows:
+   * the latest build's Download then draws outline (one filled button per
+   * view).
+   */
+  expiryBannerShown?: boolean
 }
 
 const RELEASES_PER_PAGE = 10
@@ -93,6 +94,28 @@ function isDownloadTokenErrorCode(value: unknown): value is DownloadTokenErrorCo
   return typeof value === 'string' && DOWNLOAD_TOKEN_ERROR_CODES.has(value)
 }
 
+/** "2.0.5" → "2.0": the version line a release is grouped under. */
+function versionLine(version: string): string {
+  return version.replace(/^v/i, '').split('.').slice(0, 2).join('.')
+}
+
+/**
+ * One plain line from markdown release notes for the archive row: the first
+ * line that is not a heading, with list markers, emphasis and link targets
+ * stripped. The full notes stay one click away in the modal.
+ */
+function noteSummary(markdown: string): string {
+  for (const raw of markdown.split('\n')) {
+    const line = raw.trim()
+    if (!line || line.startsWith('#')) continue
+    return line
+      .replace(/^([-*+>]|\d+\.)\s+/, '')
+      .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+      .replace(/[*_`]/g, '')
+  }
+  return ''
+}
+
 /** Major releases (x.0.0) get a marker in the archive, matching the mockup. */
 function isMajorRelease(version: string): boolean {
   return /^\d+\.0\.0$/.test(version.replace(/^v/i, ''))
@@ -102,6 +125,7 @@ export function DownloadsClient({
   initialReleases,
   access,
   entitlingPlanLabel = null,
+  expiryBannerShown = false,
 }: DownloadsClientProps) {
   const locale = useLocale()
   const t = useTranslations('account.downloads')
@@ -175,7 +199,7 @@ export function DownloadsClient({
   // Per-release reason a build is unavailable. Mirrors the active banner so the
   // copy never misattributes the cause (e.g. claims "expired" for unverifiable).
   const blockedReason = expiredAccess
-    ? t('reasonExpired')
+    ? null
     : unknownAccess
       ? t('reasonUnknown')
       : t('reasonInactive')
@@ -246,8 +270,9 @@ export function DownloadsClient({
             </Button>
           }
         >
-          {t('expiredBanner', {
+          {t.rich('expiredBanner', {
             date: formatDateForLocale(access.latestExpiry, locale),
+            b: (chunks) => <b className="font-semibold">{chunks}</b>,
           })}
         </AccountNotice>
       )}
@@ -315,139 +340,152 @@ export function DownloadsClient({
 
       {/* Latest version hero — the build most customers want, surfaced first.
           Only shown when the latest build is actually installable: a blocked
-          latest release would duplicate the archive's "Unavailable" row (and
-          the page banner already explains the lapse). */}
+          latest release would duplicate the archive's locked row (and the page
+          banner already explains the lapse). */}
       {latestRelease && latestRelease.allowed && (
-        <Card className="overflow-hidden">
-          {/* Two panels: the release story on the left, one clear action
-              column on the right — the page's single red CTA lives there. */}
-          <div className="grid md:grid-cols-[1.6fr_1fr]">
-            <div className="p-6">
-              <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-wcpos-red-accent">
-                <span
-                  aria-hidden="true"
-                  className="size-1.5 rounded-full bg-wcpos-red"
+        <section className="grid items-center gap-x-8 gap-y-2 border-b pb-7 pt-2 md:grid-cols-[auto_minmax(0,1fr)_auto]">
+          <p className="text-[56px] font-semibold leading-[56px] tracking-[-0.04em] tabular-nums">
+            {latestRelease.version}
+          </p>
+          <div>
+            <p className="flex flex-wrap items-center gap-2 text-[13px] text-muted-foreground">
+              <Badge variant="brand-tint">{t('latestBadge')}</Badge>
+              {t('releasedOn', {
+                date: formatDateForLocale(latestRelease.publishedAt, locale),
+              })}
+            </p>
+            <div className="mt-1.5" lang={latestRelease.contentLocale}>
+              {hasNotes(latestRelease) ? (
+                <Markdown
+                  className="line-clamp-3 max-w-[56ch] text-sm"
+                  content={latestRelease.releaseNotes}
                 />
-                {t('latestVersionLabel')}
-              </p>
-              <div className="mt-2 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                <CardTitle className="text-2xl tracking-tight">
-                  {latestRelease.name}
-                </CardTitle>
-                <span className="text-sm tabular-nums text-muted-foreground">
-                  v{latestRelease.version} •{' '}
-                  {formatDateForLocale(latestRelease.publishedAt, locale)}
-                </span>
-              </div>
-              <div className="mt-3">
-                {hasNotes(latestRelease) ? (
-                  <div lang={latestRelease.contentLocale}>
-                    <Markdown
-                      className="line-clamp-3 max-w-prose text-sm text-muted-foreground"
-                      content={latestRelease.releaseNotes}
-                    />
-                  </div>
-                ) : (
-                  <p className="text-sm text-muted-foreground">
-                    {t('noReleaseNotes')}
-                  </p>
-                )}
-              </div>
-            </div>
-            <div className="flex flex-col justify-center gap-2 border-t bg-muted/40 p-6 md:border-l md:border-t-0">
-              <Button
-                disabled={downloadingVersion === latestRelease.version}
-                onClick={() => startDownload(latestRelease.version)}
-              >
-                <Download className="mr-2 h-4 w-4" />
-                {downloadLabel(latestRelease)}
-              </Button>
-              {hasNotes(latestRelease) && (
-                <Button
-                  variant="outline"
-                  onClick={() => setNotesRelease(latestRelease)}
-                >
-                  <FileText className="mr-2 h-4 w-4" />
-                  {t('releaseNotes')}
-                </Button>
-              )}
-              {latestAvailabilityLabel && (
-                <p className="text-center text-xs text-muted-foreground">
-                  {latestAvailabilityLabel}
+              ) : (
+                <p className="text-sm text-muted-foreground">
+                  {t('noReleaseNotes')}
                 </p>
               )}
             </div>
           </div>
-        </Card>
-      )}
-
-      {/* Version history — the full changelog archive. */}
-      <Card>
-        <CardHeader>
-          <div className="flex flex-wrap items-baseline justify-between gap-2">
-            <CardTitle className="text-lg">{t('listTitle')}</CardTitle>
-            {releases.length > 0 && (
-              <span className="text-sm text-muted-foreground">
-                {t('releaseCount', { count: releases.length })}
-              </span>
+          <div className="flex flex-wrap gap-2 md:flex-col md:items-stretch">
+            <Button
+              variant={expiryBannerShown ? 'outline' : 'default'}
+              disabled={downloadingVersion === latestRelease.version}
+              onClick={() => startDownload(latestRelease.version)}
+            >
+              <Download />
+              {downloadingVersion === latestRelease.version
+                ? t('preparing')
+                : t('downloadVersion', { version: latestRelease.version })}
+            </Button>
+            {hasNotes(latestRelease) && (
+              <Button
+                variant="outline"
+                onClick={() => setNotesRelease(latestRelease)}
+              >
+                <FileText />
+                {t('releaseNotes')}
+              </Button>
+            )}
+            {latestAvailabilityLabel && (
+              <p className="text-center text-xs text-muted-foreground">
+                {latestAvailabilityLabel}
+              </p>
             )}
           </div>
-        </CardHeader>
-        <CardContent>
-          {releases.length === 0 ? (
-            <p className="text-sm text-muted-foreground">{t('emptyList')}</p>
-          ) : (
-            <>
-              <DividedList>
-                {visibleReleases.map((release) => (
-                  <Row
-                    key={release.version}
-                    data-testid="release-row"
-                    className={`items-start gap-3 ${
-                      release.allowed ? '' : 'opacity-60'
+        </section>
+      )}
+
+      {/* Version history, newest first, grouped by version line. */}
+      {releases.length === 0 ? (
+        <p className="text-sm text-muted-foreground">{t('emptyList')}</p>
+      ) : (
+        <div>
+          {visibleReleases.map((release, index) => {
+            const previous = visibleReleases[index - 1]
+            const line = versionLine(release.version)
+            // On an expired licence, one caution line sits between the last
+            // locked and the first downloadable version.
+            const showCut =
+              expiredAccess &&
+              access.latestExpiry &&
+              release.allowed &&
+              previous !== undefined &&
+              !previous.allowed
+            return (
+              <div key={release.version}>
+                {(!previous || versionLine(previous.version) !== line) && (
+                  <p className="mt-7 border-b pb-2 text-[13px] font-semibold text-muted-foreground first:mt-0">
+                    WCPOS Pro {line}
+                  </p>
+                )}
+                {showCut && (
+                  <p
+                    className={`my-2 flex items-center gap-2.5 rounded-md px-3.5 py-3 text-[13px] leading-[19px] ${toneSurface.caution}`}
+                  >
+                    <Lock aria-hidden="true" className="size-4 shrink-0" />
+                    <span>
+                      {t.rich('reasonExpired', {
+                        date: formatDateForLocale(
+                          access.latestExpiry as string,
+                          locale
+                        ),
+                        locked: previous.version,
+                        allowed: release.version,
+                        b: (chunks) => <b className="font-semibold">{chunks}</b>,
+                      })}
+                    </span>
+                  </p>
+                )}
+                <div
+                  data-testid="release-row"
+                  className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-5 gap-y-1 border-b py-3 text-sm md:grid-cols-[120px_130px_minmax(0,1fr)_auto]"
+                >
+                  {/* The release name stays in the row (screen readers and
+                      the e2e row selector read it); the version is shown. */}
+                  <span className="sr-only">{release.name}</span>
+                  <span
+                    className={`flex items-center gap-1.5 font-semibold ${
+                      release.allowed ? '' : 'text-muted-foreground'
                     }`}
                   >
-                  <div className="flex min-w-0 flex-1 basis-60 items-start gap-3">
-                    {/* Timeline node: the latest release glows brand-red, the
-                        archive stays quiet. Decorative only. */}
-                    <span
-                      aria-hidden="true"
-                      className={`mt-1.5 size-2 shrink-0 rounded-full ${
-                        release.version === latestVersion
-                          ? 'bg-wcpos-red ring-[3px] ring-wcpos-red/15'
-                          : 'bg-muted-foreground/40 ring-[3px] ring-muted'
-                      }`}
-                    />
-                    <div className="min-w-0">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <p className="font-medium">{release.name}</p>
-                        {release.version === latestVersion && (
-                          <Badge variant="brand-tint">{t('latestBadge')}</Badge>
-                        )}
-                        {isMajorRelease(release.version) && (
-                          <Badge variant="muted-tint">{t('majorBadge')}</Badge>
-                        )}
-                      </div>
-                      <p className="text-sm tabular-nums text-muted-foreground">
-                        v{release.version} •{' '}
-                        {formatDateForLocale(release.publishedAt, locale)}
-                      </p>
-                      {!release.allowed && (
-                        <p className="mt-1 text-xs text-amber-700 dark:text-amber-400">
-                          {blockedReason}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                  <div className="flex shrink-0 flex-wrap items-center gap-2">
+                    {!release.allowed && (
+                      <Lock
+                        aria-hidden="true"
+                        className={`size-4 ${toneText.caution}`}
+                      />
+                    )}
+                    {release.version}
+                    {release.version === latestVersion && (
+                      <Badge variant="brand-tint">{t('latestBadge')}</Badge>
+                    )}
+                    {isMajorRelease(release.version) && (
+                      <Badge variant="muted-tint">{t('majorBadge')}</Badge>
+                    )}
+                  </span>
+                  <span className="col-start-1 row-start-2 text-[13px] tabular-nums text-muted-foreground md:col-start-auto md:row-start-auto">
+                    {formatDateForLocale(release.publishedAt, locale, {
+                      dateStyle: 'medium',
+                    })}
+                  </span>
+                  {!release.allowed && blockedReason ? (
+                    <span className={`col-span-full text-[13px] md:col-span-1 ${toneText.caution}`}>
+                      {blockedReason}
+                    </span>
+                  ) : (
+                    <span className="hidden truncate text-[13px] text-muted-foreground md:block">
+                      {noteSummary(release.releaseNotes ?? '')}
+                    </span>
+                  )}
+                  <span className="col-start-2 row-span-2 row-start-1 flex justify-end gap-1 md:col-start-auto md:row-span-1 md:row-start-auto">
                     {hasNotes(release) && (
                       <Button
                         size="sm"
                         variant="ghost"
                         onClick={() => setNotesRelease(release)}
                       >
-                        <FileText className="mr-2 h-4 w-4" />
-                        {t('releaseNotes')}
+                        <FileText />
+                        {t('notes')}
                       </Button>
                     )}
                     <Button
@@ -459,51 +497,50 @@ export function DownloadsClient({
                       }
                       onClick={() => startDownload(release.version)}
                     >
-                      <Download className="mr-2 h-4 w-4" />
+                      {release.allowed ? <Download /> : <Lock />}
                       {downloadLabel(release)}
                     </Button>
-                  </div>
-                </Row>
-                ))}
-              </DividedList>
-
-              {totalPages > 1 && (
-                <div className="flex flex-wrap items-center justify-between gap-3 border-t pt-4">
-                  <p className="text-xs text-muted-foreground">
-                    {t('pageOf', { page: safePage, total: totalPages })}
-                  </p>
-                  <div className="flex items-center gap-2">
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      onClick={() => setCurrentPage(Math.max(1, safePage - 1))}
-                      disabled={safePage === 1}
-                      aria-label={t('previousPageAria')}
-                    >
-                      <ChevronLeft className="h-4 w-4" />
-                      {t('previous')}
-                    </Button>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      onClick={() =>
-                        setCurrentPage(Math.min(totalPages, safePage + 1))
-                      }
-                      disabled={safePage === totalPages}
-                      aria-label={t('nextPageAria')}
-                    >
-                      {t('next')}
-                      <ChevronRight className="h-4 w-4" />
-                    </Button>
-                  </div>
+                  </span>
                 </div>
-              )}
-            </>
+              </div>
+            )
+          })}
+
+          {totalPages > 1 && (
+            <div className="flex flex-wrap items-center justify-between gap-3 pt-4">
+              <p className="text-xs text-muted-foreground">
+                {t('pageOf', { page: safePage, total: totalPages })}
+              </p>
+              <div className="flex items-center gap-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setCurrentPage(Math.max(1, safePage - 1))}
+                  disabled={safePage === 1}
+                  aria-label={t('previousPageAria')}
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                  {t('previous')}
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() =>
+                    setCurrentPage(Math.min(totalPages, safePage + 1))
+                  }
+                  disabled={safePage === totalPages}
+                  aria-label={t('nextPageAria')}
+                >
+                  {t('next')}
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
           )}
-        </CardContent>
-      </Card>
+        </div>
+      )}
 
       {/* Release-notes modal. Long changelogs scroll inside a bounded region
           so the dialog itself never exceeds the viewport. */}

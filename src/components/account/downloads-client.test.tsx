@@ -113,9 +113,12 @@ describe('DownloadsClient', () => {
     render(
       <DownloadsClient initialReleases={[makeRelease()]} access={makeAccess()} />
     )
-    // Name appears in both the latest-version hero and the archive row.
-    expect(screen.getAllByText('WCPOS Pro 1.9.0')).toHaveLength(2)
-    expect(screen.getByText('Bug fixes')).toBeInTheDocument()
+    // The hero leads with the version; the archive row carries the release
+    // name for screen readers and a one-line notes summary.
+    expect(screen.getAllByText('1.9.0').length).toBeGreaterThan(0)
+    expect(screen.getByText('WCPOS Pro 1.9.0')).toHaveClass('sr-only')
+    // Notes show in the hero (markdown) and as the row's one-line summary.
+    expect(screen.getAllByText('Bug fixes')).toHaveLength(2)
   })
 
   it('renders markdown release notes with headings and lists', () => {
@@ -133,7 +136,8 @@ describe('DownloadsClient', () => {
     expect(
       screen.getByRole('heading', { name: 'Highlights' })
     ).toBeInTheDocument()
-    expect(screen.getByText('Faster checkout')).toBeInTheDocument()
+    // The row summary is the first non-heading line, without its marker.
+    expect(screen.getAllByText('Faster checkout')).toHaveLength(2)
   })
 
   it('marks externally sourced English release notes with a localized language notice', async () => {
@@ -147,10 +151,10 @@ describe('DownloadsClient', () => {
     expect(
       screen.getByText('Les notes de version proviennent de GitHub et peuvent s’afficher en anglais.')
     ).toBeInTheDocument()
-    expect(screen.getByText('Bug fixes').closest('[lang="en"]')).not.toBeNull()
+    expect(screen.getAllByText('Bug fixes')[0].closest('[lang="en"]')).not.toBeNull()
 
     const row = archiveRow('WCPOS Pro 1.9.0')
-    fireEvent.click(within(row).getByRole('button', { name: 'Notes de version' }))
+    fireEvent.click(within(row).getByRole('button', { name: 'Nouveautés' }))
 
     const dialog = await screen.findByRole('dialog')
     expect(
@@ -169,7 +173,7 @@ describe('DownloadsClient', () => {
     expect(
       screen.queryByText('Release notes come from GitHub and may be shown in English.')
     ).not.toBeInTheDocument()
-    expect(screen.getByText('Bug fixes').closest('[lang="en"]')).not.toBeNull()
+    expect(screen.getAllByText('Bug fixes')[0].closest('[lang="en"]')).not.toBeNull()
   })
 
   it('surfaces the latest build in a hero with a Latest badge', () => {
@@ -180,7 +184,11 @@ describe('DownloadsClient', () => {
       />
     )
 
-    expect(screen.getByText('Latest version')).toBeInTheDocument()
+    // Hero and archive row both mark the latest build.
+    expect(screen.getAllByText('Latest')).toHaveLength(2)
+    expect(
+      screen.getByRole('button', { name: 'Download 1.9.0 (.zip)' })
+    ).toBeInTheDocument()
     // The hero attributes the build to the active licence.
     expect(
       screen.getByText('Available on your active license')
@@ -197,7 +205,7 @@ describe('DownloadsClient', () => {
     )
 
     expect(
-      screen.getByText('Available on your active Yearly license')
+      screen.getByText('Included in your Yearly license')
     ).toBeInTheDocument()
   })
 
@@ -213,7 +221,9 @@ describe('DownloadsClient', () => {
       />
     )
 
-    expect(screen.getByText('Latest version')).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: 'Download 1.9.0 (.zip)' })
+    ).toBeInTheDocument()
     expect(
       screen.queryByText(/Available on your active/)
     ).not.toBeInTheDocument()
@@ -231,7 +241,7 @@ describe('DownloadsClient', () => {
       />
     )
 
-    expect(screen.queryByText('Latest version')).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /\(\.zip\)/ })).not.toBeInTheDocument()
     expect(
       screen.queryByText(/Available on your active/)
     ).not.toBeInTheDocument()
@@ -260,7 +270,7 @@ describe('DownloadsClient', () => {
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
 
     const row = archiveRow('WCPOS Pro 1.8.0')
-    fireEvent.click(within(row).getByRole('button', { name: 'Release notes' }))
+    fireEvent.click(within(row).getByRole('button', { name: 'Notes' }))
 
     const dialog = await screen.findByRole('dialog')
     expect(within(dialog).getByText('WCPOS Pro 1.8.0')).toBeInTheDocument()
@@ -313,10 +323,14 @@ describe('DownloadsClient', () => {
     expect(() => archiveRow('WCPOS Pro 1.9.10')).toThrow()
   })
 
-  it('greys out unavailable versions with a reason and disabled button', () => {
+  it('locks post-expiry versions and draws one cut line above the first downloadable one', () => {
     render(
       <DownloadsClient
-        initialReleases={[makeRelease({ version: '1.8.0', allowed: false })]}
+        initialReleases={[
+          makeRelease({ version: '1.11.10', name: 'WCPOS Pro 1.11.10', allowed: false }),
+          makeRelease({ version: '1.11.9', name: 'WCPOS Pro 1.11.9' }),
+          makeRelease({ version: '1.11.8', name: 'WCPOS Pro 1.11.8' }),
+        ]}
         access={makeAccess({
           hasActiveLicense: false,
           latestExpiry: '2026-01-01T00:00:00Z',
@@ -325,10 +339,34 @@ describe('DownloadsClient', () => {
       />
     )
 
-    expect(screen.getByRole('button', { name: 'Unavailable' })).toBeDisabled()
     expect(
-      screen.getByText('Released after your license expired.')
+      within(archiveRow('WCPOS Pro 1.11.10')).getByRole('button', { name: 'Locked' })
+    ).toBeDisabled()
+    expect(
+      within(archiveRow('WCPOS Pro 1.11.9')).getByRole('button', { name: 'Download' })
+    ).toBeEnabled()
+    // One cut line, naming the end date and both sides of the cut.
+    expect(
+      screen.getAllByText(/1\.11\.10 and later need a renewal; 1\.11\.9 and earlier download\./)
+    ).toHaveLength(1)
+    expect(
+      screen.getByText(/Updates and priority support ended January 1, 2026\./)
     ).toBeInTheDocument()
+    // Grouped under its version line.
+    expect(screen.getByText('WCPOS Pro 1.11')).toBeInTheDocument()
+  })
+
+  it('draws the latest Download outline while the account expiry banner carries the filled Renew', () => {
+    render(
+      <DownloadsClient
+        initialReleases={[makeRelease()]}
+        access={makeAccess()}
+        expiryBannerShown
+      />
+    )
+    expect(
+      screen.getByRole('button', { name: 'Download 1.9.0 (.zip)' })
+    ).toHaveClass('border')
   })
 
   it('shows a renew banner when all licenses are expired', () => {
@@ -344,7 +382,7 @@ describe('DownloadsClient', () => {
     )
 
     expect(
-      screen.getByText(/Your license expired on .*2026/)
+      screen.getByText(/Updates and priority support ended on/)
     ).toBeInTheDocument()
     const renewLink = screen.getByRole('link', { name: 'Renew license' })
     expect(renewLink).toHaveAttribute('href', '/pro')
@@ -371,7 +409,7 @@ describe('DownloadsClient', () => {
     const supportLink = screen.getByRole('link', { name: 'Contact support' })
     expect(supportLink).toHaveAttribute('href', '/support')
     expect(
-      screen.queryByText(/Your license expired on/)
+      screen.queryByText(/Updates and priority support ended on/)
     ).not.toBeInTheDocument()
     expect(
       screen.queryByRole('link', { name: 'Renew license' })
@@ -392,7 +430,7 @@ describe('DownloadsClient', () => {
     )
 
     expect(
-      screen.getByText(/Your license expired on .*2025/)
+      screen.getByText(/Updates and priority support ended on/)
     ).toBeInTheDocument()
     expect(
       screen.queryByText(/Your license is suspended/)
@@ -477,7 +515,7 @@ describe('DownloadsClient', () => {
       screen.getByText("We couldn't verify your license.")
     ).toBeInTheDocument()
     expect(
-      screen.queryByText('Released after your license expired.')
+      screen.queryByText(/need a renewal/)
     ).not.toBeInTheDocument()
     expect(
       screen.queryByText(/You have no active license/)

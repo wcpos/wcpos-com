@@ -4,7 +4,11 @@ import { Suspense } from 'react'
 import { redirectToLoginClearingSession } from '@/lib/login-redirect'
 import { DownloadsClient } from '@/components/account/downloads-client'
 import { getResolvedCustomerLicenses } from '@/lib/customer-licenses'
-import { isLicenseActive, summarizeDownloadAccess } from '@/lib/license'
+import {
+  getExpiringSoonExpiry,
+  isLicenseActive,
+  summarizeDownloadAccess,
+} from '@/lib/license'
 import { getPlanByPolicyId } from '@/lib/plans'
 import { getProPluginReleases } from '@/services/core/business/pro-downloads'
 import { resolveEntitledReleases } from '@/services/core/business/release-delivery'
@@ -152,6 +156,8 @@ async function DownloadsContent({
     <DownloadsClient
       initialReleases={mappedReleases}
       entitlingPlanLabel={entitlingPlanLabel}
+      // Same account-wide rule as AccountExpiryBanner.
+      expiryBannerShown={getExpiringSoonExpiry(licenses, nowMs) !== null}
       access={{
         hasActiveLicense,
         latestExpiry,

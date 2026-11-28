@@ -748,17 +748,11 @@ export function LicensesClient({
             </form>
           )
 
-          // The Sites column carries the authoritative activation count, so it
-          // shows whenever a site is (or can be) active on this key.
-          const showSites =
-            license.machines.length > 0 ||
-            license.activationCount > 0 ||
-            displayStatus === 'active'
           const showDownloads =
             displayStatus === 'active' ||
             displayStatus === 'expired' ||
             displayStatus === 'suspended'
-          const columnCount = 1 + (showSites ? 1 : 0) + (showDownloads ? 1 : 0)
+          const columnCount = showDownloads ? 3 : 2
           const freeSlots = Math.max(
             0,
             license.maxMachines - license.activationCount
@@ -926,7 +920,8 @@ export function LicensesClient({
               )}
 
               <div className={cn('grid border-t', COLUMN_GRID[columnCount])}>
-              {showSites && (
+              {/* Sites carries the authoritative activation count, so it
+                  shows on every licence. */}
                 <section className={COLUMN_CLASS}>
                   <ColumnHeading
                     title={t('factSites')}
@@ -1068,7 +1063,8 @@ export function LicensesClient({
                     /* Only claim "no sites" when the AUTHORITATIVE count
                        agrees — the machine detail list can be empty while
                        activations exist (unauthenticated machine management). */
-                    license.activationCount === 0 && (
+                    license.activationCount === 0 &&
+                    displayStatus === 'active' && (
                       <p className="mt-2 text-[13px] text-muted-foreground">
                         {t('noSites')}
                       </p>
@@ -1079,7 +1075,6 @@ export function LicensesClient({
                     {t('sitesCover', { max: license.maxMachines })}
                   </p>
                 </section>
-              )}
 
               {/* Discord access is scoped to this licence. Connected members
                   come from the server-side licence metadata projection; removal

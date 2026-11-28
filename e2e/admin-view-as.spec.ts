@@ -60,7 +60,7 @@ test.describe('Admin view-as', () => {
     await inspectCustomer(page, 'active@example.com')
 
     await expect(page.getByText('active@example.com')).toBeVisible()
-    await expect(licenseCard(page, '****-****-1234')).toBeVisible()
+    await expect(licenseCard(page, '••••-••••-1234')).toBeVisible()
   })
 
   test('inspecting a second customer after going back shows THAT customer, not the first', async ({
@@ -71,15 +71,15 @@ test.describe('Admin view-as', () => {
     await signInAs(context, baseURL, 'e2e-admin')
     await page.goto('/account/admin')
 
-    // First inspection: the active persona (license ****-****-1234).
+    // First inspection: the active persona (license ••••-••••-1234).
     await inspectCustomer(page, 'active@example.com')
-    await expect(licenseCard(page, '****-****-1234')).toBeVisible()
+    await expect(licenseCard(page, '••••-••••-1234')).toBeVisible()
 
     // Back to the admin form, then inspect a DIFFERENT persona.
     await page.goBack()
     await expect(page).toHaveURL(/\/account\/admin/)
 
-    // Second inspection: the expired persona (license ****-****-5678).
+    // Second inspection: the expired persona (license ••••-••••-5678).
     await inspectCustomer(page, 'expired@example.com')
 
     // The banner and the license list must BOTH describe the new target.
@@ -87,8 +87,8 @@ test.describe('Admin view-as', () => {
     // navigation, so LicensesClient's prop-seeded useState survived the
     // history revisit and kept showing the PREVIOUS target's licences.
     await expect(page.getByText('expired@example.com')).toBeVisible()
-    await expect(licenseCard(page, '****-****-5678')).toBeVisible()
-    await expect(licenseCard(page, '****-****-1234')).not.toBeVisible()
+    await expect(licenseCard(page, '••••-••••-5678')).toBeVisible()
+    await expect(licenseCard(page, '••••-••••-1234')).not.toBeVisible()
   })
 
   test('switching customers clears preserved delete-account dialog state', async ({

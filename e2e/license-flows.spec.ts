@@ -87,13 +87,13 @@ test.describe('Purchase to account handoff', () => {
     await page.getByRole('link', { name: /Go to Licenses/ }).click()
     await expect(page).toHaveURL(/\/account\/licenses/)
 
-    const card = licenseCard(page, '****-****-7777')
+    const card = licenseCard(page, '••••-••••-7777')
     await expect(card).toBeVisible()
     // Status badge renders the lowercased display status (raw Keygen casing is normalized).
     await expect(card.getByText('active', { exact: true })).toBeVisible()
-    await expect(card.getByText('Yearly', { exact: true })).toBeVisible()
-    await expect(card.getByText('0 of 4')).toBeVisible()
-    await expect(card.getByRole('link', { name: /Downloads/ })).toBeVisible()
+    await expect(card.getByText('WCPOS Pro Yearly', { exact: true })).toBeVisible()
+    await expect(card.getByText('0 of 4 in use')).toBeVisible()
+    await expect(card.getByRole('link', { name: /Go to downloads/ })).toBeVisible()
   })
 
   test('/account redirects to licenses and reflects the new purchase', async ({
@@ -107,7 +107,7 @@ test.describe('Purchase to account handoff', () => {
     await page.goto('/account')
 
     await expect(page).toHaveURL(/\/account\/licenses/)
-    await expect(licenseCard(page, '****-****-7777')).toBeVisible()
+    await expect(licenseCard(page, '••••-••••-7777')).toBeVisible()
   })
 })
 
@@ -121,25 +121,25 @@ test.describe('Existing license holder data accuracy', () => {
     await page.goto('/account/licenses')
 
     // Lifetime license resolved from the legacy order's license_key.
-    const lifetimeCard = licenseCard(page, '****-****-Y007')
+    const lifetimeCard = licenseCard(page, '••••-••••-Y007')
     await expect(lifetimeCard).toBeVisible()
     await expect(lifetimeCard.getByText('active', { exact: true })).toBeVisible()
     await expect(
-      lifetimeCard.getByText('Lifetime', { exact: true })
+      lifetimeCard.getByText('WCPOS Pro Lifetime', { exact: true })
     ).toBeVisible()
-    await expect(lifetimeCard.getByText('0 of 1')).toBeVisible()
+    await expect(lifetimeCard.getByText('0 of 1 in use')).toBeVisible()
     // Lifetime licenses have no expiry.
     await expect(lifetimeCard.getByText('Expires:')).toHaveCount(0)
     await expect(
-      lifetimeCard.getByRole('link', { name: /Downloads/ })
+      lifetimeCard.getByRole('link', { name: /Go to downloads/ })
     ).toBeVisible()
 
     // Legacy key that no longer resolves renders as an unknown placeholder.
-    const unknownCard = licenseCard(page, '****-****-0000')
+    const unknownCard = licenseCard(page, '••••-••••-0000')
     await expect(unknownCard).toBeVisible()
     await expect(unknownCard.getByText('unknown', { exact: true })).toBeVisible()
-    await expect(unknownCard.getByText('0 of 0')).toBeVisible()
-    await expect(unknownCard.getByRole('link', { name: /Downloads/ })).toHaveCount(0)
+    await expect(unknownCard.getByText('0 of 0 in use')).toBeVisible()
+    await expect(unknownCard.getByRole('link', { name: /Go to downloads/ })).toHaveCount(0)
   })
 
   test('expired holder sees expired status, expiry date, renew CTA, and downloads link', async ({
@@ -150,23 +150,25 @@ test.describe('Existing license holder data accuracy', () => {
     await signInAs(context, baseURL, 'e2e-expired')
     await page.goto('/account/licenses')
 
-    const card = licenseCard(page, '****-****-5678')
+    const card = licenseCard(page, '••••-••••-5678')
     await expect(card).toBeVisible()
     await expect(card.getByText('expired', { exact: true })).toBeVisible()
-    // The redesigned facts row shows the support window as "Ended {date}".
-    await expect(card.getByText(/^Ended /)).toBeVisible()
+    // The status line names when updates and priority support ended.
+    await expect(
+      card.getByText(/^Updates and priority support ended /)
+    ).toBeVisible()
     await expect(card.getByText(/2025/).first()).toBeVisible()
-    await expect(card.getByText('0 of 1').first()).toBeVisible()
+    await expect(card.getByText('0 of 1 in use').first()).toBeVisible()
     // Expired holders can still download pre-expiry versions, so the
     // downloads link stays, alongside a renew CTA.
-    const renewLink = card.getByRole('link', { name: 'Renew' })
+    const renewLink = card.getByRole('link', { name: 'Renew for a year' })
     await expect(renewLink).toBeVisible()
     // Yearly licence → Renew starts the attended one-click renewal flow.
     await expect(renewLink).toHaveAttribute(
       'href',
       '/account/licenses/renew'
     )
-    await expect(card.getByRole('link', { name: /Downloads/ })).toBeVisible()
+    await expect(card.getByRole('link', { name: /Go to downloads/ })).toBeVisible()
   })
 
   test('renewal offers the same payment methods as checkout', async ({
@@ -227,10 +229,10 @@ test.describe('Existing license holder data accuracy', () => {
     await signInAs(context, baseURL, 'e2e-suspended')
     await page.goto('/account/licenses')
 
-    const card = licenseCard(page, '****-****-9012')
+    const card = licenseCard(page, '••••-••••-9012')
     await expect(card).toBeVisible()
     await expect(card.getByText('suspended', { exact: true })).toBeVisible()
-    await expect(card.getByRole('link', { name: /Downloads/ })).toHaveCount(0)
+    await expect(card.getByRole('link', { name: /Go to downloads/ })).toHaveCount(0)
   })
 
   test('suspended yearly holder cannot open one-click renewal directly', async ({
@@ -253,7 +255,9 @@ test.describe('Existing license holder data accuracy', () => {
     await signInAs(context, baseURL, 'e2e-none')
     await page.goto('/account/licenses')
 
-    await expect(page.getByText('No licenses found.')).toBeVisible()
+    await expect(
+      page.getByText("You don't have a WCPOS Pro license yet")
+    ).toBeVisible()
   })
 })
 
@@ -268,8 +272,8 @@ test.describe('License activation and machine deactivation', () => {
     await signInAs(context, baseURL, `e2e-active__${suffix}`)
 
     await page.goto('/account/licenses')
-    const card = licenseCard(page, '****-****-1234')
-    await expect(card.getByText('2 of 4').first()).toBeVisible()
+    const card = licenseCard(page, '••••-••••-1234')
+    await expect(card.getByText('2 of 4 in use').first()).toBeVisible()
     await expect(card.getByText('shop.example.com')).toBeVisible()
     await expect(card.getByText('office.example.com')).toBeVisible()
 
@@ -296,15 +300,15 @@ test.describe('License activation and machine deactivation', () => {
 
     // The account UI reflects the new activation.
     await page.reload()
-    await expect(card.getByText('3 of 4').first()).toBeVisible()
+    await expect(card.getByText('3 of 4 in use').first()).toBeVisible()
     await expect(card.getByText('till3.example.com')).toBeVisible()
 
     // Deactivate it from the account UI.
     await card
       .getByRole('button', { name: 'Deactivate site: till3.example.com' })
       .click()
-    await card.getByRole('button', { name: 'Deactivate', exact: true }).click()
-    await expect(card.getByText('2 of 4').first()).toBeVisible()
+    await card.getByRole('button', { name: 'Deactivate site', exact: true }).click()
+    await expect(card.getByText('2 of 4 in use').first()).toBeVisible()
     await expect(card.getByText('till3.example.com')).toHaveCount(0)
     await expect(card.getByText('shop.example.com')).toBeVisible()
     await expect(card.getByText('office.example.com')).toBeVisible()
@@ -319,15 +323,15 @@ test.describe('License activation and machine deactivation', () => {
     await signInAs(context, baseURL, `e2e-active__${suffix}`)
 
     await page.goto('/account/licenses')
-    const card = licenseCard(page, '****-****-1234')
-    await expect(card.getByText('2 of 4').first()).toBeVisible()
+    const card = licenseCard(page, '••••-••••-1234')
+    await expect(card.getByText('2 of 4 in use').first()).toBeVisible()
 
     await card
       .getByRole('button', { name: 'Deactivate site: office.example.com' })
       .click()
-    await card.getByRole('button', { name: 'Deactivate', exact: true }).click()
+    await card.getByRole('button', { name: 'Deactivate site', exact: true }).click()
 
-    await expect(card.getByText('1 of 4').first()).toBeVisible()
+    await expect(card.getByText('1 of 4 in use').first()).toBeVisible()
     await expect(card.getByText('office.example.com')).toHaveCount(0)
     await expect(card.getByText('shop.example.com')).toBeVisible()
   })
@@ -363,10 +367,10 @@ test.describe('Expired license version gating in downloads', () => {
     // "Unavailable" button; the page banner offers a renew CTA.
     const blockedRow = releaseRow(page, 'WCPOS Pro 3.2.0')
     await expect(
-      blockedRow.getByRole('button', { name: 'Unavailable' })
+      blockedRow.getByRole('button', { name: 'Locked' })
     ).toBeDisabled()
     await expect(
-      blockedRow.getByText('Released after your license expired.').first()
+      page.getByText(/3\.2\.0 and later need a renewal; 2\.5\.0 and earlier download\./)
     ).toBeVisible()
     await expect(
       page.getByRole('link', { name: 'Renew license' })
@@ -443,7 +447,7 @@ test.describe('Expired license version gating in downloads', () => {
 
     // With no license at all, every release is "Unavailable" and the page
     // offers a purchase CTA instead of a renew banner.
-    const buttons = page.getByRole('button', { name: 'Unavailable' })
+    const buttons = page.getByRole('button', { name: 'Locked' })
     await expect(buttons).toHaveCount(3)
     for (const button of await buttons.all()) {
       await expect(button).toBeDisabled()
