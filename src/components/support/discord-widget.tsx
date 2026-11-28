@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { useTranslations } from 'next-intl'
-import { Skeleton } from '@/components/ui/skeleton'
+import { DiscordLoading } from '@/components/support/discord-loading'
 
 // The channel embed needs no API client query string.
 const WIDGETBOT_SRC = 'https://emerald.widgetbot.io/channels/711884517081612298/1093100746372829254/'
@@ -61,13 +61,7 @@ export function DiscordWidget() {
         onLoad={onLoad}
       />
       {/* load fires on WidgetBot's dark shell; keep the skeleton until its ready message + grace. */}
-      {!loaded && (
-        <Skeleton
-          aria-hidden
-          data-testid="discord-widget-skeleton"
-          className="pointer-events-none absolute inset-0 h-full w-full rounded-none"
-        />
-      )}
+      {!loaded && <DiscordLoading className="pointer-events-none absolute inset-0" />}
     </div>
   )
 }

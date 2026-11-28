@@ -2,8 +2,9 @@ import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { describe, expect, it } from 'vitest'
 
-// On phone the /compare hub, /extensions and /support heroes use tighter top
-// padding than the shared hero spacing; from sm up they keep the hero values.
+// On phone the /compare hub and /extensions heroes use tighter top padding
+// than the shared hero spacing; from sm up they keep the hero values. /support
+// is a two-lane page with its own, tighter rhythm (the judged 2026-11-24 mockup).
 const ROOT = process.cwd()
 
 const HEROES = [
@@ -20,13 +21,13 @@ const HEROES = [
   {
     name: '/support',
     file: 'src/components/support/support-chat.tsx',
-    classes: ['pt-10', 'sm:py-20', 'md:py-24', 'lg:py-28'],
+    classes: ['pt-8', 'pb-16', 'lg:pt-14', 'lg:pb-24'],
   },
 ] as const
 
-function heroSectionTag(source: string): string | undefined {
+function heroSectionTag(source: string, marker = 'pt-10'): string | undefined {
   const tags = source.match(/<Section\b[^>]*>/g) ?? []
-  return tags.find((tag) => /\bpt-10\b/.test(tag))
+  return tags.find((tag) => new RegExp(`\\b${marker}\\b`).test(tag))
 }
 
 describe('hero phone padding', () => {
@@ -37,7 +38,7 @@ describe('hero phone padding', () => {
 
   it.each(HEROES)('$name hero is tight on phone and unchanged from sm', ({ file, classes }) => {
     const source = readFileSync(resolve(ROOT, file), 'utf8')
-    const tag = heroSectionTag(source)
+    const tag = heroSectionTag(source, classes[0])
     expect(tag).toBeDefined()
     expect(tag).toContain('spacing="none"')
     const className = tag?.match(/className="([^"]*)"/)?.[1] ?? ''

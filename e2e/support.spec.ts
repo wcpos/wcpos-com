@@ -26,7 +26,7 @@ test('support page answers a question and shows Discord', async ({ page }) => {
   await page.getByRole('button', { name: /^ask$/i }).click()
 
   await expect(page.getByText('How do I print receipts?')).toBeVisible()
-  const thinking = page.getByRole('status').filter({ hasText: 'Aide is thinking…' })
+  const thinking = page.getByRole('status').filter({ hasText: 'Aide is writing…' })
   await expect(thinking).toBeVisible()
   await expect(thinking.locator('p')).not.toHaveCSS('animation-name', 'none')
 
@@ -34,5 +34,5 @@ test('support page answers a question and shows Discord', async ({ page }) => {
 
   await expect(thinking).toBeHidden()
   await expect(page.getByText(/Settings → Printing/)).toBeVisible()
-  await expect(page.getByRole('heading', { name: /talk to a human/i })).toBeVisible()
+  await expect(page.getByRole('heading', { name: /talk to a person/i })).toBeVisible()
 })

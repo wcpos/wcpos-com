@@ -52,9 +52,9 @@ describe('DiscordSection', () => {
     })
     expect(screen.queryByTestId('discord-widget')).toBeNull()
     expect(screen.queryByRole('button')).toBeNull()
-    const region = screen.getByRole('region', { name: 'Prefer to talk to a human?' })
+    const region = screen.getByRole('region', { name: 'Talk to a person' })
     expect(region).toBeInTheDocument()
-    expect(region).toHaveClass('h-[600px]')
+    expect(region).toHaveClass('h-[300px]', 'max-lg:h-[480px]')
     expect(observe).toHaveBeenCalledWith(region)
     expect(rootMargin).toBe('200px 0px')
   })
@@ -64,6 +64,23 @@ describe('DiscordSection', () => {
     act(() => onIntersect([{ isIntersecting: true }]))
     expect(await screen.findByTestId('discord-widget')).toBeInTheDocument()
     expect(disconnect).toHaveBeenCalled()
+  })
+
+  it('holds the widget box with a quiet loading status until the embed mounts', () => {
+    renderWithIntl(<DiscordSection />)
+    expect(screen.getByRole('status')).toHaveTextContent(messages.support.discord.loading)
+    expect(screen.getByTestId('discord-widget-skeleton')).toHaveAttribute('aria-hidden')
+  })
+
+  it('names the Pro channels, the phone caption and the channel caption', () => {
+    renderWithIntl(<DiscordSection />)
+    const { subtitlePro, liveCaption, channelCaption } = messages.support.discord
+    expect(screen.getByText(subtitlePro)).toHaveClass('max-lg:hidden')
+    expect(screen.getByText(liveCaption)).toHaveClass('lg:hidden')
+    expect(screen.getByText(channelCaption)).toBeInTheDocument()
+    expect(document.getElementById('discord')).toContainElement(
+      screen.getByRole('heading', { level: 2, name: 'Talk to a person' })
+    )
   })
 
   it('links to the Discord invite in a new tab', () => {
@@ -84,7 +101,7 @@ describe('DiscordSection', () => {
   it('puts the link before the widget box', () => {
     renderWithIntl(<DiscordSection />)
     const link = screen.getByRole('link', { name: 'Open Discord' })
-    const region = screen.getByRole('region', { name: 'Prefer to talk to a human?' })
+    const region = screen.getByRole('region', { name: 'Talk to a person' })
     expect(link.compareDocumentPosition(region) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
   })
 

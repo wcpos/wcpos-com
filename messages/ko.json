@@ -1873,30 +1873,47 @@
     "chat": {
       "hero": {
         "title": "WooCommerce용 WCPOS 도움말 및 지원",
-        "subtitle": "WCPOS에 대해 무엇이든 물어보세요 — 설정, 라이선스, 하드웨어, 동기화, 인쇄까지. 문서에서 가져온 즉시 답변을 받을 수 있습니다."
+        "subtitle": "설정, 라이선스, 스캐너, 프린터, 동기화에 대해 질문하세요. WCPOS 어시스턴트 Aide가 문서를 바탕으로 답하고 참고한 페이지를 알려 드립니다."
       },
       "examples": {
         "e1": "라이선스는 몇 개의 사이트에서 사용할 수 있나요?",
         "e2": "지원되는 바코드 스캐너는 무엇인가요?",
-        "e3": "WooCommerce에서 제품을 어떻게 동기화하나요?"
+        "e3": "WCPOS 2.0으로 업그레이드하려면 어떻게 하나요?"
       },
+      "examplesLabel": "이런 질문을 해 보세요",
       "feedback": {
         "prompt": "도움이 되었나요?",
         "yes": "예",
         "no": "아니요"
       },
-      "thinking": "Aide가 생각 중입니다…",
+      "thinking": "Aide가 답변을 작성하고 있습니다…",
       "form": {
         "label": "지원 질문하기",
         "placeholder": "예: 영수증 프린터 연결",
         "verifying": "보안 확인 중…",
         "interactive": "질문하려면 아래 상자를 체크하세요.",
-        "followUpPlaceholder": "추가 질문하기…",
+        "followUpPlaceholder": "다른 질문하기…",
+        "followUpNote": "Aide는 질문마다 따로 답하므로 필요한 내용을 다시 포함해 주세요.",
         "submit": "질문하기"
       },
       "discordLink": "Discord에서 질문하기 →",
       "turnstileTrouble": "브라우저 보안 확인을 완료할 수 없습니다. 광고 차단기, 개인정보 보호 확장 프로그램 또는 네트워크 필터가 차단하고 있을 수 있습니다. 그래도 질문을 시도해 볼 수 있습니다.",
-      "poweredBy": "Aide가 답변합니다 · WCPOS 문서와 위키로 학습됨"
+      "poweredBy": "Aide가 답변합니다 · WCPOS 문서와 위키를 읽는 AI 어시스턴트",
+      "byline": "<strong>Aide</strong> · WCPOS 문서와 위키를 바탕으로 한 답변",
+      "bylineHandoff": "<strong>Aide</strong> · WCPOS 어시스턴트",
+      "sources": {
+        "title": "Aide가 참고한 페이지",
+        "wiki": "WCPOS 위키"
+      },
+      "handoff": {
+        "title": "Aide가 문서에서 답을 찾지 못했습니다",
+        "body": "사람이 도와드릴 수 있습니다. 매장 운영자와 팀이 답하는 WCPOS Discord에 질문을 올리거나 <email>support@wcpos.com</email>으로 이메일을 보내 주세요."
+      },
+      "stuck": "아직 해결되지 않았나요? <discord>Discord에서 사람과 이야기하거나</discord> <email>support@wcpos.com</email>으로 이메일을 보내 주세요.",
+      "route": {
+        "discord": "Discord에서 질문하기",
+        "email": "지원팀에 이메일 보내기"
+      }
     },
     "errors": {
       "invalid_question": "질문을 입력해 주세요(최대 1000자).",
@@ -1908,7 +1925,9 @@
       "gateway_rate_limited": "어시스턴트가 시간당 질문 한도에 도달했습니다 — 나중에 다시 시도하거나 Discord에서 질문해 주세요.",
       "timeout": "시간이 너무 오래 걸렸습니다. 다시 시도하거나 Discord에서 질문해 주세요.",
       "unavailable": "어시스턴트를 일시적으로 사용할 수 없습니다. 복구하는 동안 Discord를 이용해 주세요.",
-      "network": "지금 어시스턴트를 사용할 수 없습니다. Discord에서 질문해 주세요.",
+      "networkTitle": "Aide에 연결할 수 없습니다",
+      "network": "Aide에서 답변을 받지 못했습니다. 질문은 입력란에 그대로 있습니다. 질문하기를 눌러 다시 시도해 주세요.",
+      "networkHint": "계속 실패하면 <status>status.wcpos.com</status>을 확인하거나 <discord>Discord에서 질문해</discord> 주세요.",
       "unknown": "문제가 발생했습니다."
     },
     "order": {
@@ -1916,11 +1935,15 @@
       "body": "다시 결제하기 전에 결제를 확인하거나 주문을 완료할 수 있도록 참조 번호 <ref></ref>를 알려 주세요."
     },
     "discord": {
-      "title": "사람과 직접 이야기하고 싶으신가요?",
-      "subtitle": "매장 운영자와 팀이 함께하는 실시간 Discord 커뮤니티에 참여하세요.",
+      "title": "사람과 이야기하기",
+      "subtitle": "매장 운영자와 WCPOS 팀이 Discord에서 질문에 답합니다.",
+      "subtitlePro": "Pro 라이선스가 있으면 Pro 채널에서 우선 지원을 받을 수 있습니다.",
       "open": "Discord 열기",
       "emailLine": "이메일이 더 편하신가요? <email>support@wcpos.com</email>으로 이메일을 보내 주세요.",
-      "embedTitle": "Discord 채팅"
+      "embedTitle": "Discord 채팅",
+      "liveCaption": "WCPOS Discord 실시간 채널",
+      "channelCaption": "실시간 채널 · Discord에서 열립니다",
+      "loading": "Discord 불러오는 중…"
     },
     "guides": {
       "title": "먼저 이 가이드를 확인하세요",

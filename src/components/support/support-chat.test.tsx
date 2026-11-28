@@ -1,7 +1,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { act, render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { act, render, screen, fireEvent, waitFor, within } from '@testing-library/react'
 import { useEffect, useImperativeHandle } from 'react'
 import type { Ref } from 'react'
 import { NextIntlClientProvider } from 'next-intl'
@@ -87,7 +87,7 @@ vi.mock('@marsidev/react-turnstile', () => ({
   },
 }))
 
-import { SupportChat, SupportPageContent } from './support-chat'
+import { SupportChat, SupportPageContent, sourceTitle } from './support-chat'
 
 const SESSION_ID = '5f1e2d3c-4b5a-4968-8776-655443322110'
 const ANSWER_ID = '0b9c2f4e-3d1a-4c5b-9e8f-7a6b5c4d3e2f'
@@ -469,6 +469,69 @@ describe('SupportChat', () => {
     ).toBeEnabled()
   })
 
+  it('puts a failed question back in the box and keeps it out of the thread', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockRejectedValueOnce(new TypeError('Failed to fetch')))
+    renderWithIntl(<SupportChat />)
+    fireEvent.change(screen.getByRole('textbox'), { target: { value: 'How do I print?' } })
+    fireEvent.submit(screen.getByRole('textbox').closest('form')!)
+
+    const { networkTitle } = messages.support.errors
+    expect(await screen.findByText(networkTitle)).toBeInTheDocument()
+    expect(screen.getByRole('textbox')).toHaveValue('How do I print?')
+    // Back at rest: the page heading shows again and the bubble is gone.
+    expect(screen.getByRole('heading', { level: 1 })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'status.wcpos.com' })).toHaveAttribute(
+      'href',
+      'https://status.wcpos.com/'
+    )
+    expect(screen.getByRole('link', { name: 'ask in Discord' })).toHaveAttribute('href', '#discord')
+  })
+
+  it('hands an unanswered question over to a person', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValueOnce(
+      new Response(JSON.stringify({
+        answered: false,
+        answer: 'The docs do not cover importing from Square.',
+        sources: [],
+      }), { status: 200 })
+    ))
+    renderWithIntl(<SupportChat />)
+    fireEvent.change(screen.getByRole('textbox'), { target: { value: 'Square import?' } })
+    fireEvent.submit(screen.getByRole('textbox').closest('form')!)
+
+    expect(await screen.findByText(messages.support.chat.handoff.title)).toBeInTheDocument()
+    expect(screen.getByText('WCPOS assistant', { exact: false })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /Open Discord/ })).toHaveAttribute('target', '_blank')
+    expect(screen.getByRole('link', { name: 'support@wcpos.com' })).toHaveAttribute(
+      'href',
+      'mailto:support@wcpos.com'
+    )
+    // The hand-off is the route to a person; no "Still stuck?" line under it.
+    expect(screen.queryByText(/Still stuck\?/)).not.toBeInTheDocument()
+  })
+
+  it('lists the pages Aide used, numbered, and offers a person under the answer', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValueOnce(
+      new Response(JSON.stringify({
+        answered: true,
+        answer: 'Two sites.',
+        sources: ['support/licensing/activation.md', 'support/receipt-printing.md', 'support/receipt-printing.md'],
+      }), { status: 200 })
+    ))
+    renderWithIntl(<SupportChat />)
+    fireEvent.change(screen.getByRole('textbox'), { target: { value: 'How many sites?' } })
+    fireEvent.submit(screen.getByRole('textbox').closest('form')!)
+
+    const title = await screen.findByText(messages.support.chat.sources.title)
+    const items = within(title.parentElement!).getAllByRole('listitem')
+    expect(items.map((li) => li.textContent)).toEqual([
+      '1Licensing › ActivationWCPOS wiki',
+      '2Receipt printingWCPOS wiki',
+    ])
+    expect(screen.getByText(/Still stuck\?/)).toBeInTheDocument()
+    expect(screen.getByText(messages.support.chat.form.followUpNote)).toBeInTheDocument()
+  })
+
   it('resets the widget and shows the error when the server rejects the bot check', async () => {
     vi.stubGlobal(
       'fetch',
@@ -503,5 +566,16 @@ describe('support headings', () => {
   it('puts the order-support h1 on the hero type scale', () => {
     renderWithIntl(<SupportPageContent />)
     expectHeroScale(screen.getByRole('heading', { level: 1, name: messages.support.order.title }))
+  })
+})
+
+describe('sourceTitle', () => {
+  it.each([
+    ['support/licensing/activation.md', 'Licensing › Activation'],
+    ['support/receipt-printing.md', 'Receipt printing'],
+    ['support/hardware/_index.md', 'Hardware'],
+    ['product/features/pricing.md', 'Product › Features › Pricing'],
+  ])('names %s as %s', (path, title) => {
+    expect(sourceTitle(path)).toBe(title)
   })
 })

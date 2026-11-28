@@ -1873,30 +1873,47 @@
     "chat": {
       "hero": {
         "title": "适用于 WooCommerce 的 WCPOS：帮助与支持",
-        "subtitle": "询问关于 WCPOS 的任何问题——设置、授权、硬件、同步、打印。您会从我们的文档中获得即时答案。"
+        "subtitle": "可询问设置、许可证、扫描枪、打印机或同步相关问题。WCPOS 助手 Aide 会根据文档回答，并列出所参考的页面。"
       },
       "examples": {
         "e1": "我的许可证可以在多少个网站上使用？",
         "e2": "支持哪些条形码扫描器？",
-        "e3": "如何从 WooCommerce 同步商品？"
+        "e3": "如何升级到 WCPOS 2.0？"
       },
+      "examplesLabel": "试试这些问题",
       "feedback": {
         "prompt": "这有帮助吗？",
         "yes": "是",
         "no": "否"
       },
-      "thinking": "Aide 正在思考…",
+      "thinking": "Aide 正在撰写回答…",
       "form": {
         "label": "提出支持问题",
         "placeholder": "例如：如何连接收据打印机？",
         "verifying": "正在进行安全检查…",
         "interactive": "请勾选下方的复选框以提问。",
-        "followUpPlaceholder": "继续追问…",
+        "followUpPlaceholder": "提出另一个问题…",
+        "followUpNote": "Aide 会单独回答每个问题，请再次附上相关细节。",
         "submit": "提问"
       },
       "discordLink": "在 Discord 提问 →",
       "turnstileTrouble": "浏览器安全验证未能完成——可能被广告拦截器、隐私扩展或网络过滤器拦截。您仍然可以尝试提问。",
-      "poweredBy": "由 Aide 回答 · 基于 WCPOS 文档和 wiki 训练"
+      "poweredBy": "由 Aide 回答 · 一个阅读 WCPOS 文档和 wiki 的 AI 助手",
+      "byline": "<strong>Aide</strong> · 根据 WCPOS 文档和 wiki 回答",
+      "bylineHandoff": "<strong>Aide</strong> · WCPOS 助手",
+      "sources": {
+        "title": "Aide 参考的页面",
+        "wiki": "WCPOS 维基"
+      },
+      "handoff": {
+        "title": "Aide 无法根据文档回答这个问题",
+        "body": "可以由真人为您解答。请在 WCPOS Discord 中发布您的问题，店主和团队会在那里回答；也可以发送电子邮件至 <email>support@wcpos.com</email>。"
+      },
+      "stuck": "仍未解决？<discord>在 Discord 与真人交流</discord>，或发送电子邮件至 <email>support@wcpos.com</email>。",
+      "route": {
+        "discord": "在 Discord 提问",
+        "email": "发邮件给支持团队"
+      }
     },
     "errors": {
       "invalid_question": "请输入问题（最多 1000 个字符）。",
@@ -1908,7 +1925,9 @@
       "gateway_rate_limited": "助手已达到每小时提问次数上限——请稍后再试，或在 Discord 提问。",
       "timeout": "等待时间过长。请重试，或在 Discord 提问。",
       "unavailable": "助手暂时不可用。在我们恢复服务期间，请尝试使用 Discord。",
-      "network": "助手目前不可用。请在 Discord 提问。",
+      "networkTitle": "无法连接 Aide",
+      "network": "我们没有收到 Aide 的回答。您的问题仍在输入框中：点击“提问”重试。",
+      "networkHint": "如果仍然失败，请查看 <status>status.wcpos.com</status> 或<discord>在 Discord 提问</discord>。",
       "unknown": "出了点问题。"
     },
     "order": {
@@ -1916,11 +1935,15 @@
       "body": "请引用参考号 <ref></ref>，这样我们就能在您再次付款前确认付款或完成订单。"
     },
     "discord": {
-      "title": "更想和真人沟通？",
-      "subtitle": "加入店主和团队所在的实时 Discord 社区。",
+      "title": "与真人交流",
+      "subtitle": "店主和 WCPOS 团队会在 Discord 中回答问题。",
+      "subtitlePro": "拥有 Pro 许可证即可在 Pro 频道获得优先支持。",
       "open": "打开 Discord",
       "emailLine": "更喜欢用电子邮件？请发送电子邮件至 <email>support@wcpos.com</email>。",
-      "embedTitle": "Discord 聊天"
+      "embedTitle": "Discord 聊天",
+      "liveCaption": "来自 WCPOS Discord 的实时频道",
+      "channelCaption": "实时频道 · 在 Discord 中打开",
+      "loading": "正在加载 Discord…"
     },
     "guides": {
       "title": "从这些指南开始",

@@ -1873,30 +1873,47 @@
     "chat": {
       "hero": {
         "title": "WCPOS pour WooCommerce : aide et assistance",
-        "subtitle": "Posez n’importe quelle question sur WCPOS — configuration, licences, matériel, synchronisation, impression. Vous recevrez une réponse instantanée issue de notre documentation."
+        "subtitle": "Posez vos questions sur la configuration, les licences, les scanners, les imprimantes ou la synchronisation. Aide, l’assistant WCPOS, répond à partir de la documentation et indique les pages utilisées."
       },
       "examples": {
         "e1": "Sur combien de sites puis-je utiliser ma licence ?",
         "e2": "Quels scanners de codes-barres sont pris en charge ?",
-        "e3": "Comment synchroniser les produits depuis WooCommerce ?"
+        "e3": "Comment passer à WCPOS 2.0 ?"
       },
+      "examplesLabel": "Essayez l’une de ces questions",
       "feedback": {
         "prompt": "Cette réponse vous a-t-elle été utile ?",
         "yes": "Oui",
         "no": "Non"
       },
-      "thinking": "Aide réfléchit…",
+      "thinking": "Aide rédige sa réponse…",
       "form": {
         "label": "Poser une question d’assistance",
         "placeholder": "p. ex. imprimante de reçus",
         "verifying": "Vérification de sécurité en cours…",
         "interactive": "Cochez la case ci-dessous pour poser votre question.",
-        "followUpPlaceholder": "Posez une question complémentaire…",
+        "followUpPlaceholder": "Posez une autre question…",
+        "followUpNote": "Aide traite chaque question séparément : précisez à nouveau les détails.",
         "submit": "Demander"
       },
       "discordLink": "Demander sur Discord →",
       "turnstileTrouble": "La vérification de sécurité du navigateur n’a pas pu aboutir — un bloqueur de publicités, une extension de confidentialité ou un filtre réseau la bloque peut-être. Vous pouvez tout de même essayer de poser votre question.",
-      "poweredBy": "Répondu par Aide · entraîné sur la documentation et le wiki WCPOS"
+      "poweredBy": "Répondu par Aide · un assistant IA qui lit la documentation et le wiki WCPOS",
+      "byline": "<strong>Aide</strong> · réponse tirée de la documentation et du wiki WCPOS",
+      "bylineHandoff": "<strong>Aide</strong> · assistant WCPOS",
+      "sources": {
+        "title": "Pages utilisées par Aide",
+        "wiki": "Wiki WCPOS"
+      },
+      "handoff": {
+        "title": "Aide n’a pas trouvé la réponse dans la documentation",
+        "body": "Une personne peut vous aider. Posez votre question sur le Discord WCPOS, où des propriétaires de boutiques et l’équipe répondent, ou écrivez à <email>support@wcpos.com</email>."
+      },
+      "stuck": "Toujours bloqué ? <discord>Parlez à une personne sur Discord</discord> ou écrivez à <email>support@wcpos.com</email>.",
+      "route": {
+        "discord": "Demander sur Discord",
+        "email": "Écrire au support"
+      }
     },
     "errors": {
       "invalid_question": "Veuillez saisir une question (jusqu’à 1000 caractères).",
@@ -1908,7 +1925,9 @@
       "gateway_rate_limited": "L’assistant a atteint sa limite de questions par heure — veuillez réessayer plus tard, ou poser la question sur Discord.",
       "timeout": "Cela a pris trop de temps. Veuillez réessayer, ou poser la question sur Discord.",
       "unavailable": "L’assistant est temporairement indisponible. Essayez Discord pendant que nous le remettons en service.",
-      "network": "L’assistant est indisponible pour le moment. Veuillez poser votre question sur Discord.",
+      "networkTitle": "Impossible de joindre Aide",
+      "network": "Nous n’avons pas reçu de réponse d’Aide. Votre question est toujours dans le champ : appuyez sur Demander pour réessayer.",
+      "networkHint": "Si le problème persiste, consultez <status>status.wcpos.com</status> ou <discord>demandez sur Discord</discord>.",
       "unknown": "Une erreur est survenue."
     },
     "order": {
@@ -1916,11 +1935,15 @@
       "body": "Indiquez la référence <ref></ref> afin que nous puissions confirmer le paiement ou finaliser la commande avant que vous ne payiez à nouveau."
     },
     "discord": {
-      "title": "Vous préférez parler à un humain ?",
-      "subtitle": "Rejoignez des propriétaires de boutiques et l’équipe dans notre communauté Discord en direct.",
+      "title": "Parler à une personne",
+      "subtitle": "Des propriétaires de boutiques et l’équipe WCPOS répondent aux questions sur Discord.",
+      "subtitlePro": "Avec une licence Pro, vous bénéficiez d’un support prioritaire dans les canaux Pro.",
       "open": "Ouvrir Discord",
       "emailLine": "Vous préférez l’e-mail ? Envoyez-nous un e-mail à <email>support@wcpos.com</email>.",
-      "embedTitle": "Chat Discord"
+      "embedTitle": "Chat Discord",
+      "liveCaption": "En direct du Discord WCPOS",
+      "channelCaption": "Canal en direct · s’ouvre dans Discord",
+      "loading": "Chargement de Discord…"
     },
     "guides": {
       "title": "Commencez par ces guides",

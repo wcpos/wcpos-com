@@ -68,10 +68,12 @@ describe('SupportDefaultContent', () => {
     vi.unstubAllGlobals()
   })
 
-  it('shows the guides block between the chat and the Discord section', () => {
+  it('puts the person panel straight after the Ask box and the guides after it', () => {
     renderWithIntl(<SupportDefaultContent />)
+    const form = screen.getByRole('textbox').closest('form')!
+    const discord = screen.getByRole('heading', { level: 2, name: 'Talk to a person' })
     const guides = screen.getByRole('heading', { level: 2, name: 'Start with these guides' })
-    const discord = screen.getByRole('heading', { level: 2, name: 'Prefer to talk to a human?' })
-    expect(guides.compareDocumentPosition(discord) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+    expect(form.compareDocumentPosition(discord) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+    expect(discord.compareDocumentPosition(guides) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
   })
 })

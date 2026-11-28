@@ -1873,30 +1873,47 @@
     "chat": {
       "hero": {
         "title": "WCPOS voor WooCommerce: hulp en ondersteuning",
-        "subtitle": "Vraag alles over WCPOS — installatie, licenties, hardware, synchronisatie, afdrukken. Je krijgt direct een antwoord op basis van onze documentatie."
+        "subtitle": "Vraag naar installatie, licenties, scanners, printers of synchronisatie. Aide, de WCPOS-assistent, antwoordt vanuit de documentatie en noemt de pagina’s die het gebruikte."
       },
       "examples": {
         "e1": "Op hoeveel sites kan ik mijn licentie gebruiken?",
         "e2": "Welke barcodescanners worden ondersteund?",
-        "e3": "Hoe synchroniseer ik producten vanuit WooCommerce?"
+        "e3": "Hoe upgrade ik naar WCPOS 2.0?"
       },
+      "examplesLabel": "Probeer een van deze vragen",
       "feedback": {
         "prompt": "Was dit nuttig?",
         "yes": "Ja",
         "no": "Nee"
       },
-      "thinking": "Aide denkt na…",
+      "thinking": "Aide schrijft…",
       "form": {
         "label": "Stel een supportvraag",
         "placeholder": "bijv. bonprinter instellen",
         "verifying": "Even een korte veiligheidscontrole…",
         "interactive": "Vink het vakje hieronder aan om je vraag te stellen.",
-        "followUpPlaceholder": "Stel een vervolgvraag…",
+        "followUpPlaceholder": "Stel nog een vraag…",
+        "followUpNote": "Aide beantwoordt elke vraag los, dus geef de details opnieuw mee.",
         "submit": "Vraag stellen"
       },
       "discordLink": "Vraag het op Discord →",
       "turnstileTrouble": "De beveiligingscontrole van de browser kon niet worden voltooid – mogelijk wordt deze geblokkeerd door een adblocker, privacy-extensie of netwerkfilter. Je kunt je vraag alsnog proberen te stellen.",
-      "poweredBy": "Beantwoord door Aide · getraind op de WCPOS-documentatie en wiki"
+      "poweredBy": "Beantwoord door Aide · een AI-assistent die de WCPOS-documentatie en wiki leest",
+      "byline": "<strong>Aide</strong> · antwoord uit de WCPOS-documentatie en wiki",
+      "bylineHandoff": "<strong>Aide</strong> · WCPOS-assistent",
+      "sources": {
+        "title": "Pagina’s die Aide gebruikte",
+        "wiki": "WCPOS-wiki"
+      },
+      "handoff": {
+        "title": "Aide kon dit niet beantwoorden vanuit de documentatie",
+        "body": "Een mens kan helpen. Stel je vraag in de WCPOS-Discord, waar winkeleigenaren en het team antwoorden, of mail naar <email>support@wcpos.com</email>."
+      },
+      "stuck": "Kom je er nog niet uit? <discord>Praat met een mens op Discord</discord> of mail naar <email>support@wcpos.com</email>.",
+      "route": {
+        "discord": "Vraag het op Discord",
+        "email": "Mail de support"
+      }
     },
     "errors": {
       "invalid_question": "Voer een vraag in (maximaal 1000 tekens).",
@@ -1908,7 +1925,9 @@
       "gateway_rate_limited": "De assistent heeft zijn vragenlimiet per uur bereikt — probeer het later opnieuw of vraag het op Discord.",
       "timeout": "Dat duurde te lang. Probeer het opnieuw of vraag het op Discord.",
       "unavailable": "De assistent is tijdelijk niet beschikbaar. Probeer Discord terwijl we dit herstellen.",
-      "network": "De assistent is nu niet beschikbaar. Stel je vraag op Discord.",
+      "networkTitle": "Aide niet bereikbaar",
+      "network": "We kregen geen antwoord van Aide. Je vraag staat nog in het veld: klik op Vraag stellen om het opnieuw te proberen.",
+      "networkHint": "Blijft het mislukken? Kijk op <status>status.wcpos.com</status> of <discord>vraag het op Discord</discord>.",
       "unknown": "Er is iets misgegaan."
     },
     "order": {
@@ -1916,11 +1935,15 @@
       "body": "Vermeld referentie <ref></ref> zodat we de betaling kunnen bevestigen of de bestelling kunnen afronden voordat je opnieuw betaalt."
     },
     "discord": {
-      "title": "Praat je liever met een mens?",
-      "subtitle": "Sluit je aan bij winkeleigenaren en het team in onze live Discord-community.",
+      "title": "Praat met een mens",
+      "subtitle": "Winkeleigenaren en het WCPOS-team beantwoorden vragen op Discord.",
+      "subtitlePro": "Met een Pro-licentie krijg je voorrang bij support in de Pro-kanalen.",
       "open": "Discord openen",
       "emailLine": "Liever e-mail? Mail ons via <email>support@wcpos.com</email>.",
-      "embedTitle": "Discord-chat"
+      "embedTitle": "Discord-chat",
+      "liveCaption": "Live vanuit de WCPOS-Discord",
+      "channelCaption": "Live kanaal · opent in Discord",
+      "loading": "Discord laden…"
     },
     "guides": {
       "title": "Begin met deze handleidingen",

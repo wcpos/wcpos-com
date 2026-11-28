@@ -1873,30 +1873,47 @@
     "chat": {
       "hero": {
         "title": "WooCommerce向けWCPOS：ヘルプとサポート",
-        "subtitle": "WCPOSについて何でも質問してください — セットアップ、ライセンス、ハードウェア、同期、印刷など。ドキュメントに基づいた回答をすぐに表示します。"
+        "subtitle": "セットアップ、ライセンス、スキャナー、プリンター、同期について質問できます。WCPOSのアシスタントAideがドキュメントをもとに回答し、参照したページを示します。"
       },
       "examples": {
         "e1": "ライセンスはいくつのサイトで使えますか？",
         "e2": "対応しているバーコードスキャナーはどれですか？",
-        "e3": "WooCommerceから商品を同期するにはどうすればよいですか？"
+        "e3": "WCPOS 2.0にアップグレードするには？"
       },
+      "examplesLabel": "質問の例",
       "feedback": {
         "prompt": "この回答は役に立ちましたか？",
         "yes": "はい",
         "no": "いいえ"
       },
-      "thinking": "Aideが考え中です…",
+      "thinking": "Aideが回答を作成中です…",
       "form": {
         "label": "サポートに質問する",
         "placeholder": "例：レシートプリンター接続",
         "verifying": "セキュリティを確認しています…",
         "interactive": "質問するには、下のボックスにチェックを入れてください。",
-        "followUpPlaceholder": "追加の質問を入力…",
+        "followUpPlaceholder": "別の質問を入力…",
+        "followUpNote": "Aideは質問ごとに個別に回答します。必要な詳細をもう一度含めてください。",
         "submit": "質問する"
       },
       "discordLink": "Discordで質問 →",
       "turnstileTrouble": "ブラウザのセキュリティチェックを完了できませんでした。広告ブロッカー、プライバシー拡張機能、またはネットワークフィルターがブロックしている可能性があります。そのまま質問をお試しください。",
-      "poweredBy": "Aideが回答 · WCPOSのドキュメントとWikiで学習"
+      "poweredBy": "Aideが回答 · WCPOSのドキュメントとWikiを読むAIアシスタント",
+      "byline": "<strong>Aide</strong> · WCPOSのドキュメントとWikiに基づく回答",
+      "bylineHandoff": "<strong>Aide</strong> · WCPOSアシスタント",
+      "sources": {
+        "title": "Aideが参照したページ",
+        "wiki": "WCPOS Wiki"
+      },
+      "handoff": {
+        "title": "Aideはドキュメントからこの質問に回答できませんでした",
+        "body": "WCPOSのDiscordに質問を投稿すると、店舗オーナーやチームが回答します。または <email>support@wcpos.com</email> までメールでお問い合わせください。"
+      },
+      "stuck": "まだ解決しませんか？<discord>Discordで人に相談する</discord>か、<email>support@wcpos.com</email> までメールでお問い合わせください。",
+      "route": {
+        "discord": "Discordで質問",
+        "email": "サポートにメール"
+      }
     },
     "errors": {
       "invalid_question": "質問を入力してください（最大1000文字）。",
@@ -1908,7 +1925,9 @@
       "gateway_rate_limited": "アシスタントは1時間あたりの質問数の上限に達しました — 後でもう一度試すか、Discordで質問してください。",
       "timeout": "時間がかかりすぎました。もう一度試すか、Discordで質問してください。",
       "unavailable": "アシスタントは一時的に利用できません。復旧までの間はDiscordをお試しください。",
-      "network": "現在アシスタントを利用できません。Discordで質問してください。",
+      "networkTitle": "Aideに接続できません",
+      "network": "Aideから回答を取得できませんでした。質問は入力欄に残っています。「質問する」を押してもう一度お試しください。",
+      "networkHint": "問題が続く場合は、<status>status.wcpos.com</status> を確認するか、<discord>Discordで質問</discord>してください。",
       "unknown": "問題が発生しました。"
     },
     "order": {
@@ -1916,11 +1935,15 @@
       "body": "再度支払う前に、支払いの確認または注文の完了ができるよう、参照番号 <ref></ref> をお知らせください。"
     },
     "discord": {
-      "title": "人と直接話したいですか？",
-      "subtitle": "店舗オーナーとチームが参加するライブDiscordコミュニティに参加してください。",
+      "title": "人に相談する",
+      "subtitle": "店舗オーナーとWCPOSチームがDiscordで質問に答えています。",
+      "subtitlePro": "Proライセンスをお持ちの場合は、Proチャンネルで優先サポートを受けられます。",
       "open": "Discordを開く",
       "emailLine": "メールをご希望ですか？<email>support@wcpos.com</email> までメールでご連絡ください。",
-      "embedTitle": "Discordチャット"
+      "embedTitle": "Discordチャット",
+      "liveCaption": "WCPOS Discordのライブチャンネル",
+      "channelCaption": "ライブチャンネル · Discordで開きます",
+      "loading": "Discordを読み込み中…"
     },
     "guides": {
       "title": "まずはこちらのガイドから",
