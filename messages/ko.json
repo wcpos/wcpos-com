@@ -409,7 +409,23 @@
     },
     "page": {
       "title": "WooCommerce용 POS 변경 기록",
-      "description": "무료 WooCommerce용 POS 플러그인 WCPOS의 최신 게시 릴리스와 GitHub에서 가져온 릴리스 노트."
+      "description": "WCPOS 플러그인의 각 버전에서 바뀐 내용과 업데이트 전에 해야 할 일이 있는지 알려 드립니다.",
+      "notesSource": "최신 릴리스 10개와 GitHub의 릴리스 노트.",
+      "lineMeta": "최초 출시 {date}. 최신: {version}.",
+      "status": {
+        "before": "업데이트 전 확인",
+        "fixedIn": "{version}에서 수정됨",
+        "none": "할 일 없음"
+      },
+      "noteBefore": "<b>업데이트 전 확인:</b> 아래의 “Upgrade and compatibility”를 읽어 주세요.",
+      "noteFixed": "<b>{version}에서 수정됨:</b> 이 릴리스에는 {version}에서 수정된 문제가 있습니다. {version} 이상으로 업데이트하세요.",
+      "releaseNotes": "릴리스 노트",
+      "showMore": "{n, plural, other {나머지 노트 #개 보기}}",
+      "showFewer": "노트 접기",
+      "unavailable": "지금은 여기에서 릴리스 노트를 볼 수 없습니다.",
+      "history": "GitHub의 모든 릴리스:",
+      "plugin": "WCPOS 플러그인",
+      "desktop": "데스크톱 앱"
     }
   },
   "pro": {

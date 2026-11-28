@@ -409,7 +409,23 @@
     },
     "page": {
       "title": "WCPOS Changelog",
-      "description": "The latest published releases of WCPOS, the free point of sale plugin for WooCommerce, with their release notes from GitHub."
+      "description": "What changed in each version of the WCPOS plugin, and whether you need to do anything before you update.",
+      "notesSource": "The ten latest releases, with their notes from GitHub.",
+      "lineMeta": "First released {date}. Latest: {version}.",
+      "status": {
+        "before": "Before you update",
+        "fixedIn": "Fixed in {version}",
+        "none": "Nothing to do"
+      },
+      "noteBefore": "<b>Before you update:</b> read Upgrade and compatibility below.",
+      "noteFixed": "<b>Fixed in {version}:</b> this release has a problem that {version} fixes. Update to {version} or later.",
+      "releaseNotes": "Release notes",
+      "showMore": "{n, plural, one {Show the remaining note} other {Show the remaining # notes}}",
+      "showFewer": "Show fewer notes",
+      "unavailable": "Release notes aren’t available here right now.",
+      "history": "Every release on GitHub:",
+      "plugin": "WCPOS plugin",
+      "desktop": "Desktop app"
     }
   },
   "pro": {

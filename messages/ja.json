@@ -409,7 +409,23 @@
     },
     "page": {
       "title": "WooCommerce用POSの変更履歴",
-      "description": "無料のWooCommerce用POSプラグイン、WCPOSの最新の公開済みリリースと、GitHubから取得したリリースノート。"
+      "description": "WCPOSプラグインの各バージョンで何が変わったか、そして更新前に対応が必要かどうか。",
+      "notesSource": "最新の10リリースと、GitHubのリリースノート。",
+      "lineMeta": "初回リリース：{date}。最新：{version}。",
+      "status": {
+        "before": "更新前に対応",
+        "fixedIn": "{version}で修正",
+        "none": "対応不要"
+      },
+      "noteBefore": "<b>更新前に対応：</b>下の「Upgrade and compatibility」をお読みください。",
+      "noteFixed": "<b>{version}で修正：</b>このリリースには{version}で修正された問題があります。{version}以降に更新してください。",
+      "releaseNotes": "リリースノート",
+      "showMore": "{n, plural, other {残りの#件のノートを表示}}",
+      "showFewer": "ノートを折りたたむ",
+      "unavailable": "現在、ここではリリースノートを表示できません。",
+      "history": "GitHubのすべてのリリース：",
+      "plugin": "WCPOSプラグイン",
+      "desktop": "デスクトップアプリ"
     }
   },
   "pro": {

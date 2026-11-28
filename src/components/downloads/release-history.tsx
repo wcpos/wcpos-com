@@ -1,3 +1,4 @@
+import { ArrowUpRight } from 'lucide-react'
 import { Markdown } from '@/components/ui/markdown'
 import { Badge } from '@/components/ui/badge'
 import { Collapsible } from '@/components/ui/collapsible'
@@ -45,24 +46,34 @@ export function firstSentence(body: string): string {
 }
 
 // Notes with this section ask some stores to act before or after updating.
-const UPGRADE_SECTION = /^#{1,6}\s+Upgrade and compatibility\b/im
+export const UPGRADE_SECTION = /^#{1,6}\s+Upgrade and compatibility\b/im
+
+/** Markdown classes for GitHub release notes: long code tokens and links wrap instead of scrolling the page. */
+export const notesClassName =
+  'text-sm [&_h1]:text-base [&_h2]:text-base [&_code]:[overflow-wrap:anywhere] [&_a]:break-words'
 
 export function FullHistoryLinks({
   copy,
   className,
+  external,
 }: {
   copy: { fullHistory: string; plugin: string; desktop: string }
   className?: string
+  /** Mark each link with ↗: it leaves the site for GitHub. */
+  external?: boolean
 }) {
+  const arrow = external && <ArrowUpRight className="ml-1 inline size-4 align-text-bottom" aria-hidden="true" />
   return (
     <p className={className ?? 'mt-8 text-center text-sm text-muted-foreground'}>
       {copy.fullHistory}{' '}
       <TextLink href="https://github.com/wcpos/woocommerce-pos/releases">
         {copy.plugin}
+        {arrow}
       </TextLink>{' '}
       ·{' '}
       <TextLink href="https://github.com/wcpos/electron/releases">
         {copy.desktop}
+        {arrow}
       </TextLink>
     </p>
   )
@@ -76,7 +87,7 @@ function ReleaseNotes(props: { body: string; clamp?: boolean; showAll: string; l
     <>
       <Markdown
         content={preview}
-        className="text-sm [&_h1]:text-base [&_h2]:text-base [&_code]:[overflow-wrap:anywhere] [&_a]:break-words"
+        className={notesClassName}
       />
       {rest !== null && (
         <Collapsible
@@ -85,7 +96,7 @@ function ReleaseNotes(props: { body: string; clamp?: boolean; showAll: string; l
         >
           <Markdown
             content={rest}
-            className="text-sm [&_h1]:text-base [&_h2]:text-base [&_code]:[overflow-wrap:anywhere] [&_a]:break-words"
+            className={notesClassName}
           />
         </Collapsible>
       )}

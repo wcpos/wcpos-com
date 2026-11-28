@@ -409,7 +409,23 @@
     },
     "page": {
       "title": "Journal des modifications du point de vente WooCommerce",
-      "description": "Les dernières versions publiées de WCPOS, le plugin gratuit de point de vente WooCommerce, avec leurs notes de version provenant de GitHub."
+      "description": "Ce qui a changé dans chaque version du plugin WCPOS, et si vous devez faire quelque chose avant de mettre à jour.",
+      "notesSource": "Les dix dernières versions, avec leurs notes provenant de GitHub.",
+      "lineMeta": "Première version le {date}. Dernière : {version}.",
+      "status": {
+        "before": "Avant la mise à jour",
+        "fixedIn": "Corrigé dans la {version}",
+        "none": "Rien à faire"
+      },
+      "noteBefore": "<b>Avant la mise à jour :</b> lisez « Upgrade and compatibility » ci-dessous.",
+      "noteFixed": "<b>Corrigé dans la {version} :</b> cette version a un problème que la {version} corrige. Mettez à jour vers la {version} ou ultérieure.",
+      "releaseNotes": "Notes de version",
+      "showMore": "{n, plural, one {Afficher la note restante} other {Afficher les # notes restantes}}",
+      "showFewer": "Afficher moins de notes",
+      "unavailable": "Les notes de version ne sont pas disponibles ici pour le moment.",
+      "history": "Toutes les versions sur GitHub :",
+      "plugin": "Plugin WCPOS",
+      "desktop": "Application de bureau"
     }
   },
   "pro": {

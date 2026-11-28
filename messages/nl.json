@@ -409,7 +409,23 @@
     },
     "page": {
       "title": "Wijzigingslogboek van het kassasysteem voor WooCommerce",
-      "description": "De nieuwste gepubliceerde versies van WCPOS, het gratis kassasysteem voor WooCommerce, met hun release-opmerkingen van GitHub."
+      "description": "Wat er in elke versie van de WCPOS-plugin is veranderd, en of je iets moet doen voordat je bijwerkt.",
+      "notesSource": "De tien nieuwste versies, met hun opmerkingen van GitHub.",
+      "lineMeta": "Eerst uitgebracht op {date}. Nieuwste: {version}.",
+      "status": {
+        "before": "Vóór het bijwerken",
+        "fixedIn": "Opgelost in {version}",
+        "none": "Niets te doen"
+      },
+      "noteBefore": "<b>Vóór het bijwerken:</b> lees hieronder „Upgrade and compatibility”.",
+      "noteFixed": "<b>Opgelost in {version}:</b> deze versie heeft een probleem dat {version} oplost. Werk bij naar {version} of nieuwer.",
+      "releaseNotes": "Release-opmerkingen",
+      "showMore": "{n, plural, one {De laatste opmerking tonen} other {De overige # opmerkingen tonen}}",
+      "showFewer": "Minder opmerkingen tonen",
+      "unavailable": "De release-opmerkingen zijn hier nu niet beschikbaar.",
+      "history": "Elke versie op GitHub:",
+      "plugin": "WCPOS-plugin",
+      "desktop": "Desktop-app"
     }
   },
   "pro": {

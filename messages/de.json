@@ -409,7 +409,23 @@
     },
     "page": {
       "title": "Änderungsprotokoll des WooCommerce-Kassensystems",
-      "description": "Die neuesten veröffentlichten Versionen von WCPOS, dem kostenlosen WooCommerce-Kassensystem, mit ihren Versionshinweisen von GitHub."
+      "description": "Was sich in jeder Version des WCPOS-Plugins geändert hat und ob du vor dem Update etwas tun musst.",
+      "notesSource": "Die zehn neuesten Versionen mit ihren Hinweisen von GitHub.",
+      "lineMeta": "Erstmals veröffentlicht am {date}. Neueste: {version}.",
+      "status": {
+        "before": "Vor dem Update",
+        "fixedIn": "Behoben in {version}",
+        "none": "Nichts zu tun"
+      },
+      "noteBefore": "<b>Vor dem Update:</b> lies unten „Upgrade and compatibility“.",
+      "noteFixed": "<b>Behoben in {version}:</b> Diese Version hat einen Fehler, den {version} behebt. Aktualisiere auf {version} oder neuer.",
+      "releaseNotes": "Versionshinweise",
+      "showMore": "{n, plural, one {Den übrigen Hinweis anzeigen} other {Die übrigen # Hinweise anzeigen}}",
+      "showFewer": "Weniger Hinweise anzeigen",
+      "unavailable": "Die Versionshinweise sind hier gerade nicht verfügbar.",
+      "history": "Jede Version auf GitHub:",
+      "plugin": "WCPOS-Plugin",
+      "desktop": "Desktop-App"
     }
   },
   "pro": {

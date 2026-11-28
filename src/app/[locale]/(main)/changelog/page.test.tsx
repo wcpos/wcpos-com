@@ -24,10 +24,17 @@ vi.mock('next-intl/server', async () => {
   const messages = (await import('../../../../../messages/en.json')).default
   return {
     setRequestLocale: vi.fn(),
-    getTranslations: vi.fn(
-      async ({ namespace }: { locale: string; namespace: string }) =>
-        (key: string) => readMessage(messages, namespace, key),
-    ),
+    getTranslations: vi.fn(async ({ namespace }: { locale: string; namespace: string }) => {
+      const fill = (key: string, values: Record<string, unknown> = {}) =>
+        readMessage(messages, namespace, key).replace(/\{(\w+)\}/g, (match, name: string) =>
+          typeof values[name] === 'string' ? (values[name] as string) : match,
+        )
+      return Object.assign(fill, {
+        rich: (key: string, values?: Record<string, unknown>) =>
+          fill(key, values).replace(/<\/?b>/g, ''),
+        raw: (key: string) => readMessage(messages, namespace, key),
+      })
+    }),
   }
 })
 
@@ -91,10 +98,11 @@ describe('ChangelogPage', () => {
       day: 'numeric',
       year: 'numeric',
     }))).toBeInTheDocument()
-    expect(screen.getByText('Note for 1.8.12')).toBeInTheDocument()
+    // The first sentence is the row summary and stays in the notes.
+    expect(screen.getAllByText('Note for 1.8.12')).toHaveLength(2)
   })
 
-  it('renders each release entry as an h2 under the page h1', async () => {
+  it('renders the release line as an h2 and each release as an h3', async () => {
     vi.mocked(getReleases).mockResolvedValue([
       ...published,
       {
@@ -114,7 +122,10 @@ describe('ChangelogPage', () => {
     render(await ChangelogPage({ params: Promise.resolve({ locale: 'en' }) }))
 
     expect(screen.getAllByRole('heading', { level: 1 })).toHaveLength(1)
-    const headings = screen.getAllByRole('heading', { level: 2 })
+    expect(screen.getAllByRole('heading', { level: 2 }).map((h) => h.textContent)).toEqual([
+      'WCPOS 1.8',
+    ])
+    const headings = screen.getAllByRole('heading', { level: 3 })
     expect(headings).toHaveLength(10)
     const versions = [
       '1.8.12', '1.8.11', '1.8.10', '1.8.9', '1.8.8',
@@ -126,7 +137,7 @@ describe('ChangelogPage', () => {
     })
   })
 
-  it('renders the heading without version rows when no releases are returned', async () => {
+  it('says the notes are unavailable and links to GitHub when no releases are returned', async () => {
     vi.mocked(getReleases).mockResolvedValue([])
 
     const { container } = render(
@@ -136,6 +147,53 @@ describe('ChangelogPage', () => {
     expect(screen.getByRole('heading', { level: 1, name: 'WCPOS Changelog' }))
       .toBeInTheDocument()
     expect(container.querySelectorAll('summary')).toHaveLength(0)
+    expect(screen.getByText(enMessages.changelog.page.unavailable)).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'WCPOS plugin' })).toHaveAttribute(
+      'href',
+      'https://github.com/wcpos/woocommerce-pos/releases',
+    )
+  })
+
+  it('marks each release with its action status', async () => {
+    const release = (tagName: string, body: string, day: string) => ({
+      ...published[0],
+      tagName,
+      body,
+      publishedAt: `2026-11-${day}T12:00:00Z`,
+    })
+    vi.mocked(getReleases).mockResolvedValue([
+      release('v2.0.1', 'Fixes a thing.\r\n\r\n### Upgrade and compatibility\r\n- Templates change.\r\n\r\n### Fixed\r\n- One.\r\n- Two.', '10'),
+      release('v2.0.0', '**WCPOS 2.0 is a major update.** Read on.\n\n- Everything.', '09'),
+      release('v1.11.9', '- **Fixed tax** -- a regression in 1.11.8.', '02'),
+      release('v1.11.8', '- New tax setting.', '01'),
+    ])
+
+    const { container } = render(
+      await ChangelogPage({ params: Promise.resolve({ locale: 'en' }) }),
+    )
+    const page = enMessages.changelog.page
+
+    expect(screen.getAllByRole('heading', { level: 2 }).map((h) => h.textContent)).toEqual([
+      'WCPOS 2.0',
+      'WCPOS 1.11',
+    ])
+    // The 2.0.1 lead paragraph is its summary, not repeated in the notes.
+    expect(screen.getAllByText('Fixes a thing.')).toHaveLength(1)
+    // Only the Upgrade and compatibility section opens; the rest is behind a toggle.
+    expect(screen.getByText(page.showFewer)).toBeInTheDocument()
+    expect(screen.getByText('Fixed in 1.11.9')).toBeInTheDocument()
+    expect(screen.getAllByText(page.status.none)).toHaveLength(2)
+    expect(container.querySelector('#v2\\.0\\.0')).not.toBeNull()
+  })
+
+  it('shows the English-notes notice instead of the source line outside English', async () => {
+    vi.mocked(getReleases).mockResolvedValue(published)
+
+    render(await ChangelogPage({ params: Promise.resolve({ locale: 'de' }) }))
+
+    expect(screen.getByText(enMessages.downloads.releaseHistory.externalContentNotice))
+      .toBeInTheDocument()
+    expect(screen.queryByText(enMessages.changelog.page.notesSource)).not.toBeInTheDocument()
   })
 
   it('uses the changelog metadata title', async () => {
