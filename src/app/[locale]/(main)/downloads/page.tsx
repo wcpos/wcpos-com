@@ -25,6 +25,7 @@ import {
   GetStartedStep,
 } from '@/components/downloads/get-started-steps'
 import {
+  FullHistoryLinks,
   ReleaseHistory,
   type ReleaseEntry,
 } from '@/components/downloads/release-history'
@@ -122,6 +123,11 @@ export default async function DownloadsPage({
     ['Windows', '10 / 11'],
     [pageT('mobileApps'), pageT('beta')],
   ]
+  const historyCopy = {
+    fullHistory: releaseT('fullHistory'),
+    plugin: releaseT('plugin'),
+    desktop: releaseT('desktop'),
+  }
   const stepTitle = 'text-xl font-semibold tracking-tight'
   const stepBody = 'mt-1.5 text-[15px] text-muted-foreground md:text-base'
   const railTitle = 'mb-2 text-xs font-semibold text-foreground'
@@ -298,36 +304,41 @@ export default async function DownloadsPage({
           }}
         />
 
-      <Section tone="default" spacing="default">
-        <SectionHeading
-          className="mb-10"
-          eyebrow={releaseT('eyebrow')}
-          title={releaseT('title')}
-          subtitle={releaseT('subtitle')}
-        />
-        {releases.length === 0 && (
-          <EmptyState
-            icon={<CloudOff />}
-            title={releaseT('empty.title')}
-            description={releaseT('empty.body')}
-          />
-        )}
-        <ReleaseHistory
-          releases={releases}
-          locale={locale}
-          openFeatureRelease
-          clampLongNotes
-          copy={{
-            latest: releaseT('latest'),
-            fullHistory: releaseT('fullHistory'),
-            plugin: releaseT('plugin'),
-            desktop: releaseT('desktop'),
-            externalContentNotice: releaseT('externalContentNotice'),
-            // Keep {version} literal; ReleaseHistory fills it per release.
-            showAllNotes: releaseT('showAllNotes', { version: '{version}' }),
-          }}
-        />
-      </Section>
+        <Section tone="default" spacing="default">
+          <div className="mx-auto max-w-6xl">
+            <div className="mb-8 flex flex-wrap items-end justify-between gap-x-6 gap-y-3">
+              <SectionHeading
+                align="left"
+                eyebrow={releaseT('eyebrow')}
+                title={releaseT('title')}
+                subtitle={releaseT('subtitle')}
+              />
+              <FullHistoryLinks copy={historyCopy} className="text-sm text-muted-foreground" />
+            </div>
+            {releases.length === 0 && (
+              <EmptyState
+                icon={<CloudOff />}
+                title={releaseT('empty.title')}
+                description={releaseT('empty.body')}
+              />
+            )}
+            <ReleaseHistory
+              releases={releases}
+              locale={locale}
+              openFeatureRelease
+              clampLongNotes
+              summaries
+              copy={{
+                ...historyCopy,
+                latest: releaseT('latest'),
+                externalContentNotice: releaseT('externalContentNotice'),
+                // Keep {version} literal; ReleaseHistory fills it per release.
+                showAllNotes: releaseT('showAllNotes', { version: '{version}' }),
+                actionNeeded: releaseT('actionNeeded'),
+              }}
+            />
+          </div>
+        </Section>
       </main>
     </NextIntlClientProvider>
   )

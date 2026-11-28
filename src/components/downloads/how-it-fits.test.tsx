@@ -99,11 +99,15 @@ describe('HowItFits', () => {
     ).toBeNull()
   })
 
-  it('puts the heading before the diagram on narrow screens', () => {
+  it('puts the explanation before the diagram at every width (text left, diagram right)', () => {
     render(<HowItFits copy={TEST_COPY} />)
 
-    const wrapper = screen.getByRole('img').parentElement
-    expect(wrapper).toHaveClass('order-last', 'lg:order-first')
+    const heading = screen.getByRole('heading', { name: 'Translated title' })
+    const wrapper = screen.getByRole('img').parentElement!
+    expect(wrapper).not.toHaveClass('order-last')
+    expect(
+      heading.compareDocumentPosition(wrapper) & Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy()
   })
 
   it('highlights device spheres when keyboard focus reaches them', () => {

@@ -29,11 +29,7 @@ export function HowItFits({ copy }: { copy: HowItFitsCopy }) {
   return (
     <Section tone="muted" spacing="default">
       <Container>
-        <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
-          <div className="order-last flex justify-center lg:order-first">
-            <SyncDiagram labels={copy.diagram} />
-          </div>
-
+        <div className="grid items-center gap-12 lg:grid-cols-[5fr_6fr] lg:gap-16">
           <div>
             <p className="text-sm font-semibold uppercase tracking-wider text-wcpos-red dark:text-wcpos-red-accent">
               {copy.eyebrow}
@@ -69,6 +65,10 @@ export function HowItFits({ copy }: { copy: HowItFitsCopy }) {
                 </li>
               ))}
             </ul>
+          </div>
+
+          <div className="flex justify-center">
+            <SyncDiagram labels={copy.diagram} />
           </div>
         </div>
       </Container>

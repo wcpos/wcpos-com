@@ -1,6 +1,7 @@
 import { Markdown } from '@/components/ui/markdown'
 import { Badge } from '@/components/ui/badge'
 import { Collapsible } from '@/components/ui/collapsible'
+import { StatusBadge } from '@/components/ui/status-badge'
 import { TextLink } from '@/components/ui/text-link'
 
 export interface ReleaseEntry {
@@ -30,6 +31,41 @@ export function splitReleaseNotes(body: string): { preview: string; rest: string
     preview: blocks.slice(0, NOTES_PREVIEW_BLOCKS).join('\n\n'),
     rest: blocks.slice(NOTES_PREVIEW_BLOCKS).join('\n\n'),
   }
+}
+
+/** The first sentence of a release body, as plain text: the collapsed row's summary. */
+export function firstSentence(body: string): string {
+  const line = body.trim().split('\n')[0] ?? ''
+  const text = line
+    .replace(/^\s*(?:[-*]|#+)\s+/, '')
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+    .replace(/\*\*|__|`/g, '')
+    .replace(/^_|_$/g, '')
+  return text.match(/^.+?[.!?](?=\s|$)/)?.[0] ?? text
+}
+
+// Notes with this section ask some stores to act before or after updating.
+const UPGRADE_SECTION = /^#{1,6}\s+Upgrade and compatibility\b/im
+
+export function FullHistoryLinks({
+  copy,
+  className,
+}: {
+  copy: { fullHistory: string; plugin: string; desktop: string }
+  className?: string
+}) {
+  return (
+    <p className={className ?? 'mt-8 text-center text-sm text-muted-foreground'}>
+      {copy.fullHistory}{' '}
+      <TextLink href="https://github.com/wcpos/woocommerce-pos/releases">
+        {copy.plugin}
+      </TextLink>{' '}
+      ·{' '}
+      <TextLink href="https://github.com/wcpos/electron/releases">
+        {copy.desktop}
+      </TextLink>
+    </p>
+  )
 }
 
 function ReleaseNotes(props: { body: string; clamp?: boolean; showAll: string; locale: string }) {
@@ -64,6 +100,7 @@ export function ReleaseHistory({
   headingLevel,
   openFeatureRelease,
   clampLongNotes,
+  summaries,
 }: {
   releases: ReleaseEntry[]
   locale: string
@@ -73,6 +110,8 @@ export function ReleaseHistory({
   openFeatureRelease?: boolean
   /** Shows only the start of long notes, with the rest behind a closed "show all" disclosure; omitting it renders every note in full. */
   clampLongNotes?: boolean
+  /** Changelog layout: a date column, the first sentence of each closed row's notes, an "action may be needed" marker, and no trailing history links (the host places them). */
+  summaries?: boolean
   copy: {
     latest: string
     fullHistory: string
@@ -81,6 +120,7 @@ export function ReleaseHistory({
     externalContentNotice: string
     /** Template for the disclosure summary; `{version}` is replaced with the release version. */
     showAllNotes?: string
+    actionNeeded?: string
   }
 }) {
   const SummaryTag = headingLevel === 2 ? 'h2' : headingLevel === 3 ? 'h3' : 'span'
@@ -93,7 +133,7 @@ export function ReleaseHistory({
   const openIndex = featureIndex === -1 ? 0 : featureIndex
 
   return (
-    <div className="mx-auto max-w-2xl">
+    <div className={summaries ? 'border-t' : 'mx-auto max-w-2xl'}>
       {hasExternalEnglishContent && (
         <p className="mb-4 text-center text-xs text-muted-foreground">
           {copy.externalContentNotice}
@@ -104,20 +144,41 @@ export function ReleaseHistory({
           key={release.version}
           defaultOpen={index === openIndex}
           className="border-b"
-          summaryClassName="py-4"
+          summaryClassName={summaries ? 'items-start py-4' : 'py-4'}
           summary={
-            <SummaryTag className="flex items-center gap-3">
-              <span className="font-mono text-base font-medium">
-                {release.version}
+            <SummaryTag
+              className={summaries ? 'grid flex-1 gap-1.5 md:grid-cols-[150px_minmax(0,1fr)] md:gap-6' : 'flex items-center gap-3'}
+            >
+              <span className={summaries ? 'flex flex-col gap-0.5' : 'contents'}>
+                <span className="flex items-center gap-3">
+                  <span className="font-mono text-base font-medium">
+                    {release.version}
+                  </span>
+                  {release.latest && <Badge variant="brand-tint">{copy.latest}</Badge>}
+                </span>
+                <span className="text-sm text-muted-foreground">
+                  {release.date}
+                </span>
               </span>
-              {release.latest && <Badge variant="brand-tint">{copy.latest}</Badge>}
-              <span className="text-sm text-muted-foreground">
-                {release.date}
-              </span>
+              {summaries && (
+                <span className="text-sm text-muted-foreground group-open:hidden">
+                  <span className="block" lang={release.contentLocale}>
+                    {firstSentence(release.body)}
+                  </span>
+                  {UPGRADE_SECTION.test(release.body) && (
+                    <StatusBadge tone="caution" className="mt-2">
+                      {copy.actionNeeded}
+                    </StatusBadge>
+                  )}
+                </span>
+              )}
             </SummaryTag>
           }
         >
-          <div className="pb-5 pl-1" lang={release.contentLocale}>
+          <div
+            className={summaries ? 'pb-6 md:pl-[174px] md:pr-10' : 'pb-5 pl-1'}
+            lang={release.contentLocale}
+          >
             <ReleaseNotes
               body={release.body}
               clamp={clampLongNotes}
@@ -128,16 +189,7 @@ export function ReleaseHistory({
         </Collapsible>
       ))}
 
-      <p className="mt-8 text-center text-sm text-muted-foreground">
-        {copy.fullHistory}{' '}
-        <TextLink href="https://github.com/wcpos/woocommerce-pos/releases">
-          {copy.plugin}
-        </TextLink>{' '}
-        ·{' '}
-        <TextLink href="https://github.com/wcpos/electron/releases">
-          {copy.desktop}
-        </TextLink>
-      </p>
+      {!summaries && <FullHistoryLinks copy={copy} />}
     </div>
   )
 }

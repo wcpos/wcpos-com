@@ -4,6 +4,7 @@ import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import {
   ReleaseHistory,
+  firstSentence,
   splitReleaseNotes,
   type ReleaseEntry,
 } from './release-history'
@@ -241,5 +242,70 @@ describe('ReleaseHistory long notes', () => {
         '{version}',
       )
     }
+  })
+})
+
+describe('firstSentence', () => {
+  it('takes the first sentence of the first line, without markdown', () => {
+    expect(
+      firstSentence(
+        'Lets a manager reassign a sale, and fixes guest payments on WooCommerce 11.3.1, and more. Action may be needed: see below.\n\n### Upgrade and compatibility',
+      ),
+    ).toBe('Lets a manager reassign a sale, and fixes guest payments on WooCommerce 11.3.1, and more.')
+    expect(firstSentence('- **Receipts print the charged tax.**\n- **Other fix.**')).toBe(
+      'Receipts print the charged tax.',
+    )
+    expect(firstSentence('**WCPOS 2.0 is a major update.** Update when you have time.')).toBe(
+      'WCPOS 2.0 is a major update.',
+    )
+    expect(firstSentence('- See [the docs](https://example.com) for `code` details')).toBe(
+      'See the docs for code details',
+    )
+    expect(firstSentence('_No release notes for this version._')).toBe(
+      'No release notes for this version.',
+    )
+  })
+})
+
+describe('ReleaseHistory summaries', () => {
+  const releases: ReleaseEntry[] = [
+    {
+      version: '2.0.5',
+      date: 'Nov 21, 2026',
+      latest: true,
+      contentLocale: 'en',
+      body: 'Fixes guest payments. More text.\n\n### Upgrade and compatibility\n- Templates must handle the sign.',
+    },
+    { version: '2.0.0', date: 'Nov 9, 2026', contentLocale: 'en', body: '**WCPOS 2.0 is a major update.** Update later.' },
+  ]
+
+  it('shows each row\'s first sentence, hidden while open, and marks only rows with an upgrade section', () => {
+    const { container } = render(
+      <ReleaseHistory
+        releases={releases}
+        copy={{ ...baseCopy, actionNeeded: 'Action may be needed' }}
+        locale="fr"
+        openFeatureRelease
+        summaries
+      />,
+    )
+
+    const summary = screen.getByText('Fixes guest payments.')
+    expect(summary).toHaveAttribute('lang', 'en')
+    expect(summary.parentElement).toHaveClass('group-open:hidden')
+    expect(screen.getAllByText('Action may be needed')).toHaveLength(1)
+    expect(screen.getByText('Action may be needed').closest('summary')).toHaveTextContent('2.0.5')
+    for (const node of screen.getAllByText('WCPOS 2.0 is a major update.')) {
+      expect(node.closest('details')).toHaveAttribute('open')
+    }
+    expect(container.querySelector('a[href="https://github.com/wcpos/woocommerce-pos/releases"]')).toBeNull()
+  })
+
+  it('keeps the trailing full-history links without summaries', () => {
+    const { container } = render(
+      <ReleaseHistory releases={releases} copy={baseCopy} locale="en" />,
+    )
+    expect(screen.queryByText('Fixes guest payments.')).toBeNull()
+    expect(container.querySelector('a[href="https://github.com/wcpos/woocommerce-pos/releases"]')).not.toBeNull()
   })
 })

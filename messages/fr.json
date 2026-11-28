@@ -1661,15 +1661,15 @@
       "points": {
         "setup": {
           "title": "Un seul plugin suffit pour démarrer",
-          "body": "Installez le plugin gratuit sur votre site WooCommerce et la caisse est prête dans un navigateur à l’adresse yourdomain.com/pos. Il n’y a rien d’autre à héberger. Les applications de bureau et mobiles sont facultatives : ajoutez votre boutique une fois et connectez-vous."
+          "body": "La caisse est prête dans un navigateur à l’adresse yourdomain.com/pos dès que le plugin est activé. Il n’y a rien d’autre à héberger. Les applications de bureau et mobiles sont facultatives."
         },
         "sync": {
           "title": "Chaque application lit et écrit dans la même boutique",
-          "body": "Encaissez une vente sur l’ordinateur et vos autres appareils récupèrent le nouveau niveau de stock lors de leur prochaine vérification, environ une minute plus tard avec le réglage par défaut. Un seul jeu de produits, commandes et clients."
+          "body": "Vendez sur l’ordinateur et vos autres appareils récupèrent le nouveau niveau de stock lors de leur prochaine vérification, environ une minute plus tard avec le réglage par défaut."
         },
         "offline": {
-          "title": "Continuez d’encaisser quand la connexion tombe",
-          "body": "Parcourez les produits, constituez des paniers et finalisez les ventes en espèces ou sur un terminal de paiement séparé sans connexion ; elles se synchronisent dès que vous êtes de nouveau en ligne. Les lecteurs de cartes connectés et les passerelles de paiement en ligne nécessitent une connexion."
+          "title": "Continuez à vendre quand la connexion tombe",
+          "body": "Les ventes en espèces et sur un terminal de paiement séparé se finalisent hors ligne et se synchronisent dès votre retour en ligne. Un lecteur de cartes connecté et les passerelles en ligne nécessitent une connexion."
         }
       },
       "syncLabel": "Ce qui reste synchronisé",
@@ -1743,6 +1743,7 @@
       },
       "plugin": "Gratuit",
       "showAllNotes": "Afficher toutes les notes de version {version}",
+      "actionNeeded": "Action peut-être requise",
       "externalContentNotice": "Les notes de version proviennent de GitHub et peuvent s’afficher en anglais."
     }
   },

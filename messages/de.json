@@ -1661,15 +1661,15 @@
       "points": {
         "setup": {
           "title": "Ein Plugin ist die gesamte Einrichtung",
-          "body": "Installiere das kostenlose Plugin auf deiner WooCommerce-Website, und die Kasse ist im Browser unter yourdomain.com/pos bereit. Sonst musst du nichts hosten. Die Desktop- und Mobil-Apps sind optional: Füge deinen Shop einmal hinzu und melde dich an."
+          "body": "Sobald das Plugin aktiv ist, ist die Kasse im Browser unter yourdomain.com/pos bereit. Sonst musst du nichts hosten. Die Desktop- und Mobil-Apps sind optional."
         },
         "sync": {
           "title": "Jede App liest und schreibt im selben Shop",
-          "body": "Kassiere einen Verkauf am Desktop, und deine anderen Geräte übernehmen den neuen Lagerbestand bei ihrer nächsten Abfrage, mit der Standardeinstellung etwa eine Minute später. Ein gemeinsamer Bestand an Produkten, Bestellungen und Kunden."
+          "body": "Verkaufe am Desktop, und deine anderen Geräte übernehmen den neuen Lagerbestand bei ihrer nächsten Abfrage, mit der Standardeinstellung etwa eine Minute später."
         },
         "offline": {
-          "title": "Verkäufe weiter kassieren, wenn die Verbindung abbricht",
-          "body": "Durchsuche Produkte, stelle Warenkörbe zusammen und schließe Barverkäufe oder Verkäufe über ein separates Zahlungsterminal ohne Verbindung ab; sie werden synchronisiert, sobald du wieder online bist. Verbundene Kartenlesegeräte und Online-Zahlungsgateways benötigen eine Verbindung."
+          "title": "Weiter verkaufen, wenn die Verbindung abbricht",
+          "body": "Barverkäufe und Verkäufe über ein separates Kartenterminal werden offline abgeschlossen und synchronisiert, sobald du wieder online bist. Ein verbundenes Kartenlesegerät und Online-Gateways brauchen eine Verbindung."
         }
       },
       "syncLabel": "Was synchron bleibt",
@@ -1743,6 +1743,7 @@
       },
       "plugin": "Kostenlos",
       "showAllNotes": "Alle Versionshinweise zu {version} anzeigen",
+      "actionNeeded": "Möglicherweise Handlung nötig",
       "externalContentNotice": "Versionshinweise stammen von GitHub und werden möglicherweise auf Englisch angezeigt."
     }
   },

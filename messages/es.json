@@ -1661,15 +1661,15 @@
       "points": {
         "setup": {
           "title": "Un plugin es toda la configuración",
-          "body": "Instala el plugin gratuito en tu sitio WooCommerce y la caja estará lista en un navegador en yourdomain.com/pos. No hay nada más que alojar. Las apps de escritorio y móviles son opcionales: añade tu tienda una vez e inicia sesión."
+          "body": "La caja está lista en un navegador en yourdomain.com/pos en cuanto el plugin está activo. No hay nada más que alojar. Las apps de escritorio y móviles son opcionales."
         },
         "sync": {
           "title": "Cada aplicación lee y escribe en la misma tienda",
-          "body": "Cobra una venta en el escritorio y tus otros dispositivos recogen el nuevo nivel de stock en su próxima comprobación, aproximadamente un minuto después con la configuración predeterminada. Un único conjunto de productos, pedidos y clientes."
+          "body": "Vende en el escritorio y tus otros dispositivos recogen el nuevo nivel de stock en su próxima comprobación, aproximadamente un minuto después con la configuración predeterminada."
         },
         "offline": {
-          "title": "Sigue cobrando ventas cuando se cae la conexión",
-          "body": "Explora productos, crea carritos y completa ventas en efectivo o en un terminal de pago independiente sin conexión; se sincronizan en cuanto vuelves a estar online. Los lectores de tarjetas conectados y las pasarelas de pago online necesitan conexión."
+          "title": "Sigue vendiendo cuando se cae la conexión",
+          "body": "Las ventas en efectivo y en un terminal de pago independiente se completan sin conexión y se sincronizan al volver a estar online. Un lector de tarjetas conectado y las pasarelas online necesitan conexión."
         }
       },
       "syncLabel": "Qué se mantiene sincronizado",
@@ -1743,6 +1743,7 @@
       },
       "plugin": "Gratis",
       "showAllNotes": "Mostrar todas las notas de la versión {version}",
+      "actionNeeded": "Puede requerir acción",
       "externalContentNotice": "Las notas de la versión provienen de GitHub y pueden mostrarse en inglés."
     }
   },

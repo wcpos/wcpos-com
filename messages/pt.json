@@ -1661,15 +1661,15 @@
       "points": {
         "setup": {
           "title": "Um plugin é a única configuração necessária",
-          "body": "Instale o plugin gratuito no seu site WooCommerce e a caixa fica pronta num navegador em yourdomain.com/pos. Não há mais nada para alojar. As aplicações de computador e móveis são opcionais: adicione a sua loja uma vez e inicie sessão."
+          "body": "A caixa fica pronta num navegador em yourdomain.com/pos assim que o plugin está ativo. Não há mais nada para alojar. As aplicações de computador e móveis são opcionais."
         },
         "sync": {
           "title": "Todas as aplicações leem e escrevem na mesma loja",
-          "body": "Registe uma venda no computador e os seus outros dispositivos recebem o novo nível de stock na verificação seguinte, cerca de um minuto depois com a configuração predefinida. Um único conjunto de produtos, encomendas e clientes."
+          "body": "Venda no computador e os seus outros dispositivos recebem o novo nível de stock na verificação seguinte, cerca de um minuto depois com a configuração predefinida."
         },
         "offline": {
-          "title": "Continue a registar vendas quando a ligação cai",
-          "body": "Navegue pelos produtos, crie carrinhos e conclua vendas em dinheiro ou num terminal de pagamento separado sem ligação; sincronizam assim que voltar a estar online. Os leitores de cartões ligados e os gateways de pagamento online precisam de ligação."
+          "title": "Continue a vender quando a ligação cai",
+          "body": "As vendas em dinheiro e num terminal de pagamento separado concluem-se offline e sincronizam quando voltar a estar online. Um leitor de cartões ligado e os gateways online precisam de ligação."
         }
       },
       "syncLabel": "O que se mantém sincronizado",
@@ -1743,6 +1743,7 @@
       },
       "plugin": "Gratuito",
       "showAllNotes": "Mostrar todas as notas de lançamento da versão {version}",
+      "actionNeeded": "Pode ser necessária ação",
       "externalContentNotice": "As notas de lançamento vêm do GitHub e podem ser apresentadas em inglês."
     }
   },

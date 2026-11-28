@@ -1661,15 +1661,15 @@
       "points": {
         "setup": {
           "title": "One plugin is the only setup",
-          "body": "Install the free plugin on your WooCommerce site and the register is ready in a browser at yourdomain.com/pos. There is nothing else to host. The desktop and mobile apps are optional: add your store once and sign in."
+          "body": "The register is ready in a browser at yourdomain.com/pos as soon as the plugin is on. There is nothing else to host. The desktop and mobile apps are optional."
         },
         "sync": {
           "title": "Every app reads and writes the same store",
-          "body": "Ring up a sale on the desktop and your other devices pick up the new stock level at their next check, about a minute later on the default setting. One set of products, orders and customers."
+          "body": "Sell on the desktop and your other devices pick up the new stock level at their next check, about a minute later on the default setting."
         },
         "offline": {
-          "title": "Keep ringing up sales when the connection drops",
-          "body": "Browse products, build carts and complete cash sales or sales on a separate card terminal without a connection; they sync the moment you’re back online. Connected card readers and online gateways need a connection."
+          "title": "Keep selling when the connection drops",
+          "body": "Cash sales and sales on a separate card terminal complete offline and sync when you are back online. A connected card reader and online gateways need a connection."
         }
       },
       "syncLabel": "What stays in sync",
@@ -1743,6 +1743,7 @@
       },
       "plugin": "Free",
       "showAllNotes": "Show all {version} release notes",
+      "actionNeeded": "Action may be needed",
       "externalContentNotice": "Release notes come from GitHub and may be shown in English."
     }
   },

@@ -1661,15 +1661,15 @@
       "points": {
         "setup": {
           "title": "Un solo plugin per iniziare",
-          "body": "Installa il plugin gratuito sul tuo sito WooCommerce e la cassa è pronta in un browser all’indirizzo yourdomain.com/pos. Non c’è nient’altro da ospitare. Le app desktop e mobile sono facoltative: aggiungi il tuo negozio una volta e accedi."
+          "body": "La cassa è pronta in un browser all’indirizzo yourdomain.com/pos non appena il plugin è attivo. Non c’è nient’altro da ospitare. Le app desktop e mobile sono facoltative."
         },
         "sync": {
           "title": "Ogni app legge e scrive nello stesso negozio",
-          "body": "Registra una vendita sul desktop e gli altri tuoi dispositivi rilevano il nuovo livello di stock al controllo successivo, circa un minuto dopo con l’impostazione predefinita. Un unico set di prodotti, ordini e clienti."
+          "body": "Vendi sul desktop e gli altri tuoi dispositivi rilevano il nuovo livello di stock al controllo successivo, circa un minuto dopo con l’impostazione predefinita."
         },
         "offline": {
-          "title": "Continua a registrare vendite quando la connessione cade",
-          "body": "Sfoglia i prodotti, crea carrelli e completa vendite in contanti o su un terminale di pagamento separato senza connessione; si sincronizzano appena torni online. I lettori di carte collegati e i gateway di pagamento online richiedono una connessione."
+          "title": "Continua a vendere quando la connessione cade",
+          "body": "Le vendite in contanti e su un terminale di pagamento separato si completano offline e si sincronizzano quando torni online. Un lettore di carte collegato e i gateway online richiedono una connessione."
         }
       },
       "syncLabel": "Cosa resta sincronizzato",
@@ -1743,6 +1743,7 @@
       },
       "plugin": "Gratis",
       "showAllNotes": "Mostra tutte le note di rilascio della versione {version}",
+      "actionNeeded": "Potrebbe servire un intervento",
       "externalContentNotice": "Le note di rilascio provengono da GitHub e potrebbero essere visualizzate in inglese."
     }
   },

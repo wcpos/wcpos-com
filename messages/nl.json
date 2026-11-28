@@ -1661,15 +1661,15 @@
       "points": {
         "setup": {
           "title": "Eén plugin is de enige setup",
-          "body": "Installeer de gratis plugin op je WooCommerce-site en de kassa staat klaar in een browser op yourdomain.com/pos. Verder hoef je niets te hosten. De desktop- en mobiele apps zijn optioneel: voeg je winkel één keer toe en meld je aan."
+          "body": "Zodra de plugin actief is, staat de kassa klaar in een browser op yourdomain.com/pos. Verder hoef je niets te hosten. De desktop- en mobiele apps zijn optioneel."
         },
         "sync": {
           "title": "Elke app leest en schrijft naar dezelfde winkel",
-          "body": "Sla een verkoop aan op de desktop en je andere apparaten halen het nieuwe voorraadniveau op bij hun volgende controle, met de standaardinstelling ongeveer een minuut later. Eén set producten, bestellingen en klanten."
+          "body": "Verkoop op de desktop en je andere apparaten halen het nieuwe voorraadniveau op bij hun volgende controle, met de standaardinstelling ongeveer een minuut later."
         },
         "offline": {
-          "title": "Blijf verkopen aanslaan als de verbinding wegvalt",
-          "body": "Blader door producten, stel winkelwagens samen en rond contante verkopen of verkopen via een aparte betaalterminal af zonder verbinding; ze synchroniseren zodra je weer online bent. Gekoppelde kaartlezers en online betaalgateways hebben een verbinding nodig."
+          "title": "Blijf verkopen als de verbinding wegvalt",
+          "body": "Contante verkopen en verkopen via een aparte betaalterminal worden offline afgerond en synchroniseren zodra je weer online bent. Een gekoppelde kaartlezer en online gateways hebben een verbinding nodig."
         }
       },
       "syncLabel": "Wat synchroon blijft",
@@ -1743,6 +1743,7 @@
       },
       "plugin": "Gratis",
       "showAllNotes": "Alle release-opmerkingen van {version} tonen",
+      "actionNeeded": "Mogelijk actie nodig",
       "externalContentNotice": "Release-opmerkingen komen van GitHub en kunnen in het Engels worden weergegeven."
     }
   },
