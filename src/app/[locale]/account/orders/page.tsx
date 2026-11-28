@@ -4,6 +4,7 @@ import { Suspense } from 'react'
 import { getOrdersPage } from '@/lib/customer-orders'
 import { projectAccountOrderListRows } from '@/lib/account-order-projection'
 import { Link } from '@/i18n/navigation'
+import { TextLink } from '@/components/ui/text-link'
 import { Card, CardContent } from '@/components/ui/card'
 import { PageHeader } from '@/components/ui/page-header'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -91,12 +92,9 @@ export default async function OrdersPage({
         title={t('heading')}
         lede={t.rich('intro', {
           profileLink: (chunks) => (
-            <Link
-              href="/account/profile#billing-address"
-              className="text-primary hover:underline"
-            >
-              {chunks}
-            </Link>
+            <TextLink asChild>
+              <Link href="/account/profile#billing-address">{chunks}</Link>
+            </TextLink>
           ),
         })}
       />

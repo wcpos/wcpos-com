@@ -8,13 +8,13 @@ import { formatOrderAmount } from '@/lib/order-display'
 import { formatDateForLocale } from '@/lib/date-format'
 import { notFound } from 'next/navigation'
 import { Link } from '@/i18n/navigation'
-import { ArrowLeft, FileDown, Key } from 'lucide-react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { ArrowLeft, ArrowRight, FileDown } from 'lucide-react'
+import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { StatusBadge } from '@/components/ui/status-badge'
-import { DividedList, Row } from '@/components/ui/row'
-import { PageHeader } from '@/components/ui/page-header'
 import { Skeleton } from '@/components/ui/skeleton'
+import { TextLink } from '@/components/ui/text-link'
+import { OrderLicenseKey } from '@/components/account/order-license-key'
 import { presentLicenseStatus } from '@/lib/license-status-presentation'
 import { presentOrderStatus } from '@/lib/order-status-presentation'
 import { receiptDownloadHref } from '@/lib/receipt-download'
@@ -56,8 +56,9 @@ async function OrderDetailContent({
 }) {
   const { orderId, locale: candidate } = await params
   const locale = resolveLocale(candidate)
-  const [t, tStatus, tOrderStatus, tProductTitles, order] = await Promise.all([
+  const [t, tReceipt, tStatus, tOrderStatus, tProductTitles, order] = await Promise.all([
     getTranslations({ locale, namespace: 'account.orderDetail' }),
+    getTranslations({ locale, namespace: 'account.receiptPdf' }),
     getTranslations({ locale, namespace: 'account.licenseStatus' }),
     getTranslations({ locale, namespace: 'account.orderStatus' }),
     getTranslations({ locale, namespace: 'account.productTitles' }),
@@ -87,174 +88,141 @@ async function OrderDetailContent({
     lifetime: tProductTitles('lifetime'),
   }
 
-  return (
-    <>
-      <PageHeader title={t('orderNumber', { id: orderDetail.displayId })} />
+  const money = (value: { amount: number; currencyCode: string }) =>
+    formatOrderAmount(value.amount, value.currencyCode, locale)
+  const label = 'text-sm font-semibold uppercase tracking-wider text-muted-foreground'
+  // The key from this order sits with its licence: masked, with Show key /
+  // Copy key. Keys no entitlement row claims still render on their own.
+  const keyFor = (id: string) =>
+    orderDetail.activationKeys.find((activation) => activation.id === id)?.key
+  const unclaimedKeys = orderDetail.activationKeys.filter(
+    (activation) =>
+      !orderDetail.licenseEntitlements.some((license) => license.id === activation.id)
+  )
+  const manageLink = (
+    <TextLink asChild className="inline-flex items-center gap-1 text-sm">
+      <Link href="/account/licenses">
+        {t('manageLicence')}
+        <ArrowRight className="size-4" aria-hidden="true" />
+      </Link>
+    </TextLink>
+  )
 
-      <div>
-        <Button asChild variant="outline" size="sm">
+  // One receipt-shaped panel, laid out like the PDF it downloads.
+  return (
+    <Card className="p-6 sm:p-7">
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">
+            {t('orderNumber', { id: orderDetail.displayId })}
+          </h1>
+          <p className="mt-0.5 text-sm text-muted-foreground">{t('receiptLede')}</p>
+        </div>
+        <Button asChild variant="outline">
           <a
             href={receiptDownloadHref(orderDetail.id, locale)}
             target="_blank"
             rel="noreferrer"
           >
-            <FileDown className="mr-2 h-4 w-4" />
+            <FileDown />
             {t('downloadReceipt')}
           </a>
         </Button>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">{t('detailsTitle')}</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            {orderDetail.legacyDisplayId && (
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">
-                  {t('legacyOrderLabel')}
-                </span>
-                <span>#{orderDetail.legacyDisplayId}</span>
-              </div>
-            )}
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">{t('dateLabel')}</span>
-              <span>{formatDateForLocale(orderDetail.createdAt, locale)}</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-muted-foreground">{t('statusLabel')}</span>
-              <StatusBadge tone={presentOrderStatus(orderDetail.statusKey)}>
-                {orderDetail.displayStatus}
-              </StatusBadge>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">{t('emailLabel')}</span>
-              <span>{orderDetail.email}</span>
-            </div>
-            {/* Receipt-style rule before the total, echoing the PDF receipt. */}
-            <div className="flex justify-between border-t border-dashed pt-3 text-base font-semibold">
-              <span>{t('totalLabel')}</span>
-              <span className="tabular-nums">
-                {formatOrderAmount(
-                  orderDetail.total.amount,
-                  orderDetail.total.currencyCode,
-                  locale
-                )}
-              </span>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">{t('itemsTitle')}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              {orderDetail.items.map((item) => (
-                <div key={item.id} className="flex justify-between">
-                  <div>
-                    <p className="font-medium">
-                      {localizeKnownProductTitle(item.title, productTitleMessages)}
-                    </p>
-                    <p className="text-sm text-muted-foreground">
-                      {t('quantity', { count: item.quantity })}
-                    </p>
-                  </div>
-                  <p className="font-medium">
-                    {formatOrderAmount(
-                      item.total.amount,
-                      item.total.currencyCode,
-                      locale
-                    )}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+      <div className="mt-7 grid gap-6 text-sm leading-relaxed md:grid-cols-2">
+        <div>
+          <p className={label}>{tReceipt('billedTo')}</p>
+          <p className="mt-1.5">{orderDetail.email}</p>
+        </div>
+        <div>
+          <p className={label}>{tReceipt('details')}</p>
+          <p className="mt-1.5">
+            {tReceipt('orderDate')}: {formatDateForLocale(orderDetail.createdAt, locale)}
+          </p>
+          <p className="flex items-center gap-2">
+            {t('statusLabel')}:
+            <StatusBadge tone={presentOrderStatus(orderDetail.statusKey)}>
+              {orderDetail.displayStatus}
+            </StatusBadge>
+          </p>
+          <p>
+            {tReceipt('currency')}: {orderDetail.total.currencyCode.toUpperCase()}
+          </p>
+          {orderDetail.legacyDisplayId && (
+            <p>
+              {t('legacyOrderLabel')}: #{orderDetail.legacyDisplayId}
+            </p>
+          )}
+        </div>
       </div>
 
-      {orderDetail.licenseEntitlements.length > 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">
-              {t('licenseFromOrderTitle')}
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <DividedList>
-              {orderDetail.licenseEntitlements.map((license) => {
-                const statusPresentation = presentLicenseStatus(license.status)
-                return (
-                  <Row key={license.id} className="gap-3">
-                    <div className="flex min-w-0 items-center gap-2.5">
-                      <span
-                        aria-hidden="true"
-                        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-wcpos-red/10 text-wcpos-red-accent"
-                      >
-                        <Key className="h-4 w-4" />
-                      </span>
-                      <div className="min-w-0">
-                        {license.product && (
-                          <p className="truncate font-medium">
-                            {localizeKnownProductTitle(license.product, productTitleMessages)}
-                          </p>
-                        )}
-                        <code className="font-mono text-sm tracking-wider text-muted-foreground">
-                          {license.maskedKey}
-                        </code>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      {/* Status text stays lowercase to honour the e2e contract;
-                          the marker carries the visual emphasis. */}
-                      <StatusBadge tone={statusPresentation.tone}>
-                        {tStatus(statusPresentation.labelKey)}
-                      </StatusBadge>
-                      <Link
-                        href="/account/licenses"
-                        className="shrink-0 text-sm text-primary underline-offset-4 hover:underline"
-                      >
-                        {t('manageLicence')}
-                      </Link>
-                    </div>
-                  </Row>
-                )
-              })}
-            </DividedList>
-          </CardContent>
-        </Card>
-      )}
+      <table className="mt-7 w-full text-sm">
+        <thead>
+          <tr className="border-b text-xs font-semibold tracking-wider text-muted-foreground">
+            <th className="py-2 text-left font-semibold">{tReceipt('description')}</th>
+            <th className="py-2 text-right font-semibold">{tReceipt('quantity')}</th>
+            <th className="py-2 text-right font-semibold">{tReceipt('amount')}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {orderDetail.items.map((item) => (
+            <tr key={item.id} className="border-b">
+              <td className="py-3.5">
+                {localizeKnownProductTitle(item.title, productTitleMessages)}
+              </td>
+              <td className="py-3.5 text-right tabular-nums">{item.quantity}</td>
+              <td className="py-3.5 text-right tabular-nums">{money(item.total)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <div className="ms-auto mt-3 flex max-w-xs justify-between text-lg font-bold">
+        <span>{tReceipt('total')}</span>
+        <span className="tabular-nums">{money(orderDetail.total)}</span>
+      </div>
 
-      {orderDetail.activationKeys.length > 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">{t('licenseKeysTitle')}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <DividedList>
-              {orderDetail.activationKeys.map((lic) => (
-                <Row key={lic.id ?? lic.key} className="gap-2">
-                  {/* The full key is intentionally shown here: the order page
-                      is where customers retrieve it for plugin activation. */}
-                  <code className="break-all font-mono text-sm tracking-wide">
-                    {lic.key}
+      {(orderDetail.licenseEntitlements.length > 0 || unclaimedKeys.length > 0) && (
+        <div className="mt-6 space-y-4 border-t pt-5">
+          <p className="text-[13px] text-muted-foreground">
+            {t('licenseFromOrderTitle')}
+          </p>
+          {orderDetail.licenseEntitlements.map((license) => {
+            const statusPresentation = presentLicenseStatus(license.status)
+            const key = keyFor(license.id)
+            return (
+              <div key={license.id} className="space-y-2">
+                {license.product && (
+                  <p className="font-medium">
+                    {localizeKnownProductTitle(license.product, productTitleMessages)}
+                  </p>
+                )}
+                {key ? (
+                  <OrderLicenseKey licenseKey={key} />
+                ) : (
+                  <code className="font-mono text-sm">
+                    {license.maskedKey.replace(/\*/g, '•')}
                   </code>
-                  <Link
-                    href="/account/licenses"
-                    className="shrink-0 text-sm text-primary underline-offset-4 hover:underline"
-                  >
-                    {t('manage')}
-                  </Link>
-                </Row>
-              ))}
-            </DividedList>
-          </CardContent>
-        </Card>
+                )}
+                <div className="flex flex-wrap items-center gap-4">
+                  {/* Status text stays lowercase to honour the e2e contract. */}
+                  <StatusBadge tone={statusPresentation.tone}>
+                    {tStatus(statusPresentation.labelKey)}
+                  </StatusBadge>
+                  {manageLink}
+                </div>
+              </div>
+            )
+          })}
+          {unclaimedKeys.map((activation) => (
+            <div key={activation.id ?? activation.key} className="space-y-2">
+              <OrderLicenseKey licenseKey={activation.key} />
+              {manageLink}
+            </div>
+          ))}
+        </div>
       )}
-    </>
+    </Card>
   )
 }
 

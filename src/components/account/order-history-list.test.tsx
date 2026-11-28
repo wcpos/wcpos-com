@@ -42,14 +42,12 @@ describe('OrderHistoryList', () => {
   it('shows an empty state with a link to WCPOS Pro when there are no orders', () => {
     render(<OrderHistoryList orders={[]} locale="en-US" />)
 
-    expect(screen.getByText('No orders yet.')).toBeInTheDocument()
+    expect(screen.getByText('No orders yet')).toBeInTheDocument()
     expect(
-      screen.getByText(
-        'Invoices and receipts will appear here after your first purchase.'
-      )
+      screen.getByText('Receipts appear here after your first purchase.')
     ).toBeInTheDocument()
     expect(
-      screen.getByRole('link', { name: 'Browse WCPOS Pro' })
+      screen.getByRole('link', { name: 'See WCPOS Pro' })
     ).toHaveAttribute('href', '/pro')
   })
 
@@ -95,8 +93,8 @@ describe('OrderHistoryList', () => {
       </NextIntlClientProvider>
     )
 
-    expect(screen.getByText('****-****-1234')).toBeInTheDocument()
-    expect(screen.getByText('WCPOS Pro annuel')).toBeInTheDocument()
+    // One meta line: date · product · key, the key masked with bullets.
+    expect(screen.getByText(/· WCPOS Pro annuel · ••••-••••-1234$/)).toBeInTheDocument()
     expect(screen.queryByText('WCPOS Pro Yearly')).not.toBeInTheDocument()
   })
 

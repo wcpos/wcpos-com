@@ -1,11 +1,9 @@
 import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
-import { FileDown, Key, ShoppingBag } from 'lucide-react'
+import { ArrowRight, FileDown, ShoppingBag } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import { DividedList, Row } from '@/components/ui/row'
 import { EmptyState } from '@/components/ui/empty-state'
-import { CodeRef } from '@/components/ui/code-ref'
 import { StatusBadge } from '@/components/ui/status-badge'
 import { TextLink } from '@/components/ui/text-link'
 import { formatOrderAmount } from '@/lib/order-display'
@@ -65,12 +63,16 @@ export function OrderHistoryList({ orders, locale }: OrderHistoryListProps) {
     return (
       <Card>
         <EmptyState
+          className="items-start p-5 text-left"
           icon={<ShoppingBag />}
           title={t('emptyTitle')}
           description={t('emptyDescription')}
           action={
-            <TextLink asChild className="text-sm">
-              <Link href="/pro">{t('browsePro')}</Link>
+            <TextLink asChild className="inline-flex items-center gap-1 text-sm">
+              <Link href="/pro">
+                {t('browsePro')}
+                <ArrowRight className="size-4" aria-hidden="true" />
+              </Link>
             </TextLink>
           }
         />
@@ -78,89 +80,86 @@ export function OrderHistoryList({ orders, locale }: OrderHistoryListProps) {
     )
   }
 
+  // Flat, divider-led list (no card): number + status, one meta line, then
+  // amount, receipt and the view link in a fixed-width trailing cell so every
+  // row's amount and receipt share one edge.
   return (
-    <Card>
-      <DividedList>
-        {orders.map((order) => (
-          <Row key={order.id} className="gap-4 px-6">
-            <div className="min-w-0 space-y-1">
-                {/* Plain text, not a link: the row's "View" action below is
-                    the single anchor to the detail page, so no nested
-                    anchors and the Receipt button stays a sibling. */}
-                <p className="font-medium">
-                  {t('orderNumber', { id: order.displayId })}
-                </p>
-                {order.legacyDisplayId && (
-                  <p className="text-sm text-muted-foreground">
-                    {t('legacyOrderNumber', { id: order.legacyDisplayId })}
-                  </p>
-                )}
-                <p className="text-sm text-muted-foreground">
-                  {t('dateAndItems', {
+    <div className="divide-y border-y">
+      {orders.map((order) => (
+        <div
+          key={order.id}
+          className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-6 gap-y-3 py-4 md:grid-cols-[minmax(0,1fr)_auto_auto]"
+        >
+          <div className="min-w-0">
+            {/* Plain text, not a link: the row's "View order" action is the
+                single anchor to the detail page, so no nested anchors and
+                the Receipt button stays a sibling. */}
+            <p className="flex flex-wrap items-center gap-2 font-semibold">
+              {t('orderNumber', { id: order.displayId })}
+              <StatusBadge tone={presentOrderStatus(order.statusKey ?? null)}>
+                {order.displayStatus}
+              </StatusBadge>
+            </p>
+            {order.legacyDisplayId && (
+              <p className="text-[13px] text-muted-foreground">
+                {t('legacyOrderNumber', { id: order.legacyDisplayId })}
+              </p>
+            )}
+            <p className="mt-0.5 text-[13px] tabular-nums text-muted-foreground">
+              {order.licenses?.length
+                ? [
+                    formatDateForLocale(order.createdAt, locale),
+                    ...order.licenses.flatMap((license) => [
+                      license.product &&
+                        localizeKnownProductTitle(
+                          license.product,
+                          productTitleMessages
+                        ),
+                      license.maskedKey.replace(/\*/g, '•'),
+                    ]),
+                  ]
+                    .filter(Boolean)
+                    .join(' · ')
+                : t('dateAndItems', {
                     date: formatDateForLocale(order.createdAt, locale),
                     count: order.itemCount,
                   })}
-                </p>
-                {order.licenses?.map((license, index) => (
-                  <p
-                    key={`${license.maskedKey}-${license.product ?? 'license'}-${index}`}
-                    className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5 text-sm text-muted-foreground"
-                  >
-                    <Key
-                      className="h-3.5 w-3.5 shrink-0 text-wcpos-red-accent"
-                      aria-hidden="true"
-                    />
-                    {license.product && (
-                      <span className="font-medium text-foreground">
-                        {localizeKnownProductTitle(license.product, productTitleMessages)}
-                      </span>
-                    )}
-                    <CodeRef className="tracking-wider">
-                      {license.maskedKey}
-                    </CodeRef>
-                  </p>
-                ))}
-              </div>
-              <div className="flex flex-wrap items-center gap-4">
-                <div className="flex flex-col items-end gap-1">
-                  <p className="font-medium tabular-nums">
-                    {formatOrderAmount(
-                      order.total.amount,
-                      order.total.currencyCode,
-                      locale
-                    )}
-                  </p>
-                  <StatusBadge tone={presentOrderStatus(order.statusKey ?? null)}>
-                    {order.displayStatus}
-                  </StatusBadge>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Button asChild variant="outline" size="sm">
-                    <a
-                      href={receiptDownloadHref(order.id, locale)}
-                      target="_blank"
-                      rel="noreferrer"
-                      aria-label={t('downloadReceiptAria', {
-                        id: order.displayId,
-                      })}
-                    >
-                      <FileDown className="mr-2 h-4 w-4" />
-                      {t('receiptPdf')}
-                    </a>
-                  </Button>
-                  <Button asChild variant="ghost" size="sm">
-                    <Link
-                      href={`/account/orders/${order.id}`}
-                      aria-label={t('viewOrderAria', { id: order.displayId })}
-                    >
-                      {t('viewOrder')}
-                    </Link>
-                  </Button>
-                </div>
-              </div>
-          </Row>
-        ))}
-      </DividedList>
-    </Card>
+            </p>
+          </div>
+          <p className="text-right font-semibold tabular-nums">
+            {formatOrderAmount(
+              order.total.amount,
+              order.total.currencyCode,
+              locale
+            )}
+          </p>
+          <div className="col-span-2 flex items-center gap-4 md:col-span-1">
+            <Button asChild variant="outline" size="sm">
+              <a
+                href={receiptDownloadHref(order.id, locale)}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={t('downloadReceiptAria', {
+                  id: order.displayId,
+                })}
+              >
+                <FileDown />
+                {t('receiptPdf')}
+              </a>
+            </Button>
+            <span className="min-w-[72px] text-right text-sm">
+              <TextLink asChild>
+                <Link
+                  href={`/account/orders/${order.id}`}
+                  aria-label={t('viewOrderAria', { id: order.displayId })}
+                >
+                  {t('viewOrder')}
+                </Link>
+              </TextLink>
+            </span>
+          </div>
+        </div>
+      ))}
+    </div>
   )
 }
