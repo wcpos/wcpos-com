@@ -3,24 +3,26 @@
 import { Suspense, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { useLocale, useTranslations } from 'next-intl'
+import { TriangleAlert } from 'lucide-react'
 import { Link } from '@/i18n/navigation'
-import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Alert } from '@/components/ui/alert'
+import { TextLink } from '@/components/ui/text-link'
 import { useTurnstileGate } from '@/components/auth/use-turnstile-gate'
+import { AuthCard } from '@/components/auth/auth-card'
+import {
+  AuthDivider,
+  AuthHelpLinks,
+  FieldError,
+  PasswordInput,
+  ProviderButtons,
+  SubmitButton,
+  statusLinkClassName,
+} from '@/components/auth/auth-parts'
 import { navigateAfterAuthChange, sanitizeRedirectPath } from '@/lib/safe-redirect'
 import { MIN_PASSWORD_LENGTH } from '@/lib/password-policy'
 import { getPostHogSessionId } from '@/lib/analytics/posthog-browser'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
-
 
 type RegisterErrorCode =
   | 'invalid_origin'
@@ -67,6 +69,11 @@ function RegisterPageInner() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
+  // account_exists and password_too_short show under their field instead of
+  // as an Alert; `count` is the length of the password that was refused.
+  const [fieldError, setFieldError] = useState<
+    { field: 'email' } | { field: 'password'; count: number } | null
+  >(null)
   const [loading, setLoading] = useState(false)
   const turnstile = useTurnstileGate()
 
@@ -96,6 +103,7 @@ function RegisterPageInner() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setError('')
+    setFieldError(null)
     setLoading(true)
 
     try {
@@ -117,11 +125,17 @@ function RegisterPageInner() {
       if (!response.ok) {
         turnstile.reset()
         const data = await response.json().catch(() => ({}))
-        setError(
-          isRegisterErrorCode(data.errorCode)
-            ? getRegisterErrorMessage(data.errorCode)
-            : t('failed')
-        )
+        if (data.errorCode === 'account_exists') {
+          setFieldError({ field: 'email' })
+        } else if (data.errorCode === 'password_too_short') {
+          setFieldError({ field: 'password', count: password.length })
+        } else {
+          setError(
+            isRegisterErrorCode(data.errorCode)
+              ? getRegisterErrorMessage(data.errorCode)
+              : t('failed')
+          )
+        }
         setLoading(false)
         return
       }
@@ -135,107 +149,148 @@ function RegisterPageInner() {
     }
   }
 
+  const passwordError = fieldError?.field === 'password' ? fieldError : null
+  const passwordNote = passwordError ? 'password-error' : 'password-hint'
+
   return (
-    // Centering and page chrome live in the (auth) layout.
-    <div className="w-full max-w-md">
-      <Card elevated>
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl tracking-tight">
-            {t('title')}
-          </CardTitle>
-          <CardDescription>
-            {t('description')}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {error && (
-              <Alert tone="critical" role="alert">
-                {error}
-              </Alert>
-            )}
-
-            <div className="grid grid-cols-2 gap-3">
-              <div className="space-y-2">
-                <Label htmlFor="firstName">{tCommon('firstName')}</Label>
-                <Input
-                  id="firstName"
-                  type="text"
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                  autoComplete="given-name"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="lastName">{tCommon('lastName')}</Label>
-                <Input
-                  id="lastName"
-                  type="text"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                  autoComplete="family-name"
-                />
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="email">{tCommon('email')}</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder={tCommon('emailPlaceholder')}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                autoComplete="email"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="password">{tCommon('password')}</Label>
-              <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                minLength={MIN_PASSWORD_LENGTH}
-                autoComplete="new-password"
-              />
-              <p className="text-xs text-muted-foreground">
-                {tCommon('passwordHint', { min: MIN_PASSWORD_LENGTH })}
-              </p>
-            </div>
-
-            {turnstile.failed && (
-              <Alert tone="caution" role="status">
-                {tCommon('turnstileTrouble')}
-              </Alert>
-            )}
-
-            <Button
-              type="submit"
-              className="w-full"
-              disabled={loading || turnstile.verifying}
-            >
-              {loading ? t('submitting') : t('submit')}
-            </Button>
-
-            {turnstile.widget}
-          </form>
-        </CardContent>
-        <CardFooter className="justify-center">
-          <p className="text-sm text-muted-foreground">
-            {t('hasAccount')}{' '}
-            <Link
-              href={`/login?redirect=${encodeURIComponent(redirectTo)}`}
-              className="text-primary hover:underline"
-            >
+    <AuthCard
+      title={t('title')}
+      description={t('description')}
+      footer={
+        <>
+          {t('hasAccount')}{' '}
+          <TextLink asChild>
+            <Link href={`/login?redirect=${encodeURIComponent(redirectTo)}`}>
               {tCommon('signIn')}
             </Link>
-          </p>
-        </CardFooter>
-      </Card>
-    </div>
+          </TextLink>
+        </>
+      }
+      below={<AuthHelpLinks help={t('needHelp')} />}
+    >
+      <ProviderButtons redirectTo={redirectTo} disabled={loading} />
+      <AuthDivider>{t('oauthDivider')}</AuthDivider>
+
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {error && (
+          <Alert tone="critical" role="alert">
+            {error}
+          </Alert>
+        )}
+
+        <div className="grid grid-cols-2 gap-3">
+          <div className="space-y-2">
+            <Label htmlFor="firstName">{tCommon('firstName')}</Label>
+            <Input
+              id="firstName"
+              type="text"
+              className="h-10"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              disabled={loading}
+              autoComplete="given-name"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="lastName">{tCommon('lastName')}</Label>
+            <Input
+              id="lastName"
+              type="text"
+              className="h-10"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              disabled={loading}
+              autoComplete="family-name"
+            />
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="email">{tCommon('email')}</Label>
+          <Input
+            id="email"
+            type="email"
+            className="h-10"
+            placeholder={tCommon('emailPlaceholder')}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            disabled={loading}
+            autoComplete="email"
+            aria-invalid={fieldError?.field === 'email' || undefined}
+            aria-describedby={
+              fieldError?.field === 'email' ? 'email-error' : undefined
+            }
+          />
+          {fieldError?.field === 'email' && (
+            <FieldError id="email-error">
+              {t.rich('accountExists', {
+                signIn: (chunks) => (
+                  <Link
+                    href={`/login?redirect=${encodeURIComponent(redirectTo)}`}
+                    className={statusLinkClassName}
+                  >
+                    {chunks}
+                  </Link>
+                ),
+                reset: (chunks) => (
+                  <Link href="/forgot-password" className={statusLinkClassName}>
+                    {chunks}
+                  </Link>
+                ),
+              })}
+            </FieldError>
+          )}
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="password">{tCommon('password')}</Label>
+          <PasswordInput
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            disabled={loading}
+            minLength={MIN_PASSWORD_LENGTH}
+            autoComplete="new-password"
+            aria-invalid={Boolean(passwordError) || undefined}
+            aria-describedby={passwordNote}
+          />
+          {passwordError ? (
+            <FieldError id={passwordNote}>
+              {t('passwordTooShort', {
+                min: MIN_PASSWORD_LENGTH,
+                count: passwordError.count,
+              })}
+            </FieldError>
+          ) : (
+            <p id={passwordNote} className="text-xs text-muted-foreground">
+              {tCommon('passwordHint', { min: MIN_PASSWORD_LENGTH })}
+            </p>
+          )}
+        </div>
+
+        {turnstile.failed && (
+          <Alert
+            tone="caution"
+            role="status"
+            icon={<TriangleAlert />}
+            title={t('turnstileTitle')}
+          >
+            <p>{t('turnstileBody')}</p>
+          </Alert>
+        )}
+
+        <SubmitButton
+          busy={loading}
+          disabled={turnstile.verifying}
+          busyLabel={t('submitting')}
+        >
+          {t('submit')}
+        </SubmitButton>
+
+        {turnstile.widget}
+      </form>
+    </AuthCard>
   )
 }

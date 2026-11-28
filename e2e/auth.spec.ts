@@ -36,7 +36,7 @@ test.describe('Authentication', () => {
     test('displays registration form', async ({ page }) => {
       await page.goto('/register')
 
-      await expect(page.getByRole('heading', { name: 'Create an account' })).toBeVisible()
+      await expect(page.getByRole('heading', { name: 'Create your account' })).toBeVisible()
       await expect(page.getByLabel('First name')).toBeVisible()
       await expect(page.getByLabel('Last name')).toBeVisible()
       await expect(page.getByLabel('Email')).toBeVisible()

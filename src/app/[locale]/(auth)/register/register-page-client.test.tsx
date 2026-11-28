@@ -246,7 +246,7 @@ describe('RegisterPageClient', () => {
     act(() => turnstileMock.onError?.())
     expect(submit).toBeEnabled()
     expect(screen.getByRole('status')).toHaveTextContent(
-      'The browser security check couldn’t finish'
+      'The security check didn’t load.'
     )
 
     completeChallenge('second-token')
@@ -274,7 +274,7 @@ describe('RegisterPageClient', () => {
     vi.useRealTimers()
 
     expect(screen.getByRole('status')).toHaveTextContent(
-      'The browser security check couldn’t finish'
+      'The security check didn’t load.'
     )
     expect(submit).toBeEnabled()
     fireEvent.click(submit)
@@ -301,7 +301,7 @@ describe('RegisterPageClient', () => {
     act(() => vi.advanceTimersByTime(15_000))
     expect(submit).toBeEnabled()
     expect(screen.getByRole('status')).toHaveTextContent(
-      'The browser security check couldn’t finish'
+      'The security check didn’t load.'
     )
   })
 
@@ -320,7 +320,67 @@ describe('RegisterPageClient', () => {
     act(() => vi.advanceTimersByTime(15_000))
     expect(submit).toBeEnabled()
     expect(screen.getByRole('status')).toHaveTextContent(
-      'The browser security check couldn’t finish'
+      'The security check didn’t load.'
     )
+  })
+
+  it('shows a taken email under the email field with sign-in and reset links', async () => {
+    mockSearchParams = new URLSearchParams({ redirect: '/pro/checkout' })
+    mockFetch.mockResolvedValueOnce({
+      ok: false,
+      status: 409,
+      json: async () => ({ errorCode: 'account_exists' }),
+    })
+
+    renderRegister()
+    fillCredentials('taken@example.com')
+    completeChallenge()
+    fireEvent.click(screen.getByRole('button', { name: 'Create account' }))
+
+    const line = await screen.findByRole('alert')
+    expect(line).toHaveTextContent(
+      'There’s already an account for this email. Sign in or reset your password.'
+    )
+    expect(screen.getByLabelText('Email')).toHaveAttribute('aria-invalid', 'true')
+    expect(screen.getByLabelText('Email')).toHaveAttribute(
+      'aria-describedby',
+      line.id
+    )
+    expect(
+      screen.getByRole('link', { name: 'reset your password' })
+    ).toHaveAttribute('href', '/forgot-password')
+  })
+
+  it('replaces the password hint with the length error', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: false,
+      status: 400,
+      json: async () => ({ errorCode: 'password_too_short' }),
+    })
+
+    renderRegister()
+    fillCredentials()
+    completeChallenge()
+    fireEvent.click(screen.getByRole('button', { name: 'Create account' }))
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'Use at least 8 characters. This one has 11.'
+    )
+    expect(screen.queryByText('At least 8 characters')).not.toBeInTheDocument()
+    expect(screen.getByLabelText('Password')).toHaveAttribute(
+      'aria-invalid',
+      'true'
+    )
+  })
+
+  it('offers the three providers above the email form', () => {
+    renderRegister('fr')
+
+    expect(screen.getByRole('link', { name: /google/i })).toHaveAttribute(
+      'href',
+      '/api/auth/google?locale=fr&redirect=%2Faccount'
+    )
+    expect(screen.getByRole('link', { name: /github/i })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /discord/i })).toBeInTheDocument()
   })
 })
