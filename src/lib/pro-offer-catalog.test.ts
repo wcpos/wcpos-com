@@ -1,11 +1,4 @@
 import { describe, expect, it, vi } from 'vitest'
-import { createTranslator } from 'next-intl'
-import enMessages from '../../messages/en.json'
-import itMessages from '../../messages/it.json'
-import frMessages from '../../messages/fr.json'
-import zhMessages from '../../messages/zh.json'
-import ptMessages from '../../messages/pt.json'
-import deMessages from '../../messages/de.json'
 import type { MedusaProduct } from '@/types/medusa'
 import { getProducts } from '@/services/core/external/medusa-client'
 import {
@@ -13,7 +6,7 @@ import {
   buildProOfferCatalog,
   buildProOfferSchemaOffers,
   formatFounderProPriceSummary,
-  formatHomeProPriceSummary,
+  getHomeYearlyPrice,
   getProCheckoutCtaLabel,
   getProOfferCatalog,
   resolveProOfferCartSelection,
@@ -285,43 +278,27 @@ describe('resolveProOfferCartSelection', () => {
   })
 })
 
-describe('home price summary across locales', () => {
-  it.each([
-    ['en', enMessages],
-    ['it', itMessages],
-    ['fr', frMessages],
-    ['zh', zhMessages],
-    ['pt', ptMessages],
-    ['de', deMessages],
-  ] as const)('shows the currency code once in %s', (locale, messages) => {
-    const offers = buildProOfferCatalog(
-      [
-        product('wcpos-pro-yearly', 129, 'variant_yearly'),
-        product('wcpos-pro-lifetime', 399, 'variant_lifetime'),
-      ],
-      'usd',
-      locale
-    )
-    const t = createTranslator({ locale, messages, namespace: 'home.pricing' })
-    const summary = formatHomeProPriceSummary(offers, (values) =>
-      t('priceSummary', values)
-    )
-
-    expect(summary?.split('USD').length).toBe(2)
-    expect(summary?.split('$').length).toBe(3)
-    expect(summary).not.toContain('US$')
-    expect(summary).not.toContain('$US')
-    expect(summary).toContain('129')
-    expect(summary).toContain('399')
-    if (locale === 'en') {
-      expect(summary).toBe('$129/year or $399 lifetime (USD). No per-register fees.')
-    }
-    if (locale === 'it') {
-      expect(summary).toBe(
-        '129\u00a0$/anno o 399\u00a0$ a vita (USD). Nessun costo per registratore.'
+describe('home yearly price across locales', () => {
+  it.each(['en', 'it', 'fr', 'zh', 'pt', 'de'] as const)(
+    'names the Yearly amount with the narrow symbol and the code apart in %s',
+    (locale) => {
+      const offers = buildProOfferCatalog(
+        [
+          product('wcpos-pro-yearly', 129, 'variant_yearly'),
+          product('wcpos-pro-lifetime', 399, 'variant_lifetime'),
+        ],
+        'usd',
+        locale
       )
+      const yearly = getHomeYearlyPrice(offers)
+
+      expect(yearly?.currency).toBe('USD')
+      expect(yearly?.price).toContain('129')
+      expect(yearly?.price).toContain('$')
+      expect(yearly?.price).not.toContain('US$')
+      expect(yearly?.price).not.toContain('399')
     }
-  })
+  )
 })
 
 describe('offer presentation helpers', () => {
@@ -338,11 +315,7 @@ describe('offer presentation helpers', () => {
   })
 
   it('builds shared price summaries from caller-provided translations', () => {
-    expect(
-      formatHomeProPriceSummary(offers, (values) =>
-        `${values.yearly} translated ${values.lifetime} (${values.currency})`
-      )
-    ).toBe('$129 translated $399 (USD)')
+    expect(getHomeYearlyPrice(offers)).toEqual({ price: '$129', currency: 'USD' })
     expect(
       formatFounderProPriceSummary(offers, (values) =>
         `${values.yearly} founder`

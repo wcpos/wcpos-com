@@ -61,7 +61,7 @@ export default async function Home({
         <Suspense fallback={<PricingTeaserSectionFallback />}>
           <PricingTeaserSection />
         </Suspense>
-        <CtaSection />
+        <CtaSection home />
 
         <script
           type="application/ld+json"

@@ -77,6 +77,8 @@
     "cta": {
       "title": "Ready to sell in-store with WooCommerce?",
       "subtitle": "The demo opens in your browser with nothing to install. The plugin is free.",
+      "homeTitle": "Try the register before you install anything.",
+      "homeSubtitle": "The live demo opens in your browser; log in with demo / demo. When it does the job, download the free plugin.",
       "liveDemo": "Try Live Demo",
       "compare": "Compare WooCommerce point of sale systems",
       "download": "Download Free"
@@ -218,38 +220,20 @@
         "title": "Free",
         "description": "Free forever. One register, no transaction fees, no caps on products or orders.",
         "features": {
-          "f1": "WooCommerce sync",
-          "f2": "Product search & grid",
-          "f3": "Cash or card on your own terminal",
-          "f4": "Offline mode",
-          "f5": "Receipt printing",
-          "f6": "Receipt template editor & gallery",
-          "f7": "Unlimited products",
-          "f8": "Open & close the register",
-          "f9": "Split payments",
-          "f10": "Today's sales report"
+          "f1": "WooCommerce sync of products, stock and prices"
         }
       },
       "pro": {
-        "title": "Pro",
+        "title": "Pro Yearly",
+        "priceSuffix": "{currency}, one payment",
+        "note": "One payment for a year of updates and priority support. It never renews by itself. When the year ends you are not charged and Pro keeps working; only updates and priority support end. Renew only when there is an update you want.",
         "intro": "Everything in Free, plus:",
         "features": {
-          "p8": "More registers & multiple stores",
-          "p1": "Connected card readers",
-          "p2": "Stock & price editing in POS",
-          "p3": "Order history & management",
-          "p4": "Customer management",
-          "p5": "Reports across days, registers & stores",
-          "p6": "Your other WooCommerce gateways",
-          "p7": "Priority support",
-          "p9": "Refunds, full or partial",
-          "p10": "Coupon management",
-          "p11": "Customer-facing display"
+          "p7": "Priority support"
         }
       },
-      "cta": "See Full Pricing & Features",
-      "compareLine": "Weighing up <square>Square</square> or <foosales>FooSales</foosales>? <link>See how WCPOS compares</link>",
-      "priceSummary": "{yearly}/year or {lifetime} lifetime ({currency}). No per-register fees."
+      "cta": "See Pro plans",
+      "compareLine": "Weighing up <square>Square</square> or <foosales>FooSales</foosales>? <link>See how WCPOS compares</link>"
     },
     "ecosystem": {
       "heading": "One ecosystem. Multiple ways to sell.",

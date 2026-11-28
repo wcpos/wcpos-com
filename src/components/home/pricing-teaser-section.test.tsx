@@ -58,7 +58,7 @@ vi.mock('@/lib/pro-offer-catalog', () => ({
     source: 'medusa',
   })),
   applyProOfferCatalogCachePolicy: vi.fn(),
-  formatHomeProPriceSummary: vi.fn(() => '$129/year or $399 lifetime. No per-register fees.'),
+  getHomeYearlyPrice: vi.fn(() => ({ price: '$129', currency: 'USD' })),
 }))
 
 const mockTrackClientEvent = vi.mocked(trackClientEvent)
@@ -76,19 +76,22 @@ describe('PricingTeaserSection', () => {
     vi.clearAllMocks()
   })
 
-  it('renders Free and Pro columns', async () => {
+  it('renders the Free and Pro Yearly plan cards', async () => {
     renderWithIntl(await PricingTeaserSection())
 
     expect(screen.getByRole('heading', { name: 'Free' })).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: 'Pro' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Pro Yearly' })).toBeInTheDocument()
   })
 
-  it('shows pricing from the Pro offer catalog', async () => {
-    renderWithIntl(await PricingTeaserSection())
+  it('prices Pro Yearly from the offer catalog and never names Lifetime', async () => {
+    const { container } = renderWithIntl(await PricingTeaserSection())
 
-    expect(
-      screen.getByText('$129/year or $399 lifetime. No per-register fees.')
-    ).toBeInTheDocument()
+    expect(screen.getByText('$129')).toBeInTheDocument()
+    expect(screen.getByText('USD, one payment')).toBeInTheDocument()
+    expect(screen.getByText('$0')).toBeInTheDocument()
+    expect(container).not.toHaveTextContent(/lifetime/i)
+    expect(container).toHaveTextContent('Pro keeps working')
+    expect(container).not.toHaveTextContent(/stops working/i)
   })
 
   it('renders a non-price fallback while pricing loads', () => {
@@ -99,35 +102,62 @@ describe('PricingTeaserSection', () => {
         'See full pricing for current Pro options. No per-register fees.'
       )
     ).toBeInTheDocument()
+    expect(screen.queryByText('$129')).not.toBeInTheDocument()
   })
 
-  it('lists the free register, split payment and report features in the fallback', () => {
+  it('lists only what tells the plans apart, in the feature labels', () => {
     renderWithIntl(<PricingTeaserSectionFallback />)
 
-    expect(screen.getByText('Open & close the register')).toBeInTheDocument()
-    expect(screen.getByText('Split payments')).toBeInTheDocument()
-    expect(screen.getByText("Today's sales report")).toBeInTheDocument()
-    expect(screen.queryByText('End-of-day reports')).not.toBeInTheDocument()
+    const list = (name: string) =>
+      within(screen.getByRole('heading', { name }).parentElement!)
+        .getAllByRole('listitem')
+        .map((item) => item.textContent)
+    expect(list('Free')).toEqual([
+      'Open and close your register',
+      'WooCommerce sync of products, stock and prices',
+      'Split payments',
+      'Sell when the internet drops',
+      'Apply a coupon',
+      'Today’s sales on this register',
+    ])
+    expect(list('Pro Yearly')).toEqual([
+      'More registers and stores',
+      'Card readers',
+      'Order history and refunds',
+      'Add and edit customers',
+      'Edit stock and prices at the register',
+      'Reports for earlier days, every register and every store',
+      'Priority support',
+    ])
   })
 
-  it('links the CTA to the Pro page', async () => {
-    renderWithIntl(await PricingTeaserSection())
+  it('ends each card on an outline CTA: Download Free and See Pro plans', () => {
+    renderWithIntl(<PricingTeaserSectionFallback />)
 
-    const cta = screen.getByRole('link', {
-      name: 'See Full Pricing & Features',
-    })
-    expect(cta).toHaveAttribute('href', '/pro')
+    const download = screen.getByRole('link', { name: 'Download Free' })
+    const pro = screen.getByRole('link', { name: 'See Pro plans' })
+    expect(download).toHaveAttribute('href', '/downloads')
+    expect(pro).toHaveAttribute('href', '/pro')
+    for (const cta of [download, pro]) {
+      expect(cta).toHaveClass('border-input', 'mt-auto')
+    }
   })
 
-  it('links the comparison line to /compare under the Pro CTA', () => {
+  it('marks the featured card by radius and shadow, not a brighter edge', () => {
+    renderWithIntl(<PricingTeaserSectionFallback />)
+
+    const card = (name: string) => screen.getByRole('heading', { name }).parentElement!
+    expect(card('Pro Yearly')).toHaveClass('border-border', 'rounded-lg', 'shadow-lg')
+    expect(card('Free')).toHaveClass('border-border', 'rounded-md')
+    expect(card('Pro Yearly').className).not.toMatch(/border-foreground/)
+  })
+
+  it('links the comparison line to /compare', () => {
     renderWithIntl(<PricingTeaserSectionFallback />)
 
     expect(
       screen.getByRole('link', { name: 'See how WCPOS compares' })
     ).toHaveAttribute('href', '/compare')
-    expect(
-      screen.getByRole('link', { name: 'See Full Pricing & Features' })
-    ).toHaveAttribute('href', '/pro')
   })
 
   it('links Square and FooSales in the comparison line to their pages', () => {
@@ -152,66 +182,13 @@ describe('PricingTeaserSection', () => {
     expect(line.match(/<link>[^<]+<\/link>/g)).toHaveLength(1)
   })
 
-  it('tracks the CTA click', async () => {
+  it('tracks the Pro CTA click', async () => {
     renderWithIntl(await PricingTeaserSection())
 
-    fireEvent.click(
-      screen.getByRole('link', { name: 'See Full Pricing & Features' })
-    )
+    fireEvent.click(screen.getByRole('link', { name: 'See Pro plans' }))
 
     expect(mockTrackClientEvent).toHaveBeenCalledWith('click_pro_cta', {
       location: 'home_pricing_teaser',
     })
-  })
-
-  it('lists key Free and Pro features', async () => {
-    renderWithIntl(await PricingTeaserSection())
-
-    expect(screen.getByText('Offline mode')).toBeInTheDocument()
-    expect(screen.getByText('Unlimited products')).toBeInTheDocument()
-    expect(
-      screen.getByText('Connected card readers')
-    ).toBeInTheDocument()
-    expect(screen.getByText('Reports across days, registers & stores')).toBeInTheDocument()
-  })
-
-  it('says Free checkout takes cash or card on your own terminal', async () => {
-    renderWithIntl(await PricingTeaserSection())
-
-    const freeColumn = screen.getByRole('heading', { name: 'Free' }).parentElement!
-    const freeList = within(freeColumn).getByRole('list')
-    expect(
-      within(freeList).getByText('Cash or card on your own terminal')
-    ).toBeInTheDocument()
-    expect(within(freeList).queryByText('Basic checkout')).not.toBeInTheDocument()
-  })
-
-  it('lists the receipt template editor instead of multi-currency in Free', async () => {
-    renderWithIntl(await PricingTeaserSection())
-
-    const freeColumn = screen.getByRole('heading', { name: 'Free' }).parentElement!
-    const freeList = within(freeColumn).getByRole('list')
-    expect(
-      within(freeList).getByText('Receipt template editor & gallery')
-    ).toBeInTheDocument()
-    expect(within(freeList).queryByText('Multi-currency')).not.toBeInTheDocument()
-  })
-
-  it('lists refunds, coupons and the customer-facing display in Pro', async () => {
-    renderWithIntl(await PricingTeaserSection())
-
-    const proColumn = screen.getByRole('heading', { name: 'Pro' }).parentElement!
-    const proList = within(proColumn).getByRole('list')
-    expect(within(proList).getByText('Refunds, full or partial')).toBeInTheDocument()
-    expect(within(proList).getByText('Coupon management')).toBeInTheDocument()
-    expect(within(proList).getByText('Customer-facing display')).toBeInTheDocument()
-  })
-
-  it('leads the Pro list with more registers and multiple stores', async () => {
-    renderWithIntl(await PricingTeaserSection())
-
-    const proColumn = screen.getByRole('heading', { name: 'Pro' }).parentElement!
-    const proItems = within(proColumn).getAllByRole('listitem')
-    expect(proItems[0]).toHaveTextContent('More registers & multiple stores')
   })
 })

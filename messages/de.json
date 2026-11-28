@@ -77,6 +77,8 @@
     "cta": {
       "title": "Bereit, mit WooCommerce im Laden zu verkaufen?",
       "subtitle": "Die Demo öffnet sich in deinem Browser, ohne dass du etwas installieren musst. Das Plugin ist kostenlos.",
+      "homeTitle": "Probiere die Kasse aus, bevor du etwas installierst.",
+      "homeSubtitle": "Die Live-Demo öffnet sich in deinem Browser; melde dich mit demo / demo an. Wenn sie leistet, was du brauchst, lade das kostenlose Plugin herunter.",
       "liveDemo": "Live-Demo testen",
       "compare": "WooCommerce-Kassensysteme im Vergleich",
       "download": "Kostenlos herunterladen"
@@ -218,38 +220,20 @@
         "title": "Kostenlos",
         "description": "Dauerhaft kostenlos. Eine Kasse, keine Transaktionsgebühren, keine Obergrenzen für Produkte oder Bestellungen.",
         "features": {
-          "f1": "WooCommerce-Synchronisierung",
-          "f2": "Produktsuche & Raster",
-          "f3": "Bargeld oder Karte über dein eigenes Terminal",
-          "f4": "Offline-Modus",
-          "f5": "Bondruck",
-          "f6": "Belegvorlagen-Editor & Galerie",
-          "f7": "Unbegrenzte Produkte",
-          "f8": "Kasse öffnen & schließen",
-          "f9": "Aufgeteilte Zahlungen",
-          "f10": "Heutiger Verkaufsbericht"
+          "f1": "WooCommerce-Synchronisierung von Produkten, Bestand und Preisen"
         }
       },
       "pro": {
-        "title": "Pro",
+        "title": "Pro Jährlich",
+        "priceSuffix": "{currency}, einmalige Zahlung",
+        "note": "Eine Zahlung für ein Jahr Updates und priorisierten Support. Sie verlängert sich nie von selbst. Wenn das Jahr endet, wird dir nichts berechnet und Pro funktioniert weiter; nur Updates und priorisierter Support enden. Verlängere nur, wenn es ein Update gibt, das du willst.",
         "intro": "Alles aus Kostenlos, plus:",
         "features": {
-          "p8": "Weitere Kassen & mehrere Filialen",
-          "p1": "Verbundene Kartenlesegeräte",
-          "p2": "Lager- und Preisbearbeitung im POS",
-          "p3": "Bestellverlauf & Verwaltung",
-          "p4": "Kundenverwaltung",
-          "p5": "Berichte für verschiedene Tage, Kassen & Geschäfte",
-          "p6": "Deine anderen WooCommerce-Gateways",
-          "p7": "Priorisierter Support",
-          "p9": "Erstattungen, ganz oder teilweise",
-          "p10": "Gutscheinverwaltung",
-          "p11": "Kundendisplay"
+          "p7": "Priorisierter Support"
         }
       },
-      "cta": "Alle Preise & Funktionen ansehen",
-      "compareLine": "Ziehst du <square>Square</square> oder <foosales>FooSales</foosales> in Betracht? <link>Sieh dir an, wie WCPOS im Vergleich abschneidet</link>",
-      "priceSummary": "{yearly}/Jahr oder {lifetime} lebenslang ({currency}). Keine Gebühren pro Kasse."
+      "cta": "Pro-Pläne ansehen",
+      "compareLine": "Ziehst du <square>Square</square> oder <foosales>FooSales</foosales> in Betracht? <link>Sieh dir an, wie WCPOS im Vergleich abschneidet</link>"
     },
     "ecosystem": {
       "heading": "Ein Ökosystem. Mehrere Wege zu verkaufen.",

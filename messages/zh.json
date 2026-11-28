@@ -77,6 +77,8 @@
     "cta": {
       "title": "准备好用 WooCommerce 做店内销售了吗？",
       "subtitle": "演示直接在浏览器中打开，无需安装任何东西。插件免费。",
+      "homeTitle": "安装之前，先试试收银台。",
+      "homeSubtitle": "在线演示直接在浏览器中打开，用 demo / demo 登录。确认它能满足需要后，再下载免费插件。",
       "liveDemo": "试用在线演示",
       "compare": "对比 WooCommerce 销售点系统",
       "download": "免费下载"
@@ -218,38 +220,20 @@
         "title": "免费版",
         "description": "永久免费。一个收银台，无交易费，商品和订单数量不设上限。",
         "features": {
-          "f1": "WooCommerce 同步",
-          "f2": "商品搜索和网格",
-          "f3": "现金或使用自己的支付终端收取卡款",
-          "f4": "离线模式",
-          "f5": "收据打印",
-          "f6": "收据模板编辑器和模板库",
-          "f7": "无限商品",
-          "f8": "收银台开台和关台",
-          "f9": "拆分付款",
-          "f10": "今日销售报表"
+          "f1": "WooCommerce 同步商品、库存和价格"
         }
       },
       "pro": {
-        "title": "Pro",
+        "title": "Pro 年付",
+        "priceSuffix": "{currency}，一次性付款",
+        "note": "一次付款，获得一年的更新和优先支持。它绝不会自动续费。一年结束时不会扣费，Pro 照常可用；只是更新和优先支持结束。只有在出现你想要的更新时才需要续费。",
         "intro": "包含免费版全部功能，另外还有：",
         "features": {
-          "p8": "更多收银台与多店铺",
-          "p1": "连接读卡器",
-          "p2": "在 POS 中编辑库存和价格",
-          "p3": "订单历史与管理",
-          "p4": "客户管理",
-          "p5": "跨日期、收银台和店铺的报表",
-          "p6": "您的其他 WooCommerce 支付网关",
-          "p7": "优先支持",
-          "p9": "全额或部分退款",
-          "p10": "优惠券管理",
-          "p11": "顾客显示屏"
+          "p7": "优先支持"
         }
       },
-      "cta": "查看完整价格和功能",
-      "compareLine": "正在考虑 <square>Square</square> 或 <foosales>FooSales</foosales>？<link>看看 WCPOS 与它们的对比</link>",
-      "priceSummary": "{yearly}/年或一次性 {lifetime} 终身（{currency}）。没有按收银机收费。"
+      "cta": "查看 Pro 方案",
+      "compareLine": "正在考虑 <square>Square</square> 或 <foosales>FooSales</foosales>？<link>看看 WCPOS 与它们的对比</link>"
     },
     "ecosystem": {
       "heading": "一个生态系统。多种销售方式。",

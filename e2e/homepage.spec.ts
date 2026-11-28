@@ -35,10 +35,12 @@ test.describe('Homepage', () => {
     page,
   }) => {
     const downloadLinks = page.getByRole('link', { name: 'Download Free' })
-    await expect(downloadLinks).toHaveCount(2)
-    // Hero and closing band both send the visitor to the on-site downloads page
-    await expect(downloadLinks.first()).toHaveAttribute('href', '/downloads')
-    await expect(downloadLinks.nth(1)).toHaveAttribute('href', '/downloads')
+    // Hero, Free plan card and closing band all send the visitor to the
+    // on-site downloads page
+    await expect(downloadLinks).toHaveCount(3)
+    for (const link of await downloadLinks.all()) {
+      await expect(link).toHaveAttribute('href', '/downloads')
+    }
   })
 
   test('renders the marketing sections', async ({ page }) => {
@@ -57,7 +59,7 @@ test.describe('Homepage', () => {
     ).toBeVisible()
     await expect(
       page.getByRole('heading', {
-        name: 'Ready to sell in-store with WooCommerce?',
+        name: 'Try the register before you install anything.',
       })
     ).toBeVisible()
   })

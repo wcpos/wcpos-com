@@ -77,6 +77,8 @@
     "cta": {
       "title": "Pronto a vendere in negozio con WooCommerce?",
       "subtitle": "La demo si apre nel tuo browser senza installare nulla. Il plugin è gratuito.",
+      "homeTitle": "Prova la cassa prima di installare qualsiasi cosa.",
+      "homeSubtitle": "La demo dal vivo si apre nel tuo browser; accedi con demo / demo. Quando fa al caso tuo, scarica il plugin gratuito.",
       "liveDemo": "Prova la demo live",
       "compare": "Confronta i sistemi POS per WooCommerce",
       "download": "Scarica gratis"
@@ -218,38 +220,20 @@
         "title": "Gratis",
         "description": "Gratis per sempre. Una cassa, nessuna commissione sulle transazioni, nessun limite su prodotti o ordini.",
         "features": {
-          "f1": "Sincronizzazione WooCommerce",
-          "f2": "Ricerca prodotti e griglia",
-          "f3": "Contanti o carta sul tuo terminale",
-          "f4": "Modalità offline",
-          "f5": "Stampa ricevute",
-          "f6": "Editor e galleria di modelli di ricevuta",
-          "f7": "Prodotti illimitati",
-          "f8": "Apertura e chiusura della cassa",
-          "f9": "Pagamenti suddivisi",
-          "f10": "Report delle vendite di oggi"
+          "f1": "Sincronizzazione WooCommerce di prodotti, stock e prezzi"
         }
       },
       "pro": {
-        "title": "Pro",
+        "title": "Pro Annuale",
+        "priceSuffix": "{currency}, pagamento unico",
+        "note": "Un solo pagamento per un anno di aggiornamenti e supporto prioritario. Non si rinnova mai da solo. Alla fine dell’anno non ti viene addebitato nulla e Pro continua a funzionare; terminano solo gli aggiornamenti e il supporto prioritario. Rinnova solo quando c’è un aggiornamento che ti interessa.",
         "intro": "Tutto ciò che è incluso in Gratis, più:",
         "features": {
-          "p8": "Più casse e più negozi",
-          "p1": "Lettori di carte collegati",
-          "p2": "Modifica stock e prezzi nel POS",
-          "p3": "Cronologia e gestione ordini",
-          "p4": "Gestione clienti",
-          "p5": "Report su più giorni, casse e negozi",
-          "p6": "Gli altri tuoi gateway WooCommerce",
-          "p7": "Supporto prioritario",
-          "p9": "Rimborsi totali o parziali",
-          "p10": "Gestione coupon",
-          "p11": "Display rivolto al cliente"
+          "p7": "Supporto prioritario"
         }
       },
-      "cta": "Vedi prezzi e funzionalità complete",
-      "compareLine": "Stai valutando <square>Square</square> o <foosales>FooSales</foosales>? <link>Scopri come si confronta WCPOS</link>",
-      "priceSummary": "{yearly}/anno o {lifetime} a vita ({currency}). Nessun costo per registratore."
+      "cta": "Vedi i piani Pro",
+      "compareLine": "Stai valutando <square>Square</square> o <foosales>FooSales</foosales>? <link>Scopri come si confronta WCPOS</link>"
     },
     "ecosystem": {
       "heading": "Un ecosistema. Più modi per vendere.",

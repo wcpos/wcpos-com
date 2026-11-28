@@ -319,27 +319,18 @@ function getOffer(offers: ProOffer[], planId: PlanId): ProOffer | null {
   return offers.find((offer) => offer.planId === planId) ?? null
 }
 
-type ProPriceSummaryTranslateFn = (values: {
-  yearly: string
-  lifetime: string
-  currency: string
-}) => string
-
-export function formatHomeProPriceSummary(
-  offers: ProOffer[],
-  t: ProPriceSummaryTranslateFn
-): string | null {
+// The home plan card names the Yearly price only: Lifetime is on a sunset
+// path and is never advertised. The amount carries only the symbol; the card
+// names the currency code beside it.
+export function getHomeYearlyPrice(
+  offers: ProOffer[]
+): { price: string; currency: string } | null {
   const yearly = getOffer(offers, 'yearly')
-  const lifetime = getOffer(offers, 'lifetime')
-  if (!yearly || !lifetime) return null
-
-  const currency = yearly.price.currencyCode.toUpperCase()
-  // The home message appends ({currency}), so the amounts carry only the symbol.
-  return t({
-    yearly: yearly.price.compactNarrow,
-    lifetime: lifetime.price.compactNarrow,
-    currency,
-  })
+  if (!yearly) return null
+  return {
+    price: yearly.price.compactNarrow,
+    currency: yearly.price.currencyCode.toUpperCase(),
+  }
 }
 
 // The founder letter's P.S. names the Yearly price only: Lifetime is on a

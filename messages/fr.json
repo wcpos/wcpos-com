@@ -77,6 +77,8 @@
     "cta": {
       "title": "Prêt à vendre en magasin avec WooCommerce ?",
       "subtitle": "La démo s’ouvre dans votre navigateur, sans rien à installer. Le plugin est gratuit.",
+      "homeTitle": "Essayez la caisse avant d’installer quoi que ce soit.",
+      "homeSubtitle": "La démo en direct s’ouvre dans votre navigateur ; connectez-vous avec demo / demo. Quand elle fait ce qu’il vous faut, téléchargez le plugin gratuit.",
       "liveDemo": "Essayer la démo en direct",
       "compare": "Comparez les systèmes de caisse WooCommerce",
       "download": "Télécharger gratuitement"
@@ -218,38 +220,20 @@
         "title": "Gratuit",
         "description": "Gratuit pour toujours. Une caisse, sans frais de transaction, sans plafond de produits ni de commandes.",
         "features": {
-          "f1": "Synchronisation WooCommerce",
-          "f2": "Recherche et grille de produits",
-          "f3": "Espèces ou carte sur votre terminal",
-          "f4": "Mode hors ligne",
-          "f5": "Impression de reçus",
-          "f6": "Éditeur et galerie de modèles de reçu",
-          "f7": "Produits illimités",
-          "f8": "Ouverture et clôture de caisse",
-          "f9": "Paiements fractionnés",
-          "f10": "Rapport des ventes du jour"
+          "f1": "Synchronisation WooCommerce des produits, du stock et des prix"
         }
       },
       "pro": {
-        "title": "Pro",
+        "title": "Pro Annuel",
+        "priceSuffix": "{currency}, paiement unique",
+        "note": "Un seul paiement pour un an de mises à jour et d’assistance prioritaire. Il ne se renouvelle jamais tout seul. À la fin de l’année, vous n’êtes pas débité et Pro continue de fonctionner ; seules les mises à jour et l’assistance prioritaire s’arrêtent. Renouvelez uniquement quand une mise à jour vous intéresse.",
         "intro": "Tout ce qui est inclus dans Gratuit, plus :",
         "features": {
-          "p8": "Davantage de caisses et plusieurs boutiques",
-          "p1": "Lecteurs de cartes connectés",
-          "p2": "Modification du stock et des prix dans la caisse",
-          "p3": "Historique et gestion des commandes",
-          "p4": "Gestion des clients",
-          "p5": "Rapports sur plusieurs jours, caisses et boutiques",
-          "p6": "Vos autres passerelles WooCommerce",
-          "p7": "Assistance prioritaire",
-          "p9": "Remboursements totaux ou partiels",
-          "p10": "Gestion des codes promo",
-          "p11": "Écran côté client"
+          "p7": "Assistance prioritaire"
         }
       },
-      "cta": "Voir tous les tarifs et fonctionnalités",
-      "compareLine": "Vous envisagez <square>Square</square> ou <foosales>FooSales</foosales> ? <link>Découvrez comment WCPOS se compare</link>",
-      "priceSummary": "{yearly}/an ou {lifetime} à vie ({currency}). Aucun frais par caisse."
+      "cta": "Voir les offres Pro",
+      "compareLine": "Vous envisagez <square>Square</square> ou <foosales>FooSales</foosales> ? <link>Découvrez comment WCPOS se compare</link>"
     },
     "ecosystem": {
       "heading": "Un seul écosystème. Plusieurs façons de vendre.",

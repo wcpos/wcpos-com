@@ -77,6 +77,8 @@
     "cta": {
       "title": "Klaar om in de winkel te verkopen met WooCommerce?",
       "subtitle": "De demo opent in je browser, zonder iets te installeren. De plugin is gratis.",
+      "homeTitle": "Probeer de kassa voordat je iets installeert.",
+      "homeSubtitle": "De live demo opent in je browser; log in met demo / demo. Doet hij wat je nodig hebt, download dan de gratis plugin.",
       "liveDemo": "Live demo proberen",
       "compare": "Vergelijk kassasystemen voor WooCommerce",
       "download": "Gratis downloaden"
@@ -218,38 +220,20 @@
         "title": "Gratis",
         "description": "Voor altijd gratis. Eén kassa, geen transactiekosten, geen limieten op producten of bestellingen.",
         "features": {
-          "f1": "WooCommerce-synchronisatie",
-          "f2": "Productzoekfunctie en raster",
-          "f3": "Contant of pin via je eigen betaalterminal",
-          "f4": "Offline modus",
-          "f5": "Bonnen printen",
-          "f6": "Editor en galerij voor bonsjablonen",
-          "f7": "Onbeperkte producten",
-          "f8": "Kassa openen en sluiten",
-          "f9": "Gesplitste betalingen",
-          "f10": "Verkooprapport van vandaag"
+          "f1": "WooCommerce-synchronisatie van producten, voorraad en prijzen"
         }
       },
       "pro": {
-        "title": "Pro",
+        "title": "Pro Jaarlijks",
+        "priceSuffix": "{currency}, eenmalige betaling",
+        "note": "Eén betaling voor een jaar updates en prioriteitssupport. Het verlengt nooit vanzelf. Als het jaar voorbij is, wordt er niets afgeschreven en blijft Pro werken; alleen updates en prioriteitssupport stoppen. Verleng alleen als er een update is die je wilt.",
         "intro": "Alles in Gratis, plus:",
         "features": {
-          "p8": "Meer kassa's en meerdere winkels",
-          "p1": "Gekoppelde kaartlezers",
-          "p2": "Voorraad en prijzen bewerken in het kassasysteem",
-          "p3": "Bestelgeschiedenis en beheer",
-          "p4": "Klantbeheer",
-          "p5": "Rapporten over dagen, kassa's en winkels",
-          "p6": "Je andere WooCommerce-gateways",
-          "p7": "Prioriteitssupport",
-          "p9": "Volledige of gedeeltelijke terugbetalingen",
-          "p10": "Kortingsbonbeheer",
-          "p11": "Klantendisplay"
+          "p7": "Prioriteitssupport"
         }
       },
-      "cta": "Bekijk alle prijzen en functies",
-      "compareLine": "Overweeg je <square>Square</square> of <foosales>FooSales</foosales>? <link>Bekijk hoe WCPOS zich verhoudt</link>",
-      "priceSummary": "{yearly}/jaar of {lifetime} levenslang ({currency}). Geen kosten per kassa."
+      "cta": "Bekijk de Pro-plannen",
+      "compareLine": "Overweeg je <square>Square</square> of <foosales>FooSales</foosales>? <link>Bekijk hoe WCPOS zich verhoudt</link>"
     },
     "ecosystem": {
       "heading": "Eén ecosysteem. Meerdere manieren om te verkopen.",

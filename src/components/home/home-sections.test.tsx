@@ -252,6 +252,15 @@ describe('CtaSection', () => {
     ).toHaveAttribute('href', '/compare')
   })
 
+  it('gives the homepage its own closing line', () => {
+    renderWithIntl(<CtaSection home />)
+
+    expect(
+      screen.getByRole('heading', { name: 'Try the register before you install anything.' })
+    ).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Download Free' })).toHaveClass('bg-white')
+  })
+
   it('drops the /compare link when showCompareLink is false', () => {
     const { container } = renderWithIntl(<CtaSection showCompareLink={false} />)
 

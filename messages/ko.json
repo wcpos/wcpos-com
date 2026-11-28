@@ -77,6 +77,8 @@
     "cta": {
       "title": "WooCommerce로 매장 판매를 시작할 준비가 되셨나요?",
       "subtitle": "데모는 설치할 필요 없이 브라우저에서 열립니다. 플러그인은 무료입니다.",
+      "homeTitle": "설치하기 전에 계산대를 먼저 써 보세요.",
+      "homeSubtitle": "라이브 데모는 브라우저에서 열립니다. demo / demo로 로그인하세요. 필요한 일을 해낸다면 무료 플러그인을 다운로드하세요.",
       "liveDemo": "라이브 데모 체험",
       "compare": "WooCommerce용 포스(POS) 시스템 비교",
       "download": "무료 다운로드"
@@ -218,38 +220,20 @@
         "title": "무료",
         "description": "영원히 무료입니다. 계산대 1대, 거래 수수료 없음, 상품과 주문 수 상한 없음.",
         "features": {
-          "f1": "WooCommerce 동기화",
-          "f2": "제품 검색 및 그리드",
-          "f3": "현금이나 보유한 결제 단말기를 통한 카드 결제",
-          "f4": "오프라인 모드",
-          "f5": "영수증 출력",
-          "f6": "영수증 템플릿 편집기 및 갤러리",
-          "f7": "무제한 제품",
-          "f8": "계산대 개시 및 마감",
-          "f9": "분할 결제",
-          "f10": "오늘의 매출 보고서"
+          "f1": "상품, 재고, 가격의 WooCommerce 동기화"
         }
       },
       "pro": {
-        "title": "Pro",
+        "title": "Pro 연간",
+        "priceSuffix": "{currency}, 1회 결제",
+        "note": "한 번의 결제로 1년간 업데이트와 우선 지원을 받습니다. 자동으로 갱신되지 않습니다. 1년이 지나도 요금이 청구되지 않고 Pro는 계속 작동하며, 업데이트와 우선 지원만 종료됩니다. 원하는 업데이트가 있을 때만 갱신하세요.",
         "intro": "무료 기능 모두에 더해:",
         "features": {
-          "p8": "추가 계산대 및 다중 매장",
-          "p1": "카드 리더기 연결",
-          "p2": "POS에서 재고 및 가격 편집",
-          "p3": "주문 내역 및 관리",
-          "p4": "고객 관리",
-          "p5": "여러 날짜, 계산대 및 매장의 보고서",
-          "p6": "사용 중인 다른 WooCommerce 결제 게이트웨이",
-          "p7": "우선 지원",
-          "p9": "전체 또는 부분 환불",
-          "p10": "쿠폰 관리",
-          "p11": "고객용 디스플레이"
+          "p7": "우선 지원"
         }
       },
-      "cta": "전체 가격 및 기능 보기",
-      "compareLine": "<square>Square</square>나 <foosales>FooSales</foosales>를 고려 중이신가요? <link>WCPOS와 비교해 보기</link>",
-      "priceSummary": "{yearly}/년 또는 {lifetime} 평생 ({currency}). 계산대별 추가 요금 없음."
+      "cta": "Pro 플랜 보기",
+      "compareLine": "<square>Square</square>나 <foosales>FooSales</foosales>를 고려 중이신가요? <link>WCPOS와 비교해 보기</link>"
     },
     "ecosystem": {
       "heading": "하나의 생태계. 여러 판매 방식.",
