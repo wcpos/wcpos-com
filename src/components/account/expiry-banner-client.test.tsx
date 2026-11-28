@@ -39,7 +39,11 @@ describe('ExpiryBannerClient', () => {
     render(<ExpiryBannerClient expiry={EXPIRY} renewHref={RENEW} />)
 
     expect(screen.getByText(/2099/)).toBeTruthy()
-    const renew = screen.getByRole('link', { name: 'Renew' })
+    // The never-auto-renews line always carries its second half.
+    expect(
+      screen.getByText(/It never renews by itself\. If no update has shipped, there is nothing to renew\./)
+    ).toBeTruthy()
+    const renew = screen.getByRole('link', { name: 'Renew for a year' })
     expect(renew.getAttribute('href')).toBe(RENEW)
   })
 
@@ -54,7 +58,7 @@ describe('ExpiryBannerClient', () => {
     pathnameRef.value = '/account/licenses'
     render(<ExpiryBannerClient expiry={EXPIRY} renewHref={RENEW} />)
 
-    expect(screen.queryByRole('link', { name: 'Renew' })).toBeNull()
+    expect(screen.queryByRole('link', { name: 'Renew for a year' })).toBeNull()
   })
 
   it('dismisses for the visit and records the dismissal', () => {
@@ -62,7 +66,7 @@ describe('ExpiryBannerClient', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'Dismiss' }))
 
-    expect(screen.queryByRole('link', { name: 'Renew' })).toBeNull()
+    expect(screen.queryByRole('link', { name: 'Renew for a year' })).toBeNull()
     expect(sessionStorage.getItem(DISMISS_KEY)).toBe('1')
   })
 
@@ -70,7 +74,7 @@ describe('ExpiryBannerClient', () => {
     sessionStorage.setItem(DISMISS_KEY, '1')
     render(<ExpiryBannerClient expiry={EXPIRY} renewHref={RENEW} />)
 
-    expect(screen.queryByRole('link', { name: 'Renew' })).toBeNull()
+    expect(screen.queryByRole('link', { name: 'Renew for a year' })).toBeNull()
   })
 
   it('re-shows when the dismissal marker is for a different (older) expiry', () => {
@@ -80,6 +84,6 @@ describe('ExpiryBannerClient', () => {
     )
     render(<ExpiryBannerClient expiry={EXPIRY} renewHref={RENEW} />)
 
-    expect(screen.getByRole('link', { name: 'Renew' })).toBeTruthy()
+    expect(screen.getByRole('link', { name: 'Renew for a year' })).toBeTruthy()
   })
 })

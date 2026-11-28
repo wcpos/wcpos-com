@@ -6,6 +6,7 @@ import { useLocale, useTranslations } from 'next-intl'
 import { Link, usePathname } from '@/i18n/navigation'
 import { Alert } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
+import { TextLink } from '@/components/ui/text-link'
 import { formatDateForLocale } from '@/lib/date-format'
 
 /**
@@ -65,7 +66,7 @@ export function ExpiryBannerClient({
         <div className="flex items-center gap-1">
           <Button asChild size="sm" variant="brand">
             <Link href={renewHref} prefetch={false}>
-              {t('renew')}
+              {t('renewYear')}
             </Link>
           </Button>
           <button
@@ -80,17 +81,16 @@ export function ExpiryBannerClient({
       }
     >
       <p>
-        {t('expiresSoonRenew', {
+        {t.rich('expiryBanner', {
           date: formatDateForLocale(expiry, locale),
+          b: (chunks) => <b className="font-semibold">{chunks}</b>,
         })}
       </p>
-      <Link
-        href="/roadmap"
-        prefetch={false}
-        className="inline-block text-sm font-medium underline underline-offset-2 hover:no-underline"
-      >
-        {t('roadmapTeaser')} <span aria-hidden="true">→</span>
-      </Link>
+      <TextLink asChild className="inline-block">
+        <Link href="/roadmap" prefetch={false}>
+          {t('roadmapTeaser')} <span aria-hidden="true">→</span>
+        </Link>
+      </TextLink>
     </Alert>
   )
 }

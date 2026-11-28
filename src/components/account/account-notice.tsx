@@ -1,17 +1,13 @@
 import { Info, TriangleAlert } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { toneSurface } from '@/components/ui/status-tone'
 
 type AccountNoticeVariant = 'warning' | 'neutral'
 
+// Drawn as the Alert in code (ui/alert.tsx): the tone surface, no edge.
 const VARIANT_CLASSES: Record<AccountNoticeVariant, string> = {
-  warning:
-    'border-amber-300/70 bg-amber-50 text-amber-900 dark:border-amber-400/20 dark:bg-amber-400/10 dark:text-amber-200',
-  neutral: 'border-border bg-muted/60 text-foreground',
-}
-
-const VARIANT_ICON_CLASSES: Record<AccountNoticeVariant, string> = {
-  warning: 'text-amber-600 dark:text-amber-400',
-  neutral: 'text-muted-foreground',
+  warning: toneSurface.caution,
+  neutral: toneSurface.neutral,
 }
 
 interface AccountNoticeProps {
@@ -20,6 +16,8 @@ interface AccountNoticeProps {
   children: React.ReactNode
   /** Optional action slot (button/link), kept on the same row when it fits. */
   action?: React.ReactNode
+  /** Replaces the variant's default leading icon. */
+  icon?: React.ReactNode
   className?: string
 }
 
@@ -33,25 +31,22 @@ export function AccountNotice({
   variant = 'warning',
   children,
   action,
+  icon,
   className,
 }: AccountNoticeProps) {
   const Icon = variant === 'warning' ? TriangleAlert : Info
   return (
     <div
       className={cn(
-        'flex flex-wrap items-center justify-between gap-3 rounded-md border p-3 text-sm sm:p-4',
+        'flex flex-wrap items-center justify-between gap-3 rounded-md p-3 text-sm',
         VARIANT_CLASSES[variant],
         className
       )}
     >
       <div className="flex min-w-0 flex-1 items-start gap-2.5">
-        <Icon
-          aria-hidden="true"
-          className={cn(
-            'mt-0.5 h-4 w-4 shrink-0',
-            VARIANT_ICON_CLASSES[variant]
-          )}
-        />
+        <span aria-hidden="true" className="mt-0.5 shrink-0 [&_svg]:size-4">
+          {icon ?? <Icon />}
+        </span>
         <p className="min-w-0 leading-relaxed">{children}</p>
       </div>
       {action ? <div className="shrink-0">{action}</div> : null}

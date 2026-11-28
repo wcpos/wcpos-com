@@ -79,7 +79,7 @@ describe('LicensesClient', () => {
 
   it('shows empty state when no licenses exist', () => {
     render(<LicensesClient initialLicenses={[]} />)
-    expect(screen.getByText('No licenses found.')).toBeInTheDocument()
+    expect(screen.getByText("You don't have a WCPOS Pro license yet")).toBeInTheDocument()
   })
 
   it('renders license key masked', () => {
@@ -481,7 +481,7 @@ describe('LicensesClient', () => {
     // The covered version is the Downloads fact value, linking to the
     // downloads page.
     expect(screen.getByText('3.2.0')).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'Downloads' })).toHaveAttribute(
+    expect(screen.getByRole('link', { name: /Go to downloads/ })).toHaveAttribute(
       'href',
       expect.stringContaining('/account/downloads')
     )
@@ -499,7 +499,7 @@ describe('LicensesClient', () => {
     // An expired licence shows the last covered version as "Up to X" and
     // scopes the downloads link to this licence.
     expect(screen.getByText('Up to 2.8.0')).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'Downloads' })).toHaveAttribute(
+    expect(screen.getByRole('link', { name: /Go to downloads/ })).toHaveAttribute(
       'href',
       expect.stringContaining('license=lic-1')
     )
@@ -527,7 +527,7 @@ describe('LicensesClient', () => {
         entitledVersions={{ 'lic-1': '2.8.0' }}
       />
     )
-    expect(screen.getByText('Updates through 2.8.0')).toBeInTheDocument()
+    expect(screen.getByText('Gets updates up to 2.8.0')).toBeInTheDocument()
   })
 
   it('omits the version attribution when the licence covers nothing on its own', () => {
@@ -563,7 +563,7 @@ describe('LicensesClient', () => {
         }}
       />
     )
-    expect(screen.getByText('Discord access')).toBeInTheDocument()
+    expect(screen.getByText('Discord support')).toBeInTheDocument()
     expect(screen.getByText('1 of 5 members')).toBeInTheDocument()
     expect(screen.getByText('@ada')).toBeInTheDocument()
     expect(screen.queryByText('@devon')).not.toBeInTheDocument()
@@ -583,7 +583,7 @@ describe('LicensesClient', () => {
     )
 
     const prompt = screen.getByText(
-      'Priority support for this license is delivered in our Discord. Connect your Discord account to unlock the Pro support channels.'
+      'Priority support happens in our Discord. Connect your Discord account to get the Pro role and the Pro support channels.'
     )
     // The prompt carries the claim CTA as its action — and it is the only
     // claim form on the card (the members-section row is suppressed).
@@ -599,7 +599,7 @@ describe('LicensesClient', () => {
       prompt.compareDocumentPosition(facts) & Node.DOCUMENT_POSITION_FOLLOWING
     ).toBeTruthy()
     // The quieter members-section hint is for cards that already have a member.
-    expect(screen.queryByText(/connects with this license key/)).not.toBeInTheDocument()
+    expect(screen.queryByText(/connects with this key gets the Pro role/)).not.toBeInTheDocument()
   })
 
   it('shows the prompt on ONE card only: never once any licence has a Discord member', () => {
@@ -630,7 +630,7 @@ describe('LicensesClient', () => {
     // The account already has Discord access via lic-1, so lic-2 must not
     // carry the loud prompt — only the quiet members-section Connect row.
     expect(
-      screen.queryByText(/Priority support for this license is delivered/)
+      screen.queryByText(/Priority support happens in our Discord/)
     ).not.toBeInTheDocument()
     expect(container.querySelectorAll('form[action="/api/discord/claim"]')).toHaveLength(2)
   })
@@ -648,14 +648,14 @@ describe('LicensesClient', () => {
       screen.getByRole('button', { name: 'Show details for license ending in WXYZ' })
     )
 
-    const prompts = screen.getAllByText(/Priority support for this license is delivered/)
+    const prompts = screen.getAllByText(/Priority support happens in our Discord/)
     expect(prompts).toHaveLength(1)
     // The prompt's Connect posts lic-1's key; lic-2 keeps the quiet row.
     const promptForm = prompts[0].closest('div.rounded-md')?.querySelector('form')
     expect(promptForm?.querySelector('input[name="licenseKey"]')).toHaveValue(
       'ABCD-EFGH-IJKL-MNOP'
     )
-    expect(screen.getAllByText(/connects with this license key/)).toHaveLength(1)
+    expect(screen.getAllByText(/connects with this key gets the Pro role/)).toHaveLength(1)
   })
 
   it('ignores members on an expired licence and prompts on the active one, opening its card', () => {
@@ -680,7 +680,7 @@ describe('LicensesClient', () => {
     )
 
     // No click: the prompt card opens by default even though it is second.
-    const prompt = screen.getByText(/Priority support for this license is delivered/)
+    const prompt = screen.getByText(/Priority support happens in our Discord/)
     const form = prompt.closest('div.rounded-md')?.querySelector('form')
     expect(form?.querySelector('input[name="licenseKey"]')).toHaveValue(
       'WXYZ-WXYZ-WXYZ-WXYZ'
@@ -706,9 +706,9 @@ describe('LicensesClient', () => {
     )
 
     expect(
-      screen.queryByText(/Priority support for this license is delivered/)
+      screen.queryByText(/Priority support happens in our Discord/)
     ).not.toBeInTheDocument()
-    expect(screen.getByText(/connects with this license key/)).toBeInTheDocument()
+    expect(screen.getByText(/connects with this key gets the Pro role/)).toBeInTheDocument()
     expect(container.querySelectorAll('form[action="/api/discord/claim"]')).toHaveLength(1)
     expect(
       screen.getByRole('button', { name: 'Connect Discord for license ending in MNOP' })
@@ -908,7 +908,7 @@ describe('LicensesClient', () => {
     ).toBeInTheDocument()
     // No top-of-card prompt either: it would carry the claim CTA.
     expect(
-      screen.queryByText(/Priority support for this license is delivered/)
+      screen.queryByText(/Priority support happens in our Discord/)
     ).not.toBeInTheDocument()
   })
 
@@ -1067,7 +1067,7 @@ describe('LicensesClient', () => {
       )
       expect(
         screen.getByText(
-          'This frees one activation slot. If the site is still in use, it will need to activate again.'
+          'This site stops getting updates. You can then use the key on another site.'
         )
       ).toBeInTheDocument()
       expect(mockFetch).not.toHaveBeenCalled()
@@ -1076,7 +1076,7 @@ describe('LicensesClient', () => {
       fireEvent.click(screen.getByRole('button', { name: 'Cancel' }))
       expect(
         screen.queryByText(
-          'This frees one activation slot. If the site is still in use, it will need to activate again.'
+          'This site stops getting updates. You can then use the key on another site.'
         )
       ).not.toBeInTheDocument()
       expect(mockFetch).not.toHaveBeenCalled()
@@ -1095,7 +1095,7 @@ describe('LicensesClient', () => {
       fireEvent.click(
         screen.getByRole('button', { name: 'Deactivate site: shop.example.com' })
       )
-      fireEvent.click(screen.getByRole('button', { name: 'Deactivate' }))
+      fireEvent.click(screen.getByRole('button', { name: 'Deactivate site' }))
 
       expect(mockFetch).toHaveBeenCalledWith(
         '/api/account/licenses/lic-1/machines/m-1',
@@ -1177,7 +1177,7 @@ describe('LicensesClient', () => {
         })
       ).toHaveAttribute('aria-expanded', 'true')
       // Detail content for the second licence is now rendered.
-      expect(screen.getAllByText('Discord access')).toHaveLength(2)
+      expect(screen.getAllByText('Discord support')).toHaveLength(2)
     })
   })
 })

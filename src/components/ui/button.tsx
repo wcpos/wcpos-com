@@ -12,18 +12,20 @@ const buttonVariants = cva(
       variant: {
         default:
           'bg-wcpos-red text-primary-foreground shadow-xs hover:bg-wcpos-red/90',
+        // Filled destructive confirm: white on the brand red (5.21:1), because
+        // white on light --destructive fails contrast (3.76:1).
         destructive:
-          'bg-destructive text-destructive-foreground shadow-xs hover:bg-destructive/90',
+          'bg-wcpos-red text-white shadow-xs hover:brightness-110',
         outline:
           'border border-input bg-background shadow-xs hover:bg-accent hover:text-accent-foreground',
         secondary:
           'bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80',
         ghost: 'hover:bg-accent hover:text-accent-foreground',
-        // Quiet destructive action (disconnect, remove, deactivate): red at
-        // rest, red wash on hover. Confirm dialogs keep solid `destructive`
-        // for the final commit action.
+        // Quiet destructive text action (deactivate site, delete account): the
+        // accessible accent red at rest, red wash on hover. Confirms keep the
+        // filled `destructive` for the final commit action.
         'ghost-destructive':
-          'text-destructive/90 hover:bg-destructive/10 hover:text-destructive',
+          'text-wcpos-red-accent hover:bg-wcpos-red/10',
         link: 'text-primary underline-offset-4 hover:underline',
         // Inline brand link in button clothing — the Button-side complement to
         // the TextLink atom, on the accessible accent red.

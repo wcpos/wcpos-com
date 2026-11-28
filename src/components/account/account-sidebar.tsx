@@ -55,7 +55,7 @@ export function AccountSidebar() {
       <div className="mb-4 hidden text-xs font-semibold uppercase tracking-widest text-muted-foreground md:block">
         {t('title')}
       </div>
-      <ul className="flex w-max items-center gap-1 md:w-auto md:flex-col md:items-stretch md:gap-1.5">
+      <ul className="flex flex-wrap items-center gap-0.5 md:flex-col md:flex-nowrap md:items-stretch md:gap-1.5">
         {navigation.map((item) => {
           const Icon = item.icon
           const isActive = isActiveRoute(pathname, item.href)
@@ -66,7 +66,7 @@ export function AccountSidebar() {
                 ref={isActive ? activeRef : undefined}
                 aria-current={isActive ? 'page' : undefined}
                 className={cn(
-                  'flex items-center whitespace-nowrap rounded-md px-3 py-3 text-sm font-medium transition-colors md:py-2',
+                  'flex items-center whitespace-nowrap rounded-md px-[7px] py-2.5 text-sm font-medium transition-colors md:px-3 md:py-2',
                   isActive
                     ? 'bg-wcpos-red/10 text-wcpos-red-accent dark:bg-wcpos-red/15'
                     : 'text-muted-foreground hover:bg-accent hover:text-foreground'
@@ -74,7 +74,7 @@ export function AccountSidebar() {
               >
                 <Icon
                   className={cn(
-                    'mr-2 h-4 w-4 shrink-0 md:mr-3',
+                    'mr-[5px] size-3.5 shrink-0 md:mr-3 md:size-4',
                     !isActive && 'text-muted-foreground/70'
                   )}
                 />

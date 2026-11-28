@@ -124,7 +124,7 @@ export default async function LicensesPage({
 
   return (
     <div className="space-y-6">
-      <PageHeader title={t('heading')} />
+      <PageHeader title={t('heading')} lede={t('lede')} />
       <Suspense fallback={<LicensesSkeleton />}>
         <LicensesContent locale={locale} />
       </Suspense>
