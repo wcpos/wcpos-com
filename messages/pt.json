@@ -82,20 +82,18 @@
       "download": "Descarregar grátis"
     },
     "trust": {
-      "stats": {
-        "activeInstallations": "Instalações ativas",
-        "inDevelopmentSince": "Em desenvolvimento desde",
-        "languagesSupported": "Idiomas suportados"
-      },
-      "license": "Licença GPL",
-      "githubAria": "— WCPOS no GitHub",
       "quote": "Direto, funcional e simples de usar. 10/10.",
-      "attribution": "Ward, avaliação no wordpress.org",
-      "story": "Ler a nossa história →"
+      "attribution": "Ward, avaliação no wordpress.org"
     },
     "useCases": {
       "title": "O que dizem os lojistas",
       "reviewSuffix": "avaliação no wordpress.org",
+      "stats": {
+        "installs": "<b>{count}</b> instalações ativas",
+        "since": "Em desenvolvimento desde <b>{year}</b>",
+        "license": "Licença <b>GPL</b>, no GitHub",
+        "languages": "<b>{count}</b> idiomas suportados"
+      },
       "cards": {
         "retail": {
           "type": "Loja de retalho",
@@ -168,27 +166,48 @@
       "items": {
         "f1": {
           "title": "Pesquisa rápida de produtos",
-          "description": "Pesquise, filtre ou navegue por categoria. Os resultados vêm da cópia guardada no dispositivo, por isso aparecem de imediato. Leia um código de barras para adicionar um artigo."
+          "description": "Pesquise, filtre com etiquetas ou navegue por categoria. Leia um código de barras para adicionar um artigo."
         },
         "f2": {
-          "title": "Dinheiro, cartão e pagamentos divididos",
-          "description": "Adicione itens, aplique descontos, aceite dinheiro ou pagamentos com cartão no seu próprio terminal de pagamento e divida um pagamento. Pro liga <link>leitores de cartões</link> como Stripe Terminal e SumUp."
+          "description": "Receba em dinheiro, ou registe um pagamento com cartão feito no seu próprio terminal, e divida um pagamento entre os dois."
         },
         "f3": {
           "title": "Adicionar e editar clientes",
-          "description": "Adicione um novo cliente ou corrija os dados dele na caixa. Escolher um cliente existente para uma venda é gratuito."
+          "description": "Adicione um novo cliente ou corrija os dados dele na caixa. Escolher um cliente existente é gratuito."
         },
         "f4": {
-          "title": "Histórico e gestão de encomendas",
+          "title": "Histórico de encomendas e reembolsos",
           "description": "Encontre uma encomenda anterior, reimprima o recibo ou reembolse-a sem abrir o WP Admin."
         },
         "f5": {
-          "title": "Edite stock e preços na hora",
+          "title": "Editar stock e preços na caixa",
           "description": "Corrija um preço errado enquanto atende um cliente. Ajuste o stock sem sair do POS."
         },
         "f6": {
-          "title": "Relatórios de vários dias, caixas e lojas",
+          "title": "Relatórios de dias anteriores, de cada caixa e cada loja",
           "description": "Veja as vendas de dias anteriores e intervalos de datas, para cada caixa e cada loja."
+        },
+        "coupon": {
+          "description": "Aplique um cupão WooCommerce no carrinho."
+        },
+        "today": {
+          "description": "O relatório de hoje desta caixa, com exportação CSV e impressão."
+        },
+        "readers": {
+          "title": "Leitores de cartões",
+          "description": "O checkout controla os leitores Stripe Terminal, SumUp e Mollie Terminal."
+        },
+        "coupons": {
+          "title": "Criar e editar cupões",
+          "description": "Crie um cupão a partir do carrinho, e consulte e edite cupões no ecrã Cupões."
+        },
+        "stores": {
+          "title": "Mais caixas e lojas",
+          "description": "Adicione caixas além da gratuita e gira várias lojas, cada uma com a sua morada, as suas taxas de imposto e os seus preços."
+        },
+        "display": {
+          "title": "Um segundo ecrã para o seu cliente",
+          "description": "Um ecrã virado para o cliente ao lado da caixa."
         }
       }
     },

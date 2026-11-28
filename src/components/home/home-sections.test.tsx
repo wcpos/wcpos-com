@@ -4,7 +4,7 @@ import { NextIntlClientProvider } from 'next-intl'
 import type { ReactElement } from 'react'
 import messages from '../../../messages/en.json'
 
-// Mock i18n navigation Link as a simple anchor (TrustSection links to /about-us)
+// Mock i18n navigation Link as a simple anchor
 vi.mock('@/i18n/navigation', () => ({
   Link: ({
     children,
@@ -54,7 +54,6 @@ vi.mock('@/components/ui/section', () => ({
 
 import { UseCasesSection } from './use-cases-section'
 import { FeaturesSection } from './features-section'
-import { TrustSection } from './trust-section'
 import { CtaSection } from './cta-section'
 
 function renderWithIntl(ui: ReactElement) {
@@ -69,9 +68,9 @@ describe('UseCasesSection', () => {
   it('renders the three testimonial cards with sourced attributions', () => {
     renderWithIntl(<UseCasesSection />)
 
-    expect(screen.getByText('Retail Store')).toBeInTheDocument()
-    expect(screen.getByText('Market Vendor')).toBeInTheDocument()
-    expect(screen.getByText('Desktop & Offline')).toBeInTheDocument()
+    expect(screen.getByText('Retail store')).toBeInTheDocument()
+    expect(screen.getByText('Market vendor')).toBeInTheDocument()
+    expect(screen.getByText('Desktop & offline')).toBeInTheDocument()
 
     // Every quote must link to its wordpress.org source review.
     const sources = screen.getAllByRole('link', {
@@ -106,6 +105,12 @@ describe('UseCasesSection', () => {
             useCases: {
               title: 'Translated use cases title',
               reviewSuffix: 'translated review suffix',
+              stats: {
+                installs: '<b>{count}</b> translated installs',
+                since: 'translated since <b>{year}</b>',
+                license: '<b>GPL</b> translated license',
+                languages: '<b>{count}</b> translated languages',
+              },
               cards: {
                 retail: {
                   type: 'Translated retail type',
@@ -148,159 +153,86 @@ describe('UseCasesSection', () => {
     )
   })
 
-  it('keeps the icon band short on phone and full height from md up', () => {
+  it('states the trust facts under the heading, formatted for the locale', () => {
+    const { unmount } = renderWithIntl(<UseCasesSection />)
+
+    const stats = screen.getByText(/active installations/).closest('p')!
+    expect(stats).toHaveTextContent('5,000+ active installations')
+    expect(stats).toHaveTextContent('In development since 2014')
+    expect(stats).toHaveTextContent('38 languages supported')
+    expect(within(stats).getByRole('link', { name: /GPL licensed, on GitHub/ })).toHaveAttribute(
+      'href',
+      'https://github.com/wcpos'
+    )
+    unmount()
+
+    render(
+      <NextIntlClientProvider locale="de" messages={messages}>
+        <UseCasesSection />
+      </NextIntlClientProvider>
+    )
+    expect(screen.getByText('5.000+')).toBeInTheDocument()
+  })
+
+  it('leads each review with the brand icon tile, not a tinted band', () => {
     const { container } = renderWithIntl(<UseCasesSection />)
 
-    const bands = container.querySelectorAll('li > div[aria-hidden="true"]')
-    expect(bands).toHaveLength(3)
-    for (const band of bands) {
-      const classes = band.className.split(/\s+/)
-      expect(classes).toEqual(expect.arrayContaining(['h-14', 'md:h-28']))
-      expect(classes).not.toContain('h-28')
-      const icon = band.querySelector('svg')!
-      expect(icon).toHaveClass('h-7', 'md:h-10')
+    const tiles = container.querySelectorAll('li h3 > span[aria-hidden="true"]')
+    expect(tiles).toHaveLength(3)
+    for (const tile of tiles) {
+      expect(tile).toHaveClass('h-12', 'w-12', 'bg-wcpos-red/10')
     }
+    expect(container.querySelector('[class*="bg-rose-50"]')).toBeNull()
   })
 })
 
 const escapeRegExp = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 
 describe('FeaturesSection', () => {
-  it('renders all six feature cards', () => {
+  const rowTitles = [
+    'Fast product search',
+    'Split payments',
+    'Sell when the internet drops',
+    'Open and close your register',
+    'Apply a coupon',
+    'Today’s sales on this register',
+    'Card readers',
+    'Create and edit coupons',
+    'Reports for earlier days, every register and every store',
+    'Add and edit customers',
+    'Order history and refunds',
+    'Edit stock and prices at the register',
+    'More registers and stores',
+    'A second screen for your customer',
+  ]
+
+  it('renders the fourteen rows in order', () => {
     renderWithIntl(<FeaturesSection />)
 
-    expect(screen.getByText('Fast product search')).toBeInTheDocument()
-    expect(screen.getByText('Cash, card and split payments')).toBeInTheDocument()
-    for (const title of [
-      'Add and edit customers',
-      'Order history & management',
-      'Edit stock & prices on the fly',
-      'Reports across days, registers & stores',
-    ]) {
-      expect(
-        screen.getByRole('heading', { level: 3, name: new RegExp(`^${escapeRegExp(title)}`) })
-      ).toBeInTheDocument()
+    const headings = screen.getAllByRole('heading', { level: 3 })
+    expect(headings.map((h) => h.textContent?.replace(/\s*Pro$/, ''))).toEqual(rowTitles)
+  })
+
+  it('badges only the Pro rows', () => {
+    renderWithIntl(<FeaturesSection />)
+
+    expect(screen.getAllByText('Pro')).toHaveLength(8)
+    for (const free of rowTitles.slice(0, 6)) {
+      const row = screen
+        .getByRole('heading', { name: new RegExp(`^${escapeRegExp(free)}`) })
+        .closest('li')!
+      expect(within(row).queryByText('Pro')).not.toBeInTheDocument()
     }
   })
 
-  it('marks Pro features with a badge', () => {
+  it('shares the 2.0 labels and lines with the strip', () => {
     renderWithIntl(<FeaturesSection />)
 
-    expect(screen.getAllByText('Pro')).toHaveLength(4)
-  })
-
-  it('leaves checkout unbadged while stock and price editing stays Pro', () => {
-    renderWithIntl(<FeaturesSection />)
-
-    const checkout = screen.getByText('Cash, card and split payments').closest('li')!
-    const stock = screen
-      .getByRole('heading', { level: 3, name: /^Edit stock & prices on the fly/ })
-      .closest('li')!
-
-    expect(within(checkout).queryByText('Pro')).not.toBeInTheDocument()
-    expect(within(stock).getByText('Pro')).toBeInTheDocument()
-  })
-
-  it('links the checkout card readers to /extensions', () => {
-    renderWithIntl(<FeaturesSection />)
-
-    const checkout = screen.getByText('Cash, card and split payments').closest('li')!
-
-    expect(within(checkout).getByRole('link', { name: 'card readers' })).toHaveAttribute(
-      'href',
-      '/extensions'
-    )
-  })
-})
-
-describe('TrustSection', () => {
-  it('renders the stats', () => {
-    renderWithIntl(<TrustSection />)
-
-    expect(screen.getByText('5,000+')).toBeInTheDocument()
-    expect(screen.getByText('Active Installations')).toBeInTheDocument()
-    expect(screen.getByText('Languages Supported')).toBeInTheDocument()
-  })
-
-  it('states the shipped language count beside its label', () => {
-    const { container } = renderWithIntl(<TrustSection />)
-
-    const label = screen.getByText('Languages Supported')
-    expect(label.previousElementSibling).toHaveTextContent(/^38$/)
-    expect(container).not.toHaveTextContent('25+')
-  })
-
-  it('formats the installs count for the locale', () => {
-    const { unmount } = render(
-      <NextIntlClientProvider locale="de" messages={messages}>
-        <TrustSection />
-      </NextIntlClientProvider>
-    )
-    expect(screen.getByText('5.000+')).toBeInTheDocument()
-    expect(screen.queryByText('5,000+')).not.toBeInTheDocument()
-    unmount()
-
-    render(
-      <NextIntlClientProvider locale="en" messages={messages}>
-        <TrustSection />
-      </NextIntlClientProvider>
-    )
-    expect(screen.getByText('5,000+')).toBeInTheDocument()
-  })
-
-  it('links the open source stat to GitHub', () => {
-    renderWithIntl(<TrustSection />)
-
-    expect(screen.getByRole('link', { name: /GPL Licensed/ })).toHaveAttribute(
-      'href',
-      'https://github.com/wcpos'
-    )
-  })
-
-  it('renders translated trust copy from messages', () => {
-    render(
-      <NextIntlClientProvider
-        locale="en"
-        messages={{
-          home: {
-            trust: {
-              stats: {
-                activeInstallations: 'Translated active installations',
-                inDevelopmentSince: 'Translated development since',
-                languagesSupported: 'Translated languages supported',
-              },
-              license: 'Translated license label',
-              githubAria: 'Translated GitHub screen reader label',
-              quote: 'Translated customer quote',
-              attribution: 'Translated review attribution',
-              story: 'Translated story link',
-            },
-          },
-        }}
-      >
-        <TrustSection />
-      </NextIntlClientProvider>
-    )
-
-    expect(screen.getByText('Translated active installations')).toBeInTheDocument()
-    expect(screen.getByText('Translated development since')).toBeInTheDocument()
-    expect(screen.getByText('Translated languages supported')).toBeInTheDocument()
-    expect(
-      screen.getByRole('link', { name: /Translated license label/ })
-    ).toHaveAttribute('href', 'https://github.com/wcpos')
-    expect(screen.getByText(/Translated customer quote/)).toBeInTheDocument()
-    expect(screen.getByText('Translated review attribution')).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'Translated story link' })).toHaveAttribute(
-      'href',
-      '/about-us'
-    )
-    // Small text: the accent token clears WCAG AA on white and on dark slate-950.
-    expect(screen.getByRole('link', { name: 'Translated story link' })).toHaveClass(
-      'text-wcpos-red-accent'
-    )
-    expect(screen.getByRole('link', { name: 'Translated story link' })).not.toHaveClass(
-      'text-wcpos-red'
-    )
+    const { free2 } = messages.home.story
+    for (const id of ['offline', 'register'] as const) {
+      const row = screen.getByRole('heading', { name: free2[id].title }).closest('li')!
+      expect(row).toHaveTextContent(free2[id].line)
+    }
   })
 })
 

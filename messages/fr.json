@@ -82,20 +82,18 @@
       "download": "Télécharger gratuitement"
     },
     "trust": {
-      "stats": {
-        "activeInstallations": "Installations actives",
-        "inDevelopmentSince": "En développement depuis",
-        "languagesSupported": "Langues prises en charge"
-      },
-      "license": "Sous licence GPL",
-      "githubAria": "— WCPOS sur GitHub",
       "quote": "Simple, fonctionnel et facile à utiliser. 10/10.",
-      "attribution": "Ward, avis wordpress.org",
-      "story": "Lire notre histoire →"
+      "attribution": "Ward, avis wordpress.org"
     },
     "useCases": {
       "title": "Ce qu’en disent les commerçants",
       "reviewSuffix": "avis wordpress.org",
+      "stats": {
+        "installs": "<b>{count}</b> installations actives",
+        "since": "En développement depuis <b>{year}</b>",
+        "license": "Sous licence <b>GPL</b>, sur GitHub",
+        "languages": "<b>{count}</b> langues prises en charge"
+      },
       "cards": {
         "retail": {
           "type": "Boutique de détail",
@@ -103,7 +101,7 @@
           "attribution": "nckllnpssy"
         },
         "market": {
-          "type": "Vendeur sur marché",
+          "type": "Vendeuse sur les marchés",
           "quote": "Je suis céramiste à Annecy et je vends via ma boutique WooCommerce et sur les marchés. J’utilise WCPOS depuis plus d’un an et j’ai acheté la licence Pro à vie il y a quelques mois — ça vaut le coup, je trouve. Paul répond sur Discord, même le week-end.",
           "attribution": "adeline",
           "note": "traduit du français"
@@ -168,27 +166,48 @@
       "items": {
         "f1": {
           "title": "Recherche produit rapide",
-          "description": "Recherchez, filtrez ou parcourez par catégorie. Les résultats viennent de la copie présente sur l’appareil, ils s’affichent donc immédiatement. Scannez un code-barres pour ajouter un article."
+          "description": "Recherchez, filtrez avec des puces ou parcourez par catégorie. Scannez un code-barres pour ajouter un article."
         },
         "f2": {
-          "title": "Espèces, carte et paiements fractionnés",
-          "description": "Ajoutez des articles, appliquez des remises, acceptez les espèces ou les paiements par carte sur votre propre terminal de paiement et fractionnez un paiement. Pro connecte des <link>lecteurs de cartes</link> comme Stripe Terminal et SumUp."
+          "description": "Encaissez en espèces, ou enregistrez un paiement par carte pris sur votre propre terminal, et répartissez un paiement entre les deux."
         },
         "f3": {
           "title": "Ajouter et modifier des clients",
-          "description": "Ajoutez un nouveau client ou corrigez ses coordonnées à la caisse. Choisir un client existant pour une vente est gratuit."
+          "description": "Ajoutez un nouveau client ou corrigez ses coordonnées à la caisse. Choisir un client existant est gratuit."
         },
         "f4": {
-          "title": "Historique et gestion des commandes",
+          "title": "Historique des commandes et remboursements",
           "description": "Retrouvez une commande passée, réimprimez son reçu ou remboursez-la sans ouvrir WP Admin."
         },
         "f5": {
-          "title": "Modifier stocks et prix à la volée",
+          "title": "Modifier le stock et les prix à la caisse",
           "description": "Corrigez un mauvais prix pendant que vous servez un client. Ajustez le stock sans quitter la caisse."
         },
         "f6": {
-          "title": "Rapports sur plusieurs jours, caisses et boutiques",
+          "title": "Rapports des jours précédents, pour chaque caisse et chaque boutique",
           "description": "Consultez les ventes des jours précédents et sur des plages de dates, pour chaque caisse et chaque boutique."
+        },
+        "coupon": {
+          "description": "Appliquez un code promo WooCommerce dans le panier."
+        },
+        "today": {
+          "description": "Le rapport du jour pour cette caisse, avec export CSV et impression."
+        },
+        "readers": {
+          "title": "Lecteurs de cartes",
+          "description": "L’encaissement pilote les lecteurs Stripe Terminal, SumUp et Mollie Terminal."
+        },
+        "coupons": {
+          "title": "Créer et modifier des codes promo",
+          "description": "Créez un code promo depuis le panier, et consultez et modifiez les codes promo sur l’écran Codes promo."
+        },
+        "stores": {
+          "title": "Plus de caisses et de boutiques",
+          "description": "Ajoutez des caisses en plus de la caisse gratuite et gérez plusieurs boutiques, chacune avec son adresse, ses taux de taxe et ses prix."
+        },
+        "display": {
+          "title": "Un second écran pour votre client",
+          "description": "Un écran côté client à côté de la caisse."
         }
       }
     },

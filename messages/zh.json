@@ -82,20 +82,18 @@
       "download": "免费下载"
     },
     "trust": {
-      "stats": {
-        "activeInstallations": "活跃安装量",
-        "inDevelopmentSince": "开发始于",
-        "languagesSupported": "支持语言"
-      },
-      "license": "GPL 许可",
-      "githubAria": "— GitHub 上的 WCPOS",
       "quote": "直接、实用且简单易用。10/10。",
-      "attribution": "Ward，wordpress.org 评价",
-      "story": "阅读我们的故事 →"
+      "attribution": "Ward，wordpress.org 评价"
     },
     "useCases": {
       "title": "店主们怎么说",
       "reviewSuffix": "wordpress.org 评价",
+      "stats": {
+        "installs": "<b>{count}</b> 个活跃安装",
+        "since": "自 <b>{year}</b> 年起开发",
+        "license": "<b>GPL</b> 许可，开源于 GitHub",
+        "languages": "支持 <b>{count}</b> 种语言"
+      },
       "cards": {
         "retail": {
           "type": "零售店",
@@ -168,27 +166,48 @@
       "items": {
         "f1": {
           "title": "快速商品搜索",
-          "description": "搜索、筛选或按分类浏览。结果来自设备上的副本，因此会立即显示。扫描条码即可添加商品。"
+          "description": "搜索、用筛选标签筛选或按分类浏览。扫描条码即可添加商品。"
         },
         "f2": {
-          "title": "现金、刷卡和拆分付款",
-          "description": "添加商品、应用折扣、接受现金或使用自己的支付终端收取卡款，并拆分付款。Pro 可连接 Stripe Terminal 和 SumUp 等<link>读卡器</link>。"
+          "description": "收取现金，或记录在你自己终端上收取的卡款，并把一笔付款拆分到两者之间。"
         },
         "f3": {
           "title": "添加和编辑客户",
-          "description": "在收银台添加新客户或修改客户信息。为销售选择现有客户是免费的。"
+          "description": "在收银台添加新客户或修改客户信息。选择现有客户是免费的。"
         },
         "f4": {
-          "title": "订单历史与管理",
+          "title": "订单历史与退款",
           "description": "无需打开 WP Admin，即可查找历史订单、重新打印小票或办理退款。"
         },
         "f5": {
-          "title": "即时编辑库存和价格",
+          "title": "在收银台编辑库存和价格",
           "description": "服务客户时即可修正错误价格。不离开 POS 也能调整库存。"
         },
         "f6": {
-          "title": "跨日期、收银台和店铺的报表",
+          "title": "以往日期、每个收银台和每家店铺的报表",
           "description": "查看以往日期和日期范围内每个收银台、每家店铺的销售情况。"
+        },
+        "coupon": {
+          "description": "在购物车中使用 WooCommerce 优惠券。"
+        },
+        "today": {
+          "description": "本收银台今日报表，支持导出 CSV 和打印。"
+        },
+        "readers": {
+          "title": "读卡器",
+          "description": "结账界面可直接操作 Stripe Terminal、SumUp 和 Mollie Terminal 读卡器。"
+        },
+        "coupons": {
+          "title": "创建和编辑优惠券",
+          "description": "从购物车创建优惠券，并在优惠券页面浏览和编辑优惠券。"
+        },
+        "stores": {
+          "title": "更多收银台和店铺",
+          "description": "在免费收银台之外添加收银台，并经营多家店铺，每家都有自己的地址、税率和价格。"
+        },
+        "display": {
+          "title": "给顾客的第二块屏幕",
+          "description": "收银台旁面向顾客的显示屏。"
         }
       }
     },

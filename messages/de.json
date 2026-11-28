@@ -82,20 +82,18 @@
       "download": "Kostenlos herunterladen"
     },
     "trust": {
-      "stats": {
-        "activeInstallations": "Aktive Installationen",
-        "inDevelopmentSince": "In Entwicklung seit",
-        "languagesSupported": "Unterstützte Sprachen"
-      },
-      "license": "GPL-lizenziert",
-      "githubAria": "— WCPOS auf GitHub",
       "quote": "Geradlinig, funktional und einfach zu bedienen. 10/10.",
-      "attribution": "Ward, Bewertung auf wordpress.org",
-      "story": "Unsere Geschichte lesen →"
+      "attribution": "Ward, Bewertung auf wordpress.org"
     },
     "useCases": {
       "title": "Das sagen Shop-Betreiber",
       "reviewSuffix": "Bewertung auf wordpress.org",
+      "stats": {
+        "installs": "<b>{count}</b> aktive Installationen",
+        "since": "In Entwicklung seit <b>{year}</b>",
+        "license": "<b>GPL</b>-lizenziert, auf GitHub",
+        "languages": "<b>{count}</b> unterstützte Sprachen"
+      },
       "cards": {
         "retail": {
           "type": "Einzelhandelsgeschäft",
@@ -109,7 +107,7 @@
           "note": "aus dem Französischen übersetzt"
         },
         "desktop": {
-          "type": "Desktop & Offline",
+          "type": "Desktop & offline",
           "quote": "Ein großartiges POS für deinen WooCommerce-Shop. Es hat eine Desktop-Version, was es für Orte mit schwacher Internetverbindung besser macht. Ich glaube, es kommen noch mehr tolle Funktionen.",
           "attribution": "rodriguekgl"
         }
@@ -168,27 +166,48 @@
       "items": {
         "f1": {
           "title": "Schnelle Produktsuche",
-          "description": "Suche, filtere oder stöbere nach Kategorie. Die Ergebnisse kommen aus der Kopie auf dem Gerät, deshalb erscheinen sie sofort. Scanne einen Barcode, um einen Artikel hinzuzufügen."
+          "description": "Suche, filtere mit Chips oder stöbere nach Kategorie. Scanne einen Barcode, um einen Artikel hinzuzufügen."
         },
         "f2": {
-          "title": "Bar, Karte und geteilte Zahlungen",
-          "description": "Füge Artikel hinzu, wende Rabatte an, nimm Bargeld oder Kartenzahlungen über dein eigenes Zahlungsterminal an und teile eine Zahlung auf. Pro verbindet <link>Kartenlesegeräte</link> wie Stripe Terminal und SumUp."
+          "description": "Nimm Bargeld an oder erfasse eine Kartenzahlung über dein eigenes Terminal, und teile eine Zahlung zwischen beiden auf."
         },
         "f3": {
           "title": "Kunden hinzufügen und bearbeiten",
-          "description": "Lege an der Kasse einen neuen Kunden an oder korrigiere seine Daten. Einen bestehenden Kunden für einen Verkauf auszuwählen ist kostenlos."
+          "description": "Lege an der Kasse einen neuen Kunden an oder korrigiere seine Daten. Einen bestehenden Kunden auszuwählen ist kostenlos."
         },
         "f4": {
-          "title": "Bestellverlauf & Verwaltung",
+          "title": "Bestellverlauf und Erstattungen",
           "description": "Finde eine frühere Bestellung, drucke ihren Beleg erneut oder erstatte sie, ohne WP Admin zu öffnen."
         },
         "f5": {
-          "title": "Lagerbestand & Preise spontan bearbeiten",
+          "title": "Bestand und Preise an der Kasse bearbeiten",
           "description": "Korrigiere einen falschen Preis, während du einen Kunden bedienst. Passe Lagerbestände an, ohne den POS zu verlassen."
         },
         "f6": {
-          "title": "Berichte für verschiedene Tage, Kassen & Geschäfte",
+          "title": "Berichte für frühere Tage, jede Kasse und jeden Shop",
           "description": "Sieh Verkäufe für frühere Tage und Datumsbereiche, für jede Kasse und jedes Geschäft."
+        },
+        "coupon": {
+          "description": "Löse einen WooCommerce-Gutschein im Warenkorb ein."
+        },
+        "today": {
+          "description": "Der Bericht für heute an dieser Kasse, mit CSV-Export und Drucken."
+        },
+        "readers": {
+          "title": "Kartenlesegeräte",
+          "description": "Der Checkout steuert Lesegeräte von Stripe Terminal, SumUp und Mollie Terminal."
+        },
+        "coupons": {
+          "title": "Gutscheine erstellen und bearbeiten",
+          "description": "Erstelle einen Gutschein aus dem Warenkorb, und sieh und bearbeite Gutscheine auf dem Gutscheine-Bildschirm."
+        },
+        "stores": {
+          "title": "Weitere Kassen und Shops",
+          "description": "Füge Kassen über die kostenlose hinaus hinzu und betreibe mehrere Shops, jeden mit eigener Adresse, eigenen Steuersätzen und Preisen."
+        },
+        "display": {
+          "title": "Ein zweiter Bildschirm für deine Kunden",
+          "description": "Ein Kundendisplay neben der Kasse."
         }
       }
     },

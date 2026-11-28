@@ -1,91 +1,116 @@
 import { useTranslations } from 'next-intl'
 import {
-  BarChart3,
-  PencilLine,
-  Receipt,
+  CalendarDays,
+  CreditCard,
+  History,
+  MonitorSmartphone,
   Search,
-  ShoppingCart,
+  Store,
+  Tag,
+  TicketPlus,
   Users,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
-import { Link } from '@/i18n/navigation'
 import { Badge } from '@/components/ui/badge'
-import { FeatureCard } from '@/components/ui/feature-card'
+import { IconTile } from '@/components/ui/icon-tile'
 import { Section } from '@/components/ui/section'
 import { SectionHeading } from '@/components/ui/section-heading'
-import { TextLink } from '@/components/ui/text-link'
+import {
+  FREE_IN_TWO,
+  type FreeInTwoId,
+} from '@/components/home/scroll-story/free-in-two-strip'
 
-type FeatureId = 'f1' | 'f2' | 'f3' | 'f4' | 'f5' | 'f6'
+type ItemId =
+  | 'f1'
+  | 'f3'
+  | 'f4'
+  | 'f5'
+  | 'f6'
+  | 'readers'
+  | 'coupons'
+  | 'stores'
+  | 'display'
 
-interface Feature {
-  icon: LucideIcon
-  id: FeatureId
-  pro: boolean
-}
+/**
+ * A row's copy. The 2.0 features take their label (and, where it is the
+ * same, their line) from the strip, so a feature reads identically there,
+ * here and on the plan cards.
+ */
+type Row =
+  | { item: ItemId; Icon: LucideIcon; pro: boolean }
+  | { free2: FreeInTwoId; description?: 'f2' | 'coupon' | 'today' }
 
-const features: Feature[] = [
-  {
-    icon: Search,
-    id: 'f1',
-    pro: false,
-  },
-  {
-    icon: ShoppingCart,
-    id: 'f2',
-    pro: false,
-  },
-  {
-    icon: Users,
-    id: 'f3',
-    pro: true,
-  },
-  {
-    icon: Receipt,
-    id: 'f4',
-    pro: true,
-  },
-  {
-    icon: PencilLine,
-    id: 'f5',
-    pro: true,
-  },
-  {
-    icon: BarChart3,
-    id: 'f6',
-    pro: true,
-  },
+const free2Icon = (id: FreeInTwoId) =>
+  FREE_IN_TWO.find((entry) => entry.id === id)!.Icon
+
+const rows: Row[] = [
+  { item: 'f1', Icon: Search, pro: false },
+  { free2: 'split', description: 'f2' },
+  { free2: 'offline' },
+  { free2: 'register' },
+  { free2: 'coupon', description: 'coupon' },
+  { free2: 'today', description: 'today' },
+  { item: 'readers', Icon: CreditCard, pro: true },
+  { item: 'coupons', Icon: TicketPlus, pro: true },
+  { item: 'f6', Icon: CalendarDays, pro: true },
+  { item: 'f3', Icon: Users, pro: true },
+  { item: 'f4', Icon: History, pro: true },
+  { item: 'f5', Icon: Tag, pro: true },
+  { item: 'stores', Icon: Store, pro: true },
+  { item: 'display', Icon: MonitorSmartphone, pro: true },
 ]
 
 export function FeaturesSection() {
-  const t = useTranslations('home.features')
+  const t = useTranslations('home')
 
   return (
-    <Section tone="default" spacing="default">
-      <SectionHeading
-        className="mb-12"
-        title={t('heading')}
-      />
+    <Section tone="default" spacing="compact" className="border-t border-border">
+      <SectionHeading className="mb-8" title={t('features.heading')} />
 
-      <ul className="mx-auto grid max-w-5xl gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {features.map((feature) => (
-          <FeatureCard
-            key={feature.id}
-            as="li"
-            icon={feature.icon}
-            title={t(`items.${feature.id}.title`)}
-            badge={feature.pro && <Badge variant="pro">Pro</Badge>}
-          >
-            {feature.id === 'f2'
-              ? t.rich('items.f2.description', {
-                  link: (chunks) => (
-                    <TextLink asChild>
-                      <Link href="/extensions">{chunks}</Link>
-                    </TextLink>
-                  ),
-                })
-              : t(`items.${feature.id}.description`)}
-          </FeatureCard>
-        ))}
+      <ul className="grid md:grid-cols-2 md:gap-x-12">
+        {rows.map((row) => {
+          const { key, Icon, pro, title, description } =
+            'item' in row
+              ? {
+                  key: row.item,
+                  Icon: row.Icon,
+                  pro: row.pro,
+                  title: t(`features.items.${row.item}.title`),
+                  description: t(`features.items.${row.item}.description`),
+                }
+              : {
+                  key: row.free2,
+                  Icon: free2Icon(row.free2),
+                  pro: false,
+                  title: t(`story.free2.${row.free2}.title`),
+                  description: row.description
+                    ? t(`features.items.${row.description}.description`)
+                    : t(`story.free2.${row.free2}.line`),
+                }
+          return (
+            <li key={key} className="flex gap-4 border-t border-border py-[18px]">
+              <IconTile tone="brand" size="lg">
+                <Icon />
+              </IconTile>
+              <div className="min-w-0">
+                <h3 className="font-semibold text-slate-800 dark:text-slate-100">
+                  {title}
+                  {pro && (
+                    <>
+                      {' '}
+                      <Badge variant="pro" className="ml-1 align-middle">
+                        Pro
+                      </Badge>
+                    </>
+                  )}
+                </h3>
+                <p className="mt-0.5 text-sm text-slate-600 dark:text-slate-400">
+                  {description}
+                </p>
+              </div>
+            </li>
+          )
+        })}
       </ul>
     </Section>
   )

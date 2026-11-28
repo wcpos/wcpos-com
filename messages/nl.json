@@ -82,20 +82,18 @@
       "download": "Gratis downloaden"
     },
     "trust": {
-      "stats": {
-        "activeInstallations": "Actieve installaties",
-        "inDevelopmentSince": "In ontwikkeling sinds",
-        "languagesSupported": "Ondersteunde talen"
-      },
-      "license": "GPL-licentie",
-      "githubAria": "— WCPOS op GitHub",
       "quote": "Duidelijk, functioneel en eenvoudig te gebruiken. 10/10.",
-      "attribution": "Ward, review op wordpress.org",
-      "story": "Lees ons verhaal →"
+      "attribution": "Ward, review op wordpress.org"
     },
     "useCases": {
       "title": "Wat winkeliers zeggen",
       "reviewSuffix": "review op wordpress.org",
+      "stats": {
+        "installs": "<b>{count}</b> actieve installaties",
+        "since": "In ontwikkeling sinds <b>{year}</b>",
+        "license": "<b>GPL</b>-licentie, op GitHub",
+        "languages": "<b>{count}</b> ondersteunde talen"
+      },
       "cards": {
         "retail": {
           "type": "Winkel",
@@ -168,27 +166,48 @@
       "items": {
         "f1": {
           "title": "Snel producten zoeken",
-          "description": "Zoek, filter of blader per categorie. De resultaten komen uit de kopie op het apparaat, dus ze verschijnen meteen. Scan een barcode om een artikel toe te voegen."
+          "description": "Zoek, filter met chips of blader per categorie. Scan een barcode om een artikel toe te voegen."
         },
         "f2": {
-          "title": "Contant, kaart en gesplitste betalingen",
-          "description": "Voeg artikelen toe, pas kortingen toe, accepteer contant geld of kaartbetalingen via je eigen betaalterminal en splits een betaling. Pro koppelt <link>kaartlezers</link> zoals Stripe Terminal en SumUp."
+          "description": "Neem contant geld aan, of registreer een kaartbetaling op je eigen terminal, en splits één betaling tussen beide."
         },
         "f3": {
           "title": "Klanten toevoegen en bewerken",
-          "description": "Voeg aan de kassa een nieuwe klant toe of corrigeer de klantgegevens. Een bestaande klant kiezen voor een verkoop is gratis."
+          "description": "Voeg aan de kassa een nieuwe klant toe of corrigeer de klantgegevens. Een bestaande klant kiezen is gratis."
         },
         "f4": {
-          "title": "Bestelgeschiedenis en beheer",
+          "title": "Bestelgeschiedenis en terugbetalingen",
           "description": "Zoek een eerdere bestelling op, druk de bon opnieuw af of betaal hem terug zonder WP Admin te openen."
         },
         "f5": {
-          "title": "Voorraad en prijzen direct aanpassen",
+          "title": "Voorraad en prijzen aanpassen aan de kassa",
           "description": "Corrigeer een verkeerde prijs terwijl je een klant helpt. Pas voorraad aan zonder het kassasysteem te verlaten."
         },
         "f6": {
-          "title": "Rapporten over dagen, kassa's en winkels",
+          "title": "Rapporten voor eerdere dagen, elke kassa en elke winkel",
           "description": "Bekijk de verkopen voor eerdere dagen en datumbereiken, voor elke kassa en elke winkel."
+        },
+        "coupon": {
+          "description": "Pas een WooCommerce-kortingscode toe in de winkelwagen."
+        },
+        "today": {
+          "description": "Het rapport van vandaag voor deze kassa, met CSV-export en printen."
+        },
+        "readers": {
+          "title": "Kaartlezers",
+          "description": "Het afrekenen stuurt de lezers van Stripe Terminal, SumUp en Mollie Terminal aan."
+        },
+        "coupons": {
+          "title": "Kortingscodes maken en bewerken",
+          "description": "Maak een kortingscode vanuit de winkelwagen, en bekijk en bewerk kortingscodes op het scherm Kortingscodes."
+        },
+        "stores": {
+          "title": "Meer kassa’s en winkels",
+          "description": "Voeg kassa’s toe naast de gratis kassa en beheer meerdere winkels, elk met een eigen adres, eigen btw-tarieven en eigen prijzen."
+        },
+        "display": {
+          "title": "Een tweede scherm voor je klant",
+          "description": "Een klantendisplay naast de kassa."
         }
       }
     },

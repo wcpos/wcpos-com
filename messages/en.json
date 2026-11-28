@@ -82,34 +82,32 @@
       "download": "Download Free"
     },
     "trust": {
-      "stats": {
-        "activeInstallations": "Active Installations",
-        "inDevelopmentSince": "In Development Since",
-        "languagesSupported": "Languages Supported"
-      },
-      "license": "GPL Licensed",
-      "githubAria": "— WCPOS on GitHub",
       "quote": "Straightforward, functional and simple to use. 10/10.",
-      "attribution": "Ward, wordpress.org review",
-      "story": "Read our story →"
+      "attribution": "Ward, wordpress.org review"
     },
     "useCases": {
       "title": "What store owners say",
       "reviewSuffix": "wordpress.org review",
+      "stats": {
+        "installs": "<b>{count}</b> active installations",
+        "since": "In development since <b>{year}</b>",
+        "license": "<b>GPL</b> licensed, on GitHub",
+        "languages": "<b>{count}</b> languages supported"
+      },
       "cards": {
         "retail": {
-          "type": "Retail Store",
+          "type": "Retail store",
           "quote": "I did a lot of research when looking for a POS for my existing WC site, and nearly overlooked this one because it was free. But I’m glad I tried it. It does everything you want without asking for subscriptions or a percentage of your sales.",
           "attribution": "nckllnpssy"
         },
         "market": {
-          "type": "Market Vendor",
+          "type": "Market vendor",
           "quote": "I’m a ceramicist in Annecy and I sell through my WooCommerce shop and at markets. I’ve been using WCPOS for over a year and bought the lifetime Pro license a few months ago — worth it, I think. Paul is responsive on Discord, even on weekends.",
           "attribution": "adeline",
           "note": "translated from French"
         },
         "desktop": {
-          "type": "Desktop & Offline",
+          "type": "Desktop & offline",
           "quote": "Great POS for your WooCommerce store, it has the desktop version which makes it better for places with weak internet connectivity. I believe there are more great features coming up.",
           "attribution": "rodriguekgl"
         }
@@ -168,27 +166,48 @@
       "items": {
         "f1": {
           "title": "Fast product search",
-          "description": "Search, filter or browse by category. Results come from the copy on the device, so they show at once. Scan a barcode to add an item."
+          "description": "Search, filter with chips or browse by category. Scan a barcode to add an item."
         },
         "f2": {
-          "title": "Cash, card and split payments",
-          "description": "Add items, apply discounts, take cash or card on your own terminal, and split a payment. Pro connects <link>card readers</link> like Stripe Terminal and SumUp."
+          "description": "Take cash, or record a card payment taken on your own terminal, and split one payment between them."
         },
         "f3": {
           "title": "Add and edit customers",
-          "description": "Add a new customer or fix their details at the register. Choosing an existing customer for a sale is free."
+          "description": "Add a new customer or fix their details at the register. Choosing an existing customer is free."
         },
         "f4": {
-          "title": "Order history & management",
+          "title": "Order history and refunds",
           "description": "Find a past order, reprint its receipt or refund it without opening WP Admin."
         },
         "f5": {
-          "title": "Edit stock & prices on the fly",
+          "title": "Edit stock and prices at the register",
           "description": "Fix a wrong price while serving a customer. Adjust stock without leaving the POS."
         },
         "f6": {
-          "title": "Reports across days, registers & stores",
+          "title": "Reports for earlier days, every register and every store",
           "description": "See sales for earlier days and date ranges, for every register and every store."
+        },
+        "coupon": {
+          "description": "Apply a WooCommerce coupon in the cart."
+        },
+        "today": {
+          "description": "The report for today on this register, with Export CSV and Print."
+        },
+        "readers": {
+          "title": "Card readers",
+          "description": "Checkout drives Stripe Terminal, SumUp and Mollie Terminal readers."
+        },
+        "coupons": {
+          "title": "Create and edit coupons",
+          "description": "Create a coupon from the cart, and browse and edit coupons on the Coupons screen."
+        },
+        "stores": {
+          "title": "More registers and stores",
+          "description": "Add registers beyond the free one, and run several stores, each with its own address, tax rates and prices."
+        },
+        "display": {
+          "title": "A second screen for your customer",
+          "description": "A customer-facing display beside the register."
         }
       }
     },

@@ -35,10 +35,6 @@ vi.mock('@/components/home/pricing-teaser-section', () => ({
   PricingTeaserSectionFallback: () => null,
 }))
 
-vi.mock('@/components/home/trust-section', () => ({
-  TrustSection: () => null,
-}))
-
 vi.mock('@/components/home/cta-section', () => ({
   CtaSection: () => null,
 }))

@@ -82,20 +82,18 @@
       "download": "무료 다운로드"
     },
     "trust": {
-      "stats": {
-        "activeInstallations": "활성 설치 수",
-        "inDevelopmentSince": "개발 시작",
-        "languagesSupported": "지원 언어"
-      },
-      "license": "GPL 라이선스",
-      "githubAria": "— GitHub의 WCPOS",
       "quote": "간단하고 기능적이며 사용하기 쉽습니다. 10/10.",
-      "attribution": "Ward, wordpress.org 리뷰",
-      "story": "우리 이야기 읽기 →"
+      "attribution": "Ward, wordpress.org 리뷰"
     },
     "useCases": {
       "title": "스토어 운영자들의 후기",
       "reviewSuffix": "wordpress.org 리뷰",
+      "stats": {
+        "installs": "활성 설치 <b>{count}</b>",
+        "since": "<b>{year}</b>년부터 개발",
+        "license": "<b>GPL</b> 라이선스, GitHub 공개",
+        "languages": "지원 언어 <b>{count}</b>개"
+      },
       "cards": {
         "retail": {
           "type": "소매 매장",
@@ -168,27 +166,48 @@
       "items": {
         "f1": {
           "title": "빠른 제품 검색",
-          "description": "검색하거나 필터를 적용하거나 카테고리별로 둘러보세요. 결과는 기기에 있는 사본에서 가져오므로 바로 표시됩니다. 바코드를 스캔해 상품을 추가하세요."
+          "description": "검색하거나 칩으로 필터링하거나 카테고리별로 둘러보세요. 바코드를 스캔해 상품을 추가하세요."
         },
         "f2": {
-          "title": "현금, 카드, 분할 결제",
-          "description": "상품을 추가하고, 할인을 적용하고, 현금이나 보유한 결제 단말기를 통한 카드 결제를 받고, 분할 결제를 처리하세요. Pro는 Stripe Terminal과 SumUp 같은 <link>카드 리더기</link>를 연결합니다."
+          "description": "현금을 받거나 보유한 단말기로 받은 카드 결제를 기록하고, 하나의 결제를 둘로 나누세요."
         },
         "f3": {
           "title": "고객 추가 및 편집",
-          "description": "계산대에서 새 고객을 추가하거나 고객 정보를 수정하세요. 판매에 기존 고객을 선택하는 것은 무료입니다."
+          "description": "계산대에서 새 고객을 추가하거나 고객 정보를 수정하세요. 기존 고객을 선택하는 것은 무료입니다."
         },
         "f4": {
-          "title": "주문 내역 및 관리",
+          "title": "주문 내역 및 환불",
           "description": "WP Admin을 열지 않고도 이전 주문을 찾아 영수증을 다시 인쇄하거나 환불하세요."
         },
         "f5": {
-          "title": "재고와 가격을 즉시 편집",
+          "title": "계산대에서 재고와 가격 편집",
           "description": "고객을 응대하는 중에도 잘못된 가격을 수정하세요. POS를 떠나지 않고 재고를 조정할 수 있습니다."
         },
         "f6": {
-          "title": "여러 날짜, 계산대 및 매장의 보고서",
+          "title": "이전 날짜, 모든 계산대와 모든 매장의 보고서",
           "description": "이전 날짜와 기간의 매출을 모든 계산대와 매장별로 확인하세요."
+        },
+        "coupon": {
+          "description": "장바구니에서 WooCommerce 쿠폰을 적용하세요."
+        },
+        "today": {
+          "description": "이 계산대의 오늘 보고서. CSV 내보내기와 인쇄를 지원합니다."
+        },
+        "readers": {
+          "title": "카드 리더기",
+          "description": "결제 화면이 Stripe Terminal, SumUp, Mollie Terminal 리더기를 제어합니다."
+        },
+        "coupons": {
+          "title": "쿠폰 만들기 및 편집",
+          "description": "장바구니에서 쿠폰을 만들고, 쿠폰 화면에서 쿠폰을 찾아보고 편집하세요."
+        },
+        "stores": {
+          "title": "더 많은 계산대와 매장",
+          "description": "무료 계산대 외에 계산대를 추가하고, 주소, 세율, 가격이 각각 다른 여러 매장을 운영하세요."
+        },
+        "display": {
+          "title": "고객을 위한 두 번째 화면",
+          "description": "계산대 옆에 두는 고객용 디스플레이."
         }
       }
     },

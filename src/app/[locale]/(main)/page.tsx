@@ -11,7 +11,6 @@ import {
   PricingTeaserSection,
   PricingTeaserSectionFallback,
 } from '@/components/home/pricing-teaser-section'
-import { TrustSection } from '@/components/home/trust-section'
 import { CtaSection } from '@/components/home/cta-section'
 import { SITE_URL, localeUrl, marketingMetadata } from '@/lib/seo'
 import { wcposSoftwareApplication } from '@/lib/software-application-json-ld'
@@ -62,7 +61,6 @@ export default async function Home({
         <Suspense fallback={<PricingTeaserSectionFallback />}>
           <PricingTeaserSection />
         </Suspense>
-        <TrustSection />
         <CtaSection />
 
         <script

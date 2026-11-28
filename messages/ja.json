@@ -82,20 +82,18 @@
       "download": "無料でダウンロード"
     },
     "trust": {
-      "stats": {
-        "activeInstallations": "有効インストール数",
-        "inDevelopmentSince": "開発開始",
-        "languagesSupported": "対応言語"
-      },
-      "license": "GPLライセンス",
-      "githubAria": "— GitHubのWCPOS",
       "quote": "わかりやすく、機能的で、使いやすい。10/10。",
-      "attribution": "Ward、wordpress.orgレビュー",
-      "story": "ストーリーを読む →"
+      "attribution": "Ward、wordpress.orgレビュー"
     },
     "useCases": {
       "title": "ストアオーナーの声",
       "reviewSuffix": "wordpress.orgレビュー",
+      "stats": {
+        "installs": "アクティブインストール <b>{count}</b>",
+        "since": "<b>{year}</b>年から開発",
+        "license": "<b>GPL</b>ライセンス、GitHubで公開",
+        "languages": "対応言語 <b>{count}</b>"
+      },
       "cards": {
         "retail": {
           "type": "小売店",
@@ -168,27 +166,48 @@
       "items": {
         "f1": {
           "title": "高速な商品検索",
-          "description": "検索、フィルター、カテゴリー閲覧で探せます。結果はデバイス上のコピーから表示されるので、すぐに出てきます。バーコードをスキャンして商品を追加できます。"
+          "description": "検索、チップでの絞り込み、カテゴリー閲覧で探せます。バーコードをスキャンして商品を追加できます。"
         },
         "f2": {
-          "title": "現金、カード、分割払い",
-          "description": "商品を追加し、割引を適用し、現金やお手持ちの決済端末でのカード払いを受け付け、分割払いにも対応できます。Proでは、Stripe TerminalやSumUpなどの<link>カードリーダー</link>を接続できます。"
+          "description": "現金を受け取るか、お手持ちの決済端末でのカード払いを記録し、1回の支払いを両方に分けられます。"
         },
         "f3": {
           "title": "顧客の追加・編集",
-          "description": "レジで新しい顧客を追加したり、顧客情報を修正したりできます。既存の顧客を販売に選択するのは無料です。"
+          "description": "レジで新しい顧客を追加したり、顧客情報を修正したりできます。既存の顧客を選ぶのは無料です。"
         },
         "f4": {
-          "title": "注文履歴と管理",
+          "title": "注文履歴と返金",
           "description": "WP Adminを開かずに、過去の注文を探し、レシートを再印刷したり返金したりできます。"
         },
         "f5": {
-          "title": "在庫と価格をその場で編集",
+          "title": "レジで在庫と価格を編集",
           "description": "接客中に間違った価格を修正できます。POSを離れずに在庫を調整できます。"
         },
         "f6": {
-          "title": "日付・レジ・店舗をまたぐレポート",
+          "title": "過去の日付、すべてのレジとすべての店舗のレポート",
           "description": "過去の日付や期間の売上を、すべてのレジ・店舗について確認できます。"
+        },
+        "coupon": {
+          "description": "カートでWooCommerceのクーポンを適用できます。"
+        },
+        "today": {
+          "description": "このレジの本日のレポート。CSVエクスポートと印刷に対応。"
+        },
+        "readers": {
+          "title": "カードリーダー",
+          "description": "チェックアウトからStripe Terminal、SumUp、Mollie Terminalのリーダーを操作できます。"
+        },
+        "coupons": {
+          "title": "クーポンの作成と編集",
+          "description": "カートからクーポンを作成し、クーポン画面でクーポンを閲覧・編集できます。"
+        },
+        "stores": {
+          "title": "レジと店舗の追加",
+          "description": "無料のレジに加えてレジを追加し、住所、税率、価格がそれぞれ異なる複数の店舗を運営できます。"
+        },
+        "display": {
+          "title": "お客様向けの2台目の画面",
+          "description": "レジの横に置く顧客向けディスプレイ。"
         }
       }
     },
