@@ -72,8 +72,16 @@ describe('instrumentation', () => {
     expect(onRequestError).toBe(captureRequestError)
   })
 
-  it('loads the client config from instrumentation-client', async () => {
+  it('does not load the client config without a DSN', async () => {
     await import('./instrumentation-client')
-    expect(loaded.client).toBe(1)
+    await new Promise((resolve) => setTimeout(resolve, 10))
+    expect(loaded.client).toBe(0)
+  })
+
+  it('loads the client config after page load when a DSN is set', async () => {
+    vi.stubEnv('NEXT_PUBLIC_SENTRY_DSN', 'https://public@o0.ingest.sentry.io/0')
+    await import('./instrumentation-client')
+    expect(loaded.client).toBe(0)
+    await vi.waitFor(() => expect(loaded.client).toBe(1))
   })
 })
