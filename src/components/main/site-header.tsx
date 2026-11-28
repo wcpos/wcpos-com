@@ -1,32 +1,36 @@
 import { Suspense } from 'react'
 import { useTranslations } from 'next-intl'
-import { Menu } from 'lucide-react'
 import { Link } from '@/i18n/navigation'
 import { Button } from '@/components/ui/button'
 import { TrackedLocaleLink } from '@/components/analytics/tracked-locale-link'
-import {
-  Sheet,
-  SheetContent,
-  SheetTrigger,
-  SheetTitle,
-} from '@/components/ui/sheet'
 import { getCustomer } from '@/lib/medusa-auth'
 import {
   getCustomerAvatarUrl,
   getCustomerInitials,
 } from '@/lib/customer-avatar'
-import { UserMenu } from '@/components/main/user-menu'
+import {
+  MobileAccountMenu,
+  UserMenu,
+  type AccountMenuLabels,
+} from '@/components/main/user-menu'
 import { WcposLogo } from '@/components/icons/wcpos-logo'
-import { DesktopNav, MobileNavLinks } from '@/components/main/site-nav'
+import { DesktopNav, MobileMenu, MobileNavLinks } from '@/components/main/site-nav'
+import { LanguageSelector } from '@/components/main/language-selector'
+import { ThemeToggle } from '@/components/main/theme-toggle'
+
+interface AuthLabels {
+  signIn: string
+  getPro: string
+  account: AccountMenuLabels
+}
 
 async function AuthButton({
-  signInLabel,
-  getProLabel,
-  className,
+  labels,
+  inMenu = false,
 }: {
-  signInLabel: string
-  getProLabel: string
-  className?: string
+  labels: AuthLabels
+  /** The phone menu's layout: full-width buttons, account links as rows. */
+  inMenu?: boolean
 }) {
   let customer = null
   try {
@@ -36,28 +40,55 @@ async function AuthButton({
   }
 
   if (customer) {
+    const Menu = inMenu ? MobileAccountMenu : UserMenu
     return (
-      <UserMenu
+      <Menu
         email={customer.email}
         avatarUrl={getCustomerAvatarUrl(customer)}
         initials={getCustomerInitials(customer)}
+        labels={labels.account}
       />
     )
   }
 
-  // Signed out: Get Pro is the header's one filled button; Sign In steps back
+  const getPro = (
+    <Button
+      size={inMenu ? 'lg' : 'sm'}
+      asChild
+      className={inMenu ? 'h-11 px-4 text-[15px]' : undefined}
+    >
+      <TrackedLocaleLink href="/pro" eventName="click_pro_cta">
+        {labels.getPro}
+      </TrackedLocaleLink>
+    </Button>
+  )
+  // Sign In is the same ghost text in the bar and the phone menu; Get Pro
+  // stays the one filled button in either view.
+  const signIn = (
+    <Button
+      size={inMenu ? 'lg' : 'sm'}
+      variant="ghost"
+      asChild
+      className={inMenu ? 'h-11 px-4 text-[15px]' : undefined}
+    >
+      <TrackedLocaleLink href="/login" eventName="click_sign_in">
+        {labels.signIn}
+      </TrackedLocaleLink>
+    </Button>
+  )
+
+  if (inMenu) {
+    return (
+      <div className="mt-5 grid grid-cols-2 gap-2">
+        {signIn}
+        {getPro}
+      </div>
+    )
+  }
   return (
     <>
-      <Button size="sm" asChild className={className}>
-        <TrackedLocaleLink href="/pro" eventName="click_pro_cta">
-          {getProLabel}
-        </TrackedLocaleLink>
-      </Button>
-      <Button size="sm" variant="ghost" asChild className={className}>
-        <TrackedLocaleLink href="/login" eventName="click_sign_in">
-          {signInLabel}
-        </TrackedLocaleLink>
-      </Button>
+      {getPro}
+      {signIn}
     </>
   )
 }
@@ -66,18 +97,47 @@ function AuthButtonFallback() {
   return <div className="h-9 w-9" />
 }
 
+function MenuSetting({
+  label,
+  children,
+}: {
+  label: string
+  children: React.ReactNode
+}) {
+  return (
+    <div className="flex flex-col gap-1.5">
+      <span className="text-xs font-medium text-muted-foreground">{label}</span>
+      {children}
+    </div>
+  )
+}
+
 export function SiteHeader() {
   const t = useTranslations('header')
   const tCommon = useTranslations('common')
+  const tAccount = useTranslations('account.nav')
+  const tFooter = useTranslations('footer')
 
   // Journey order: try → upgrade → learn → get help → what's coming.
   const navLinks = [
     { label: t('downloads'), href: '/downloads' },
-    { label: t('pro'), href: '/pro', eventName: 'click_pro_cta', highlight: true },
+    { label: t('pro'), href: '/pro', eventName: 'click_pro_cta' },
     { label: t('documentation'), href: 'https://docs.wcpos.com', external: true },
     { label: t('support'), href: '/support' },
     { label: t('roadmap'), href: '/roadmap' },
   ]
+
+  const authLabels: AuthLabels = {
+    signIn: tCommon('signIn'),
+    getPro: t('getPro'),
+    account: {
+      account: tCommon('account'),
+      licenses: tAccount('licenses'),
+      proDownloads: tAccount('proDownloads'),
+      orders: tAccount('orders'),
+      profile: tAccount('profile'),
+    },
+  }
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/90">
@@ -95,37 +155,28 @@ export function SiteHeader() {
             more than md's 768px for the labels plus Get Pro / Sign In. */}
         <div className="hidden lg:flex lg:items-center lg:gap-2">
           <Suspense fallback={<AuthButtonFallback />}>
-            <AuthButton signInLabel={tCommon('signIn')} getProLabel={t('getPro')} />
+            <AuthButton labels={authLabels} />
           </Suspense>
         </div>
 
-        {/* Mobile Hamburger */}
-        <Sheet>
-          <SheetTrigger asChild className="lg:hidden">
-            <Button variant="ghost" size="icon">
-              <Menu className="h-5 w-5" />
-              <span className="sr-only">{tCommon('openMenu')}</span>
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="right" className="w-72" closeLabel={tCommon('close')}>
-            <SheetTitle className="flex items-center gap-2 text-lg font-bold">
-              <WcposLogo className="h-6 w-6" />
-              WCPOS
-            </SheetTitle>
-            <nav className="flex flex-col gap-1 mt-6">
+        <MobileMenu menuLabel={tCommon('menu')} closeLabel={tCommon('close')}>
+          <div className="container mx-auto flex flex-1 flex-col overflow-y-auto px-4 pb-6 pt-2">
+            <nav className="flex flex-col">
               <MobileNavLinks links={navLinks} />
-              <div className="border-t pt-4 mt-3 flex flex-col gap-2">
-                <Suspense fallback={<AuthButtonFallback />}>
-                  <AuthButton
-                    signInLabel={tCommon('signIn')}
-                    getProLabel={t('getPro')}
-                    className="w-full"
-                  />
-                </Suspense>
-              </div>
             </nav>
-          </SheetContent>
-        </Sheet>
+            <Suspense fallback={null}>
+              <AuthButton labels={authLabels} inMenu />
+            </Suspense>
+            <div className="mt-auto flex flex-col gap-3.5 pt-5">
+              <MenuSetting label={tFooter('language')}>
+                <LanguageSelector />
+              </MenuSetting>
+              <MenuSetting label={tFooter('theme')}>
+                <ThemeToggle />
+              </MenuSetting>
+            </div>
+          </div>
+        </MobileMenu>
       </div>
     </header>
   )

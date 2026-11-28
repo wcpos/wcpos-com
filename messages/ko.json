@@ -2,7 +2,7 @@
   "common": {
     "signIn": "로그인",
     "account": "계정",
-    "openMenu": "메뉴 열기",
+    "menu": "메뉴",
     "close": "닫기",
     "accountMenu": "계정 메뉴",
     "signOut": "로그아웃",
@@ -791,6 +791,7 @@
       "orders": "주문",
       "licenses": "라이선스",
       "downloads": "다운로드",
+      "proDownloads": "Pro 다운로드",
       "profile": "프로필"
     },
     "meta": {

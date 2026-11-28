@@ -32,9 +32,17 @@ vi.mock('@/i18n/navigation', () => ({
   ),
 }))
 
+const labels = {
+  account: 'Translated account',
+  licenses: 'Translated licenses',
+  proDownloads: 'Translated pro downloads',
+  orders: 'Translated orders',
+  profile: 'Translated profile',
+}
+
 describe('UserMenu', () => {
   it('uses translated labels for the trigger and account link', () => {
-    render(<UserMenu email="user@example.com" avatarUrl="" initials="UE" />)
+    render(<UserMenu email="user@example.com" avatarUrl="" initials="UE" labels={labels} />)
 
     expect(
       screen.getByRole('button', { name: 'Translated account menu' })
@@ -50,7 +58,7 @@ describe('UserMenu', () => {
   })
 
   it('uses a translated sign-out label', () => {
-    render(<UserMenu email="user@example.com" avatarUrl="" initials="UE" />)
+    render(<UserMenu email="user@example.com" avatarUrl="" initials="UE" labels={labels} />)
 
     fireEvent.pointerDown(
       screen.getByRole('button', { name: 'Translated account menu' })
@@ -61,29 +69,47 @@ describe('UserMenu', () => {
     ).toBeInTheDocument()
   })
 
-  it('draws sign-out in the readable red, not the dark-theme destructive red', () => {
-    render(<UserMenu email="user@example.com" avatarUrl="" initials="UE" />)
+  it('lists every account page, with Pro downloads named apart from the public Downloads', () => {
+    render(<UserMenu email="user@example.com" avatarUrl="" initials="UE" labels={labels} />)
 
     fireEvent.pointerDown(
       screen.getByRole('button', { name: 'Translated account menu' })
     )
 
-    // text-destructive is 2.0:1 on the dark popover; wcpos-red-accent on the
-    // primary/10 tint is at least 4.5:1 in both themes.
+    expect(
+      screen.getAllByRole('menuitem').map((item) => item.getAttribute('href'))
+    ).toEqual([
+      '/account',
+      '/account/licenses',
+      '/account/downloads',
+      '/account/orders',
+      '/account/profile',
+      null,
+    ])
+    expect(
+      screen.getByRole('menuitem', { name: /Translated pro downloads/ })
+    ).toHaveAttribute('href', '/account/downloads')
+  })
+
+  it('draws sign-out as a quiet muted row, not a red or destructive one', () => {
+    render(<UserMenu email="user@example.com" avatarUrl="" initials="UE" labels={labels} />)
+
+    fireEvent.pointerDown(
+      screen.getByRole('button', { name: 'Translated account menu' })
+    )
+
     const signOut = screen.getByRole('menuitem', { name: /Translated sign out/ })
     expect(signOut).toHaveClass(
-      'text-wcpos-red-accent',
-      'focus:bg-primary/10',
-      'focus:text-wcpos-red-accent',
-      'focus-visible:outline-solid',
-      'focus-visible:outline-2',
-      'focus-visible:outline-wcpos-red-accent'
+      'text-muted-foreground',
+      'focus:bg-accent',
+      'focus:text-foreground'
     )
     expect(signOut.className).not.toContain('text-destructive')
+    expect(signOut.className).not.toContain('text-wcpos-red-accent')
   })
 
   it('posts sign-out to the localized login fallback', () => {
-    render(<UserMenu email="user@example.com" avatarUrl="" initials="UE" />)
+    render(<UserMenu email="user@example.com" avatarUrl="" initials="UE" labels={labels} />)
 
     fireEvent.pointerDown(
       screen.getByRole('button', { name: 'Translated account menu' })

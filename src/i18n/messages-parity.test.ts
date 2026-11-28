@@ -258,6 +258,8 @@ const auditedItalianNamespacePrefixes = [
   'legal.',
 ]
 const italianIdenticalCopyAllowlist = new Set([
+  // 'Menu' is the Italian word too (phone menu button).
+  'common.menu',
   'account.licenses.instanceId',
   'account.licenses.pluginVersionLabel',
   'account.licenses.wpVersionLabel',
@@ -351,6 +353,8 @@ const auditedDutchNamespacePrefixes = [
   'about.',
 ]
 const dutchIdenticalCopyAllowlist = new Set([
+  // 'Menu' is the Dutch word too (phone menu button).
+  'common.menu',
   'downloads.page.mobileApps',
   // 'Sites'/'Downloads' are the standard Dutch terms (account facts row).
   'account.licenses.factSites',
@@ -588,6 +592,8 @@ const auditedPortugueseNamespacePrefixes = [
   'home.subtitle',
 ]
 const portugueseIdenticalCopyAllowlist = new Set([
+  // 'Menu' is the Portuguese word too (phone menu button).
+  'common.menu',
   // 'Sites'/'Downloads' are the standard Portuguese terms (account facts row).
   'account.licenses.factSites',
   'account.licenses.factDownloads',
@@ -1089,6 +1095,8 @@ const spanishIdenticalCopyAllowlist = new Set([
 ])
 
 const frenchIdenticalCopyAllowlist = new Set([
+  // 'Menu' is the French word too (phone menu button).
+  'common.menu',
   // « Sites » is the correct French word (account facts row).
   'account.licenses.factSites',
   'account.licenses.instanceId',

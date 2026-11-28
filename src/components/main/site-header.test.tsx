@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { fireEvent, render, screen, act } from '@testing-library/react'
+import { fireEvent, render, screen, act, within } from '@testing-library/react'
 
 // Mock medusa-auth before importing the component
 vi.mock('@/lib/medusa-auth', () => ({
@@ -31,12 +31,19 @@ vi.mock('next-intl', () => ({
       },
       common: {
         signIn: 'Translated sign in',
-        openMenu: 'Translated open menu',
+        menu: 'Translated menu',
         close: 'Translated close',
         account: 'Translated account',
         accountMenu: 'Translated account menu',
         signOut: 'Translated sign out',
       },
+      'account.nav': {
+        licenses: 'Translated licenses',
+        proDownloads: 'Translated pro downloads',
+        orders: 'Translated orders',
+        profile: 'Translated profile',
+      },
+      footer: { language: 'Translated language', theme: 'Translated theme' },
     }
     return translations[namespace]?.[key] ?? key
   },
@@ -63,6 +70,7 @@ vi.mock('@/i18n/navigation', () => ({
     </a>
   ),
   usePathname: () => navState.pathname,
+  useRouter: () => ({ replace: vi.fn() }),
 }))
 
 import { getCustomer } from '@/lib/medusa-auth'
@@ -171,7 +179,7 @@ describe('SiteHeader', () => {
     })
 
     fireEvent.click(
-      screen.getByRole('button', { name: 'Translated open menu' })
+      screen.getByRole('button', { name: 'Translated menu' })
     )
 
     const proLinks = screen.getAllByText('Pro')
@@ -199,7 +207,7 @@ describe('SiteHeader', () => {
       .parentElement!
     expect(auth).toHaveClass('hidden', 'lg:flex')
     expect(auth).not.toHaveClass('md:flex')
-    const trigger = screen.getByRole('button', { name: 'Translated open menu' })
+    const trigger = screen.getByRole('button', { name: 'Translated menu' })
     expect(trigger).toHaveClass('lg:hidden')
     expect(trigger).not.toHaveClass('md:hidden')
   })
@@ -211,7 +219,7 @@ describe('SiteHeader', () => {
     })
 
     expect(
-      screen.getByRole('button', { name: 'Translated open menu' })
+      screen.getByRole('button', { name: 'Translated menu' })
     ).toBeInTheDocument()
   })
 
@@ -222,7 +230,7 @@ describe('SiteHeader', () => {
     })
 
     fireEvent.click(
-      screen.getByRole('button', { name: 'Translated open menu' })
+      screen.getByRole('button', { name: 'Translated menu' })
     )
 
     expect(
@@ -298,7 +306,7 @@ describe('SiteHeader', () => {
 
     // Sheet content mounts on open — trigger it so the mobile nav renders too.
     fireEvent.click(
-      screen.getByRole('button', { name: 'Translated open menu' })
+      screen.getByRole('button', { name: 'Translated menu' })
     )
 
     const downloadsLinks = screen
@@ -375,7 +383,7 @@ describe('SiteHeader', () => {
     })
 
     fireEvent.click(
-      screen.getByRole('button', { name: 'Translated open menu' })
+      screen.getByRole('button', { name: 'Translated menu' })
     )
 
     const proLinks = screen.getAllByText('Pro').map((el) => el.closest('a'))
@@ -397,5 +405,105 @@ describe('SiteHeader', () => {
 
     const proLink = screen.getAllByText('Pro')[0].closest('a')
     expect(proLink?.classList.contains('text-wcpos-red-accent')).toBe(true)
+  })
+
+  it('labels the phone menu button in words and closes the panel from its own bar', async () => {
+    mockGetCustomer.mockResolvedValue(null)
+    await act(async () => {
+      render(<SiteHeader />)
+    })
+
+    const trigger = screen.getByRole('button', { name: 'Translated menu' })
+    expect(trigger).toHaveTextContent('Translated menu')
+    fireEvent.click(trigger)
+
+    const dialog = await screen.findByRole('dialog')
+    fireEvent.click(screen.getByRole('button', { name: 'Translated close' }))
+    expect(dialog).not.toBeInTheDocument()
+  })
+
+  it('closes the phone menu when a row opens a page', async () => {
+    mockGetCustomer.mockResolvedValue(null)
+    await act(async () => {
+      render(<SiteHeader />)
+    })
+
+    fireEvent.click(screen.getByRole('button', { name: 'Translated menu' }))
+    const dialog = await screen.findByRole('dialog')
+    fireEvent.click(within(dialog).getByRole('link', { name: 'Support' }))
+
+    expect(screen.queryByRole('dialog')).toBeNull()
+  })
+
+  it('draws the phone menu Sign In as ghost text beside the one filled Get Pro', async () => {
+    mockGetCustomer.mockResolvedValue(null)
+    await act(async () => {
+      render(<SiteHeader />)
+    })
+
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: 'Translated menu' }))
+    })
+    const dialog = await screen.findByRole('dialog')
+    const signIn = await within(dialog).findByRole('link', {
+      name: 'Translated sign in',
+    })
+    const getPro = within(dialog).getByRole('link', { name: 'Get Pro' })
+
+    expect(signIn).toHaveAttribute('href', '/login')
+    expect(signIn.className).not.toContain('border')
+    expect(signIn.className).not.toContain('bg-wcpos-red')
+    expect(getPro).toHaveAttribute('href', '/pro')
+    expect(getPro).toHaveClass('bg-wcpos-red')
+  })
+
+  it('lists the account links and Sign out in the signed-in phone menu', async () => {
+    mockGetCustomer.mockResolvedValue({
+      id: 'cust_1',
+      email: 'user@example.com',
+      has_account: true,
+      created_at: '2026-01-01T00:00:00Z',
+      updated_at: '2026-01-01T00:00:00Z',
+    })
+    await act(async () => {
+      render(<SiteHeader />)
+    })
+
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: 'Translated menu' }))
+    })
+    const dialog = await screen.findByRole('dialog')
+    await within(dialog).findByRole('link', { name: 'Translated account' })
+
+    for (const [name, href] of [
+      ['Translated account', '/account'],
+      ['Translated licenses', '/account/licenses'],
+      ['Translated pro downloads', '/account/downloads'],
+      ['Translated orders', '/account/orders'],
+      ['Translated profile', '/account/profile'],
+    ]) {
+      expect(within(dialog).getByRole('link', { name })).toHaveAttribute(
+        'href',
+        href
+      )
+    }
+    const signOut = within(dialog).getByRole('button', {
+      name: 'Translated sign out',
+    })
+    expect(signOut.closest('form')).toHaveAttribute(
+      'action',
+      '/api/auth/logout?to=%2Flogin'
+    )
+    expect(within(dialog).queryByRole('link', { name: 'Get Pro' })).toBeNull()
+  })
+
+  it('marks the Documentation link as leaving the site', async () => {
+    mockGetCustomer.mockResolvedValue(null)
+    await act(async () => {
+      render(<SiteHeader />)
+    })
+
+    const docsLink = screen.getAllByText('Documentation')[0].closest('a')!
+    expect(docsLink.querySelector('svg[aria-hidden="true"]')).not.toBeNull()
   })
 })

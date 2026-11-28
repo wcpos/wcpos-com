@@ -2,7 +2,7 @@
   "common": {
     "signIn": "登录",
     "account": "账户",
-    "openMenu": "打开菜单",
+    "menu": "菜单",
     "close": "关闭",
     "accountMenu": "账户菜单",
     "signOut": "退出登录",
@@ -791,6 +791,7 @@
       "orders": "订单",
       "licenses": "许可证",
       "downloads": "下载",
+      "proDownloads": "Pro 下载",
       "profile": "个人资料"
     },
     "meta": {

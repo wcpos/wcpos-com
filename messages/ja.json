@@ -2,7 +2,7 @@
   "common": {
     "signIn": "サインイン",
     "account": "アカウント",
-    "openMenu": "メニューを開く",
+    "menu": "メニュー",
     "close": "閉じる",
     "accountMenu": "アカウントメニュー",
     "signOut": "ログアウト",
@@ -791,6 +791,7 @@
       "orders": "注文",
       "licenses": "ライセンス",
       "downloads": "ダウンロード",
+      "proDownloads": "Pro のダウンロード",
       "profile": "プロフィール"
     },
     "meta": {

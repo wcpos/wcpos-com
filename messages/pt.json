@@ -2,7 +2,7 @@
   "common": {
     "signIn": "Iniciar sessão",
     "account": "Conta",
-    "openMenu": "Abrir menu",
+    "menu": "Menu",
     "close": "Fechar",
     "accountMenu": "Menu da conta",
     "signOut": "Terminar sessão",
@@ -791,6 +791,7 @@
       "orders": "Pedidos",
       "licenses": "Licenças",
       "downloads": "Transferências",
+      "proDownloads": "Transferências Pro",
       "profile": "Perfil"
     },
     "meta": {

@@ -44,6 +44,7 @@ const allowed = new Set([
   'src/components/home/features-section.tsx|text|Pro',
   'src/components/home/benefits-section.tsx|text|WooCommerce',
   'src/components/main/site-header.tsx|text|WCPOS',
+  'src/components/main/site-nav.tsx|text|WCPOS',
   'src/components/pro/checkout/account-step.tsx|attribute|you@yourstore.com',
   'src/components/pro/checkout/payment-step.tsx|text|PayPal',
 ])

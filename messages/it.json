@@ -2,7 +2,7 @@
   "common": {
     "signIn": "Accedi",
     "account": "Area account",
-    "openMenu": "Apri menu",
+    "menu": "Menu",
     "close": "Chiudi",
     "accountMenu": "Menu account",
     "signOut": "Esci",
@@ -791,6 +791,7 @@
       "orders": "Ordini",
       "licenses": "Licenze",
       "downloads": "Download",
+      "proDownloads": "Download Pro",
       "profile": "Profilo"
     },
     "meta": {

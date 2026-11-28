@@ -2,7 +2,7 @@
   "common": {
     "signIn": "Iniciar sesión",
     "account": "Cuenta",
-    "openMenu": "Abrir menú",
+    "menu": "Menú",
     "close": "Cerrar",
     "accountMenu": "Menú de cuenta",
     "signOut": "Cerrar sesión",
@@ -791,6 +791,7 @@
       "orders": "Pedidos",
       "licenses": "Licencias",
       "downloads": "Descargas",
+      "proDownloads": "Descargas Pro",
       "profile": "Perfil"
     },
     "meta": {

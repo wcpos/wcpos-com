@@ -2,7 +2,7 @@
   "common": {
     "signIn": "Aanmelden",
     "account": "Mijn account",
-    "openMenu": "Menu openen",
+    "menu": "Menu",
     "close": "Sluiten",
     "accountMenu": "Accountmenu",
     "signOut": "Uitloggen",
@@ -791,6 +791,7 @@
       "orders": "Bestellingen",
       "licenses": "Licenties",
       "downloads": "Downloads",
+      "proDownloads": "Pro-downloads",
       "profile": "Profiel"
     },
     "meta": {

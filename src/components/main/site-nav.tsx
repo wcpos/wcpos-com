@@ -1,8 +1,19 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { ChevronRight, Menu, X } from 'lucide-react'
 import { Link, usePathname } from '@/i18n/navigation'
 import { TrackedLocaleLink } from '@/components/analytics/tracked-locale-link'
+import { Button } from '@/components/ui/button'
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet'
+import { WcposLogo } from '@/components/icons/wcpos-logo'
+import { currentItemClass, ExternalMark } from '@/components/main/shell-parts'
 import { cn } from '@/lib/utils'
 
 export interface SiteNavLink {
@@ -10,8 +21,6 @@ export interface SiteNavLink {
   href: string
   external?: boolean
   eventName?: string
-  /** Brand-red emphasis (Pro) independent of the active page. */
-  highlight?: boolean
 }
 
 // Locale-stripped match (usePathname from next-intl drops the locale prefix);
@@ -24,16 +33,23 @@ function isActive(pathname: string, link: SiteNavLink) {
 // No weight change between states — the active page reads by colour alone
 // (wcpos-red-accent stays ≥4.5:1 on the bg-primary/10 tint in both themes,
 // where plain --primary does not), and constant weight means link widths
-// never shift. A highlighted link is brighter than the others but never red,
-// so only the current page reads as red.
-function navItemClass(active: boolean, highlight?: boolean) {
+// never shift. Every other link is muted, Pro included: only the current
+// page reads as red, and Pro's emphasis is the filled Get Pro button.
+function navItemClass(active: boolean) {
   return cn(
-    'relative rounded-full px-3 py-1.5 transition-colors',
+    'relative rounded-md px-3 py-1.5 transition-colors',
     active
       ? 'text-wcpos-red-accent'
-      : highlight
-        ? 'text-foreground'
-        : 'text-muted-foreground hover:text-foreground'
+      : 'text-muted-foreground hover:text-foreground'
+  )
+}
+
+function NavLabel({ link }: { link: SiteNavLink }) {
+  return (
+    <>
+      {link.label}
+      {link.external && <ExternalMark />}
+    </>
   )
 }
 
@@ -103,16 +119,16 @@ export function DesktopNav({ links }: { links: SiteNavLink[] }) {
         ref={spotRef}
         aria-hidden="true"
         className={cn(
-          'pointer-events-none absolute top-0 h-full rounded-full opacity-0',
+          'pointer-events-none absolute top-0 h-full rounded-md opacity-0',
           'transition-[left,width,background-color] duration-200 ease-out motion-reduce:transition-none',
-          interactedHref ? 'bg-muted' : 'bg-primary/10'
+          interactedHref ? 'bg-muted' : 'bg-primary/10 dark:bg-primary/15'
         )}
       />
       {links.map((link) => {
         const active = isActive(pathname, link)
         const shared = {
           'aria-current': active ? ('page' as const) : undefined,
-          className: navItemClass(active, link.highlight),
+          className: navItemClass(active),
           onPointerEnter: () => setHoveredHref(link.href),
           onFocus: () => setFocusedHref(link.href),
           onBlur: () => setFocusedHref(null),
@@ -125,7 +141,7 @@ export function DesktopNav({ links }: { links: SiteNavLink[] }) {
         if (link.external) {
           return (
             <a key={link.href} href={link.href} {...shared}>
-              {link.label}
+              <NavLabel link={link} />
             </a>
           )
         }
@@ -152,7 +168,10 @@ export function DesktopNav({ links }: { links: SiteNavLink[] }) {
   )
 }
 
-/** Mobile sheet links with the matching active-page tint (no spotlight). */
+/**
+ * Phone menu rows: one row per nav link with a trailing chevron, hairlines
+ * between rows, the shared "current" tint and the nav's bg-muted hover fill.
+ */
 export function MobileNavLinks({ links }: { links: SiteNavLink[] }) {
   const pathname = usePathname()
 
@@ -161,14 +180,23 @@ export function MobileNavLinks({ links }: { links: SiteNavLink[] }) {
       {links.map((link) => {
         const active = isActive(pathname, link)
         const className = cn(
-          '-mx-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
+          '-mx-3 flex items-center justify-between border-b px-3 py-[13px] text-[17px] font-medium transition-colors',
           active
-            ? 'bg-primary/10 text-wcpos-red-accent'
-            : link.highlight
-              ? 'text-foreground hover:bg-muted'
-              : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+            ? cn(currentItemClass, 'rounded-md border-transparent')
+            : 'hover:rounded-md hover:border-transparent hover:bg-muted'
         )
         const ariaCurrent = active ? ('page' as const) : undefined
+        const content = (
+          <>
+            <span>
+              <NavLabel link={link} />
+            </span>
+            <ChevronRight
+              aria-hidden="true"
+              className={cn('size-4', !active && 'text-muted-foreground')}
+            />
+          </>
+        )
 
         if (link.external) {
           return (
@@ -178,7 +206,7 @@ export function MobileNavLinks({ links }: { links: SiteNavLink[] }) {
               aria-current={ariaCurrent}
               className={className}
             >
-              {link.label}
+              {content}
             </a>
           )
         }
@@ -192,7 +220,7 @@ export function MobileNavLinks({ links }: { links: SiteNavLink[] }) {
               aria-current={ariaCurrent}
               className={className}
             >
-              {link.label}
+              {content}
             </TrackedLocaleLink>
           )
         }
@@ -203,10 +231,67 @@ export function MobileNavLinks({ links }: { links: SiteNavLink[] }) {
             aria-current={ariaCurrent}
             className={className}
           >
-            {link.label}
+            {content}
           </Link>
         )
       })}
     </>
+  )
+}
+
+/**
+ * Below lg: a labelled "Menu" button opening a full-screen panel. The panel
+ * redraws the bar (logo, "Close") in the header's place so the button the
+ * visitor pressed stays where it was.
+ */
+export function MobileMenu({
+  menuLabel,
+  closeLabel,
+  children,
+}: {
+  menuLabel: string
+  closeLabel: string
+  children: React.ReactNode
+}) {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <Sheet open={open} onOpenChange={setOpen}>
+      <SheetTrigger asChild className="lg:hidden">
+        <Button variant="outline" className="h-11 px-3.5 [&_svg]:size-[18px]">
+          <Menu aria-hidden="true" />
+          {menuLabel}
+        </Button>
+      </SheetTrigger>
+      <SheetContent
+        side="full"
+        hideClose
+        closeLabel={closeLabel}
+        // The layout keeps the header mounted across navigations, so the
+        // panel would stay over the page a row just opened: close on the way out.
+        onClick={(event) => {
+          if ((event.target as HTMLElement).closest('a')) setOpen(false)
+        }}
+      >
+        <div className="shrink-0 border-b">
+          <div className="container mx-auto flex h-16 items-center justify-between px-4">
+            <SheetTitle className="flex items-center gap-2 text-xl font-bold">
+              <WcposLogo className="h-7 w-7" />
+              WCPOS
+            </SheetTitle>
+            <SheetClose asChild>
+              <Button
+                variant="outline"
+                className="h-11 px-3.5 [&_svg]:size-[18px]"
+              >
+                <X aria-hidden="true" />
+                {closeLabel}
+              </Button>
+            </SheetClose>
+          </div>
+        </div>
+        {children}
+      </SheetContent>
+    </Sheet>
   )
 }
