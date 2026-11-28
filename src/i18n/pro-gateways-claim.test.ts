@@ -3,8 +3,8 @@ import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 
 // The /pro gateways card says what the comparison pages say: Pro turns on the
-// store's other WooCommerce payment gateways at the register. It must not claim
-// that every gateway works.
+// store's other WooCommerce payment gateways at the register, naming the
+// methods it covers. It must not claim that every gateway works.
 const ANY_WORD: Record<string, string> = {
   en: 'any',
   de: 'jedem',
@@ -28,9 +28,9 @@ function description(locale: string): string {
 }
 
 describe('pro gateways card claim', () => {
-  it('en uses the exact copy from the comparison pages', () => {
+  it('en names the methods and keeps the WooCommerce gateway scope', () => {
     expect(description('en')).toBe(
-      "Turn on your store's other WooCommerce payment gateways at the register, not just the built-in options.",
+      'Turn on your store’s other payment methods at the register: bank transfer, cash on delivery, cheque, and the other WooCommerce gateways your store uses.',
     )
   })
 

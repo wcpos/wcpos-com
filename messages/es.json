@@ -469,7 +469,7 @@
     },
     "hero": {
       "title": "WCPOS Pro – Punto de venta para WooCommerce",
-      "subtitle": "Todo lo del POS gratuito, además de más cajas y tiendas, lectores de tarjetas conectados, reembolsos, edición de stock, pedidos y clientes desde la caja, y soporte prioritario."
+      "subtitle": "El POS gratuito se encarga de la venta. Pro añade las herramientas para gestionar tu tienda desde el mostrador: más cajas y tiendas, lectores de tarjetas conectados, reembolsos, cambios de stock y precios, y soporte prioritario."
     },
     "schema": {
       "name": "WCPOS Pro",
@@ -482,54 +482,54 @@
     "features": {
       "title": "Lo que añade Pro",
       "stores": {
-        "title": "Más cajas y varias tiendas",
-        "description": "Añade cajas además de la gratuita y gestiona varias tiendas, cada una con su propia dirección, tipos impositivos, plantilla de ticket, precios y usuarios autorizados."
+        "title": "Más cajas y tiendas",
+        "description": "Añade una caja por cada cajón de efectivo y gestiona más de una tienda, cada una con su propia dirección, tipos impositivos, plantillas de ticket, precios y cajeros."
       },
       "terminal": {
         "title": "Lectores de tarjetas conectados",
-        "description": "Acepta cobros presenciales con tarjeta en Stripe Terminal, SumUp, Mollie Terminal, Square Terminal y más. PayPal Reader (Zettle) funciona a través de la página de pago de tu propia tienda.",
+        "description": "Cobra con tarjeta en un lector vinculado a la caja: Stripe Terminal, SumUp, Mollie Terminal, Square Terminal y más. PayPal Reader (Zettle) funciona a través de la página de pago de tu propia tienda.",
         "link": "Ver todas las extensiones de terminal"
       },
       "display": {
         "title": "Pantalla orientada al cliente",
-        "description": "Pon una pantalla frente a tu cliente: ábrela en cualquier navegador y vincúlala a una caja con un código."
+        "description": "Una segunda pantalla muestra al cliente el carrito mientras lo atiendes. Ábrela en cualquier navegador y vincúlala con la caja mediante un código."
       },
       "stockPrice": {
         "title": "Edición de stock y precios",
-        "description": "Actualiza niveles de stock, precios y detalles de productos directamente desde el POS, sin pasar por el panel de WordPress."
+        "description": "Cambia el stock, los precios y el coste de los productos en la lista de productos, desde el mostrador. Sin pasar por el panel de WordPress."
       },
       "orders": {
-        "title": "Gestión de pedidos",
-        "description": "Consulta el historial de pedidos, abre pedidos anteriores, reembólsalos y gestiónalos sin salir de la caja registradora."
+        "title": "Pedidos y reembolsos",
+        "description": "Busca un pedido anterior, vuelve a abrirlo, edítalo, reimprime el ticket y reembólsalo total o parcialmente."
       },
       "customers": {
         "title": "Gestión de clientes",
-        "description": "Añade y edita los datos de los clientes en el punto de venta, sincronizados con WooCommerce."
+        "description": "Añade un cliente nuevo desde el carrito y edita los datos de tus clientes. Los cambios se guardan en WooCommerce."
       },
       "coupons": {
         "title": "Gestión de cupones",
-        "description": "Busca, crea y edita cupones en la caja, y crea uno desde el carrito."
+        "description": "Consulta tus cupones y crea otros nuevos en la caja o directamente desde el carrito."
       },
       "reports": {
-        "title": "Informes de varios días, cajas y tiendas",
-        "description": "Consulta las ventas de días anteriores y rangos de fechas, de cada caja y cada tienda."
+        "title": "Informes de cualquier día, caja y tienda",
+        "description": "Días anteriores y rangos de fechas, cada caja y cada tienda, e informes de cierre de caja anteriores."
       },
       "gateways": {
-        "title": "Tus otras pasarelas de WooCommerce",
-        "description": "Activa las demás pasarelas de pago de WooCommerce de tu tienda en la caja, no solo las opciones integradas."
+        "title": "Otros métodos de pago",
+        "description": "Activa en la caja los demás métodos de pago de tu tienda: transferencia bancaria, contra reembolso, cheque y las demás pasarelas de WooCommerce que use tu tienda."
       }
     },
     "buyBox": {
       "heading": "Consigue Pro",
-      "subheading": "Una licencia, todas las funciones. Solo elige cuánto tiempo quieres actualizaciones.",
+      "subheading": "Todas las funciones de Pro, para un sitio en producción y un sitio de desarrollo. Elige durante cuánto tiempo recibes actualizaciones.",
       "termAriaLabel": "Duración de la licencia",
       "cta": "Comprar Pro",
       "ctaValueCopy": "Obtén acceso instantáneo",
       "yearly": {
         "title": "Anual",
-        "subtitle": "Actualizaciones y soporte durante 1 año",
-        "priceSuffix": "/año",
-        "ctaNote": "Pago único: nunca se renueva automáticamente, y Pro sigue funcionando después."
+        "subtitle": "Actualizaciones y soporte prioritario durante 1 año",
+        "priceSuffix": "por 1 año",
+        "ctaNote": "Un solo pago. Nada se renueva solo: después del año, Pro sigue funcionando y solo renuevas si las nuevas actualizaciones te compensan."
       },
       "lifetime": {
         "title": "De por vida",
@@ -550,11 +550,11 @@
       "title": "Preguntas frecuentes",
       "freePlugin": {
         "question": "¿Está limitado el plugin gratuito?",
-        "answer": "Funciona con una caja. No hay topes de productos, pedidos ni clientes, ni comisiones por transacción. Para más cajas y las herramientas indicadas arriba se necesita Pro. El plugin gratuito es software GPL."
+        "answer": "No hay topes de productos, pedidos ni clientes, ni comisiones por transacción. Funciona con una caja que comparten todos los dispositivos, con sesiones de cajón de efectivo, pagos divididos, ventas sin conexión en efectivo y con tarjeta, cupones en el carrito y el informe del día. Para más cajas y las herramientas indicadas arriba se necesita Pro. El plugin gratuito es software GPL."
       },
       "yearlyVsLifetime": {
         "question": "¿Cuál es la diferencia entre Anual y De por vida?",
-        "answer": "La licencia Anual es un pago único que incluye actualizaciones y soporte prioritario durante un año. No se renueva automáticamente. La licencia De por vida es un pago único que incluye actualizaciones para siempre."
+        "answer": "Ambas son un solo pago. Anual incluye actualizaciones y soporte prioritario durante un año y nunca se renueva sola. De por vida incluye actualizaciones para siempre."
       },
       "expiry": {
         "question": "¿Qué pasa cuando caduca mi licencia?",
@@ -562,7 +562,7 @@
       },
       "siteLimits": {
         "question": "¿En cuántos sitios puedo usar mi licencia?",
-        "answer": "Cada licencia se puede activar en 2 sitios, pensados para un sitio en producción y un sitio de desarrollo. Puedes ver y desactivar tus sitios en el panel de tu cuenta."
+        "answer": "Cada licencia se puede activar en 2 sitios, pensados para un sitio en producción y un sitio de desarrollo. No hay límite de dispositivos ni de cajeros. Puedes ver y desactivar tus sitios en el panel de tu cuenta."
       },
       "paymentMethods": {
         "question": "¿Qué métodos de pago aceptáis?",

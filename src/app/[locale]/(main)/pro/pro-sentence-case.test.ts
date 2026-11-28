@@ -20,15 +20,15 @@ const ALLOWED_CAPITALISED = new Set(['WCPOS', 'Pro', 'WooCommerce'])
 describe('/pro headings in sentence case (en)', () => {
   it('uses the exact sentence-case feature titles and FAQ heading', () => {
     expect(featureTitles).toEqual({
-      stores: 'More registers & multiple stores',
+      stores: 'More registers and stores',
       terminal: 'Connected card readers',
       display: 'Customer-facing display',
-      stockPrice: 'Stock & price editing',
-      orders: 'Order management',
+      stockPrice: 'Stock and price editing',
+      orders: 'Orders and refunds',
       customers: 'Customer management',
       coupons: 'Coupon management',
-      reports: 'Reports across days, registers & stores',
-      gateways: 'Your other WooCommerce gateways',
+      reports: 'Reports for any day, register and store',
+      gateways: 'Other payment methods',
     })
     expect(en.pro.faq.title).toBe('Frequently asked questions')
   })

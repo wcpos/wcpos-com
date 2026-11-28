@@ -469,7 +469,7 @@
     },
     "hero": {
       "title": "WCPOS Pro – Ponto de venda para WooCommerce",
-      "subtitle": "Tudo o que existe no POS gratuito, mais caixas e lojas, leitores de cartões ligados, reembolsos, edição de stock, encomendas e clientes na caixa, e suporte prioritário."
+      "subtitle": "O POS gratuito trata da venda. O Pro acrescenta as ferramentas para gerir a sua loja a partir do balcão: mais caixas e lojas, leitores de cartões ligados, reembolsos, alterações de stock e preços, e suporte prioritário."
     },
     "schema": {
       "name": "WCPOS Pro",
@@ -482,54 +482,54 @@
     "features": {
       "title": "O que o Pro acrescenta",
       "stores": {
-        "title": "Mais Caixas e Várias Lojas",
-        "description": "Adicione caixas além da gratuita e gira várias lojas, cada uma com a sua própria morada, taxas de imposto, modelo de recibo, preços e utilizadores autorizados."
+        "title": "Mais caixas e lojas",
+        "description": "Adicione uma caixa por cada gaveta de dinheiro e gira mais do que uma loja, cada uma com a sua própria morada, taxas de imposto, modelos de recibo, preços e operadores de caixa."
       },
       "terminal": {
         "title": "Leitores de cartões ligados",
-        "description": "Aceite pagamentos presenciais com cartão em Stripe Terminal, SumUp, Mollie Terminal, Square Terminal e muito mais. O PayPal Reader (Zettle) funciona através da página de pagamento da sua própria loja.",
+        "description": "Aceite pagamentos com cartão num leitor emparelhado com a caixa: Stripe Terminal, SumUp, Mollie Terminal, Square Terminal e muito mais. O PayPal Reader (Zettle) funciona através da página de pagamento da sua própria loja.",
         "link": "Ver todas as extensões de terminal"
       },
       "display": {
         "title": "Ecrã virado para o cliente",
-        "description": "Coloque um ecrã à frente do cliente: abra-o em qualquer navegador e associe-o a uma caixa com um código."
+        "description": "Um segundo ecrã mostra ao cliente o carrinho enquanto o atende. Abra-o em qualquer navegador e emparelhe-o com a caixa através de um código."
       },
       "stockPrice": {
-        "title": "Edição de Stock e Preços",
-        "description": "Atualize níveis de stock, preços e detalhes de produtos diretamente no POS — sem precisar de aceder à administração do WordPress."
+        "title": "Edição de stock e preços",
+        "description": "Altere o stock, os preços e o custo das mercadorias na lista de produtos, ao balcão. Sem passar pela administração do WordPress."
       },
       "orders": {
-        "title": "Gestão de Pedidos",
-        "description": "Consulte o histórico de pedidos, abra pedidos anteriores, reembolse-os e faça a sua gestão sem sair da caixa."
+        "title": "Pedidos e reembolsos",
+        "description": "Encontre um pedido antigo, reabra-o, edite-o, volte a imprimir o recibo e reembolse-o total ou parcialmente."
       },
       "customers": {
         "title": "Gestão de Clientes",
-        "description": "Adicione e edite os detalhes dos clientes no ponto de venda, mantidos sincronizados com o WooCommerce."
+        "description": "Adicione um novo cliente a partir do carrinho e edite os dados dos clientes. As alterações são guardadas no WooCommerce."
       },
       "coupons": {
         "title": "Gestão de Cupões",
-        "description": "Pesquise, crie e edite cupões na caixa, e crie um a partir do carrinho."
+        "description": "Consulte os seus cupões e crie novos na caixa ou diretamente a partir do carrinho."
       },
       "reports": {
-        "title": "Relatórios de Vários Dias, Caixas e Lojas",
-        "description": "Veja as vendas de dias anteriores e intervalos de datas, para cada caixa e cada loja."
+        "title": "Relatórios de qualquer dia, caixa e loja",
+        "description": "Dias anteriores e intervalos de datas, cada caixa e cada loja, e relatórios de fecho de caixa anteriores."
       },
       "gateways": {
-        "title": "Os seus outros gateways WooCommerce",
-        "description": "Ative os outros gateways de pagamento WooCommerce da sua loja na caixa, não apenas as opções incorporadas."
+        "title": "Outros métodos de pagamento",
+        "description": "Ative na caixa os outros métodos de pagamento da sua loja: transferência bancária, pagamento na entrega, cheque e os outros gateways WooCommerce que a sua loja utiliza."
       }
     },
     "buyBox": {
       "heading": "Adquira o Pro",
-      "subheading": "Uma licença, todos os recursos. Escolha apenas por quanto tempo quer atualizações.",
+      "subheading": "Todas as funcionalidades Pro, para um site em produção e um site de desenvolvimento. Escolha durante quanto tempo recebe atualizações.",
       "termAriaLabel": "Duração da licença",
       "cta": "Comprar o Pro",
       "ctaValueCopy": "Obtenha acesso imediato",
       "yearly": {
         "title": "Anual",
-        "subtitle": "Atualizações e suporte por 1 ano",
-        "priceSuffix": "/ano",
-        "ctaNote": "Pagamento único — nunca renova automaticamente, e o Pro continua a funcionar depois."
+        "subtitle": "Atualizações e suporte prioritário durante 1 ano",
+        "priceSuffix": "por 1 ano",
+        "ctaNote": "Um único pagamento. Nada se renova sozinho: depois do ano, o Pro continua a funcionar, e só renova se as novas atualizações valerem a pena para si."
       },
       "lifetime": {
         "title": "Vitalício",
@@ -550,11 +550,11 @@
       "title": "Perguntas Frequentes",
       "freePlugin": {
         "question": "O plugin gratuito é limitado?",
-        "answer": "Funciona com uma caixa. Não há limites de produtos, pedidos ou clientes, nem taxas por transação. Mais caixas e as ferramentas listadas acima exigem o Pro. O plugin gratuito é software GPL."
+        "answer": "Não há limites de produtos, pedidos ou clientes, nem taxas por transação. Funciona com uma caixa partilhada por todos os dispositivos, com sessões de gaveta de dinheiro, pagamentos divididos, vendas offline em numerário e cartão, cupões no carrinho e o relatório do dia. Mais caixas e as ferramentas listadas acima exigem o Pro. O plugin gratuito é software GPL."
       },
       "yearlyVsLifetime": {
         "question": "Qual é a diferença entre o Anual e o Vitalício?",
-        "answer": "A licença Anual é um pagamento único que inclui atualizações e suporte prioritário durante um ano. Não renova automaticamente. A licença Vitalícia é um pagamento único que inclui atualizações para sempre."
+        "answer": "Ambas são um único pagamento. A Anual inclui atualizações e suporte prioritário durante um ano e nunca se renova sozinha. A Vitalícia inclui atualizações para sempre."
       },
       "expiry": {
         "question": "O que acontece quando a minha licença expira?",
@@ -562,7 +562,7 @@
       },
       "siteLimits": {
         "question": "Em quantos sites posso usar a minha licença?",
-        "answer": "Cada licença pode ser ativada em 2 sites, destinados a um site em produção e a um site de desenvolvimento. Pode ver e desativar os seus sites no painel da sua conta."
+        "answer": "Cada licença pode ser ativada em 2 sites, destinados a um site em produção e a um site de desenvolvimento. Não há limite de dispositivos nem de operadores de caixa. Pode ver e desativar os seus sites no painel da sua conta."
       },
       "paymentMethods": {
         "question": "Que métodos de pagamento aceitam?",

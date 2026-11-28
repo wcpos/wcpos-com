@@ -469,7 +469,7 @@
     },
     "hero": {
       "title": "WCPOS Pro – Kassasysteem voor WooCommerce",
-      "subtitle": "Alles uit de gratis POS, plus meer kassa's en winkels, gekoppelde kaartlezers, terugbetalingen, voorraad-, order- en klantbewerking aan de kassa en prioriteitssupport."
+      "subtitle": "De gratis POS regelt de verkoop. Pro voegt de tools toe om je winkel vanaf de toonbank te beheren: meer kassa's en winkels, gekoppelde kaartlezers, terugbetalingen, voorraad- en prijswijzigingen en prioriteitssupport."
     },
     "schema": {
       "name": "WCPOS Pro",
@@ -482,54 +482,54 @@
     "features": {
       "title": "Wat Pro toevoegt",
       "stores": {
-        "title": "Meer kassa's en meerdere winkels",
-        "description": "Voeg naast de gratis kassa meer kassa's toe en beheer meerdere winkels, elk met een eigen adres, eigen btw-tarieven, een eigen bonsjabloon, eigen prijzen en eigen geautoriseerde gebruikers."
+        "title": "Meer kassa's en winkels",
+        "description": "Voeg een kassa toe voor elke kassalade en beheer meer dan één winkel, elk met een eigen adres, btw-tarieven, bonsjablonen, prijzen en kassamedewerkers."
       },
       "terminal": {
         "title": "Gekoppelde kaartlezers",
-        "description": "Neem kaartbetalingen ter plaatse aan met Stripe Terminal, SumUp, Mollie Terminal, Square Terminal en meer. PayPal Reader (Zettle) werkt via de eigen betaalpagina van je winkel.",
+        "description": "Neem kaartbetalingen aan op een lezer die aan de kassa is gekoppeld: Stripe Terminal, SumUp, Mollie Terminal, Square Terminal en meer. PayPal Reader (Zettle) werkt via de eigen betaalpagina van je winkel.",
         "link": "Bekijk alle terminalextensies"
       },
       "display": {
         "title": "Klantendisplay",
-        "description": "Zet een scherm voor je klant: open het in elke browser en koppel het met een code aan een kassa."
+        "description": "Een tweede scherm toont je klant de winkelwagen terwijl je hem helpt. Open het in elke browser en koppel het met een code aan de kassa."
       },
       "stockPrice": {
         "title": "Voorraad en prijzen bewerken",
-        "description": "Werk voorraadniveaus, prijzen en productgegevens rechtstreeks vanuit de POS bij — zonder naar het WordPress-beheer te gaan."
+        "description": "Wijzig voorraad, prijzen en inkoopwaarde in de productlijst aan de toonbank. Zonder omweg via het WordPress-beheer."
       },
       "orders": {
-        "title": "Bestelbeheer",
-        "description": "Blader door de bestelgeschiedenis, open eerdere bestellingen, betaal ze terug en beheer ze zonder de kassa te verlaten."
+        "title": "Bestellingen en terugbetalingen",
+        "description": "Zoek een oudere bestelling op, open hem opnieuw, bewerk hem, druk de bon opnieuw af en betaal hem geheel of gedeeltelijk terug."
       },
       "customers": {
         "title": "Klantbeheer",
-        "description": "Voeg klantgegevens toe en bewerk ze op de kassa, gesynchroniseerd met WooCommerce."
+        "description": "Voeg een nieuwe klant toe vanuit de winkelwagen en bewerk klantgegevens. Wijzigingen worden opgeslagen in WooCommerce."
       },
       "coupons": {
         "title": "Kortingsbonbeheer",
-        "description": "Zoek, maak en bewerk kortingsbonnen aan de kassa, en maak er een aan vanuit de winkelwagen."
+        "description": "Zoek je kortingsbonnen op en maak nieuwe aan op de kassa of direct vanuit de winkelwagen."
       },
       "reports": {
-        "title": "Rapporten over dagen, kassa's en winkels",
-        "description": "Bekijk de verkopen voor eerdere dagen en datumbereiken, voor elke kassa en elke winkel."
+        "title": "Rapporten voor elke dag, kassa en winkel",
+        "description": "Eerdere dagen en datumbereiken, elke kassa en elke winkel, en eerdere kassa-afsluitrapporten."
       },
       "gateways": {
-        "title": "Je andere WooCommerce-gateways",
-        "description": "Schakel de andere WooCommerce-betaalgateways van je winkel in aan de kassa, niet alleen de ingebouwde opties."
+        "title": "Andere betaalmethoden",
+        "description": "Schakel de andere betaalmethoden van je winkel in op de kassa: bankoverschrijving, rembours, cheque en de andere WooCommerce-gateways die je winkel gebruikt."
       }
     },
     "buyBox": {
       "heading": "Koop Pro",
-      "subheading": "Eén licentie, alle functies. Kies alleen hoe lang je updates wilt.",
+      "subheading": "Alle Pro-functies, voor één live site en één ontwikkelsite. Kies hoe lang je updates krijgt.",
       "termAriaLabel": "Licentieduur",
       "cta": "Koop Pro",
       "ctaValueCopy": "Krijg direct toegang",
       "yearly": {
         "title": "Jaarlijks",
-        "subtitle": "Updates en support voor 1 jaar",
-        "priceSuffix": "/jaar",
-        "ctaNote": "Eenmalige betaling — verlengt nooit automatisch, en Pro blijft daarna werken."
+        "subtitle": "Updates en prioriteitssupport voor 1 jaar",
+        "priceSuffix": "voor 1 jaar",
+        "ctaNote": "Eén betaling. Niets verlengt vanzelf: na het jaar blijft Pro werken, en je verlengt alleen als de nieuwe updates het je waard zijn."
       },
       "lifetime": {
         "title": "Levenslang",
@@ -550,11 +550,11 @@
       "title": "Veelgestelde vragen",
       "freePlugin": {
         "question": "Is de gratis plugin beperkt?",
-        "answer": "Hij draait één kassa. Er zijn geen limieten op producten, bestellingen of klanten, en geen transactiekosten. Voor meer kassa’s en de hierboven genoemde tools is Pro nodig. De gratis plugin is GPL-software."
+        "answer": "Er zijn geen limieten op producten, bestellingen of klanten, en geen transactiekosten. Hij draait één kassa die alle apparaten delen, met kassalade-sessies, gesplitste betalingen, offline verkopen met contant en kaart, kortingsbonnen in de winkelwagen en het rapport van vandaag. Voor meer kassa’s en de hierboven genoemde tools is Pro nodig. De gratis plugin is GPL-software."
       },
       "yearlyVsLifetime": {
         "question": "Wat is het verschil tussen Jaarlijks en Levenslang?",
-        "answer": "De Jaarlijkse licentie is een eenmalige betaling met updates en prioriteitssupport gedurende één jaar. Deze wordt niet automatisch verlengd. De Levenslange licentie is een eenmalige betaling met updates voor altijd."
+        "answer": "Beide zijn één betaling. Jaarlijks bevat updates en prioriteitssupport voor één jaar en verlengt nooit vanzelf. Levenslang bevat updates voor altijd."
       },
       "expiry": {
         "question": "Wat gebeurt er als mijn licentie verloopt?",
@@ -562,7 +562,7 @@
       },
       "siteLimits": {
         "question": "Op hoeveel sites kan ik mijn licentie gebruiken?",
-        "answer": "Elke licentie kan op 2 sites worden geactiveerd, bedoeld voor één live site en één ontwikkelsite. Je kunt je sites bekijken en deactiveren in je accountdashboard."
+        "answer": "Elke licentie kan op 2 sites worden geactiveerd, bedoeld voor één live site en één ontwikkelsite. Er is geen limiet op apparaten of kassamedewerkers. Je kunt je sites bekijken en deactiveren in je accountdashboard."
       },
       "paymentMethods": {
         "question": "Welke betaalmethoden accepteren jullie?",

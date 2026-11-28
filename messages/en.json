@@ -469,7 +469,7 @@
     },
     "hero": {
       "title": "WCPOS Pro",
-      "subtitle": "Everything in the free POS, plus more registers and stores, connected card readers, refunds, stock, order and customer editing at the register, and priority support."
+      "subtitle": "The free POS handles the sale. Pro adds the tools to run your store from the counter: more registers and stores, connected card readers, refunds, stock and price changes, and priority support."
     },
     "schema": {
       "name": "WCPOS Pro",
@@ -482,54 +482,54 @@
     "features": {
       "title": "What Pro adds",
       "stores": {
-        "title": "More registers & multiple stores",
-        "description": "Add registers beyond the free one, and run several stores, each with its own address, tax rates, receipt template, pricing and authorized users."
+        "title": "More registers and stores",
+        "description": "Add a register for each cash drawer, and run more than one store, each with its own address, tax rates, receipt templates, prices and cashiers."
       },
       "terminal": {
         "title": "Connected card readers",
-        "description": "Take in-person card payments on Stripe Terminal, SumUp, Mollie Terminal, Square Terminal and more. PayPal Reader (Zettle) works through your store's own pay page.",
+        "description": "Take card payments on a reader paired with the register: Stripe Terminal, SumUp, Mollie Terminal, Square Terminal and more. PayPal Reader (Zettle) works through your store’s own pay page.",
         "link": "See all terminal extensions"
       },
       "display": {
         "title": "Customer-facing display",
-        "description": "Put a screen in front of your customer: open the display in any browser and pair it to a register with a code."
+        "description": "A second screen shows your customer the cart while you serve them. Open it in any browser and pair it with the register using a code."
       },
       "stockPrice": {
-        "title": "Stock & price editing",
-        "description": "Update stock levels, prices, and product details right from the POS — no trip to the WordPress admin."
+        "title": "Stock and price editing",
+        "description": "Change stock, prices and cost of goods in the product list at the counter. No trip to the WordPress admin."
       },
       "orders": {
-        "title": "Order management",
-        "description": "Browse order history, open past orders, refund them and manage them without leaving the register."
+        "title": "Orders and refunds",
+        "description": "Find an older order, reopen it, edit it, reprint the receipt, and refund all or part of it."
       },
       "customers": {
         "title": "Customer management",
-        "description": "Add and edit customer details at the point of sale, kept in sync with WooCommerce."
+        "description": "Add a new customer from the cart and edit customer details. Changes save to WooCommerce."
       },
       "coupons": {
         "title": "Coupon management",
-        "description": "Look up, create and edit coupons at the register, and create one from the cart."
+        "description": "Look up your coupons, and create new ones at the register or straight from the cart."
       },
       "reports": {
-        "title": "Reports across days, registers & stores",
-        "description": "See sales for earlier days and date ranges, for every register and every store."
+        "title": "Reports for any day, register and store",
+        "description": "Earlier days and date ranges, every register and every store, and past register closing reports."
       },
       "gateways": {
-        "title": "Your other WooCommerce gateways",
-        "description": "Turn on your store's other WooCommerce payment gateways at the register, not just the built-in options."
+        "title": "Other payment methods",
+        "description": "Turn on your store’s other payment methods at the register: bank transfer, cash on delivery, cheque, and the other WooCommerce gateways your store uses."
       }
     },
     "buyBox": {
       "heading": "Get Pro",
-      "subheading": "One license, all features. Just pick how long you want updates.",
+      "subheading": "Every Pro feature, for one live site and one development site. Choose how long you get updates.",
       "termAriaLabel": "License term",
       "cta": "Buy Pro",
       "ctaValueCopy": "Get Instant Access",
       "yearly": {
         "title": "Yearly",
-        "subtitle": "Updates & support for 1 year",
-        "priceSuffix": "/yr",
-        "ctaNote": "One-time payment — never auto-renews, and Pro keeps working after it ends."
+        "subtitle": "Updates and priority support for 1 year",
+        "priceSuffix": "for 1 year",
+        "ctaNote": "One payment. Nothing renews by itself: after the year, Pro keeps working, and you renew only if the new updates are worth it to you."
       },
       "lifetime": {
         "title": "Lifetime",
@@ -550,11 +550,11 @@
       "title": "Frequently asked questions",
       "freePlugin": {
         "question": "Is the free plugin limited?",
-        "answer": "It runs one register. There are no caps on products, orders or customers, and no transaction fees. More registers and the tools listed above need Pro. The free plugin is GPL software."
+        "answer": "There are no caps on products, orders or customers, and no transaction fees. It runs one register that every device shares, with cash-drawer sessions, split payments, offline sales for Cash and Card, coupons in the cart and today’s report. More registers and the tools listed above need Pro. The free plugin is GPL software."
       },
       "yearlyVsLifetime": {
         "question": "What's the difference between Yearly and Lifetime?",
-        "answer": "The Yearly license is a one-time payment that includes updates and priority support for one year. It does not renew automatically. The Lifetime license is a one-time payment that includes updates forever."
+        "answer": "Both are one payment. Yearly includes updates and priority support for one year and never renews by itself. Lifetime includes updates forever."
       },
       "expiry": {
         "question": "What happens when my license expires?",
@@ -562,7 +562,7 @@
       },
       "siteLimits": {
         "question": "How many sites can I use my license on?",
-        "answer": "Each license can be activated on 2 sites, intended for one live site and one development site. You can see and deactivate your sites in your account dashboard."
+        "answer": "Each license can be activated on 2 sites, intended for one live site and one development site. There is no limit on devices or cashiers. You can see and deactivate your sites in your account dashboard."
       },
       "paymentMethods": {
         "question": "What payment methods do you accept?",

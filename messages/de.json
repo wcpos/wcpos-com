@@ -469,7 +469,7 @@
     },
     "hero": {
       "title": "WCPOS Pro – Kassensystem für WooCommerce",
-      "subtitle": "Alles aus dem kostenlosen POS, plus weitere Kassen und Filialen, verbundene Kartenlesegeräte, Erstattungen, Bestands-, Bestell- und Kundenbearbeitung an der Kasse und Prioritätssupport."
+      "subtitle": "Der kostenlose POS wickelt den Verkauf ab. Pro ergänzt alles, um deinen Shop direkt an der Kasse zu führen: weitere Kassen und Filialen, verbundene Kartenlesegeräte, Erstattungen, Bestands- und Preisänderungen und Prioritätssupport."
     },
     "schema": {
       "name": "WCPOS Pro",
@@ -482,54 +482,54 @@
     "features": {
       "title": "Was Pro ergänzt",
       "stores": {
-        "title": "Weitere Kassen & mehrere Filialen",
-        "description": "Füge zur kostenlosen Kasse weitere Kassen hinzu und führe mehrere Filialen, jede mit eigener Adresse, eigenen Steuersätzen, eigener Belegvorlage, eigenen Preisen und eigenen autorisierten Benutzern."
+        "title": "Weitere Kassen und Filialen",
+        "description": "Füge für jede Kassenschublade eine Kasse hinzu und führe mehr als eine Filiale, jede mit eigener Adresse, eigenen Steuersätzen, Belegvorlagen, Preisen und Kassierern."
       },
       "terminal": {
         "title": "Verbundene Kartenlesegeräte",
-        "description": "Nimm Kartenzahlungen vor Ort mit Stripe Terminal, SumUp, Mollie Terminal, Square Terminal und mehr entgegen. PayPal Reader (Zettle) funktioniert über die eigene Bezahlseite deines Shops.",
+        "description": "Nimm Kartenzahlungen über Zahlungsterminals an, die mit der Kasse gekoppelt sind: Stripe Terminal, SumUp, Mollie Terminal, Square Terminal und mehr. PayPal Reader (Zettle) funktioniert über die eigene Bezahlseite deines Shops.",
         "link": "Alle Terminal-Erweiterungen ansehen"
       },
       "display": {
         "title": "Kundendisplay",
-        "description": "Stell einen Bildschirm vor deine Kundschaft: Öffne das Display in einem beliebigen Browser und kopple es mit einem Code mit einer Kasse."
+        "description": "Ein zweiter Bildschirm zeigt deiner Kundschaft den Warenkorb, während du bedienst. In jedem Browser öffnen und per Code mit der Kasse koppeln."
       },
       "stockPrice": {
-        "title": "Bestands- & Preisbearbeitung",
-        "description": "Aktualisiere Lagerbestände, Preise und Produktdetails direkt an der Kasse — ohne den Umweg über den WordPress-Adminbereich."
+        "title": "Bestands- und Preisbearbeitung",
+        "description": "Ändere Bestand, Preise und Einkaufspreise direkt in der Produktliste an der Kasse, ohne Umweg über den WordPress-Adminbereich."
       },
       "orders": {
-        "title": "Bestellverwaltung",
-        "description": "Durchsuche den Bestellverlauf, öffne frühere Bestellungen, erstatte sie und verwalte sie, ohne die Kasse zu verlassen."
+        "title": "Bestellungen und Erstattungen",
+        "description": "Finde eine ältere Bestellung, öffne sie erneut, bearbeite sie, drucke den Beleg neu und erstatte sie ganz oder teilweise."
       },
       "customers": {
         "title": "Kundenverwaltung",
-        "description": "Füge Kundendaten direkt an der Kasse hinzu und bearbeite sie, synchronisiert mit WooCommerce."
+        "description": "Lege neue Kunden direkt aus dem Warenkorb an und bearbeite Kundendaten. Änderungen landen in WooCommerce."
       },
       "coupons": {
         "title": "Gutscheinverwaltung",
-        "description": "Suche, erstelle und bearbeite Gutscheine an der Kasse und lege direkt aus dem Warenkorb einen neuen an."
+        "description": "Suche deine Gutscheine und erstelle neue an der Kasse oder direkt aus dem Warenkorb."
       },
       "reports": {
-        "title": "Berichte für verschiedene Tage, Kassen & Geschäfte",
-        "description": "Sieh Verkäufe für frühere Tage und Datumsbereiche, für jede Kasse und jedes Geschäft."
+        "title": "Berichte für jeden Tag, jede Kasse und jede Filiale",
+        "description": "Frühere Tage und Zeiträume, jede Kasse und jede Filiale und frühere Berichte zu Kassenabschlüssen."
       },
       "gateways": {
-        "title": "Deine anderen WooCommerce-Gateways",
-        "description": "Aktiviere die anderen WooCommerce-Zahlungsgateways deines Shops an der Kasse, nicht nur die integrierten Optionen."
+        "title": "Andere Zahlungsarten",
+        "description": "Aktiviere die anderen Zahlungsarten deines Shops an der Kasse: Überweisung, Nachnahme, Scheck und die anderen WooCommerce-Gateways, die dein Shop nutzt."
       }
     },
     "buyBox": {
       "heading": "Hol dir Pro",
-      "subheading": "Eine Lizenz, alle Funktionen. Wähle nur, wie lange du Updates möchtest.",
+      "subheading": "Alle Pro-Funktionen, für eine Live-Website und eine Entwicklungs-Website. Wähle, wie lange du Updates bekommst.",
       "termAriaLabel": "Lizenzlaufzeit",
       "cta": "Pro kaufen",
       "ctaValueCopy": "Sofortzugang erhalten",
       "yearly": {
         "title": "Jährlich",
-        "subtitle": "Updates & Support für 1 Jahr",
-        "priceSuffix": "/Jahr",
-        "ctaNote": "Einmalzahlung — verlängert sich nie automatisch, und Pro läuft danach weiter."
+        "subtitle": "Updates und Prioritätssupport für 1 Jahr",
+        "priceSuffix": "für 1 Jahr",
+        "ctaNote": "Einmalzahlung. Nichts verlängert sich automatisch: Nach dem Jahr läuft Pro weiter, und du verlängerst nur, wenn dir die neuen Updates das wert sind."
       },
       "lifetime": {
         "title": "Lebenslang",
@@ -537,8 +537,8 @@
         "priceSuffix": "einmalig",
         "ctaNoteSimple": "Einmal zahlen — Updates für immer."
       },
-      "tryFreeLink": "Testen Sie zuerst die kostenlose Version",
-      "tryFreeSuffix": " — upgraden Sie erst, wenn sie sich bewährt hat",
+      "tryFreeLink": "Teste zuerst die kostenlose Version",
+      "tryFreeSuffix": " — upgrade erst, wenn sie sich bewährt hat",
       "demoLink": "Pro in der Live-Demo ansehen",
       "demoSuffix": " — Login demo / demo",
       "payments": "Karte, PayPal oder Bitcoin",
@@ -550,11 +550,11 @@
       "title": "Häufig gestellte Fragen",
       "freePlugin": {
         "question": "Ist das kostenlose Plugin eingeschränkt?",
-        "answer": "Es betreibt eine Kasse. Es gibt keine Obergrenzen für Produkte, Bestellungen oder Kunden und keine Transaktionsgebühren. Für weitere Kassen und die oben aufgeführten Werkzeuge braucht es Pro. Das kostenlose Plugin ist GPL-Software."
+        "answer": "Es gibt keine Obergrenzen für Produkte, Bestellungen oder Kunden und keine Transaktionsgebühren. Es betreibt eine Kasse, die alle Geräte teilen, mit Kassensitzungen, geteilten Zahlungen, Offline-Verkäufen für Bar und Karte, Gutscheinen im Warenkorb und dem heutigen Bericht. Für weitere Kassen und die oben aufgeführten Werkzeuge braucht es Pro. Das kostenlose Plugin ist GPL-Software."
       },
       "yearlyVsLifetime": {
         "question": "Was ist der Unterschied zwischen Jährlich und Lebenslang?",
-        "answer": "Die Jährlich-Lizenz ist eine einmalige Zahlung, die ein Jahr lang Updates und vorrangigen Support beinhaltet. Sie verlängert sich nicht automatisch. Die Lebenslang-Lizenz ist eine einmalige Zahlung, die Updates für immer beinhaltet."
+        "answer": "Beide sind eine einmalige Zahlung. Jährlich enthält ein Jahr lang Updates und Prioritätssupport und verlängert sich nie von selbst. Lebenslang enthält Updates für immer."
       },
       "expiry": {
         "question": "Was passiert, wenn meine Lizenz abläuft?",
@@ -562,7 +562,7 @@
       },
       "siteLimits": {
         "question": "Auf wie vielen Websites kann ich meine Lizenz nutzen?",
-        "answer": "Jede Lizenz kann auf 2 Websites aktiviert werden, vorgesehen für eine Live-Website und eine Entwicklungs-Website. Du kannst deine Websites in deinem Konto-Dashboard ansehen und deaktivieren."
+        "answer": "Jede Lizenz kann auf 2 Websites aktiviert werden, vorgesehen für eine Live-Website und eine Entwicklungs-Website. Es gibt keine Begrenzung für Geräte oder Kassierer. Du kannst deine Websites in deinem Konto-Dashboard ansehen und deaktivieren."
       },
       "paymentMethods": {
         "question": "Welche Zahlungsmethoden akzeptiert ihr?",

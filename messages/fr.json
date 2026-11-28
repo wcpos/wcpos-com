@@ -469,7 +469,7 @@
     },
     "hero": {
       "title": "WCPOS Pro – Point de vente pour WooCommerce",
-      "subtitle": "Tout ce que contient le POS gratuit, avec en plus des caisses et des boutiques supplémentaires, les lecteurs de cartes connectés, les remboursements, la modification du stock, des commandes et des clients depuis la caisse, et l’assistance prioritaire."
+      "subtitle": "Le POS gratuit gère la vente. Pro ajoute les outils pour gérer votre boutique depuis le comptoir : des caisses et des boutiques supplémentaires, les lecteurs de cartes connectés, les remboursements, les modifications de stock et de prix, et l’assistance prioritaire."
     },
     "schema": {
       "name": "WCPOS Pro",
@@ -482,54 +482,54 @@
     "features": {
       "title": "Ce que Pro ajoute",
       "stores": {
-        "title": "Davantage de caisses et plusieurs boutiques",
-        "description": "Ajoutez des caisses en plus de la caisse gratuite et gérez plusieurs boutiques, chacune avec sa propre adresse, ses taux de taxe, son modèle de ticket, sa tarification et ses utilisateurs autorisés."
+        "title": "Davantage de caisses et de boutiques",
+        "description": "Ajoutez une caisse par tiroir-caisse et gérez plusieurs boutiques, chacune avec sa propre adresse, ses taux de taxe, ses modèles de ticket, ses prix et ses caissiers."
       },
       "terminal": {
         "title": "Lecteurs de cartes connectés",
-        "description": "Acceptez les paiements par carte en personne sur Stripe Terminal, SumUp, Mollie Terminal, Square Terminal et plus encore. PayPal Reader (Zettle) fonctionne via la page de paiement de votre propre boutique.",
+        "description": "Encaissez par carte sur un lecteur couplé à la caisse : Stripe Terminal, SumUp, Mollie Terminal, Square Terminal et d’autres. PayPal Reader (Zettle) fonctionne via la page de paiement de votre propre boutique.",
         "link": "Voir toutes les extensions de terminal"
       },
       "display": {
         "title": "Écran côté client",
-        "description": "Placez un écran face à votre client : ouvrez-le dans n'importe quel navigateur et associez-le à une caisse avec un code."
+        "description": "Un second écran montre le panier à votre client pendant que vous le servez. Ouvrez-le dans n’importe quel navigateur et couplez-le à la caisse avec un code."
       },
       "stockPrice": {
         "title": "Modification du stock et des prix",
-        "description": "Mettez à jour les niveaux de stock, les prix et les détails des produits directement depuis le POS — sans passer par l'administration WordPress."
+        "description": "Modifiez le stock, les prix et le coût d’achat dans la liste des produits, depuis le comptoir. Sans passer par l’administration WordPress."
       },
       "orders": {
-        "title": "Gestion des commandes",
-        "description": "Parcourez l'historique des commandes, ouvrez les commandes passées, remboursez-les et gérez-les sans quitter la caisse."
+        "title": "Commandes et remboursements",
+        "description": "Retrouvez une ancienne commande, rouvrez-la, modifiez-la, réimprimez le ticket et remboursez-la en tout ou en partie."
       },
       "customers": {
         "title": "Gestion des clients",
-        "description": "Ajoutez et modifiez les coordonnées des clients au point de vente, synchronisées avec WooCommerce."
+        "description": "Ajoutez un nouveau client depuis le panier et modifiez les coordonnées des clients. Les modifications sont enregistrées dans WooCommerce."
       },
       "coupons": {
         "title": "Gestion des codes promo",
-        "description": "Recherchez, créez et modifiez des codes promo à la caisse, et créez-en un depuis le panier."
+        "description": "Consultez vos codes promo et créez-en de nouveaux à la caisse ou directement depuis le panier."
       },
       "reports": {
-        "title": "Rapports sur plusieurs jours, caisses et boutiques",
-        "description": "Consultez les ventes des jours précédents et sur des plages de dates, pour chaque caisse et chaque boutique."
+        "title": "Rapports pour n’importe quel jour, caisse et boutique",
+        "description": "Jours précédents et plages de dates, chaque caisse et chaque boutique, et les rapports de clôture de caisse passés."
       },
       "gateways": {
-        "title": "Vos autres passerelles WooCommerce",
-        "description": "Activez les autres passerelles de paiement WooCommerce de votre boutique à la caisse, pas seulement les options intégrées."
+        "title": "Autres moyens de paiement",
+        "description": "Activez à la caisse les autres moyens de paiement de votre boutique : virement bancaire, paiement à la livraison, chèque et les autres passerelles WooCommerce utilisées par votre boutique."
       }
     },
     "buyBox": {
       "heading": "Passez à Pro",
-      "subheading": "Une licence, toutes les fonctionnalités. Choisissez simplement la durée des mises à jour.",
+      "subheading": "Toutes les fonctionnalités Pro, pour un site en production et un site de développement. Choisissez pendant combien de temps vous recevez les mises à jour.",
       "termAriaLabel": "Durée de la licence",
       "cta": "Acheter Pro",
       "ctaValueCopy": "Accédez immédiatement",
       "yearly": {
         "title": "Annuel",
-        "subtitle": "Mises à jour et support pendant 1 an",
-        "priceSuffix": "/an",
-        "ctaNote": "Paiement unique — jamais de renouvellement automatique, et Pro continue de fonctionner ensuite."
+        "subtitle": "Mises à jour et assistance prioritaire pendant 1 an",
+        "priceSuffix": "pour 1 an",
+        "ctaNote": "Un seul paiement. Rien ne se renouvelle tout seul : après l’année, Pro continue de fonctionner, et vous ne renouvelez que si les nouvelles mises à jour en valent la peine pour vous."
       },
       "lifetime": {
         "title": "À vie",
@@ -550,11 +550,11 @@
       "title": "Foire aux questions",
       "freePlugin": {
         "question": "L'extension gratuite est-elle limitée ?",
-        "answer": "Elle fait fonctionner une caisse. Il n'y a pas de plafond de produits, de commandes ou de clients, ni de frais de transaction. Davantage de caisses et les outils listés ci-dessus nécessitent Pro. L'extension gratuite est un logiciel GPL."
+        "answer": "Il n’y a pas de plafond de produits, de commandes ou de clients, ni de frais de transaction. Elle fait fonctionner une caisse partagée par tous les appareils, avec les sessions de tiroir-caisse, les paiements fractionnés, les ventes hors ligne en espèces et par carte, les codes promo dans le panier et le rapport du jour. Davantage de caisses et les outils listés ci-dessus nécessitent Pro. L’extension gratuite est un logiciel GPL."
       },
       "yearlyVsLifetime": {
         "question": "Quelle est la différence entre Annuel et À vie ?",
-        "answer": "La licence Annuel est un paiement unique qui inclut les mises à jour et le support prioritaire pendant un an. Elle ne se renouvelle pas automatiquement. La licence À vie est un paiement unique qui inclut les mises à jour pour toujours."
+        "answer": "Les deux se règlent en un seul paiement. Annuel inclut les mises à jour et l’assistance prioritaire pendant un an et ne se renouvelle jamais tout seul. À vie inclut les mises à jour pour toujours."
       },
       "expiry": {
         "question": "Que se passe-t-il à l’expiration de ma licence ?",
@@ -562,7 +562,7 @@
       },
       "siteLimits": {
         "question": "Sur combien de sites puis-je utiliser ma licence ?",
-        "answer": "Chaque licence peut être activée sur 2 sites, prévus pour un site en production et un site de développement. Vous pouvez consulter et désactiver vos sites dans le tableau de bord de votre compte."
+        "answer": "Chaque licence peut être activée sur 2 sites, prévus pour un site en production et un site de développement. Il n’y a pas de limite d’appareils ni de caissiers. Vous pouvez consulter et désactiver vos sites dans le tableau de bord de votre compte."
       },
       "paymentMethods": {
         "question": "Quels moyens de paiement acceptez-vous ?",

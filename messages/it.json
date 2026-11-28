@@ -469,7 +469,7 @@
     },
     "hero": {
       "title": "WCPOS Pro – Punto vendita per WooCommerce",
-      "subtitle": "Tutto ciò che offre il POS gratuito, più casse e negozi aggiuntivi, lettori di carte collegati, rimborsi, modifica di stock, ordini e clienti dalla cassa e supporto prioritario."
+      "subtitle": "Il POS gratuito gestisce la vendita. Pro aggiunge gli strumenti per gestire il negozio dal bancone: più casse e negozi, lettori di carte collegati, rimborsi, modifiche di giacenze e prezzi e supporto prioritario."
     },
     "schema": {
       "name": "WCPOS Pro",
@@ -482,54 +482,54 @@
     "features": {
       "title": "Cosa aggiunge Pro",
       "stores": {
-        "title": "Più casse e più negozi",
-        "description": "Aggiungi casse oltre a quella gratuita e gestisci più negozi, ciascuno con indirizzo, aliquote fiscali, modello di scontrino, prezzi e utenti autorizzati propri."
+        "title": "Più casse e negozi",
+        "description": "Aggiungi una cassa per ogni cassetto contanti e gestisci più di un negozio, ciascuno con indirizzo, aliquote fiscali, modelli di scontrino, prezzi e cassieri propri."
       },
       "terminal": {
         "title": "Lettori di carte collegati",
-        "description": "Accetta pagamenti con carta in presenza su Stripe Terminal, SumUp, Mollie Terminal, Square Terminal e altri. PayPal Reader (Zettle) funziona tramite la pagina di pagamento del tuo negozio.",
+        "description": "Accetta pagamenti con carta su un lettore abbinato alla cassa: Stripe Terminal, SumUp, Mollie Terminal, Square Terminal e altri. PayPal Reader (Zettle) funziona tramite la pagina di pagamento del tuo negozio.",
         "link": "Vedi tutte le estensioni per terminali"
       },
       "display": {
         "title": "Display rivolto al cliente",
-        "description": "Metti uno schermo davanti al cliente: aprilo in qualsiasi browser e abbinalo a una cassa con un codice."
+        "description": "Un secondo schermo mostra al cliente il carrello mentre lo servi. Aprilo in qualsiasi browser e abbinalo alla cassa con un codice."
       },
       "stockPrice": {
         "title": "Modifica di giacenze e prezzi",
-        "description": "Aggiorna giacenze, prezzi e dettagli dei prodotti direttamente dal POS — senza passare dall'amministrazione di WordPress."
+        "description": "Modifica giacenze, prezzi e costo della merce nell’elenco prodotti, direttamente al bancone. Senza passare dall’amministrazione di WordPress."
       },
       "orders": {
-        "title": "Gestione degli ordini",
-        "description": "Consulta la cronologia degli ordini, apri gli ordini passati, rimborsali e gestiscili senza lasciare la cassa."
+        "title": "Ordini e rimborsi",
+        "description": "Trova un ordine passato, riaprilo, modificalo, ristampa lo scontrino e rimborsalo in tutto o in parte."
       },
       "customers": {
         "title": "Gestione dei clienti",
-        "description": "Aggiungi e modifica i dati dei clienti al punto vendita, mantenendoli sincronizzati con WooCommerce."
+        "description": "Aggiungi un nuovo cliente dal carrello e modifica i dati dei clienti. Le modifiche vengono salvate in WooCommerce."
       },
       "coupons": {
         "title": "Gestione dei coupon",
-        "description": "Cerca, crea e modifica coupon in cassa, e creane uno direttamente dal carrello."
+        "description": "Consulta i tuoi coupon e creane di nuovi in cassa o direttamente dal carrello."
       },
       "reports": {
-        "title": "Report su più giorni, casse e negozi",
-        "description": "Consulta le vendite di giorni precedenti e intervalli di date, per ogni cassa e ogni negozio."
+        "title": "Report per qualsiasi giorno, cassa e negozio",
+        "description": "Giorni precedenti e intervalli di date, ogni cassa e ogni negozio, e i report di chiusura cassa passati."
       },
       "gateways": {
-        "title": "Gli altri tuoi gateway WooCommerce",
-        "description": "Attiva gli altri gateway di pagamento WooCommerce del tuo negozio in cassa, non solo le opzioni integrate."
+        "title": "Altri metodi di pagamento",
+        "description": "Attiva in cassa gli altri metodi di pagamento del tuo negozio: bonifico bancario, contrassegno, assegno e gli altri gateway WooCommerce usati dal tuo negozio."
       }
     },
     "buyBox": {
       "heading": "Passa a Pro",
-      "subheading": "Una licenza, tutte le funzionalità. Scegli solo per quanto tempo vuoi gli aggiornamenti.",
+      "subheading": "Tutte le funzionalità Pro, per un sito in produzione e un sito di sviluppo. Scegli per quanto tempo ricevere gli aggiornamenti.",
       "termAriaLabel": "Durata della licenza",
       "cta": "Acquista Pro",
       "ctaValueCopy": "Ottieni accesso immediato",
       "yearly": {
         "title": "Annuale",
-        "subtitle": "Aggiornamenti e supporto per 1 anno",
-        "priceSuffix": "/anno",
-        "ctaNote": "Pagamento una tantum — non si rinnova mai da solo, e Pro continua a funzionare dopo."
+        "subtitle": "Aggiornamenti e supporto prioritario per 1 anno",
+        "priceSuffix": "per 1 anno",
+        "ctaNote": "Un solo pagamento. Niente si rinnova da solo: dopo l’anno Pro continua a funzionare, e rinnovi solo se i nuovi aggiornamenti ne valgono la pena per te."
       },
       "lifetime": {
         "title": "A vita",
@@ -550,11 +550,11 @@
       "title": "Domande frequenti",
       "freePlugin": {
         "question": "La versione gratuita del plugin è limitata?",
-        "answer": "Gestisce una cassa. Non ci sono limiti su prodotti, ordini o clienti, né commissioni sulle transazioni. Per più casse e gli strumenti elencati sopra serve Pro. Il plugin gratuito è software GPL."
+        "answer": "Non ci sono limiti su prodotti, ordini o clienti, né commissioni sulle transazioni. Gestisce una cassa condivisa da tutti i dispositivi, con sessioni del cassetto contanti, pagamenti divisi, vendite offline in contanti e con carta, coupon nel carrello e il report di oggi. Per più casse e gli strumenti elencati sopra serve Pro. Il plugin gratuito è software GPL."
       },
       "yearlyVsLifetime": {
         "question": "Qual è la differenza tra Annuale e A vita?",
-        "answer": "La licenza Annuale è un pagamento unico che include aggiornamenti e supporto prioritario per un anno. Non si rinnova automaticamente. La licenza A vita è un pagamento unico che include aggiornamenti per sempre."
+        "answer": "Entrambe sono un solo pagamento. Annuale include aggiornamenti e supporto prioritario per un anno e non si rinnova mai da sola. A vita include aggiornamenti per sempre."
       },
       "expiry": {
         "question": "Cosa succede quando la licenza scade?",
@@ -562,7 +562,7 @@
       },
       "siteLimits": {
         "question": "Su quanti siti posso usare la mia licenza?",
-        "answer": "Ogni licenza può essere attivata su 2 siti, destinati a un sito in produzione e un sito di sviluppo. Puoi vedere e disattivare i tuoi siti nella dashboard del tuo account."
+        "answer": "Ogni licenza può essere attivata su 2 siti, destinati a un sito in produzione e un sito di sviluppo. Non ci sono limiti di dispositivi o cassieri. Puoi vedere e disattivare i tuoi siti nella dashboard del tuo account."
       },
       "paymentMethods": {
         "question": "Quali metodi di pagamento accettate?",

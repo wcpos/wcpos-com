@@ -469,7 +469,7 @@
     },
     "hero": {
       "title": "WCPOS Pro – WooCommerce 销售点系统",
-      "subtitle": "包含免费 POS 的全部功能，并增加更多收银台与店铺、读卡器连接、退款、在收银台编辑库存、订单和客户，以及优先支持。"
+      "subtitle": "免费版 POS 负责完成销售。Pro 增加在柜台经营店铺所需的工具：更多收银台与店铺、读卡器连接、退款、库存和价格修改，以及优先支持。"
     },
     "schema": {
       "name": "WCPOS Pro",
@@ -482,54 +482,54 @@
     "features": {
       "title": "Pro 新增功能",
       "stores": {
-        "title": "更多收银台与多店铺",
-        "description": "在免费收银台之外添加更多收银台，并运营多家店铺，每家店铺都有各自的地址、税率、小票模板、定价和授权用户。"
+        "title": "更多收银台与店铺",
+        "description": "为每个钱箱添加一个收银台，并运营多家店铺，每家店铺都有各自的地址、税率、小票模板、价格和收银员。"
       },
       "terminal": {
         "title": "连接读卡器",
-        "description": "通过 Stripe Terminal、SumUp、Mollie Terminal、Square Terminal 等接受当面刷卡收款。PayPal Reader (Zettle) 通过你店铺自己的支付页面使用。",
+        "description": "通过与收银台配对的读卡器收取刷卡付款：Stripe Terminal、SumUp、Mollie Terminal、Square Terminal 等。PayPal Reader (Zettle) 通过你店铺自己的支付页面使用。",
         "link": "查看全部终端扩展"
       },
       "display": {
         "title": "顾客显示屏",
-        "description": "在顾客面前放一块屏幕：在任何浏览器中打开，用代码与收银台配对。"
+        "description": "在你接待顾客时，第二块屏幕向其显示购物车。在任意浏览器中打开，并通过代码与收银台配对。"
       },
       "stockPrice": {
         "title": "库存与价格编辑",
-        "description": "直接在 POS 上更新库存、价格和商品详情——无需前往 WordPress 后台。"
+        "description": "在柜台的商品列表中直接修改库存、价格和商品成本，无需前往 WordPress 后台。"
       },
       "orders": {
-        "title": "订单管理",
-        "description": "浏览订单历史、打开历史订单、为其退款并进行管理，无需离开收银台。"
+        "title": "订单与退款",
+        "description": "查找较早的订单，重新打开、编辑、重新打印小票，并全额或部分退款。"
       },
       "customers": {
         "title": "客户管理",
-        "description": "在销售终端添加和编辑客户信息，并与 WooCommerce 保持同步。"
+        "description": "从购物车添加新客户并编辑客户信息。更改会保存到 WooCommerce。"
       },
       "coupons": {
         "title": "优惠券管理",
-        "description": "在收银台查找、创建和编辑优惠券，也可以直接从购物车创建优惠券。"
+        "description": "查找你的优惠券，并在收银台或直接从购物车创建新的优惠券。"
       },
       "reports": {
-        "title": "跨日期、收银台和店铺的报表",
-        "description": "查看以往日期和日期范围内每个收银台、每家店铺的销售情况。"
+        "title": "任意日期、收银台和店铺的报表",
+        "description": "以往日期和日期范围、每个收银台和每家店铺，以及过去的收银台结账报表。"
       },
       "gateways": {
-        "title": "您的其他 WooCommerce 支付网关",
-        "description": "在收银台启用店铺的其他 WooCommerce 支付网关，不限于内置选项。"
+        "title": "其他支付方式",
+        "description": "在收银台启用店铺的其他支付方式：银行转账、货到付款、支票，以及你的店铺使用的其他 WooCommerce 支付网关。"
       }
     },
     "buyBox": {
       "heading": "购买 Pro",
-      "subheading": "一个许可证，全部功能。只需选择更新时长。",
+      "subheading": "Pro 全部功能，可用于一个正式站点和一个开发站点。选择你获得更新的时长。",
       "termAriaLabel": "许可证期限",
       "cta": "购买 Pro",
       "ctaValueCopy": "立即获取访问权限",
       "yearly": {
         "title": "年付",
-        "subtitle": "1年更新和支持",
-        "priceSuffix": "/年",
-        "ctaNote": "一次性付款——绝不自动续费，到期后 Pro 依然继续运行。"
+        "subtitle": "1年更新和优先支持",
+        "priceSuffix": "1年",
+        "ctaNote": "一次付款。不会自动续费：一年后 Pro 依然继续运行，只有当你觉得新更新值得时才需要续订。"
       },
       "lifetime": {
         "title": "终身",
@@ -550,11 +550,11 @@
       "title": "常见问题",
       "freePlugin": {
         "question": "免费插件有功能限制吗？",
-        "answer": "它支持一个收银台。商品、订单和客户数量不设上限，也没有交易手续费。更多收银台和上述工具需要 Pro。免费插件是 GPL 软件。"
+        "answer": "商品、订单和客户数量不设上限，也没有交易手续费。它支持一个所有设备共享的收银台，包括钱箱班次、拆分付款、现金和刷卡的离线销售、购物车中的优惠券以及今日报表。更多收银台和上述工具需要 Pro。免费插件是 GPL 软件。"
       },
       "yearlyVsLifetime": {
         "question": "年付和终身版有什么区别？",
-        "answer": "年付许可证为一次性付款，包含一年的更新和优先支持，不会自动续订。终身许可证也是一次性付款，包含永久更新。"
+        "answer": "两者都是一次付款。年付包含一年的更新和优先支持，绝不会自动续订。终身包含永久更新。"
       },
       "expiry": {
         "question": "许可证到期后会怎样？",
@@ -562,7 +562,7 @@
       },
       "siteLimits": {
         "question": "我的许可证可以用在多少个站点上？",
-        "answer": "每个许可证可以在2个站点上激活，分别用于一个正式站点和一个开发站点。你可以在账户面板查看和停用你的站点。"
+        "answer": "每个许可证可以在2个站点上激活，分别用于一个正式站点和一个开发站点。设备和收银员数量不限。你可以在账户面板查看和停用你的站点。"
       },
       "paymentMethods": {
         "question": "你们接受哪些付款方式？",
