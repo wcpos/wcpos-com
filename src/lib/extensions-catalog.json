@@ -15,7 +15,7 @@
     {
       "slug": "mercadopago-terminal-for-woocommerce",
       "name": "Mercado Pago Terminal for WooCommerce",
-      "description": "Take card payments on a Mercado Pago Point Smart (1 or 2) terminal from WooCommerce and WooCommerce POS.",
+      "description": "Take card payments on a Mercado Pago Point Smart (1 or 2) terminal from WooCommerce and WCPOS.",
       "category": "payments",
       "requires_pro": true
     },
@@ -85,7 +85,7 @@
     {
       "slug": "wcpos-vipps",
       "name": "WCPOS Vipps MobilePay",
-      "description": "Adds Vipps and MobilePay payment support to WooCommerce POS via QR code or push notification.",
+      "description": "Adds Vipps and MobilePay payment support to WCPOS via QR code or push notification.",
       "category": "payments",
       "requires_pro": true
     },
@@ -106,7 +106,7 @@
     {
       "slug": "windcave-terminal-for-woocommerce",
       "name": "Windcave Terminal for WooCommerce",
-      "description": "Take in-person card payments on a Windcave terminal using HIT from the WooCommerce POS order-pay page.",
+      "description": "Take in-person card payments on a Windcave terminal using HIT from the WCPOS order-pay page.",
       "category": "payments",
       "requires_pro": true
     }
