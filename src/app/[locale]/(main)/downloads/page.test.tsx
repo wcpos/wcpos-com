@@ -131,7 +131,7 @@ describe('DownloadsPage', () => {
     render(await DownloadsPage({ params: Promise.resolve({ locale: 'en' }) }))
 
     expect(
-      screen.getByRole('heading', { level: 1, name: 'Download WooCommerce POS' }),
+      screen.getByRole('heading', { level: 1, name: 'Download WCPOS for WooCommerce' }),
     ).toBeInTheDocument()
     expect(screen.getByText('Install the free plugin, then open the register in a browser or an app.')).toBeInTheDocument()
   })

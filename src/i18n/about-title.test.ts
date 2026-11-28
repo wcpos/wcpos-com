@@ -18,7 +18,7 @@ function load(locale: string): Messages {
 
 describe('about.meta.title', () => {
   it('en is the descriptive title', () => {
-    expect(load('en').about.meta.title).toBe('About Us: An Independent WooCommerce POS Since 2014')
+    expect(load('en').about.meta.title).toBe('About Us: An Independent WooCommerce Point of Sale Since 2014')
   })
 
   it.each(LOCALES)('%s names WooCommerce and 2014 and is more than the About label', (locale) => {

@@ -184,7 +184,7 @@ describe('home and /downloads meta descriptions', () => {
 
   it('en home.meta.description scopes offline to cash sales', () => {
     expect(en.home.meta.description).toBe(
-      'Free, open-source WooCommerce POS for your tablet, phone or computer. Cash sales work offline; split payments and register open/close are free in 2.0.'
+      'Free, open-source WooCommerce point of sale for tablet, phone or computer. Cash sales work offline; split payments and register open/close are free in 2.0.'
     )
   })
 

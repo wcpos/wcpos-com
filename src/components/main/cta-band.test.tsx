@@ -82,11 +82,11 @@ describe('CtaBand', () => {
           { label: 'Try Demo', href: 'https://demo.wcpos.com/pos' },
           { label: 'Download', href: '/downloads', variant: 'inverse' },
         ]}
-        link={{ label: 'Compare WooCommerce POS systems', href: '/compare' }}
+        link={{ label: 'Compare WooCommerce point of sale systems', href: '/compare' }}
       />,
     )
     const link = screen.getByRole('link', {
-      name: 'Compare WooCommerce POS systems',
+      name: 'Compare WooCommerce point of sale systems',
     })
     expect(link).toHaveAttribute('href', '/compare')
     const links = screen.getAllByRole('link')

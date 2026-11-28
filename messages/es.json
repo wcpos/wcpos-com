@@ -1748,11 +1748,11 @@
   },
   "extensions": {
     "metadata": {
-      "title": "WooCommerce POS: extensiones y terminales de pago",
+      "title": "Punto de venta para WooCommerce: extensiones y terminales de pago",
       "description": "Extensiones de punto de venta WooCommerce: terminales de pago con WCPOS Pro (Stripe, Square, SumUp, PayPal, Mollie, Windcave, etc.), más WPML, Polylang y ATUM."
     },
     "hero": {
-      "title": "Extensiones para WooCommerce POS",
+      "title": "Extensiones para WCPOS",
       "subtitle": "Añade a WCPOS terminales de tarjeta, pasarelas de pago, integraciones de stock y cupones, y catálogos multilingües. Cada extensión enlaza a su documentación."
     },
     "proNote": "Las extensiones marcadas como Pro requieren <link>WCPOS Pro</link>.",
@@ -1868,11 +1868,11 @@
   "support": {
     "meta": {
       "title": "Ayuda y soporte – Punto de venta para WooCommerce",
-      "description": "Ayuda de WooCommerce POS: configuración de WCPOS, licencias, lectores, impresoras o sincronización. Respuesta al instante de la documentación o en Discord."
+      "description": "Ayuda de WCPOS para WooCommerce: configuración, licencias, lectores, impresoras o sincronización. Respuesta al instante de la documentación o en Discord."
     },
     "chat": {
       "hero": {
-        "title": "Ayuda y soporte para WooCommerce\u00a0POS",
+        "title": "WCPOS para WooCommerce: ayuda y soporte",
         "subtitle": "Pregunta cualquier cosa sobre WCPOS: configuración, licencias, hardware, sincronización e impresión. Recibirás una respuesta instantánea basada en nuestra documentación."
       },
       "examples": {
@@ -2088,7 +2088,7 @@
         },
         "longevity": {
           "title": "Longevidad",
-          "body": "WCPOS es de código abierto y con opción de licencia de por vida: si la empresa desapareciera mañana, su TPV seguiría funcionando y el código podría bifurcarse. Si Oliver cerrara, la caja se detiene. No es una hipótesis en esta categoría — el propio plugin de Oliver pasó aproximadamente un año sin actualizaciones antes de que el desarrollo se retomara en 2026, y otros TPV para WooCommerce se han retirado por completo."
+          "body": "WCPOS es de código abierto: si la empresa desapareciera mañana, su TPV seguiría funcionando y el código podría bifurcarse. Si Oliver cerrara, la caja se detiene. No es una hipótesis en esta categoría — el propio plugin de Oliver pasó aproximadamente un año sin actualizaciones antes de que el desarrollo se retomara en 2026, y otros TPV para WooCommerce se han retirado por completo."
         }
       },
       "freeTier": {

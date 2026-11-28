@@ -1,6 +1,6 @@
 # WCPOS.com
 
-The commercial site for WooCommerce POS: marketing, Pro checkout, and the
+The commercial site for WCPOS: marketing, Pro checkout, and the
 customer account area where licenses, downloads, and orders are managed.
 Commerce runs on Medusa; licensing runs on Keygen CE.
 
