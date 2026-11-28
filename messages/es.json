@@ -960,8 +960,8 @@
       "downloadsSuspended": "No hay descargas mientras la licencia esté suspendida.",
       "expiredKeepsRunning": "WCPOS Pro sigue funcionando en tus sitios. Renueva para volver a recibir actualizaciones y soporte prioritario.",
       "noSites": "Aún no hay sitios — añade esta clave en los ajustes de POS de tu sitio para activarlo.",
-      "expandAria": "Mostrar detalles de la licencia que termina en {suffix}",
-      "collapseAria": "Ocultar detalles de la licencia que termina en {suffix}",
+      "expandAria": "Mostrar sitios y descargas de la licencia que termina en {suffix}",
+      "collapseAria": "Ocultar sitios y descargas de la licencia que termina en {suffix}",
       "showDetails": "Mostrar sitios y descargas",
       "hideDetails": "Ocultar sitios y descargas",
       "bandSites": "{count, plural, =0 {aún sin sitios} other {# de {max} sitios}}"

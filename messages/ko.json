@@ -960,8 +960,8 @@
       "downloadsSuspended": "라이선스가 정지된 동안에는 다운로드할 수 없습니다.",
       "expiredKeepsRunning": "WCPOS Pro는 사이트에서 계속 작동합니다. 업데이트와 우선 지원을 다시 받으려면 갱신하세요.",
       "noSites": "아직 사이트가 없습니다 — 활성화하려면 사이트의 POS 설정에 이 키를 추가하세요.",
-      "expandAria": "{suffix}(으)로 끝나는 라이선스 세부 정보 표시",
-      "collapseAria": "{suffix}(으)로 끝나는 라이선스 세부 정보 숨기기",
+      "expandAria": "사이트 및 다운로드 표시 ({suffix}(으)로 끝나는 라이선스)",
+      "collapseAria": "사이트 및 다운로드 숨기기 ({suffix}(으)로 끝나는 라이선스)",
       "showDetails": "사이트 및 다운로드 표시",
       "hideDetails": "사이트 및 다운로드 숨기기",
       "bandSites": "{count, plural, =0 {사이트 없음} other {{max}개 중 # 사이트}}"

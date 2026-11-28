@@ -960,8 +960,8 @@
       "downloadsSuspended": "Geen downloads zolang de licentie is opgeschort.",
       "expiredKeepsRunning": "WCPOS Pro blijft werken op je sites. Verleng om weer updates en prioriteitsondersteuning te krijgen.",
       "noSites": "Nog geen sites — voeg deze sleutel toe in de POS-instellingen van je site om te activeren.",
-      "expandAria": "Details tonen van licentie eindigend op {suffix}",
-      "collapseAria": "Details verbergen van licentie eindigend op {suffix}",
+      "expandAria": "Sites en downloads tonen van licentie eindigend op {suffix}",
+      "collapseAria": "Sites en downloads verbergen van licentie eindigend op {suffix}",
       "showDetails": "Sites en downloads tonen",
       "hideDetails": "Sites en downloads verbergen",
       "bandSites": "{count, plural, =0 {nog geen sites} other {# van {max} sites}}"

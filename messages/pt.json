@@ -960,8 +960,8 @@
       "downloadsSuspended": "Sem transferências enquanto a licença estiver suspensa.",
       "expiredKeepsRunning": "O WCPOS Pro continua a funcionar nos seus sites. Renove para voltar a receber atualizações e suporte prioritário.",
       "noSites": "Ainda não há sites — adicione esta chave nas definições do POS do seu site para o ativar.",
-      "expandAria": "Mostrar detalhes da licença terminada em {suffix}",
-      "collapseAria": "Ocultar detalhes da licença terminada em {suffix}",
+      "expandAria": "Mostrar sites e transferências da licença terminada em {suffix}",
+      "collapseAria": "Ocultar sites e transferências da licença terminada em {suffix}",
       "showDetails": "Mostrar sites e transferências",
       "hideDetails": "Ocultar sites e transferências",
       "bandSites": "{count, plural, =0 {ainda sem sites} other {# de {max} sites}}"

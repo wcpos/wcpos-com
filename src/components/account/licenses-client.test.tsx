@@ -615,7 +615,7 @@ describe('LicensesClient', () => {
     )
     // Open the second (collapsed) card so its detail renders.
     fireEvent.click(
-      screen.getByRole('button', { name: 'Show details for license ending in WXYZ' })
+      screen.getByRole('button', { name: 'Show sites and downloads for the license ending in WXYZ' })
     )
 
     // The account already has Discord access via lic-1, so lic-2 must not
@@ -636,7 +636,7 @@ describe('LicensesClient', () => {
       />
     )
     fireEvent.click(
-      screen.getByRole('button', { name: 'Show details for license ending in WXYZ' })
+      screen.getByRole('button', { name: 'Show sites and downloads for the license ending in WXYZ' })
     )
 
     const prompts = screen.getAllByText(/Priority support happens in our Discord/)
@@ -1172,7 +1172,7 @@ describe('LicensesClient', () => {
         <LicensesClient initialLicenses={[first(), secondActive()]} />
       )
       const toggles = screen.getAllByRole('button', {
-        name: /Show details|Hide details/,
+        name: /(Show|Hide) sites and downloads for the license/,
       })
       expect(toggles).toHaveLength(2)
       expect(toggles[0]).toHaveAttribute('aria-expanded', 'true')
@@ -1198,7 +1198,7 @@ describe('LicensesClient', () => {
         <LicensesClient initialLicenses={[first(), secondExpired()]} />
       )
       const toggles = screen.getAllByRole('button', {
-        name: /Show details|Hide details/,
+        name: /(Show|Hide) sites and downloads for the license/,
       })
       expect(toggles[1]).toHaveAttribute('aria-expanded', 'true')
     })
@@ -1208,12 +1208,12 @@ describe('LicensesClient', () => {
         <LicensesClient initialLicenses={[first(), secondActive()]} />
       )
       const collapsed = screen.getByRole('button', {
-        name: 'Show details for license ending in 2222',
+        name: 'Show sites and downloads for the license ending in 2222',
       })
       fireEvent.click(collapsed)
       expect(
         screen.getByRole('button', {
-          name: 'Hide details for license ending in 2222',
+          name: 'Hide sites and downloads for the license ending in 2222',
         })
       ).toHaveAttribute('aria-expanded', 'true')
       // Detail content for the second licence is now rendered.

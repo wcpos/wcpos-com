@@ -960,8 +960,8 @@
       "downloadsSuspended": "许可证暂停期间无法下载。",
       "expiredKeepsRunning": "WCPOS Pro 会继续在您的站点上运行。续订即可重新获得更新与优先支持。",
       "noSites": "还没有站点——在你站点的 POS 设置中添加此密钥即可激活。",
-      "expandAria": "显示以 {suffix} 结尾的许可证详情",
-      "collapseAria": "隐藏以 {suffix} 结尾的许可证详情",
+      "expandAria": "显示站点和下载（以 {suffix} 结尾的许可证）",
+      "collapseAria": "隐藏站点和下载（以 {suffix} 结尾的许可证）",
       "showDetails": "显示站点和下载",
       "hideDetails": "隐藏站点和下载",
       "bandSites": "{count, plural, =0 {暂无站点} other {{max} 个站点中 #}}"

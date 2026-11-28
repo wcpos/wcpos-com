@@ -960,8 +960,8 @@
       "downloadsSuspended": "No downloads while the license is suspended.",
       "expiredKeepsRunning": "WCPOS Pro keeps working on your sites. Renew to get updates and priority support again.",
       "noSites": "No sites yet — add this key in your site's POS settings to activate it.",
-      "expandAria": "Show details for license ending in {suffix}",
-      "collapseAria": "Hide details for license ending in {suffix}",
+      "expandAria": "Show sites and downloads for the license ending in {suffix}",
+      "collapseAria": "Hide sites and downloads for the license ending in {suffix}",
       "showDetails": "Show sites and downloads",
       "hideDetails": "Hide sites and downloads",
       "bandSites": "{count, plural, =0 {no sites yet} other {# of {max} sites}}"
