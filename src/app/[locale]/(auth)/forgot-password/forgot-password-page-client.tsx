@@ -2,19 +2,15 @@
 
 import { useState } from 'react'
 import { useTranslations } from 'next-intl'
+import { MailCheck } from 'lucide-react'
 import { Link } from '@/i18n/navigation'
-import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Alert } from '@/components/ui/alert'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { IconTile } from '@/components/ui/icon-tile'
+import { TextLink, textLinkClassName } from '@/components/ui/text-link'
+import { AuthCard } from '@/components/auth/auth-card'
+import { SubmitButton } from '@/components/auth/auth-parts'
 
 
 type ForgotPasswordErrorCode =
@@ -86,59 +82,85 @@ export function ForgotPasswordPageClient() {
     }
   }
 
+  const footer = (
+    <>
+      {t('remembered')}{' '}
+      <TextLink asChild>
+        <Link href="/login">{tCommon('signIn')}</Link>
+      </TextLink>
+    </>
+  )
+
+  if (submitted) {
+    // Never says whether the address has an account.
+    return (
+      <AuthCard
+        status={
+          <IconTile tone="positive">
+            <MailCheck />
+          </IconTile>
+        }
+        title={t('sentTitle')}
+        description={
+          <span role="status">
+            {t.rich('submitted', {
+              email,
+              strong: (chunks) => (
+                <strong className="font-medium text-foreground">{chunks}</strong>
+              ),
+            })}
+          </span>
+        }
+        footer={footer}
+      >
+        <button
+          type="button"
+          className={`${textLinkClassName} self-center text-sm`}
+          onClick={() => setSubmitted(false)}
+        >
+          {t('useDifferentEmail')}
+        </button>
+      </AuthCard>
+    )
+  }
+
   return (
-    // Centering and page chrome live in the (auth) layout.
-    <div className="w-full max-w-md">
-      <Card elevated>
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl tracking-tight">
-            {t('title')}
-          </CardTitle>
-          <CardDescription>
-            {t('description')}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          {submitted ? (
-            <Alert tone="positive" role="status">
-              {t('submitted', { email })}
-            </Alert>
-          ) : (
-            <form onSubmit={handleSubmit} className="space-y-4">
-              {error && (
-                <Alert tone="critical" role="alert">
-                  {error}
-                </Alert>
-              )}
+    <AuthCard title={t('title')} description={t('description')} footer={footer}>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {error && (
+          <Alert tone="critical" role="alert">
+            {error}
+          </Alert>
+        )}
 
-              <div className="space-y-2">
-                <Label htmlFor="email">{tCommon('email')}</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder={tCommon('emailPlaceholder')}
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  autoComplete="email"
-                />
-              </div>
+        <div className="space-y-2">
+          <Label htmlFor="email">{tCommon('email')}</Label>
+          <Input
+            id="email"
+            type="email"
+            className="h-10"
+            placeholder={tCommon('emailPlaceholder')}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            autoComplete="email"
+          />
+        </div>
 
-              <Button type="submit" className="w-full" disabled={loading}>
-                {loading ? t('submitting') : t('submit')}
-              </Button>
-            </form>
-          )}
-        </CardContent>
-        <CardFooter className="justify-center">
-          <p className="text-sm text-muted-foreground">
-            {t('remembered')}{' '}
-            <Link href="/login" className="text-primary hover:underline">
-              {tCommon('signIn')}
-            </Link>
-          </p>
-        </CardFooter>
-      </Card>
-    </div>
+        <SubmitButton busy={loading} busyLabel={t('submitting')}>
+          {t('submit')}
+        </SubmitButton>
+
+        <p className="text-center text-sm text-muted-foreground">
+          {t.rich('providerNote', {
+            link: (chunks) => (
+              <TextLink asChild className="underline">
+                <Link href="/login">{chunks}</Link>
+              </TextLink>
+            ),
+          })}
+        </p>
+      </form>
+    </AuthCard>
   )
 }

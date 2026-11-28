@@ -53,7 +53,7 @@ async function submitNewPassword(locale?: Locale) {
   fireEvent.change(view.getByLabelText('New password'), {
     target: { value: 'brand-new-password-1' },
   })
-  fireEvent.click(view.getByRole('button', { name: 'Reset password' }))
+  fireEvent.click(view.getByRole('button', { name: 'Save new password' }))
   return view
 }
 
@@ -84,5 +84,25 @@ describe('ResetPasswordPageClient', () => {
 
     await waitFor(() => expect(mockPush).toHaveBeenCalledWith('/login'))
     expect(mockAssign).not.toHaveBeenCalled()
+  })
+
+  it('swaps the form for the expired view when the API refuses the token', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: false,
+      json: async () => ({ errorCode: 'invalid_reset_token' }),
+    })
+
+    const view = await submitNewPassword()
+
+    expect(
+      await view.findByRole('heading', { name: 'This reset link is no longer valid' })
+    ).toBeInTheDocument()
+    expect(view.queryByLabelText('New password')).not.toBeInTheDocument()
+    expect(view.getByRole('link', { name: 'Request a new link' })).toHaveAttribute(
+      'href',
+      '/forgot-password'
+    )
+    expect(mockAssign).not.toHaveBeenCalled()
+    expect(mockPush).not.toHaveBeenCalled()
   })
 })

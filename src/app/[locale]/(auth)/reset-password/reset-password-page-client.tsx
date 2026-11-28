@@ -3,21 +3,17 @@
 import { Suspense, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { useLocale, useTranslations } from 'next-intl'
+import { Clock } from 'lucide-react'
 import { Link, useRouter } from '@/i18n/navigation'
 import { navigateAfterAuthChange } from '@/lib/safe-redirect'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Alert } from '@/components/ui/alert'
+import { IconTile } from '@/components/ui/icon-tile'
+import { TextLink } from '@/components/ui/text-link'
+import { AuthCard } from '@/components/auth/auth-card'
+import { PasswordInput, SubmitButton } from '@/components/auth/auth-parts'
 import { MIN_PASSWORD_LENGTH } from '@/lib/password-policy'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
 
 
 type ResetPasswordErrorCode =
@@ -52,6 +48,7 @@ export function ResetPasswordPageClient() {
 function ResetPasswordPageInner() {
   const t = useTranslations('auth.resetPassword')
   const tCommon = useTranslations('auth.common')
+  const tForgot = useTranslations('auth.forgotPassword')
   const locale = useLocale()
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -63,6 +60,8 @@ function ResetPasswordPageInner() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  // The API refused the token: the form gives way to the expired view.
+  const [expired, setExpired] = useState(false)
 
   const getResetPasswordErrorMessage = (errorCode: ResetPasswordErrorCode) => {
     switch (errorCode) {
@@ -96,11 +95,15 @@ function ResetPasswordPageInner() {
       const data = await response.json()
 
       if (!response.ok) {
-        setError(
-          isResetPasswordErrorCode(data.errorCode)
-            ? getResetPasswordErrorMessage(data.errorCode)
-            : t('failed')
-        )
+        if (data.errorCode === 'invalid_reset_token') {
+          setExpired(true)
+        } else {
+          setError(
+            isResetPasswordErrorCode(data.errorCode)
+              ? getResetPasswordErrorMessage(data.errorCode)
+              : t('failed')
+          )
+        }
         setLoading(false)
         return
       }
@@ -124,67 +127,87 @@ function ResetPasswordPageInner() {
 
   const linkIsValid = Boolean(token && email)
 
+  if (expired) {
+    return (
+      <AuthCard
+        status={
+          <IconTile tone="caution">
+            <Clock />
+          </IconTile>
+        }
+        title={t('expiredTitle')}
+        description={<span role="alert">{t('expiredBody')}</span>}
+        footer={
+          <>
+            {tForgot('remembered')}{' '}
+            <TextLink asChild>
+              <Link href="/login">{tCommon('signIn')}</Link>
+            </TextLink>
+          </>
+        }
+      >
+        <Button variant="brand" size="lg" className="w-full" asChild>
+          <Link href="/forgot-password">{t('expiredButton')}</Link>
+        </Button>
+      </AuthCard>
+    )
+  }
+
   return (
-    // Centering and page chrome live in the (auth) layout.
-    <div className="w-full max-w-md">
-      <Card elevated>
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl tracking-tight">
-            {t('title')}
-          </CardTitle>
-          <CardDescription>
-            {linkIsValid
-              ? t('descriptionValid', { email })
-              : t('descriptionInvalid')}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          {linkIsValid ? (
-            <form onSubmit={handleSubmit} className="space-y-4">
-              {error && (
-                <Alert tone="critical" role="alert">
-                  {error}
-                </Alert>
-              )}
-
-              <div className="space-y-2">
-                <Label htmlFor="password">{tCommon('newPassword')}</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  minLength={MIN_PASSWORD_LENGTH}
-                  autoComplete="new-password"
-                />
-                <p className="text-xs text-muted-foreground">
-                  {tCommon('passwordHint', { min: MIN_PASSWORD_LENGTH })}
-                </p>
-              </div>
-
-              <Button type="submit" className="w-full" disabled={loading}>
-                {loading ? t('submitting') : t('submit')}
-              </Button>
-            </form>
-          ) : (
-            <Alert tone="caution" role="alert">
-              {t('invalidLink')}
+    <AuthCard
+      title={t('title')}
+      description={
+        linkIsValid
+          ? t.rich('descriptionValid', {
+              email,
+              strong: (chunks) => (
+                <strong className="font-medium text-foreground">{chunks}</strong>
+              ),
+            })
+          : t('descriptionInvalid')
+      }
+      footer={
+        <>
+          {linkIsValid ? t('linkExpired') : t('needFreshLink')}{' '}
+          <TextLink asChild>
+            <Link href="/forgot-password">{t('requestNew')}</Link>
+          </TextLink>
+        </>
+      }
+    >
+      {linkIsValid ? (
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {error && (
+            <Alert tone="critical" role="alert">
+              {error}
             </Alert>
           )}
-        </CardContent>
-        <CardFooter className="justify-center">
-          <p className="text-sm text-muted-foreground">
-            {linkIsValid ? t('linkExpired') : t('needFreshLink')}{' '}
-            <Link
-              href="/forgot-password"
-              className="text-primary hover:underline"
-            >
-              {t('requestNew')}
-            </Link>
-          </p>
-        </CardFooter>
-      </Card>
-    </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="password">{tCommon('newPassword')}</Label>
+            <PasswordInput
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              minLength={MIN_PASSWORD_LENGTH}
+              autoComplete="new-password"
+              aria-describedby="password-hint"
+            />
+            <p id="password-hint" className="text-xs text-muted-foreground">
+              {tCommon('passwordHint', { min: MIN_PASSWORD_LENGTH })}
+            </p>
+          </div>
+
+          <SubmitButton busy={loading} busyLabel={t('submitting')}>
+            {t('submit')}
+          </SubmitButton>
+        </form>
+      ) : (
+        <Alert tone="caution" role="alert">
+          {t('invalidLink')}
+        </Alert>
+      )}
+    </AuthCard>
   )
 }

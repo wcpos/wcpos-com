@@ -3,10 +3,12 @@
 import { Suspense, useEffect, useRef, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { useLocale, useTranslations } from 'next-intl'
-import { CheckCircle2, XCircle } from 'lucide-react'
+import { CircleCheck, CircleX, LoaderCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { IconTile } from '@/components/ui/icon-tile'
 import { Link } from '@/i18n/navigation'
 import { navigateAfterAuthChange } from '@/lib/safe-redirect'
+import { AuthCard } from '@/components/auth/auth-card'
 
 /**
  * Lands from the confirmation email and completes the change.
@@ -94,42 +96,56 @@ function ConfirmEmailInner() {
 
   if (state.status === 'working') {
     return (
-      <div className="mx-auto max-w-md py-16 text-center">
-        <p className="text-sm text-muted-foreground">{t('working')}</p>
-      </div>
+      <AuthCard
+        status={
+          <IconTile>
+            <LoaderCircle className="motion-safe:animate-spin" />
+          </IconTile>
+        }
+        title={t('working')}
+        description={t('workingBody')}
+      />
     )
   }
 
   if (state.status === 'failed') {
     return (
-      <div className="mx-auto max-w-md py-16 text-center">
-        <XCircle
-          className="mx-auto mb-4 size-8 text-destructive"
-          aria-hidden
-        />
-        <h1 className="mb-2 text-xl font-semibold">{t('failedTitle')}</h1>
-        <p role="alert" className="mb-6 text-sm text-muted-foreground">
-          {state.message}
-        </p>
-        <Button asChild variant="outline">
+      <AuthCard
+        status={
+          <IconTile tone="critical">
+            <CircleX />
+          </IconTile>
+        }
+        title={t('failedTitle')}
+        description={<span role="alert">{state.message}</span>}
+      >
+        <Button asChild variant="outline" size="lg" className="w-full">
           <Link href="/account/profile">{t('backToProfile')}</Link>
         </Button>
-      </div>
+      </AuthCard>
     )
   }
 
   return (
-    <div className="mx-auto max-w-md py-16 text-center">
-      <CheckCircle2
-        className="mx-auto mb-4 size-8 text-wcpos-red-accent"
-        aria-hidden
-      />
-      <h1 className="mb-2 text-xl font-semibold">{t('doneTitle')}</h1>
-      <p className="mb-6 text-sm text-muted-foreground">
-        {t('doneBody', { email: state.email })}
-      </p>
+    <AuthCard
+      status={
+        <IconTile tone="positive">
+          <CircleCheck />
+        </IconTile>
+      }
+      title={t('doneTitle')}
+      description={t.rich('doneBody', {
+        email: state.email,
+        strong: (chunks) => (
+          <strong className="font-medium text-foreground">{chunks}</strong>
+        ),
+      })}
+    >
       <Button
         type="button"
+        variant="brand"
+        size="lg"
+        className="w-full"
         onClick={() => {
           // The change moved the account identity, so any cached RSC payload
           // still describes the old address. A client-side transition would
@@ -139,6 +155,6 @@ function ConfirmEmailInner() {
       >
         {t('continue')}
       </Button>
-    </div>
+    </AuthCard>
   )
 }
