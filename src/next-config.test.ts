@@ -18,6 +18,21 @@ describe('nextConfig redirects', () => {
     })
   })
 
+  it('sends the legacy /about URL to the About page', async () => {
+    const redirects = await nextConfig.redirects?.()
+
+    expect(redirects).toContainEqual({
+      source: '/about',
+      destination: '/about-us',
+      statusCode: 301,
+    })
+    expect(redirects).not.toContainEqual({
+      source: '/about',
+      destination: 'https://wcpos.com/',
+      statusCode: 301,
+    })
+  })
+
   it('sends legacy docs pages that moved straight to their final docs URL', async () => {
     const redirects = await nextConfig.redirects?.()
     expect(redirects).toContainEqual({

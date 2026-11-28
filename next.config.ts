@@ -96,7 +96,7 @@ const nextConfig: NextConfig = {
       { source: '/terms-of-service', destination: '/terms', statusCode: 301 },
       { source: '/refund-policy', destination: '/refunds', statusCode: 301 },
       { source: '/contact', destination: '/support', statusCode: 301 },
-      { source: '/about', destination: 'https://wcpos.com/', statusCode: 301 },
+      { source: '/about', destination: '/about-us', statusCode: 301 },
       // Old docs pages: send each to its current docs.wcpos.com URL in one hop
       { source: '/docs/cart', destination: 'https://docs.wcpos.com/pos/cart', statusCode: 301 },
       { source: '/docs/coupons', destination: 'https://docs.wcpos.com/coupons', statusCode: 301 },
