@@ -3,15 +3,28 @@
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { useLocale, useTranslations } from 'next-intl'
-import { Card, CardContent } from '@/components/ui/card'
+import { Card } from '@/components/ui/card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Alert } from '@/components/ui/alert'
 import { EmptyState } from '@/components/ui/empty-state'
 import { Progress } from '@/components/ui/progress'
 import { DividedList, Row } from '@/components/ui/row'
+import { StatusBadge } from '@/components/ui/status-badge'
+import { TextLink } from '@/components/ui/text-link'
 import { AccountNotice } from '@/components/account/account-notice'
-import { Key, Trash2, Copy, Check, ChevronDown } from 'lucide-react'
+import {
+  ArrowRight,
+  CalendarClock,
+  Check,
+  ChevronDown,
+  Copy,
+  Download,
+  Eye,
+  EyeOff,
+  Key,
+  Trash2,
+} from 'lucide-react'
 import { Link } from '@/i18n/navigation'
 import { formatDateForLocale } from '@/lib/date-format'
 import { cn } from '@/lib/utils'
@@ -20,16 +33,9 @@ import {
   navigateAfterAuthChange,
 } from '@/lib/safe-redirect'
 import type { CanonicalLicenseStatus } from '@/lib/license-status'
-import {
-  getExpiringSoonExpiry,
-  getLicenseDisplayStatus,
-  isLicenseExpiringSoon,
-} from '@/lib/license'
+import { getLicenseDisplayStatus, isLicenseExpiringSoon } from '@/lib/license'
 import { getPlanByPolicyId, YEARLY_PRO_HANDLE } from '@/lib/plans'
-import {
-  presentLicenseStatus,
-  type LicenseStatusTone,
-} from '@/lib/license-status-presentation'
+import { presentLicenseStatus } from '@/lib/license-status-presentation'
 
 interface Machine {
   id: string
@@ -46,15 +52,6 @@ function metaString(
 ): string | undefined {
   const value = metadata?.[key]
   return typeof value === 'string' && value.trim() !== '' ? value : undefined
-}
-
-/**
- * Instance fingerprints are opaque hashes/tokens. Show a recognisable but
- * compact form so the row stays readable on a phone.
- */
-function shortenInstance(fingerprint: string): string {
-  if (fingerprint.length <= 14) return fingerprint
-  return `${fingerprint.slice(0, 8)}…${fingerprint.slice(-4)}`
 }
 
 interface License {
@@ -206,15 +203,33 @@ function isRecentlySeen(lastSeen: string | undefined, nowMs: number): boolean {
   return nowMs - seenMs <= RECENTLY_SEEN_MS
 }
 
-/**
- * Status label colors on the dark key band. Lifted variants of the shared
- * status-tone families so small text clears contrast on slate-950.
- */
-const bandStatusText: Record<LicenseStatusTone, string> = {
-  positive: 'text-green-400',
-  caution: 'text-amber-400',
-  critical: 'text-red-400',
-  neutral: 'text-slate-400',
+/** One column of the Sites | Discord support | Downloads band. */
+const COLUMN_CLASS =
+  'flex min-w-0 flex-col border-t px-6 py-5 first:border-t-0 @max-[480px]:px-[18px] @max-[480px]:py-4 @min-[760px]:border-t-0 @min-[760px]:border-l @min-[760px]:first:border-l-0'
+
+const COLUMN_GRID: Record<number, string> = {
+  1: '',
+  2: '@min-[760px]:grid-cols-2',
+  3: '@min-[760px]:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)_minmax(0,0.9fr)]',
+}
+
+function ColumnHeading({
+  title,
+  meta,
+}: {
+  title: string
+  meta?: string
+}) {
+  return (
+    <h3 className="flex items-baseline justify-between gap-2 text-sm font-semibold">
+      {title}
+      {meta && (
+        <span className="text-xs font-medium tabular-nums text-muted-foreground">
+          {meta}
+        </span>
+      )}
+    </h3>
+  )
 }
 
 interface LicensesClientProps {
@@ -247,6 +262,7 @@ export function LicensesClient({
   const t = useTranslations('account.licenses')
   const tCommon = useTranslations('common')
   const tStatus = useTranslations('account.licenseStatus')
+  const tDownloads = useTranslations('account.downloads')
   const [licenses, setLicenses] = useState<License[]>(initialLicenses)
   // License keys render masked; clicking a key reveals its full value for
   // that card only. Tracked per licence id so revealing one leaves the rest
@@ -259,6 +275,7 @@ export function LicensesClient({
   const [deactivating, setDeactivating] = useState<string | null>(null)
   const [confirmingDeactivate, setConfirmingDeactivate] = useState<string | null>(null)
   const [removingDiscordMember, setRemovingDiscordMember] = useState<string | null>(null)
+  const [confirmingRemove, setConfirmingRemove] = useState<string | null>(null)
   const [unblockingDiscordUser, setUnblockingDiscordUser] = useState<string | null>(null)
   // Captured once per mount so render stays pure for the React compiler.
   const [now] = useState(() => Date.now())
@@ -418,6 +435,7 @@ export function LicensesClient({
       setError(err instanceof Error ? err.message : t('discordRemoveError'))
     } finally {
       setRemovingDiscordMember(null)
+      setConfirmingRemove(null)
     }
   }
 
@@ -458,8 +476,8 @@ export function LicensesClient({
   }
 
   const maskKey = (key: string) => {
-    if (key.length <= 4) return '****'
-    return '****-****-' + key.slice(-4)
+    if (key.length <= 4) return '••••'
+    return '••••-••••-' + key.slice(-4)
   }
 
   const toggleRevealKey = (licenseId: string) => {
@@ -506,12 +524,6 @@ export function LicensesClient({
   const getDisplayStatus = (license: License) =>
     getLicenseDisplayStatus(license, now)
 
-  // When another active license (e.g. a lifetime one) keeps update access
-  // open beyond the warning window, the per-card notice drops the "renew to
-  // keep receiving updates" urgency — updates are not actually at risk.
-  // Mirrors the account-level suppression on the overview page.
-  const updateAccessLapsingSoon = getExpiringSoonExpiry(licenses, now) !== null
-
   // The one card that carries the Discord support prompt (see the helper for
   // the selection rule). Recomputed from live state so removing the last
   // member, or a fresh claim, moves or clears the prompt without a reload.
@@ -520,6 +532,7 @@ export function LicensesClient({
     discordAccessByLicenseState,
     now
   )
+
 
   return (
     <>
@@ -550,18 +563,39 @@ export function LicensesClient({
       {licenses.length === 0 ? (
         <Card>
           <EmptyState
+            className="items-start p-5 text-left"
             icon={<Key />}
             title={t('emptyTitle')}
             description={t('emptyDescription')}
+            action={
+              <div className="flex flex-wrap gap-3">
+                <Button asChild>
+                  <Link href="/pro">{t('emptyCta')}</Link>
+                </Button>
+                <Button asChild variant="outline">
+                  <Link href="/downloads">
+                    <Download />
+                    {t('emptyFreeCta')}
+                  </Link>
+                </Button>
+              </div>
+            }
           />
         </Card>
       ) : (
         licenses.map((license) => {
           const displayStatus = getDisplayStatus(license)
-          const statusPresentation = presentLicenseStatus(displayStatus)
           const expiringSoon = isLicenseExpiringSoon(license, now)
+          // Inside the 30-day window an active licence reads "expiring"
+          // (caution) — a display label only; entitlement is unchanged.
+          const statusPresentation = presentLicenseStatus(displayStatus)
+          const badgeTone = expiringSoon ? 'caution' : statusPresentation.tone
+          const badgeLabel = expiringSoon
+            ? tStatus('expiring')
+            : tStatus(statusPresentation.labelKey)
           const plan = getPlanByPolicyId(license.policyId)
           const planLabel = plan ? t(plan.labelKey) : null
+          const isLifetime = license.expiry == null
           // A licence is renewable when it has an expiry to extend; a lifetime
           // licence (null expiry) never renews. On payment the Medusa
           // order-completed subscriber extends the SAME licence using the
@@ -578,7 +612,7 @@ export function LicensesClient({
                 ? `/pro/checkout?product=${plan.handle}`
                 : '/pro'
           // Always offer renewal on a renewable licence that is active or
-          // expired, EXCEPT while the expiring-soon banner is already showing
+          // expired, EXCEPT while the expiring-soon notice is already showing
           // its own Renew (avoids two identical CTAs on one card). Skip the
           // exceptional states (suspended/revoked/unknown) where a charge would
           // not restore access.
@@ -597,26 +631,105 @@ export function LicensesClient({
           const discordMembers = discordAccess.members
           const hasFreeDiscordSeat =
             discordAccess.usedSeats < discordAccess.seatCap
-          // Priority support is delivered in Discord, so while the holder has
-          // no Discord connected on any ACTIVE licence, one active card gets
-          // the prompt at the TOP (claim CTA as its action) instead of only in
-          // the members section at the bottom, where it was easy to miss.
-          // Read-only inspection keeps the quiet bottom row: the claim flow is
-          // never offered there.
-          const promptDiscordConnect =
-            license.id === discordPromptLicenseId && !viewOnly
+          // The account-level "connect Discord for priority support" prompt
+          // sits on ONE card only (see findDiscordPromptLicenseId).
+          const promptDiscordConnect = license.id === discordPromptLicenseId
           const keyRevealed = revealedKeys.has(license.id)
           const keyCopied = copiedKey === license.id
           // Last-4 of the key distinguishes each card's controls in the
           // accessible name — with multiple licences the buttons would
           // otherwise all announce the same label to screen readers.
           const keySuffix = license.key.slice(-4)
+          const isOpen = openLicenses.has(license.id)
+          const detailId = `license-detail-${license.id}`
+          const expiryMs = license.expiry ? Date.parse(license.expiry) : null
+          const hasValidExpiry = expiryMs != null && !Number.isNaN(expiryMs)
+          const expiryDate = hasValidExpiry
+            ? formatDateForLocale(license.expiry as string, locale)
+            : null
+          const daysLeft = hasValidExpiry ? daysUntil(expiryMs as number, now) : 0
+          const bold = (chunks: React.ReactNode) => (
+            <b className="font-semibold">{chunks}</b>
+          )
+
+          // The plain-words phrase beside the badge (hidden on a phone, where
+          // the status line right under the key says the same).
+          const meaning =
+            displayStatus === 'active'
+              ? isLifetime
+                ? t('meanLifetime')
+                : expiringSoon
+                  ? t('meanExpiring', { days: daysLeft })
+                  : t('meanActive')
+              : displayStatus === 'expired'
+                ? t('meanExpired')
+                : displayStatus === 'suspended'
+                  ? t('meanSuspended')
+                  : null
+
+          // The status line: when updates and priority support end, then one
+          // muted sentence explaining the state. Lifetime means NO expiry; an
+          // expiry that fails to parse is NOT lifetime (the display status
+          // already failed closed to expired), so it gets no date line.
+          const statusLine =
+            displayStatus === 'suspended'
+              ? t('linePaused')
+              : isLifetime
+                ? t('factLifetime')
+                : !expiryDate
+                  ? null
+                  : displayStatus === 'expired'
+                    ? t('factEnded', { date: expiryDate })
+                    : t('factUntil', { date: expiryDate })
+          const statusSub =
+            displayStatus === 'suspended'
+              ? expiryDate
+                ? t('pausedNote', { date: expiryDate })
+                : null
+              : displayStatus === 'expired'
+                ? t('expiredKeepsRunning')
+                : displayStatus === 'unknown'
+                  ? t.rich('unverifiable', {
+                      supportLink: (chunks) => (
+                        <TextLink asChild>
+                          <Link href="/support">{chunks}</Link>
+                        </TextLink>
+                      ),
+                    })
+                  : isLifetime
+                    ? t('lifetimeNote')
+                    : null
+
+          // Read-only inspection: Renew is drawn disabled (the API refuses
+          // account changes anyway) and says why.
+          const renewControl = (label: string, variant: 'default' | 'outline', size: 'sm' | 'default') =>
+            viewOnly ? (
+              <Button variant={variant} size={size} disabled>
+                {label}
+              </Button>
+            ) : (
+              <Button asChild variant={variant} size={size}>
+                <Link href={renewHref} prefetch={false}>
+                  {label}
+                </Link>
+              </Button>
+            )
+
           // A real form post: the 303 to Discord's authorize page (and the
           // OAuth round-trip back) must run as a top-level navigation, which
-          // fetch() cannot do. Rendered in exactly ONE place per card — the
-          // top-of-card prompt while nobody is connected, the members section
-          // afterwards — so a card never shows two Connect buttons.
-          const connectDiscordForm = (
+          // fetch() cannot do. One outline Connect per card, in its Discord
+          // column. Read-only inspection draws it disabled and outside the
+          // form: the public /api/discord/claim route can't be fenced by
+          // assertViewOnly().
+          const connectLabel =
+            discordMembers.length > 0
+              ? t('discordConnectAnother')
+              : t('discordConnectCta')
+          const connectDiscord = viewOnly ? (
+            <Button variant="outline" size="sm" disabled>
+              {connectLabel}
+            </Button>
+          ) : (
             <form method="POST" action="/api/discord/claim">
               <input type="hidden" name="licenseKey" value={license.key} />
               <input
@@ -626,124 +739,88 @@ export function LicensesClient({
               />
               <Button
                 type="submit"
-                // Primary only in the top prompt, and only while the expiry
-                // notice's Renew is not already the card's primary action —
-                // one primary CTA per card, same rule as the Renew dedupe.
-                variant={
-                  promptDiscordConnect && !expiringSoon ? 'default' : 'outline'
-                }
+                variant="outline"
                 size="sm"
                 aria-label={t('discordConnectCtaAria', { suffix: keySuffix })}
               >
-                {t('discordConnectCta')}
+                {connectLabel}
               </Button>
             </form>
           )
-          const isOpen = openLicenses.has(license.id)
-          const detailId = `license-detail-${license.id}`
-          const expiryMs = license.expiry ? Date.parse(license.expiry) : null
-          const hasValidExpiry = expiryMs != null && !Number.isNaN(expiryMs)
-          // Collapsed band digest: the one line that still answers "is this
-          // licence fine" without opening the card.
-          const bandSitesSummary = t('bandSites', {
-            count: license.activationCount,
-            max: license.maxMachines,
-          })
-          const bandSummary =
-            hasValidExpiry && displayStatus === 'active'
-              ? `${t('factUntil', {
-                  date: formatDateForLocale(license.expiry as string, locale),
-                })} · ${bandSitesSummary}`
-              : bandSitesSummary
+
+          // The Sites column carries the authoritative activation count, so it
+          // shows whenever a site is (or can be) active on this key.
+          const showSites =
+            license.machines.length > 0 ||
+            license.activationCount > 0 ||
+            displayStatus === 'active'
+          const showDownloads =
+            displayStatus === 'active' ||
+            displayStatus === 'expired' ||
+            displayStatus === 'suspended'
+          const columnCount = 1 + (showSites ? 1 : 0) + (showDownloads ? 1 : 0)
+          const freeSlots = Math.max(
+            0,
+            license.maxMachines - license.activationCount
+          )
 
           return (
-          <Card key={license.id} className="overflow-hidden">
-            {/* Dark key band: the licence's identity strip. Constant slate-950
-                in both themes (like the checkout's dark summary), with a faint
-                red radial sheen echoing the brand mark. */}
-            <div className="relative isolate flex flex-wrap items-center gap-x-3 gap-y-2 bg-slate-950 px-4 py-3.5 text-slate-100 sm:px-5">
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_180%_at_100%_0%,rgba(190,45,32,0.16),transparent_45%)]"
-              />
-              <button
-                type="button"
-                onClick={() => toggleRevealKey(license.id)}
-                aria-pressed={keyRevealed}
-                title={t(keyRevealed ? 'hideKeyAria' : 'showKeyAria', {
-                  suffix: keySuffix,
-                })}
-                aria-label={t(keyRevealed ? 'hideKeyAria' : 'showKeyAria', {
-                  suffix: keySuffix,
-                })}
-                className="group relative flex min-w-0 items-center gap-3 rounded-md text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
-              >
-                <span
-                  aria-hidden="true"
-                  className={cn(
-                    'grid h-9 w-9 shrink-0 place-items-center rounded-lg text-white transition-transform group-hover:scale-105',
-                    displayStatus === 'active'
-                      ? 'bg-gradient-to-br from-[#d63a2d] to-[#a91f14] shadow-[0_2px_8px_rgba(169,31,20,0.45)]'
-                      : 'bg-gradient-to-br from-slate-600 to-slate-800'
-                  )}
+          <Card key={license.id} className="@container overflow-hidden">
+            <div className="p-6 @max-[640px]:p-[18px]">
+              <div className="flex flex-wrap items-center gap-2.5">
+                <StatusBadge
+                  tone={badgeTone}
+                  title={
+                    statusPresentation.titleKey
+                      ? t(statusPresentation.titleKey)
+                      : undefined
+                  }
                 >
-                  <Key className="h-4 w-4" />
-                </span>
-                <span className="min-w-0">
-                  <span className="block text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-400">
-                    WCPOS Pro{planLabel ? <> · <span>{planLabel}</span></> : null}
-                  </span>
-                  <code className="block break-all font-mono text-sm tracking-wider text-slate-100">
-                    {keyRevealed ? license.key : maskKey(license.key)}
-                  </code>
-                </span>
-              </button>
-              <button
-                type="button"
-                onClick={() => handleCopyKey(license.id, license.key)}
-                title={
-                  keyCopied
-                    ? t('copiedKey')
-                    : t('copyKeyAria', { suffix: keySuffix })
-                }
-                aria-label={
-                  keyCopied
-                    ? t('copiedKey')
-                    : t('copyKeyAria', { suffix: keySuffix })
-                }
-                className="relative flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-slate-400 transition-colors hover:bg-white/10 hover:text-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
-              >
-                {keyCopied ? (
-                  <Check className="h-4 w-4 text-green-400" />
-                ) : (
-                  <Copy className="h-4 w-4" />
-                )}
-              </button>
-              <span
-                className={cn(
-                  'relative inline-flex items-center gap-1.5 text-xs font-semibold',
-                  bandStatusText[statusPresentation.tone]
-                )}
-                title={
-                  statusPresentation.titleKey
-                    ? t(statusPresentation.titleKey)
-                    : undefined
-                }
-              >
-                <span
-                  aria-hidden="true"
-                  className="size-1.5 rounded-full bg-current shadow-[0_0_8px_currentColor]"
-                />
-                {tStatus(statusPresentation.labelKey)}
-              </span>
-              <div className="relative ml-auto flex items-center gap-2">
-                {!isOpen && (
-                  <span className="hidden text-xs tabular-nums text-slate-400 md:inline">
-                    {bandSummary}
-                  </span>
-                )}
-                <button
-                  type="button"
+                  {badgeLabel}
+                </StatusBadge>
+                <p className="text-[13px] font-medium text-muted-foreground @max-[480px]:whitespace-nowrap">
+                  <b className="font-semibold">
+                    WCPOS Pro{planLabel ? <> {planLabel}</> : null}
+                  </b>
+                  {meaning && (
+                    <span className="@max-[480px]:hidden"> · {meaning}</span>
+                  )}
+                </p>
+              </div>
+
+              <div className="mt-1.5 flex items-center gap-2 @max-[480px]:flex-wrap">
+                <code className="me-2 whitespace-nowrap font-mono text-[28px] font-medium leading-9 tracking-[0.02em] text-foreground @max-[640px]:text-[22px] @max-[640px]:leading-[30px] @max-[480px]:mb-1.5 @max-[480px]:basis-full @max-[480px]:break-all @max-[480px]:whitespace-normal">
+                  {keyRevealed ? license.key : maskKey(license.key)}
+                </code>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => toggleRevealKey(license.id)}
+                  aria-pressed={keyRevealed}
+                  aria-label={t(keyRevealed ? 'hideKeyAria' : 'showKeyAria', {
+                    suffix: keySuffix,
+                  })}
+                >
+                  {keyRevealed ? <EyeOff /> : <Eye />}
+                  {t(keyRevealed ? 'hideKey' : 'showKey')}
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleCopyKey(license.id, license.key)}
+                  aria-label={
+                    keyCopied
+                      ? t('copiedKey')
+                      : t('copyKeyAria', { suffix: keySuffix })
+                  }
+                >
+                  {keyCopied ? <Check className="text-green-600" /> : <Copy />}
+                  {keyCopied ? t('copiedKey') : t('copyKey')}
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="ms-auto"
                   onClick={() => toggleOpenLicense(license.id)}
                   aria-expanded={isOpen}
                   // The detail node is unmounted while collapsed, so only
@@ -752,202 +829,114 @@ export function LicensesClient({
                   aria-label={t(isOpen ? 'collapseAria' : 'expandAria', {
                     suffix: keySuffix,
                   })}
-                  className="flex h-7 w-7 items-center justify-center rounded-md text-slate-400 transition-colors hover:bg-white/10 hover:text-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
                 >
+                  {t(isOpen ? 'hideDetails' : 'showDetails')}
                   <ChevronDown
-                    className={cn(
-                      'h-4 w-4 transition-transform',
-                      isOpen && 'rotate-180'
-                    )}
+                    className={cn('transition-transform', isOpen && 'rotate-180')}
                   />
-                </button>
+                </Button>
+              </div>
+
+              <div className="mt-3.5 max-w-[64ch]">
+                {statusLine && (
+                  <p
+                    className={cn(
+                      'font-semibold tabular-nums',
+                      isOpen ? 'text-base' : 'text-sm'
+                    )}
+                  >
+                    {statusLine}
+                    {isOpen && displayStatus === 'active' && !isLifetime && hasValidExpiry && (
+                      <span className="text-sm font-normal text-muted-foreground">
+                        {' · '}
+                        {t('daysLeft', { days: daysLeft })}
+                      </span>
+                    )}
+                    {!isOpen && (
+                      <span className="text-sm font-normal text-muted-foreground">
+                        {' · '}
+                        {t('bandSites', {
+                          count: license.activationCount,
+                          max: license.maxMachines,
+                        })}
+                      </span>
+                    )}
+                  </p>
+                )}
+                {isOpen && statusSub && (
+                  <p className="mt-0.5 text-sm text-muted-foreground">
+                    {statusSub}
+                  </p>
+                )}
+                {isOpen && hasValidExpiry && displayStatus === 'active' && (
+                  <Progress
+                    tone="positive"
+                    value={supportRunwayPercent(expiryMs as number, now)}
+                    className="mt-2.5 max-w-[360px]"
+                  />
+                )}
+                {isOpen && showRenew && (
+                  <div className="mt-3.5 flex flex-col items-start gap-1.5">
+                    {displayStatus === 'active'
+                      ? renewControl(t('renewEarly'), 'outline', 'sm')
+                      : renewControl(t('renewYear'), 'default', 'default')}
+                    <p className="text-xs text-muted-foreground">
+                      {viewOnly
+                        ? t('readOnlyRenew')
+                        : displayStatus === 'active'
+                          ? t('renewEarlyHint', { date: expiryDate ?? '' })
+                          : t('renewHint')}
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
 
             {isOpen && (
-            <CardContent id={detailId} className="space-y-5 pt-5">
-              {expiringSoon && license.expiry && (
+            <div id={detailId}>
+              {expiringSoon && expiryDate && (
                 <AccountNotice
-                  action={
-                    <Button asChild size="sm">
-                      <Link href={renewHref} prefetch={false}>
-                        {t('renew')}
-                      </Link>
-                    </Button>
-                  }
+                  className="mx-6 mb-5 @max-[480px]:mx-[18px]"
+                  icon={<CalendarClock />}
+                  action={renewControl(t('renewYear'), 'default', 'sm')}
                 >
-                  {t(
-                    updateAccessLapsingSoon ? 'expiresSoonRenew' : 'expiresSoon',
-                    { date: formatDateForLocale(license.expiry, locale) }
-                  )}
-                </AccountNotice>
-              )}
-
-              {promptDiscordConnect && (
-                <AccountNotice variant="neutral" action={connectDiscordForm}>
-                  {t('discordSupportPrompt')}
-                </AccountNotice>
-              )}
-
-              {displayStatus === 'unknown' && (
-                <p className="text-sm text-muted-foreground">
-                  {t.rich('unverifiable', {
-                    supportLink: (chunks) => (
-                      <Link
-                        href="/support"
-                        className="underline underline-offset-4"
-                      >
-                        {chunks}
-                      </Link>
-                    ),
+                  {t.rich('expiresSoon', {
+                    date: expiryDate,
+                    days: daysLeft,
+                    b: bold,
                   })}
-                </p>
+                </AccountNotice>
               )}
-
-              {/* Facts row: the licence's vitals as unboxed columns —
-                  whitespace instead of borders (account redesign 2026-07). */}
-              <div className="flex flex-wrap items-start gap-x-10 gap-y-4">
-                <div>
-                  <p className="text-xs text-muted-foreground">
-                    {t('factUpdates')}
-                  </p>
-                  <p className="mt-0.5 text-sm font-semibold tabular-nums">
-                    {/* Lifetime means NO expiry. An expiry that fails to parse
-                        is NOT lifetime — the display status already failed
-                        closed to expired, so show no date rather than a
-                        contradictory "lifetime" claim. */}
-                    {license.expiry == null
-                      ? t('factLifetime')
-                      : hasValidExpiry
-                        ? t(
-                            displayStatus === 'expired'
-                              ? 'factEnded'
-                              : 'factUntil',
-                            {
-                              date: formatDateForLocale(
-                                license.expiry,
-                                locale
-                              ),
-                            }
-                          )
-                        : '—'}
-                  </p>
-                  {hasValidExpiry && displayStatus === 'active' && (
-                    <>
-                      <Progress
-                        tone="positive"
-                        value={supportRunwayPercent(expiryMs as number, now)}
-                        className="mt-2 w-40"
-                      />
-                      <p className="mt-1 text-xs tabular-nums text-muted-foreground">
-                        {t('daysLeft', {
-                          days: daysUntil(expiryMs as number, now),
-                        })}
-                      </p>
-                    </>
-                  )}
-                  {displayStatus === 'expired' && (
-                    <p className="mt-1 max-w-56 text-xs text-muted-foreground">
-                      {t('expiredKeepsRunning')}
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <p className="text-xs text-muted-foreground">{t('factSites')}</p>
-                  <p className="mt-0.5 text-sm font-semibold tabular-nums">
-                    {t('activationsCount', {
-                      count: license.activationCount,
-                      max: license.maxMachines,
-                    })}
-                  </p>
-                  <p className="mt-1 text-xs text-muted-foreground">
-                    {t('slotsFree', {
-                      count: Math.max(
-                        0,
-                        license.maxMachines - license.activationCount
-                      ),
-                    })}
-                  </p>
-                </div>
-
-                <div>
-                  <p className="text-xs text-muted-foreground">{t('factSeats')}</p>
-                  <p className="mt-0.5 text-sm font-semibold tabular-nums">
-                    {t('seatsCount', {
-                      used: discordAccess.usedSeats,
-                      cap: discordAccess.seatCap,
-                    })}
-                  </p>
-                  <p className="mt-1 text-xs text-muted-foreground">
-                    {t('seatsFree', {
-                      count: Math.max(
-                        0,
-                        discordAccess.seatCap - discordAccess.usedSeats
-                      ),
-                    })}
-                  </p>
-                </div>
-
-                {(displayStatus === 'active' || displayStatus === 'expired') && (
-                  <div>
-                    <p className="text-xs text-muted-foreground">
-                      {t('factDownloads')}
-                    </p>
-                    <p className="mt-0.5 text-sm font-semibold tabular-nums">
-                      {coveredVersion
-                        ? displayStatus === 'expired'
-                          ? t('downloadsUpTo', { version: coveredVersion })
-                          : coveredVersion
-                        : '—'}
-                    </p>
-                    <p className="mt-1 text-xs">
-                      <Link
-                        href={
-                          displayStatus === 'expired'
-                            ? scopedDownloadsHref
-                            : '/account/downloads'
-                        }
-                        className="font-medium text-wcpos-red-accent hover:underline"
-                      >
-                        {t('downloads')}
-                      </Link>
-                    </p>
-                  </div>
-                )}
-
-                {showRenew && (
-                  <div className="ms-auto self-center">
-                    {/* Renew is always offered on a yearly licence: primary when
-                        expired (needed to regain access), secondary when active
-                        (an optional early renewal — no days are lost). */}
+              {displayStatus === 'suspended' && (
+                <AccountNotice
+                  className="mx-6 mb-5 @max-[480px]:mx-[18px]"
+                  action={
                     <Button
                       asChild
                       size="sm"
-                      variant={displayStatus === 'active' ? 'outline' : 'default'}
+                      variant="outline"
+                      className="text-foreground"
                     >
-                      <Link href={renewHref} prefetch={false}>
-                        {t('renew')}
-                      </Link>
+                      <Link href="/support">{tDownloads('contactSupport')}</Link>
                     </Button>
-                  </div>
-                )}
-              </div>
+                  }
+                >
+                  {t('suspendedNotice')}
+                </AccountNotice>
+              )}
 
-              {license.machines.length > 0 ? (
-                <div className="border-t pt-4">
-                  <div className="flex flex-wrap items-center justify-between gap-2">
-                    <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                      {t('activatedSites')}
-                    </p>
-                    <span className="text-xs font-medium tabular-nums text-muted-foreground">
-                      {t('activationsCount', {
-                        count: license.activationCount,
-                        max: license.maxMachines,
-                      })}
-                    </span>
-                  </div>
-                  <DividedList className="mt-1">
+              <div className={cn('grid border-t', COLUMN_GRID[columnCount])}>
+              {showSites && (
+                <section className={COLUMN_CLASS}>
+                  <ColumnHeading
+                    title={t('factSites')}
+                    meta={t('activationsCount', {
+                      count: license.activationCount,
+                      max: license.maxMachines,
+                    })}
+                  />
+                  {license.machines.length > 0 ? (
+                  <DividedList>
                     {license.machines.map((machine) => {
                       const metadata = machine.metadata ?? {}
                       const siteLabel =
@@ -963,8 +952,8 @@ export function LicensesClient({
                       const wpVersion = metaString(metadata, 'wpVersion')
                       const wcVersion = metaString(metadata, 'wcVersion')
                       // One quiet meta line per site: added · last seen ·
-                      // versions · instance id. Everything secondary lives
-                      // here so the domain stays the only loud thing.
+                      // versions. Everything secondary lives here so the
+                      // domain stays the only loud thing.
                       const metaParts = [
                         t('machineAdded', {
                           date: formatDateForLocale(machine.createdAt, locale),
@@ -977,58 +966,81 @@ export function LicensesClient({
                           t('pluginVersionLabel', { version: pluginVersion }),
                         wpVersion && t('wpVersionLabel', { version: wpVersion }),
                         wcVersion && t('wcVersionLabel', { version: wcVersion }),
-                        siteLabel &&
-                          t('instanceId', {
-                            id: shortenInstance(machine.fingerprint),
-                          }),
                       ].filter(Boolean) as string[]
                       const isConfirming = confirmingDeactivate === machine.id
                       const isDeactivating = deactivating === machine.id
+                      const siteName = siteLabel || t('genericMachineName')
 
                       return (
-                        <Row key={machine.id} className="items-start gap-2">
-                          <div className="flex min-w-0 items-start gap-2.5">
-                            <span
-                              aria-hidden="true"
-                              className={cn(
-                                'mt-1.5 size-2 shrink-0 rounded-full',
-                                isRecentlySeen(lastSeen, now)
-                                  ? 'bg-green-500 ring-[3px] ring-green-500/15'
-                                  : 'bg-muted-foreground/40 ring-[3px] ring-muted'
-                              )}
-                            />
-                            <div className="min-w-0">
-                              {/* Site domain when we know it, otherwise fall
-                                  back to the opaque fingerprint (which must be
-                                  allowed to break anywhere on phones). */}
-                              <p className="break-all text-sm font-medium">
-                                {siteLabel || machine.fingerprint}
-                              </p>
-                              <p className="mt-0.5 break-all text-xs text-muted-foreground">
-                                {metaParts.join(' · ')}
-                              </p>
-                              {/* Expired licences still cover pre-expiry
-                                  versions: tell each activated site which
-                                  version it can still update through
-                                  (ADR-0006, per licence). */}
-                              {displayStatus === 'expired' && coveredVersion && (
-                                <p className="mt-0.5 text-xs text-muted-foreground">
-                                  {t('siteUpdatesThrough', {
-                                    version: coveredVersion,
-                                  })}
-                                </p>
-                              )}
-                            </div>
-                          </div>
+                        <div
+                          key={machine.id}
+                          className="grid grid-cols-[8px_minmax(0,1fr)_auto] items-center gap-x-2.5 py-3"
+                        >
+                          <span
+                            aria-hidden="true"
+                            className={cn(
+                              'size-2 rounded-full',
+                              isRecentlySeen(lastSeen, now)
+                                ? 'bg-green-500 ring-[3px] ring-green-500/15'
+                                : 'bg-muted-foreground/40 ring-[3px] ring-muted'
+                            )}
+                          />
+                          {/* Site domain when we know it, otherwise fall back
+                              to the opaque fingerprint (which must be allowed
+                              to break anywhere on phones). */}
+                          <p className="break-all text-sm font-medium">
+                            {siteLabel || machine.fingerprint}
+                          </p>
                           {isConfirming ? (
-                            <div className="flex max-w-[15rem] shrink-0 flex-col items-end gap-1.5 text-right">
-                              <p className="text-xs text-muted-foreground">
+                            <span />
+                          ) : (
+                            <Button
+                              variant="ghost-destructive"
+                              size="sm"
+                              className="-me-1.5 h-7 gap-1.5 px-1.5"
+                              onClick={() =>
+                                setConfirmingDeactivate(machine.id)
+                              }
+                              disabled={isDeactivating || viewOnly}
+                              aria-label={`${t('deactivateSite')}: ${siteName}`}
+                            >
+                              <Trash2 />
+                              {t('deactivateSite')}
+                            </Button>
+                          )}
+                          <p className="col-span-2 col-start-2 mt-0.5 break-words text-[13px] leading-[18px] text-muted-foreground">
+                            {metaParts.join(' · ')}
+                          </p>
+                          {/* Expired licences still cover pre-expiry versions:
+                              tell each activated site which version it can
+                              still update through (ADR-0006, per licence). */}
+                          {displayStatus === 'expired' && coveredVersion && (
+                            <p className="col-span-2 col-start-2 text-[13px] leading-[18px] text-muted-foreground">
+                              {t('siteUpdatesThrough', {
+                                version: coveredVersion,
+                              })}
+                            </p>
+                          )}
+                          {isConfirming && (
+                            <div
+                              role="alertdialog"
+                              aria-label={t('deactivateQuestion', { site: siteName })}
+                              className="col-span-2 col-start-2 mt-2.5 rounded-md bg-red-50 p-3 dark:bg-red-500/10"
+                            >
+                              <p className="break-all text-sm font-semibold text-red-700 dark:text-red-400">
+                                {t('deactivateQuestion', { site: siteName })}
+                              </p>
+                              <p className="mt-1 text-xs">
                                 {t('deactivateSiteConfirm')}
                               </p>
-                              <div className="flex gap-2">
+                              <p className="mt-1 text-xs text-muted-foreground">
+                                {t('deactivateCacheNote')}
+                              </p>
+                              <div className="mt-2.5 flex justify-end gap-2">
                                 <Button
-                                  variant="ghost"
+                                  variant="outline"
                                   size="sm"
+                                  className="text-foreground"
                                   onClick={() => setConfirmingDeactivate(null)}
                                   disabled={isDeactivating}
                                 >
@@ -1042,73 +1054,49 @@ export function LicensesClient({
                                   }
                                   disabled={isDeactivating}
                                 >
+                                  <Trash2 />
                                   {t('deactivateConfirm')}
                                 </Button>
                               </div>
                             </div>
-                          ) : (
-                            <Button
-                              variant="ghost-destructive"
-                              size="sm"
-                              className="shrink-0"
-                              onClick={() =>
-                                setConfirmingDeactivate(machine.id)
-                              }
-                              disabled={isDeactivating}
-                              aria-label={`${t('deactivateSite')}: ${
-                                siteLabel || t('genericMachineName')
-                              }`}
-                            >
-                              <Trash2 className="mr-1.5 h-4 w-4" />
-                              {t('deactivateSite')}
-                            </Button>
                           )}
-                        </Row>
+                        </div>
                       )
                     })}
                   </DividedList>
-                </div>
-              ) : (
-                /* Only claim "no sites" when the AUTHORITATIVE count agrees —
-                   the machine detail list can be empty while activations
-                   exist (unauthenticated machine management). */
-                displayStatus === 'active' &&
-                license.activationCount === 0 && (
-                  <div className="border-t pt-4">
-                    <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                      {t('activatedSites')}
-                    </p>
-                    <p className="mt-2 rounded-md border border-dashed px-3 py-2.5 text-xs text-muted-foreground">
-                      {t('noSites')}
-                    </p>
-                  </div>
-                )
+                  ) : (
+                    /* Only claim "no sites" when the AUTHORITATIVE count
+                       agrees — the machine detail list can be empty while
+                       activations exist (unauthenticated machine management). */
+                    license.activationCount === 0 && (
+                      <p className="mt-2 text-[13px] text-muted-foreground">
+                        {t('noSites')}
+                      </p>
+                    )
+                  )}
+                  <p className="mt-2 text-[13px] leading-[19px] text-muted-foreground">
+                    {freeSlots > 0 && <>{t('slotsFree', { count: freeSlots })} </>}
+                    {t('sitesCover', { max: license.maxMachines })}
+                  </p>
+                </section>
               )}
 
               {/* Discord access is scoped to this licence. Connected members
                   come from the server-side licence metadata projection; removal
                   updates the same licence-scoped module. */}
-              <div className="border-t pt-4">
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                  <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                    {t('discordHeading')}
-                  </p>
-                  <span className="text-xs font-medium tabular-nums text-muted-foreground">
-                    {t('discordMembers', {
-                      count: discordAccess.usedSeats,
-                      cap: discordAccess.seatCap,
-                    })}
-                  </span>
-                </div>
-                {discordMembers.length === 0 ? (
-                  <p className="mt-2 text-sm text-muted-foreground">
-                    {t('discordNoMembers')}
-                  </p>
-                ) : (
-                  <DividedList className="mt-1">
+              <section className={COLUMN_CLASS}>
+                <ColumnHeading
+                  title={t('discordHeading')}
+                  meta={t('discordMembers', {
+                    count: discordAccess.usedSeats,
+                    cap: discordAccess.seatCap,
+                  })}
+                />
+                {discordMembers.length > 0 && (
+                  <DividedList>
                     {discordMembers.map((member) => (
-                    <Row key={member.id} className="gap-2">
-                      <div className="flex min-w-0 items-center gap-2.5">
+                    <div key={member.id} className="py-2.5">
+                      <div className="flex items-center gap-2.5">
                         <Avatar aria-hidden="true" className="h-7 w-7 shrink-0">
                           {member.avatarUrl && (
                             <AvatarImage src={member.avatarUrl} alt="" />
@@ -1117,7 +1105,7 @@ export function LicensesClient({
                             {memberInitials(member.handle)}
                           </AvatarFallback>
                         </Avatar>
-                        <div className="min-w-0">
+                        <div className="min-w-0 flex-1">
                           <p className="truncate text-sm font-medium">
                             {member.handle}
                           </p>
@@ -1130,21 +1118,54 @@ export function LicensesClient({
                             })}
                           </p>
                         </div>
+                        {confirmingRemove !== member.id && (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setConfirmingRemove(member.id)}
+                            disabled={viewOnly}
+                            aria-label={t('discordRemoveAria', {
+                              handle: member.handle,
+                            })}
+                          >
+                            {t('discordRemove')}
+                          </Button>
+                        )}
                       </div>
-                      <Button
-                        variant="ghost-destructive"
-                        size="sm"
-                        onClick={() =>
-                          handleRemoveDiscordMember(license.id, member.id)
-                        }
-                        disabled={removingDiscordMember === member.id}
-                        aria-label={t('discordRemoveAria', {
-                          handle: member.handle,
-                        })}
-                      >
-                        {t('discordRemove')}
-                      </Button>
-                    </Row>
+                      {confirmingRemove === member.id && (
+                        <div
+                          role="alertdialog"
+                          aria-label={t('discordRemoveAria', { handle: member.handle })}
+                          className="mt-2 rounded-md bg-muted/60 p-3"
+                        >
+                          <p className="text-xs">
+                            {t('discordRemoveQuestion', { handle: member.handle })}
+                          </p>
+                          <div className="mt-2.5 flex justify-end gap-2">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="text-foreground"
+                              onClick={() => setConfirmingRemove(null)}
+                              disabled={removingDiscordMember === member.id}
+                            >
+                              {t('deactivateCancel')}
+                            </Button>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="text-foreground"
+                              onClick={() =>
+                                handleRemoveDiscordMember(license.id, member.id)
+                              }
+                              disabled={removingDiscordMember === member.id}
+                            >
+                              {t('discordRemove')}
+                            </Button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
                     ))}
                   </DividedList>
                 )}
@@ -1159,7 +1180,7 @@ export function LicensesClient({
                     </p>
                     <DividedList className="mt-1">
                       {discordAccess.blockedMembers.map((blocked) => (
-                        <Row key={blocked.discordUserId} className="gap-2">
+                        <Row key={blocked.discordUserId} className="gap-2 py-2.5">
                           <div className="flex min-w-0 items-center gap-2.5 opacity-70">
                             <Avatar aria-hidden="true" className="h-7 w-7 shrink-0">
                               {blocked.avatarUrl && (
@@ -1188,6 +1209,7 @@ export function LicensesClient({
                               )
                             }
                             disabled={
+                              viewOnly ||
                               unblockingDiscordUser === blocked.discordUserId
                             }
                             aria-label={t('discordUnblockAria', {
@@ -1201,30 +1223,70 @@ export function LicensesClient({
                     </DividedList>
                   </div>
                 )}
-                {/* While nobody is connected the prompt + CTA live at the top
-                    of the card instead (promptDiscordConnect), so this row
-                    only renders once a member exists or during read-only
-                    inspection. */}
-                {displayStatus === 'active' && !promptDiscordConnect && (
-                  <div className="mt-3 flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
+                <p className="mt-2 text-[13px] leading-[19px] text-muted-foreground">
+                  {displayStatus !== 'active'
+                    ? t('discordNeedsActive')
+                    : promptDiscordConnect
+                      ? t('discordSupportPrompt')
+                      : t('discordConnectHint')}
+                </p>
+                {displayStatus === 'active' && hasFreeDiscordSeat && (
+                  <div className="mt-4 flex flex-col items-start gap-1.5">
+                    {connectDiscord}
                     <p className="text-xs text-muted-foreground">
-                      {t('discordConnectHint')}
+                      {viewOnly
+                        ? t('discordReadOnly')
+                        : t('discordConnectNote')}
                     </p>
-                    {viewOnly
-                      ? /* Read-only inspection: don't offer the claim flow. The
-                           public /api/discord/claim route can't be fenced by
-                           assertViewOnly(), so hide the CTA and mirror the
-                           read-only messaging the account routes return. */
-                        hasFreeDiscordSeat && (
-                          <p className="text-xs text-muted-foreground">
-                            {t('apiErrors.read_only_inspection')}
-                          </p>
-                        )
-                      : hasFreeDiscordSeat && connectDiscordForm}
                   </div>
                 )}
+              </section>
+
+              {showDownloads && (
+                <section className={COLUMN_CLASS}>
+                  <ColumnHeading title={t('factDownloads')} />
+                  <p className="mt-2 text-sm leading-[21px]">
+                    {displayStatus === 'suspended'
+                      ? t('downloadsSuspended')
+                      : !coveredVersion
+                        ? '—'
+                        : displayStatus === 'expired'
+                          ? t.rich('downloadsUpTo', {
+                              version: coveredVersion,
+                              date: expiryDate ?? '',
+                              b: bold,
+                            })
+                          : isLifetime
+                            ? t.rich('downloadsLifetime', {
+                                version: coveredVersion,
+                                b: bold,
+                              })
+                            : t.rich('downloadsActive', {
+                                version: coveredVersion,
+                                date: expiryDate ?? '',
+                                b: bold,
+                              })}
+                  </p>
+                  {displayStatus !== 'suspended' && (
+                    <div className="mt-4">
+                      <TextLink asChild className="inline-flex items-center gap-1 text-sm">
+                        <Link
+                          href={
+                            displayStatus === 'expired'
+                              ? scopedDownloadsHref
+                              : '/account/downloads'
+                          }
+                        >
+                          {t('downloads')}
+                          <ArrowRight className="size-4" aria-hidden="true" />
+                        </Link>
+                      </TextLink>
+                    </div>
+                  )}
+                </section>
+              )}
               </div>
-            </CardContent>
+            </div>
             )}
           </Card>
           )

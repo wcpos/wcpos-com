@@ -80,11 +80,16 @@ describe('LicensesClient', () => {
   it('shows empty state when no licenses exist', () => {
     render(<LicensesClient initialLicenses={[]} />)
     expect(screen.getByText("You don't have a WCPOS Pro license yet")).toBeInTheDocument()
+    // The empty state leads to /pro and to the free download.
+    expect(screen.getByRole('link', { name: 'See WCPOS Pro' })).toHaveAttribute('href', '/pro')
+    expect(
+      screen.getByRole('link', { name: 'Download WCPOS free' })
+    ).toHaveAttribute('href', '/downloads')
   })
 
   it('renders license key masked', () => {
     render(<LicensesClient initialLicenses={[makeLicense()]} />)
-    expect(screen.getByText('****-****-MNOP')).toBeInTheDocument()
+    expect(screen.getByText('••••-••••-MNOP')).toBeInTheDocument()
   })
 
   it('reveals the full license key when the key is clicked, then re-masks', () => {
@@ -93,12 +98,12 @@ describe('LicensesClient', () => {
     const toggle = screen.getByRole('button', {
       name: 'Show license key ending in MNOP',
     })
-    expect(screen.getByText('****-****-MNOP')).toBeInTheDocument()
+    expect(screen.getByText('••••-••••-MNOP')).toBeInTheDocument()
     expect(screen.queryByText('ABCD-EFGH-IJKL-MNOP')).not.toBeInTheDocument()
 
     fireEvent.click(toggle)
     expect(screen.getByText('ABCD-EFGH-IJKL-MNOP')).toBeInTheDocument()
-    expect(screen.queryByText('****-****-MNOP')).not.toBeInTheDocument()
+    expect(screen.queryByText('••••-••••-MNOP')).not.toBeInTheDocument()
     expect(
       screen.getByRole('button', { name: 'Hide license key ending in MNOP' })
     ).toHaveAttribute('aria-pressed', 'true')
@@ -106,7 +111,7 @@ describe('LicensesClient', () => {
     fireEvent.click(
       screen.getByRole('button', { name: 'Hide license key ending in MNOP' })
     )
-    expect(screen.getByText('****-****-MNOP')).toBeInTheDocument()
+    expect(screen.getByText('••••-••••-MNOP')).toBeInTheDocument()
     expect(screen.queryByText('ABCD-EFGH-IJKL-MNOP')).not.toBeInTheDocument()
   })
 
@@ -154,7 +159,7 @@ describe('LicensesClient', () => {
 
     // Only the clicked card reveals; the other stays masked.
     expect(screen.getByText('ABCD-EFGH-IJKL-MNOP')).toBeInTheDocument()
-    expect(screen.getByText('****-****-0000')).toBeInTheDocument()
+    expect(screen.getByText('••••-••••-0000')).toBeInTheDocument()
     expect(screen.queryByText('WXYZ-WXYZ-WXYZ-0000')).not.toBeInTheDocument()
   })
 
@@ -173,9 +178,18 @@ describe('LicensesClient', () => {
         initialLicenses={[makeLicense({ id: 'lic-1', status: 'expired' })]}
       />
     )
-    expect(screen.getByText('****-****-MNOP')).toBeInTheDocument()
-    const renewLink = screen.getByRole('link', { name: 'Renew' })
+    expect(screen.getByText('••••-••••-MNOP')).toBeInTheDocument()
+    const renewLink = screen.getByRole('link', { name: 'Renew for a year' })
     expect(renewLink).toHaveAttribute('href', '/pro')
+    // The action says what it does before it does it.
+    expect(
+      screen.getByText('Opens the renewal page. Nothing is charged until you click Pay there.')
+    ).toBeInTheDocument()
+    expect(
+      screen.getByText(
+        'WCPOS Pro keeps working on your sites. Renew to get updates and priority support again.'
+      )
+    ).toBeInTheDocument()
     // Pre-expiry versions stay downloadable, scoped to this licence.
     const downloadLink = screen.getByRole('link', { name: /downloads/i })
     expect(downloadLink).toHaveAttribute('href', '/account/downloads?license=lic-1')
@@ -192,8 +206,11 @@ describe('LicensesClient', () => {
     expect(screen.getByText('expired')).toBeInTheDocument()
     // Fail-closed expiry must NOT read as a lifetime licence (only a null
     // expiry is lifetime); the fact value degrades to a dash instead.
-    expect(screen.queryByText('Lifetime — no expiry')).not.toBeInTheDocument()
-    // Both the updates fact and the (empty) downloads fact degrade to a dash.
+    expect(
+      screen.queryByText('Updates and priority support with no end date')
+    ).not.toBeInTheDocument()
+    // No date line; the (empty) downloads fact degrades to a dash.
+    expect(screen.queryByText(/Updates and priority support (until|ended)/)).toBeNull()
     expect(screen.getAllByText('—').length).toBeGreaterThan(0)
   })
 
@@ -206,7 +223,7 @@ describe('LicensesClient', () => {
       />
     )
     expect(screen.getByText('expired')).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'Renew' })).toHaveAttribute(
+    expect(screen.getByRole('link', { name: 'Renew for a year' })).toHaveAttribute(
       'href',
       '/pro'
     )
@@ -220,15 +237,20 @@ describe('LicensesClient', () => {
       />
     )
 
+    // Expiry ends updates and priority support only; Pro keeps working.
     expect(
-      screen.getByText(/Your license expires on .* renew to keep receiving updates/)
+      screen.getByText(/Updates and priority support end on .*, in 10 days\. WCPOS Pro keeps working after that\./)
     ).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'Renew' })).toHaveAttribute(
+    expect(screen.queryByText(/stops working/)).toBeNull()
+    // The notice's Renew is the card's only Renew.
+    expect(screen.getAllByRole('link', { name: /Renew/ })).toHaveLength(1)
+    expect(screen.getByRole('link', { name: 'Renew for a year' })).toHaveAttribute(
       'href',
       '/pro'
     )
-    // Still displays as active with downloads reachable.
-    expect(screen.getByText('active')).toBeInTheDocument()
+    // Inside the 30-day window the badge reads "expiring"; downloads stay
+    // reachable.
+    expect(screen.getByText('expiring')).toBeInTheDocument()
     expect(screen.getByRole('link', { name: /downloads/i })).toHaveAttribute(
       'href',
       '/account/downloads'
@@ -244,10 +266,11 @@ describe('LicensesClient', () => {
     )
 
     expect(
-      screen.queryByText(/renew to keep receiving updates/)
+      screen.queryByText(/Updates and priority support end on/)
     ).not.toBeInTheDocument()
-    // The expiry banner is gone, but the always-visible footer Renew remains.
-    expect(screen.getByRole('link', { name: 'Renew' })).toHaveAttribute(
+    expect(screen.getByText('active')).toBeInTheDocument()
+    // The notice is gone, but the always-visible early Renew remains.
+    expect(screen.getByRole('link', { name: 'Renew early' })).toHaveAttribute(
       'href',
       '/pro'
     )
@@ -261,12 +284,14 @@ describe('LicensesClient', () => {
     )
 
     expect(
-      screen.queryByText(/renew to keep receiving updates/)
+      screen.queryByText(/Updates and priority support end on/)
     ).not.toBeInTheDocument()
     // A lifetime licence never expires — there is nothing to renew.
+    expect(screen.queryByRole('link', { name: /Renew/ })).not.toBeInTheDocument()
     expect(
-      screen.queryByRole('link', { name: 'Renew' })
-    ).not.toBeInTheDocument()
+      screen.getByText('Updates and priority support with no end date')
+    ).toBeInTheDocument()
+    expect(screen.getByText('A Lifetime license has nothing to renew.')).toBeInTheDocument()
   })
 
   it('labels a yearly-policy license "Yearly"', () => {
@@ -278,7 +303,7 @@ describe('LicensesClient', () => {
       />
     )
 
-    expect(screen.getByText('Yearly')).toBeInTheDocument()
+    expect(screen.getByText('WCPOS Pro Yearly')).toBeInTheDocument()
   })
 
   it('routes the Renew button for a yearly licence to the one-click renewal flow', () => {
@@ -296,7 +321,7 @@ describe('LicensesClient', () => {
     // An active yearly licence shows the always-visible Renew, pointed at the
     // one-click renewal flow (prefilled cart + saved card), not the full
     // checkout. That flow itself falls back to /pro/checkout without billing.
-    expect(screen.getByRole('link', { name: 'Renew' })).toHaveAttribute(
+    expect(screen.getByRole('link', { name: 'Renew early' })).toHaveAttribute(
       'href',
       '/account/licenses/renew'
     )
@@ -314,7 +339,7 @@ describe('LicensesClient', () => {
       />
     )
 
-    expect(screen.getByRole('link', { name: 'Renew' })).toHaveAttribute(
+    expect(screen.getByRole('link', { name: 'Renew early' })).toHaveAttribute(
       'data-prefetch',
       'false'
     )
@@ -333,7 +358,7 @@ describe('LicensesClient', () => {
     expect(screen.queryByText('Yearly')).not.toBeInTheDocument()
   })
 
-  it('softens the per-card notice when a lifetime license keeps update access open', () => {
+  it('reads the same expiry notice whether or not another licence keeps updates open', () => {
     const expiry = new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toISOString()
     render(
       <LicensesClient
@@ -349,63 +374,13 @@ describe('LicensesClient', () => {
       />
     )
 
-    // The expiring card still mentions its expiry date...
-    expect(screen.getByText(/Your license expires on/)).toBeInTheDocument()
-    // ...but drops the urgency clause: updates stay available via the
-    // lifetime license, mirroring the overview's account-level suppression.
-    expect(
-      screen.queryByText(/renew to keep receiving updates/)
-    ).not.toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'Renew' })).toHaveAttribute(
+    // The per-card notice carries no urgency either way: it states the end
+    // date and that Pro keeps working.
+    expect(screen.getByText(/WCPOS Pro keeps working after that/)).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Renew for a year' })).toHaveAttribute(
       'href',
       '/pro'
     )
-  })
-
-  it('softens the per-card notice when a later active license extends access beyond the window', () => {
-    const soon = new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toISOString()
-    const later = new Date(
-      Date.now() + 200 * 24 * 60 * 60 * 1000
-    ).toISOString()
-    render(
-      <LicensesClient
-        initialLicenses={[
-          makeLicense({ id: 'lic-soon', status: 'active', expiry: soon }),
-          makeLicense({
-            id: 'lic-later',
-            key: 'WXYZ-WXYZ-WXYZ-LATE',
-            status: 'active',
-            expiry: later,
-          }),
-        ]}
-      />
-    )
-
-    expect(screen.getByText(/Your license expires on/)).toBeInTheDocument()
-    expect(
-      screen.queryByText(/renew to keep receiving updates/)
-    ).not.toBeInTheDocument()
-  })
-
-  it('keeps the full renewal warning when every active license lapses inside the window', () => {
-    const expiry = new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toISOString()
-    render(
-      <LicensesClient
-        initialLicenses={[
-          makeLicense({ id: 'lic-only', status: 'active', expiry }),
-          makeLicense({
-            id: 'lic-expired',
-            key: 'WXYZ-WXYZ-WXYZ-DEAD',
-            status: 'expired',
-            expiry: '2020-01-01T00:00:00Z',
-          }),
-        ]}
-      />
-    )
-
-    expect(
-      screen.getByText(/renew to keep receiving updates/)
-    ).toBeInTheDocument()
   })
 
   it('explains unverifiable licenses instead of implying they lapsed', () => {
@@ -426,7 +401,7 @@ describe('LicensesClient', () => {
       screen.getByRole('link', { name: 'contact support' })
     ).toHaveAttribute('href', '/support')
     // Unknown is not expired: no renew CTA, no expiry warning.
-    expect(screen.queryByRole('link', { name: 'Renew' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('link', { name: /Renew/ })).not.toBeInTheDocument()
     expect(screen.queryByText('expired')).not.toBeInTheDocument()
   })
 
@@ -434,8 +409,18 @@ describe('LicensesClient', () => {
     render(
       <LicensesClient initialLicenses={[makeLicense({ status: 'suspended' })]} />
     )
-    expect(screen.getByText('****-****-MNOP')).toBeInTheDocument()
+    expect(screen.getByText('••••-••••-MNOP')).toBeInTheDocument()
     expect(screen.queryByRole('link', { name: /download/i })).not.toBeInTheDocument()
+    expect(
+      screen.getByText('No downloads while the license is suspended.')
+    ).toBeInTheDocument()
+    expect(
+      screen.getByText('This license is suspended. Contact support to find out why and to restore it.')
+    ).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Contact support' })).toHaveAttribute(
+      'href',
+      '/support'
+    )
     expect(
       screen.queryByText(/Connect with your license key/)
     ).not.toBeInTheDocument()
@@ -461,9 +446,9 @@ describe('LicensesClient', () => {
         ]}
       />
     )
-    // The activation count appears in the facts row and again in the
-    // Activated Sites section header.
-    expect(screen.getAllByText('1 of 5').length).toBeGreaterThan(0)
+    // The activation count heads the Sites column.
+    expect(screen.getByText('1 of 5 in use')).toBeInTheDocument()
+    expect(screen.getByText(/4 free\. One key covers 5 sites\./)).toBeInTheDocument()
   })
 
   it('does not fetch licenses on initial render', () => {
@@ -478,9 +463,12 @@ describe('LicensesClient', () => {
         entitledVersions={{ 'lic-1': '3.2.0' }}
       />
     )
-    // The covered version is the Downloads fact value, linking to the
+    // The covered version leads the Downloads column, linking to the
     // downloads page.
     expect(screen.getByText('3.2.0')).toBeInTheDocument()
+    expect(
+      screen.getByText(/\(the latest\), and new ones until/)
+    ).toBeInTheDocument()
     expect(screen.getByRole('link', { name: /Go to downloads/ })).toHaveAttribute(
       'href',
       expect.stringContaining('/account/downloads')
@@ -496,9 +484,12 @@ describe('LicensesClient', () => {
         entitledVersions={{ 'lic-1': '2.8.0' }}
       />
     )
-    // An expired licence shows the last covered version as "Up to X" and
-    // scopes the downloads link to this licence.
-    expect(screen.getByText('Up to 2.8.0')).toBeInTheDocument()
+    // An expired licence names the last covered version and scopes the
+    // downloads link to this licence.
+    expect(screen.getByText('2.8.0')).toBeInTheDocument()
+    expect(
+      screen.getByText(/Versions released after .* need a renewal\./)
+    ).toBeInTheDocument()
     expect(screen.getByRole('link', { name: /Go to downloads/ })).toHaveAttribute(
       'href',
       expect.stringContaining('license=lic-1')
@@ -564,7 +555,7 @@ describe('LicensesClient', () => {
       />
     )
     expect(screen.getByText('Discord support')).toBeInTheDocument()
-    expect(screen.getByText('1 of 5 members')).toBeInTheDocument()
+    expect(screen.getByText('1 of 5 seats')).toBeInTheDocument()
     expect(screen.getByText('@ada')).toBeInTheDocument()
     expect(screen.queryByText('@devon')).not.toBeInTheDocument()
   })
@@ -572,8 +563,7 @@ describe('LicensesClient', () => {
   it('renders empty Discord access when no members are connected', () => {
     render(<LicensesClient initialLicenses={[makeLicense({ id: 'lic-1' })]} />)
 
-    expect(screen.getByText('0 of 5 members')).toBeInTheDocument()
-    expect(screen.getByText('No Discord account connected yet.')).toBeInTheDocument()
+    expect(screen.getByText('0 of 5 seats')).toBeInTheDocument()
     expect(screen.queryByText('@ada')).not.toBeInTheDocument()
   })
 
@@ -585,20 +575,21 @@ describe('LicensesClient', () => {
     const prompt = screen.getByText(
       'Priority support happens in our Discord. Connect your Discord account to get the Pro role and the Pro support channels.'
     )
-    // The prompt carries the claim CTA as its action — and it is the only
-    // claim form on the card (the members-section row is suppressed).
-    const notice = prompt.closest('div.rounded-md')
-    expect(notice).not.toBeNull()
+    // The prompt sits in the Discord column with its claim CTA — the only
+    // claim form on the card, always the outline button, saying what it does.
+    const column = prompt.closest('section')
+    expect(column).not.toBeNull()
     expect(
-      (notice as HTMLElement).querySelector('form[action="/api/discord/claim"]')
+      (column as HTMLElement).querySelector('form[action="/api/discord/claim"]')
     ).not.toBeNull()
     expect(container.querySelectorAll('form[action="/api/discord/claim"]')).toHaveLength(1)
-    // The prompt sits ABOVE the facts row, not buried under the sites list.
-    const facts = screen.getByText('Updates & priority support')
     expect(
-      prompt.compareDocumentPosition(facts) & Node.DOCUMENT_POSITION_FOLLOWING
-    ).toBeTruthy()
-    // The quieter members-section hint is for cards that already have a member.
+      screen.getByRole('button', { name: 'Connect Discord for license ending in MNOP' })
+    ).toHaveClass('border')
+    expect(
+      screen.getByText('Opens Discord to sign in, then brings you back here.')
+    ).toBeInTheDocument()
+    // The quieter members hint is for cards that already have a member.
     expect(screen.queryByText(/connects with this key gets the Pro role/)).not.toBeInTheDocument()
   })
 
@@ -651,7 +642,7 @@ describe('LicensesClient', () => {
     const prompts = screen.getAllByText(/Priority support happens in our Discord/)
     expect(prompts).toHaveLength(1)
     // The prompt's Connect posts lic-1's key; lic-2 keeps the quiet row.
-    const promptForm = prompts[0].closest('div.rounded-md')?.querySelector('form')
+    const promptForm = prompts[0].closest('section')?.querySelector('form')
     expect(promptForm?.querySelector('input[name="licenseKey"]')).toHaveValue(
       'ABCD-EFGH-IJKL-MNOP'
     )
@@ -681,7 +672,7 @@ describe('LicensesClient', () => {
 
     // No click: the prompt card opens by default even though it is second.
     const prompt = screen.getByText(/Priority support happens in our Discord/)
-    const form = prompt.closest('div.rounded-md')?.querySelector('form')
+    const form = prompt.closest('section')?.querySelector('form')
     expect(form?.querySelector('input[name="licenseKey"]')).toHaveValue(
       'WXYZ-WXYZ-WXYZ-WXYZ'
     )
@@ -734,13 +725,21 @@ describe('LicensesClient', () => {
       />
     )
 
+    // Remove confirms first: nothing is sent until the confirm's Remove.
     fireEvent.click(screen.getByRole('button', { name: 'Remove @ada' }))
+    expect(mockFetch).not.toHaveBeenCalled()
+    expect(
+      screen.getByText(
+        "Remove @ada? They lose the Pro role and can't reconnect with this key until you allow it again."
+      )
+    ).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Remove' }))
 
     expect(mockFetch).toHaveBeenCalledWith(
       '/api/account/licenses/lic-1/discord/members/member-ada',
       { method: 'DELETE' }
     )
-    expect(await screen.findByText('0 of 5 members')).toBeInTheDocument()
+    expect(await screen.findByText('0 of 5 seats')).toBeInTheDocument()
     // Holder removal block-lists the member (ADR-0007): the row moves to the
     // removed-members list, where the holder can undo the block.
     expect(screen.getByText('Removed members')).toBeInTheDocument()
@@ -812,7 +811,7 @@ describe('LicensesClient', () => {
       expect(screen.queryByText('Removed members')).not.toBeInTheDocument()
     )
     expect(screen.queryByText('@ada')).not.toBeInTheDocument()
-    expect(screen.getByText('0 of 5 members')).toBeInTheDocument()
+    expect(screen.getByText('0 of 5 seats')).toBeInTheDocument()
   })
 
   it('surfaces an error when unblocking fails', async () => {
@@ -867,6 +866,7 @@ describe('LicensesClient', () => {
     )
 
     fireEvent.click(screen.getByRole('button', { name: 'Remove @ada' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Remove' }))
 
     expect(await screen.findByText('@ada')).toBeInTheDocument()
     expect(assign).toHaveBeenCalledWith('/login')
@@ -889,27 +889,45 @@ describe('LicensesClient', () => {
     )
   })
 
-  it('hides Connect Discord during read-only inspection and shows the read-only note', () => {
+  it('draws every account-changing control disabled during read-only inspection', () => {
     const { container } = render(
       <LicensesClient
-        initialLicenses={[makeLicense({ id: 'lic-1' })]}
+        initialLicenses={[
+          makeLicense({
+            id: 'lic-1',
+            policyId: YEARLY_PRO_POLICY_ID,
+            activationCount: 1,
+            machines: [
+              {
+                id: 'm-1',
+                fingerprint: 'fp-1',
+                name: null,
+                metadata: { domain: 'shop.example.com' },
+                createdAt: '2025-06-01T00:00:00Z',
+              },
+            ],
+          }),
+        ]}
         viewOnly
       />
     )
 
-    expect(
-      screen.queryByRole('button', { name: /Connect Discord/ })
-    ).not.toBeInTheDocument()
+    // Connect is drawn disabled and outside any form: the public claim route
+    // can't be fenced by assertViewOnly(), so the flow is never offered.
+    expect(screen.getByRole('button', { name: 'Connect Discord' })).toBeDisabled()
     expect(
       container.querySelector('form[action="/api/discord/claim"]')
     ).toBeNull()
     expect(
-      screen.getByText('You are viewing this account in read-only mode.')
+      screen.getByText('Read-only view: connecting is turned off.')
     ).toBeInTheDocument()
-    // No top-of-card prompt either: it would carry the claim CTA.
+    // Renew and Deactivate are drawn disabled too, and Renew says why.
+    expect(screen.queryByRole('link', { name: /Renew/ })).toBeNull()
+    expect(screen.getByRole('button', { name: 'Renew early' })).toBeDisabled()
+    expect(screen.getByText('Read-only view: renewing is turned off.')).toBeInTheDocument()
     expect(
-      screen.queryByText(/Priority support happens in our Discord/)
-    ).not.toBeInTheDocument()
+      screen.getByRole('button', { name: 'Deactivate site: shop.example.com' })
+    ).toBeDisabled()
   })
 
   it('hides Connect Discord when every seat is taken', () => {
@@ -1000,7 +1018,7 @@ describe('LicensesClient', () => {
       createdAt: '2026-06-01T00:00:00.000Z',
     }
 
-    it('renders sites with domain, shortened instance id, last seen and versions', () => {
+    it('renders sites with domain, last seen and versions, without the instance id', () => {
       render(
         <LicensesClient
           initialLicenses={[
@@ -1009,7 +1027,7 @@ describe('LicensesClient', () => {
         />
       )
 
-      expect(screen.getByText('Activated Sites')).toBeInTheDocument()
+      expect(screen.getByText('Sites')).toBeInTheDocument()
       // Domain is the primary label, not the opaque fingerprint.
       expect(screen.getByText('shop.example.com')).toBeInTheDocument()
       // Secondary details collapse into one muted meta line: added · last
@@ -1018,7 +1036,7 @@ describe('LicensesClient', () => {
       expect(
         screen.getByText(/WCPOS Pro 1\.9\.7 · WP 6\.5 · WooCommerce 10\.1/)
       ).toBeInTheDocument()
-      expect(screen.getByText(/Instance ID: wcpos-in…3456/)).toBeInTheDocument()
+      expect(screen.queryByText(/wcpos-in/)).not.toBeInTheDocument()
     })
 
     it('falls back to the fingerprint and hides metadata rows when no metadata exists', () => {
@@ -1066,10 +1084,20 @@ describe('LicensesClient', () => {
         screen.getByRole('button', { name: 'Deactivate site: shop.example.com' })
       )
       expect(
+        screen.getByRole('alertdialog', { name: 'Deactivate shop.example.com?' })
+      ).toBeInTheDocument()
+      expect(
         screen.getByText(
           'This site stops getting updates. You can then use the key on another site.'
         )
       ).toBeInTheDocument()
+      // The only caveat is the plugin's 12-hour licence-status cache.
+      expect(
+        screen.getByText(
+          'WCPOS Pro on this site can keep showing the license as active for up to 12 hours.'
+        )
+      ).toBeInTheDocument()
+      expect(screen.queryByText(/reconnects/)).toBeNull()
       expect(mockFetch).not.toHaveBeenCalled()
 
       // Cancel dismisses the confirmation without deactivating.
@@ -1111,7 +1139,7 @@ describe('LicensesClient', () => {
         ]}
       />
     )
-    expect(screen.getByText('2 of 4')).toBeInTheDocument()
+    expect(screen.getByText('2 of 4 in use')).toBeInTheDocument()
     expect(screen.queryByText(/No sites yet/)).not.toBeInTheDocument()
   })
 
@@ -1150,7 +1178,19 @@ describe('LicensesClient', () => {
       expect(toggles[0]).toHaveAttribute('aria-expanded', 'true')
       expect(toggles[1]).toHaveAttribute('aria-expanded', 'false')
       // Collapsed card keeps its identity visible: masked key + status.
-      expect(screen.getByText('****-****-2222')).toBeInTheDocument()
+      expect(screen.getByText('••••-••••-2222')).toBeInTheDocument()
+      // The toggle says what it shows or hides.
+      expect(toggles[0]).toHaveTextContent('Hide sites and downloads')
+      expect(toggles[1]).toHaveTextContent('Show sites and downloads')
+    })
+
+    it('tells an expired licence that the Discord Pro role needs an active one', () => {
+      render(
+        <LicensesClient initialLicenses={[first(), secondExpired()]} />
+      )
+      expect(
+        screen.getByText('The Pro role in our Discord needs an active license.')
+      ).toBeInTheDocument()
     })
 
     it('auto-opens a non-active card even when it is not first', () => {
