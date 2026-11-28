@@ -518,6 +518,20 @@
       "gateways": {
         "title": "Otros métodos de pago",
         "description": "Activa en la caja los demás métodos de pago de tu tienda: transferencia bancaria, contra reembolso, cheque y las demás pasarelas de WooCommerce que use tu tienda."
+      },
+      "groups": {
+        "payment": {
+          "title": "Cobrar",
+          "intro": "Más formas de pago para el cliente y una pantalla que puede seguir."
+        },
+        "store": {
+          "title": "Gestiona la tienda desde el POS",
+          "intro": "Corrige el stock, encuentra pedidos y atiende a tus clientes sin abrir WordPress."
+        },
+        "scale": {
+          "title": "Más cajas, más tiendas",
+          "intro": "Para una segunda caja o una segunda tienda, e informes que las cubren todas."
+        }
       }
     },
     "buyBox": {

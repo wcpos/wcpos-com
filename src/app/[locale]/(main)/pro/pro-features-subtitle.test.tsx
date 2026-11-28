@@ -14,23 +14,28 @@ vi.mock('@/i18n/navigation', () => ({
 import { ProFeatureList } from '@/components/pro/pro-features'
 
 describe('/pro features subtitle', () => {
-  it('renders the heading followed directly by the features, with no subtitle', () => {
-    const { container } = render(
+  it('renders the heading with no subtitle, then the feature groups', () => {
+    render(
       <ProFeatureList
         heading="What Pro adds"
-        features={[
-          { Icon: Store, title: 'More stores', description: 'Run several stores.' },
-          { Icon: Users, title: 'Customers', description: 'Manage customers.' },
+        groups={[
+          {
+            title: 'More registers, more stores',
+            intro: 'For a second shop.',
+            features: [
+              { Icon: Store, title: 'More stores', description: 'Run several stores.' },
+              { Icon: Users, title: 'Customers', description: 'Manage customers.' },
+            ],
+          },
         ]}
       />
     )
 
     const heading = screen.getByRole('heading', { level: 2, name: 'What Pro adds' })
     expect(heading.nextElementSibling).toBeNull()
-    expect(heading.parentElement?.querySelector('p')).toBeNull()
-    expect(screen.getByRole('heading', { level: 3, name: 'More stores' })).toBeInTheDocument()
-    expect(screen.getByRole('heading', { level: 3, name: 'Customers' })).toBeInTheDocument()
-    expect(container.querySelectorAll('p')).toHaveLength(2)
+    expect(screen.getByRole('heading', { level: 3, name: 'More registers, more stores' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 4, name: 'More stores' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 4, name: 'Customers' })).toBeInTheDocument()
   })
 
   it.each(locales)('has no pro.features.subtitle key in %s', (locale) => {

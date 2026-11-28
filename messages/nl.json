@@ -518,6 +518,20 @@
       "gateways": {
         "title": "Andere betaalmethoden",
         "description": "Schakel de andere betaalmethoden van je winkel in op de kassa: bankoverschrijving, rembours, cheque en de andere WooCommerce-gateways die je winkel gebruikt."
+      },
+      "groups": {
+        "payment": {
+          "title": "Afrekenen",
+          "intro": "Meer manieren voor de klant om te betalen, en een scherm dat hij kan volgen."
+        },
+        "store": {
+          "title": "De winkel beheren vanuit de POS",
+          "intro": "Corrigeer voorraad, vind bestellingen en help klanten zonder WordPress te openen."
+        },
+        "scale": {
+          "title": "Meer kassa's, meer winkels",
+          "intro": "Voor een tweede kassa of een tweede winkel, en rapporten die ze allemaal dekken."
+        }
       }
     },
     "buyBox": {

@@ -518,6 +518,20 @@
       "gateways": {
         "title": "Other payment methods",
         "description": "Turn on your store’s other payment methods at the register: bank transfer, cash on delivery, cheque, and the other WooCommerce gateways your store uses."
+      },
+      "groups": {
+        "payment": {
+          "title": "Take payment",
+          "intro": "More ways for the customer to pay, and a screen they can follow."
+        },
+        "store": {
+          "title": "Run the store from the POS",
+          "intro": "Fix stock, find orders and look after customers without opening WordPress."
+        },
+        "scale": {
+          "title": "More registers, more stores",
+          "intro": "For a second register or a second shop, and reports that cover all of them."
+        }
       }
     },
     "buyBox": {

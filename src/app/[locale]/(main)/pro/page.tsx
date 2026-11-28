@@ -9,11 +9,13 @@ import { ProBuyBoxFooter } from '@/components/pro/pro-buy-box-footer'
 import { ReviewQuote } from '@/components/home/review-quote'
 import { buildProBuyBoxOptions } from '@/components/pro/pro-buy-box-options'
 import {
+  PRO_FEATURE_GROUPS,
   PRO_FEATURE_KEYS,
   ProFeatureList,
 } from '@/components/pro/pro-features'
 import { ProYearLine } from '@/components/pro/pro-year-line'
 import { Card } from '@/components/ui/card'
+import { Collapsible } from '@/components/ui/collapsible'
 import { EmptyState } from '@/components/ui/empty-state'
 import { Skeleton } from '@/components/ui/skeleton'
 import { TextLink } from '@/components/ui/text-link'
@@ -32,6 +34,13 @@ import type { Locale } from '@/i18n/config'
 
 const PRO_MESSAGE_NAMESPACE = 'pro'
 const FEATURES_ANCHOR = 'what-pro-adds'
+const FAQ_KEYS = [
+  'freePlugin',
+  'yearlyVsLifetime',
+  'expiry',
+  'siteLimits',
+  'paymentMethods',
+] as const
 // Below lg the hero's wrappers dissolve (`contents`) so its blocks interleave
 // with the features in the phone order; each block then carries the gutter.
 const PHONE_GUTTER = 'px-4 lg:px-0'
@@ -131,13 +140,19 @@ export default async function ProPage({
   const t = await getTranslations({ locale, namespace: PRO_MESSAGE_NAMESPACE })
   const compareT = await getTranslations({ locale, namespace: 'compare' })
 
-  const features = PRO_FEATURE_KEYS.map(({ key, Icon }) => ({
-    Icon,
-    title: t(`features.${key}.title`),
-    description: t(`features.${key}.description`),
-    ...(key === 'terminal' && {
-      link: { label: t('features.terminal.link'), href: '/extensions' },
-    }),
+  const featureGroups = PRO_FEATURE_GROUPS.map((group) => ({
+    title: t(`features.groups.${group}.title`),
+    intro: t(`features.groups.${group}.intro`),
+    features: PRO_FEATURE_KEYS.filter((feature) => feature.group === group).map(
+      ({ key, Icon }) => ({
+        Icon,
+        title: t(`features.${key}.title`),
+        description: t(`features.${key}.description`),
+        ...(key === 'terminal' && {
+          link: { label: t('features.terminal.link'), href: '/extensions' },
+        }),
+      })
+    ),
   }))
 
   const bold = (chunks: ReactNode) => <b>{chunks}</b>
@@ -237,42 +252,33 @@ export default async function ProPage({
           <div className="mx-auto max-w-6xl">
             <ProFeatureList
               heading={t('features.title')}
-              features={features}
+              groups={featureGroups}
             />
           </div>
         </Section>
       </div>
 
-      {/* FAQ Section */}
+      {/* FAQ: heading and the compare link on the left, answers collapsed */}
       <Section tone="muted" spacing="default">
-        <SectionHeading className="mb-12" title={t('faq.title')} />
-        <div className="max-w-3xl mx-auto space-y-6">
-          <FaqItem
-            question={t('faq.freePlugin.question')}
-            answer={t('faq.freePlugin.answer')}
-          />
-          <FaqItem
-            question={t('faq.yearlyVsLifetime.question')}
-            answer={t('faq.yearlyVsLifetime.answer')}
-          />
-          <FaqItem
-            question={t('faq.expiry.question')}
-            answer={t('faq.expiry.answer')}
-          />
-          <FaqItem
-            question={t('faq.siteLimits.question')}
-            answer={t('faq.siteLimits.answer')}
-          />
-          <FaqItem
-            question={t('faq.paymentMethods.question')}
-            answer={t('faq.paymentMethods.answer')}
-          />
+        <div className="mx-auto grid max-w-6xl grid-cols-1 items-start gap-6 lg:grid-cols-[320px_minmax(0,1fr)] lg:gap-18">
+          <div>
+            <SectionHeading align="left" title={t('faq.title')} />
+            <p className="mt-4">
+              <TextLink asChild>
+                <Link href="/compare">{compareT('hub.hero.title')}</Link>
+              </TextLink>
+            </p>
+          </div>
+          <div>
+            {FAQ_KEYS.map((key) => (
+              <FaqItem
+                key={key}
+                question={t(`faq.${key}.question`)}
+                answer={t(`faq.${key}.answer`)}
+              />
+            ))}
+          </div>
         </div>
-        <p className="mx-auto mt-10 max-w-3xl text-center">
-          <TextLink asChild>
-            <Link href="/compare">{compareT('hub.hero.title')}</Link>
-          </TextLink>
-        </p>
       </Section>
     </main>
   )
@@ -280,9 +286,14 @@ export default async function ProPage({
 
 function FaqItem({ question, answer }: { question: string; answer: string }) {
   return (
-    <div className="border-b pb-6">
-      <h3 className="text-lg font-semibold mb-2">{question}</h3>
-      <p className="text-muted-foreground">{answer}</p>
-    </div>
+    <Collapsible
+      className="border-b"
+      summaryClassName="gap-4 py-4.5 group-first:pt-0"
+      summary={
+        <h3 className="text-base font-semibold md:text-lg">{question}</h3>
+      }
+    >
+      <p className="pb-5 pr-8 text-muted-foreground">{answer}</p>
+    </Collapsible>
   )
 }

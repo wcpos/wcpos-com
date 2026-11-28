@@ -518,6 +518,20 @@
       "gateways": {
         "title": "Andere Zahlungsarten",
         "description": "Aktiviere die anderen Zahlungsarten deines Shops an der Kasse: Überweisung, Nachnahme, Scheck und die anderen WooCommerce-Gateways, die dein Shop nutzt."
+      },
+      "groups": {
+        "payment": {
+          "title": "Bezahlen",
+          "intro": "Mehr Zahlungswege für deine Kundschaft und ein Bildschirm, den sie mitlesen kann."
+        },
+        "store": {
+          "title": "Den Shop an der Kasse führen",
+          "intro": "Bestand korrigieren, Bestellungen finden und Kunden pflegen, ohne WordPress zu öffnen."
+        },
+        "scale": {
+          "title": "Mehr Kassen, mehr Filialen",
+          "intro": "Für eine zweite Kasse oder eine zweite Filiale, und Berichte, die alle abdecken."
+        }
       }
     },
     "buyBox": {

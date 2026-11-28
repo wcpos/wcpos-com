@@ -518,6 +518,20 @@
       "gateways": {
         "title": "Altri metodi di pagamento",
         "description": "Attiva in cassa gli altri metodi di pagamento del tuo negozio: bonifico bancario, contrassegno, assegno e gli altri gateway WooCommerce usati dal tuo negozio."
+      },
+      "groups": {
+        "payment": {
+          "title": "Incassare",
+          "intro": "Più modi di pagare per il cliente e uno schermo che può seguire."
+        },
+        "store": {
+          "title": "Gestisci il negozio dal POS",
+          "intro": "Correggi le giacenze, trova gli ordini e segui i clienti senza aprire WordPress."
+        },
+        "scale": {
+          "title": "Più casse, più negozi",
+          "intro": "Per una seconda cassa o un secondo negozio, e report che li coprono tutti."
+        }
       }
     },
     "buyBox": {

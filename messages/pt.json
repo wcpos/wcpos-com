@@ -518,6 +518,20 @@
       "gateways": {
         "title": "Outros métodos de pagamento",
         "description": "Ative na caixa os outros métodos de pagamento da sua loja: transferência bancária, pagamento na entrega, cheque e os outros gateways WooCommerce que a sua loja utiliza."
+      },
+      "groups": {
+        "payment": {
+          "title": "Receber pagamentos",
+          "intro": "Mais formas de pagamento para o cliente e um ecrã que ele pode acompanhar."
+        },
+        "store": {
+          "title": "Gerir a loja a partir do POS",
+          "intro": "Corrija o stock, encontre pedidos e acompanhe os clientes sem abrir o WordPress."
+        },
+        "scale": {
+          "title": "Mais caixas, mais lojas",
+          "intro": "Para uma segunda caixa ou uma segunda loja, e relatórios que cobrem todas."
+        }
       }
     },
     "buyBox": {

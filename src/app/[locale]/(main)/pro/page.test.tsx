@@ -196,7 +196,7 @@ describe('ProPage', () => {
     expect(links).toHaveLength(1)
     expect(links[0]).toHaveAttribute('href', '/extensions')
     const terminalBlock = screen
-      .getByRole('heading', { level: 3, name: 'Payment terminals' })
+      .getByRole('heading', { level: 4, name: 'Payment terminals' })
       .closest('div')
     expect(terminalBlock).toContainElement(links[0])
   })
@@ -230,13 +230,24 @@ describe('ProPage', () => {
     expect(screen.getByText('Pro features')).toBeInTheDocument()
     expect(screen.getByText('Payment terminals')).toBeInTheDocument()
     expect(screen.getByText('Stock and price edits')).toBeInTheDocument()
-    // More registers and stores is the main reason to upgrade, so it leads.
+    // The nine features sit in three groups by job: taking payment first,
+    // then running the store, then more registers and stores.
+    expect(
+      screen
+        .getAllByRole('heading', { level: 3 })
+        .slice(0, 3)
+        .map((heading) => heading.textContent)
+    ).toEqual([
+      'features.groups.payment.title',
+      'features.groups.store.title',
+      'features.groups.scale.title',
+    ])
+    expect(screen.getAllByRole('heading', { level: 4 })[0]).toHaveTextContent(
+      'Payment terminals'
+    )
     expect(
       screen.getByText('Add registers and run several stores.')
     ).toBeInTheDocument()
-    expect(screen.getAllByRole('heading', { level: 3 })[0]).toHaveTextContent(
-      'More registers and stores'
-    )
 
     // The buy box is the only suspended region (Suspense is mocked to
     // render its fallback), so the skeleton stands in for it here, in the
@@ -263,6 +274,10 @@ describe('ProPage', () => {
     expect(screen.getByText('Questions')).toBeInTheDocument()
     expect(screen.getByText('Do I need the free plugin?')).toBeInTheDocument()
     expect(screen.getAllByText('Yes.')).toHaveLength(1)
+    // Every FAQ answer is a disclosure, closed until the visitor opens it.
+    const disclosures = [...document.querySelectorAll('details')]
+    expect(disclosures).toHaveLength(5)
+    expect(disclosures.some((details) => details.open)).toBe(false)
 
     // The reassurance a buyer needs at the point of purchase: an expired
     // licence never disables the register.

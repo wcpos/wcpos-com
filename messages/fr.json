@@ -518,6 +518,20 @@
       "gateways": {
         "title": "Autres moyens de paiement",
         "description": "Activez à la caisse les autres moyens de paiement de votre boutique : virement bancaire, paiement à la livraison, chèque et les autres passerelles WooCommerce utilisées par votre boutique."
+      },
+      "groups": {
+        "payment": {
+          "title": "Encaisser",
+          "intro": "Plus de moyens de paiement pour le client, et un écran qu’il peut suivre."
+        },
+        "store": {
+          "title": "Gérer la boutique depuis le POS",
+          "intro": "Corrigez le stock, retrouvez les commandes et suivez vos clients sans ouvrir WordPress."
+        },
+        "scale": {
+          "title": "Plus de caisses, plus de boutiques",
+          "intro": "Pour une deuxième caisse ou une deuxième boutique, et des rapports qui les couvrent toutes."
+        }
       }
     },
     "buyBox": {
