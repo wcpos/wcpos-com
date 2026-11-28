@@ -24,10 +24,10 @@ const googleSignIn = {
   email: 'ada@gmail.com',
 }
 
-// The row buttons share the "Disconnect" name with the dialog's destructive
-// action, so always confirm through the open dialog rather than by position.
+// The row buttons share the "Disconnect" name with the inline confirm's
+// action, so always confirm through the open confirm rather than by position.
 async function clickConfirmDisconnect() {
-  const dialog = await screen.findByRole('dialog')
+  const dialog = await screen.findByRole('alertdialog')
   fireEvent.click(within(dialog).getByRole('button', { name: 'Disconnect' }))
 }
 
@@ -36,6 +36,22 @@ describe('ConnectionsCard', () => {
     vi.clearAllMocks()
     searchParamsRef.current = new URLSearchParams()
     window.history.replaceState(null, '', '/')
+  })
+
+  it('marks a set password with the green status badge and says what Change password does', () => {
+    render(
+      <ConnectionsCard
+        signIn={{ provider: 'email', email: 'ada@example.com' }}
+        methods={{ providers: ['emailpass'] }}
+      />
+    )
+    expect(screen.getByText('Set')).toHaveClass('bg-green-50')
+    expect(
+      screen.getByText('Sign in with ada@example.com and your password.')
+    ).toBeInTheDocument()
+    expect(
+      screen.getByText('Change password emails you a link to set a new one.')
+    ).toBeInTheDocument()
   })
 
   it('renders Connect links for every unconnected OAuth provider', () => {
@@ -322,7 +338,7 @@ describe('ConnectionsCard', () => {
     )
 
     fireEvent.click(screen.getByRole('button', { name: 'Disconnect Google' }))
-    // Nothing sent until the dialog confirms.
+    // Nothing sent until the inline confirm confirms.
     expect(mockFetch).not.toHaveBeenCalled()
     expect(await screen.findByText('Disconnect Google?')).toBeInTheDocument()
 

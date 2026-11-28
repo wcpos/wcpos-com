@@ -83,6 +83,20 @@ async function ProfileContent({ locale }: { locale: Locale }) {
         billingDetails={billingDetailsFromCustomer(customer)}
         savedLocale={savedLocale}
         memberSince={formatDateForLocale(customer.created_at, locale)}
+        // Keyed by customer.id like the delete card: this island seeds state
+        // from props, and a prop-seeded useState survives a back/forward
+        // revisit under Next's Activity bf-cache (PR #619/#620). Without the
+        // key, a view-as switch would show the previous target's address.
+        emailCard={
+          <ChangeEmailCard
+            key={`email-${customer.id}`}
+            currentEmail={customer.email}
+            hasPassword={Boolean(
+              authMethods?.providers.includes('emailpass') &&
+                !authMethods.emailpassPending
+            )}
+          />
+        }
         connections={{
           signIn: { provider: signInProvider, email: customer.email },
           methods: authMethods
@@ -97,19 +111,6 @@ async function ProfileContent({ locale }: { locale: Locale }) {
             : null,
         }}
       />
-      {/* Keyed by customer.id like the delete card: this island seeds state
-          from props, and a prop-seeded useState survives a back/forward
-          revisit under Next's Activity bf-cache (PR #619/#620). Without the
-          key, a view-as switch would show the previous target's address. */}
-      <ChangeEmailCard
-        key={`email-${customer.id}`}
-        currentEmail={customer.email}
-        hasPassword={Boolean(
-          authMethods?.providers.includes('emailpass') &&
-            !authMethods.emailpassPending
-        )}
-      />
-
       <DeleteAccountCard key={customer.id} email={customer.email} />
     </div>
   )

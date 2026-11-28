@@ -471,7 +471,7 @@ describe('ProfileEditForm', () => {
     )
 
     expect(
-      screen.getByRole('button', { name: 'Change profile photo' })
+      screen.getByRole('button', { name: 'Upload photo…' })
     ).toBeInTheDocument()
 
     const fileInput = container.querySelector(
@@ -497,6 +497,8 @@ describe('ProfileEditForm', () => {
     await waitFor(() => {
       expect(toast.success).toHaveBeenCalledWith('Profile saved')
     })
+    // The autosave also confirms inline, beside the form.
+    expect(screen.getByRole('status')).toHaveTextContent('Saved')
   })
 
   it('rejects oversized avatar files with an error toast and no save', () => {
@@ -544,7 +546,7 @@ describe('ProfileEditForm', () => {
 
     // Open the avatar menu via keyboard (Radix trigger).
     fireEvent.keyDown(
-      screen.getByRole('button', { name: 'Change profile photo' }),
+      screen.getByRole('button', { name: 'Upload photo…' }),
       { key: 'Enter' }
     )
 

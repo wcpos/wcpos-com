@@ -67,8 +67,13 @@ describe('ProfilePage', () => {
     }) => Promise<ReactElement<{ children: React.ReactNode }>>
 
     const profile = await renderContent(content.props)
-    const cards = Children.toArray(profile.props.children)
+    const cards = Children.toArray(profile.props.children) as ReactElement<{
+      emailCard: ReactElement
+    }>[]
 
-    expect(cards[1]).toMatchObject({ props: { hasPassword: false } })
+    // The change-email card sits in the profile form's right-hand column.
+    expect(cards[0].props.emailCard).toMatchObject({
+      props: { hasPassword: false },
+    })
   })
 })

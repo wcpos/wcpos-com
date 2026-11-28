@@ -20,6 +20,9 @@ import { Label } from '@/components/ui/label'
  * `hasPassword` is false for OAuth-only accounts, which have no password to
  * ask for; the backend makes the same distinction and is the real gate.
  */
+/** Flat, hairline-led section, as the profile form draws its own. */
+const SECTION = 'rounded-none border-0 border-t bg-transparent'
+
 export function ChangeEmailCard({
   currentEmail,
   hasPassword,
@@ -103,14 +106,14 @@ export function ChangeEmailCard({
 
   if (sentTo) {
     return (
-      <Card>
-        <CardHeader>
+      <Card className={SECTION}>
+        <CardHeader className="px-0 pb-4 pt-6">
           <CardTitle className="flex items-center gap-2">
             <MailCheck className="size-4 text-wcpos-red-accent" aria-hidden />
             {t('sentTitle')}
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-3">
+        <CardContent className="space-y-3 px-0 pb-0">
           <p className="text-sm text-muted-foreground">
             {t('sentBody', { email: sentTo })}
           </p>
@@ -121,13 +124,13 @@ export function ChangeEmailCard({
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{t('title')}</CardTitle>
+    <Card className={SECTION}>
+      <CardHeader className="px-0 pb-4 pt-6">
+        <CardTitle className="text-lg">{t('title')}</CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-4 px-0 pb-0">
         <p className="text-sm text-muted-foreground">
-          {t('description', { email: currentEmail })}
+          {t('description', { email: currentEmail })} {t('descriptionNote')}
         </p>
 
         {!open ? (

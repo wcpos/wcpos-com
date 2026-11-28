@@ -3,7 +3,7 @@
 import { useId, useState } from 'react'
 import { useLocale, useTranslations } from 'next-intl'
 import { toast } from 'sonner'
-import { AlertTriangle } from 'lucide-react'
+import { Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
@@ -83,17 +83,12 @@ export function DeleteAccountCard({ email }: { email: string }) {
   }
 
   return (
-    <Card className="border-destructive/30">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-base">
-          <AlertTriangle
-            aria-hidden="true"
-            className="h-4 w-4 text-destructive"
-          />
-          {t('deleteAccountTitle')}
-        </CardTitle>
+    // Runs across the foot of the profile: a flat hairline section.
+    <Card className="mt-8 rounded-none border-0 border-t bg-transparent">
+      <CardHeader className="px-0 pb-2 pt-6">
+        <CardTitle className="text-base">{t('deleteAccountTitle')}</CardTitle>
       </CardHeader>
-      <CardContent className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+      <CardContent className="flex flex-col gap-4 px-0 pb-0 sm:flex-row sm:items-start sm:justify-between">
         <p className="max-w-prose text-sm text-muted-foreground">
           {t('deleteAccountHint')}
         </p>
@@ -104,6 +99,7 @@ export function DeleteAccountCard({ email }: { email: string }) {
           className="flex-none self-start"
           onClick={() => setOpen(true)}
         >
+          <Trash2 aria-hidden="true" />
           {t('deleteAccountButton')}
         </Button>
       </CardContent>

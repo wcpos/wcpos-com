@@ -8,6 +8,7 @@ import { AlertTriangle, KeyRound, Mail } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { StatusBadge } from '@/components/ui/status-badge'
 import {
   Card,
   CardContent,
@@ -16,19 +17,14 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog'
-import {
   DiscordMark,
   GitHubMark,
   GoogleMark,
 } from '@/components/auth/provider-marks'
 import { formatDateForLocale } from '@/lib/date-format'
+
+/** Flat, hairline-led section, as the profile form draws its own. */
+const SECTION = 'rounded-none border-0 border-t bg-transparent'
 
 export interface ConnectionProviderDetail {
   provider: string
@@ -338,12 +334,12 @@ export function ConnectionsCard({ signIn, methods }: ConnectionsCardProps) {
   // read-only single-row display.
   if (!state) {
     return (
-      <Card>
-        <CardHeader>
+      <Card className={SECTION}>
+        <CardHeader className="px-0 pb-4 pt-6">
           <CardTitle className="text-lg">{t('connectionsTitle')}</CardTitle>
           <CardDescription>{t('connectionsHint')}</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-1">
+        <CardContent className="space-y-1 px-0 pb-0">
           <div className="flex items-center gap-4 py-3">
             <span className="flex h-10 w-10 flex-none items-center justify-center rounded-full border bg-muted/50">
               {signIn.provider === 'google' ? (
@@ -409,12 +405,12 @@ export function ConnectionsCard({ signIn, methods }: ConnectionsCardProps) {
       : null
 
   return (
-    <Card>
-      <CardHeader>
+    <Card className={SECTION}>
+      <CardHeader className="px-0 pb-4 pt-6">
         <CardTitle className="text-lg">{t('connectionsTitle')}</CardTitle>
         <CardDescription>{t('connectionsHint')}</CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="px-0 pb-0">
         <div className="divide-y">
           {OAUTH_PROVIDERS.map((provider) => {
             if (!state.providers.includes(provider)) {
@@ -472,7 +468,8 @@ export function ConnectionsCard({ signIn, methods }: ConnectionsCardProps) {
                 ? `@${detail.handle}`
                 : detail?.name
             return (
-              <div key={provider} className="flex items-start gap-3 py-3">
+              <div key={provider} className="py-3">
+              <div className="flex items-start gap-3">
                 <ProviderAvatar provider={provider} detail={detail} />
                 <div className="min-w-0 flex-1">
                   {/* break-words: the name/handle is provider-controlled and
@@ -495,12 +492,12 @@ export function ConnectionsCard({ signIn, methods }: ConnectionsCardProps) {
                     </p>
                   )}
                 </div>
-                {canDisconnect && (
+                {canDisconnect && confirmProvider !== provider && (
                   <Button
                     type="button"
-                    variant="ghost-destructive"
+                    variant="outline"
                     size="sm"
-                    className="-mr-2 flex-none"
+                    className="flex-none"
                     onClick={() => setConfirmProvider(provider)}
                     disabled={disconnecting || sendingPasswordEmail}
                     aria-label={t('disconnectAria', {
@@ -510,6 +507,45 @@ export function ConnectionsCard({ signIn, methods }: ConnectionsCardProps) {
                     {t('disconnect')}
                   </Button>
                 )}
+              </div>
+              {/* Disconnect confirms inline, under its row, in the neutral
+                  confirm (not red: it unlinks, it does not destroy). */}
+              {confirmProvider === provider && (
+                <div
+                  role="alertdialog"
+                  aria-label={t('disconnectTitle', { provider: providerName(provider) })}
+                  className="mt-2 rounded-md bg-muted/60 p-3"
+                >
+                  <p className="text-sm font-semibold">
+                    {t('disconnectTitle', { provider: providerName(provider) })}
+                  </p>
+                  <p className="mt-1 text-xs">
+                    {t('disconnectBody', { provider: providerName(provider) })}
+                  </p>
+                  <div className="mt-2.5 flex justify-end gap-2">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      className="text-foreground"
+                      onClick={() => setConfirmProvider(null)}
+                      disabled={disconnecting}
+                    >
+                      {t('disconnectCancel')}
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      className="text-foreground"
+                      onClick={() => handleDisconnect(provider)}
+                      disabled={disconnecting}
+                    >
+                      {t('disconnect')}
+                    </Button>
+                  </div>
+                </div>
+              )}
               </div>
             )
           })}
@@ -523,9 +559,9 @@ export function ConnectionsCard({ signIn, methods }: ConnectionsCardProps) {
                 <p className="text-sm font-medium leading-tight">
                   {t('passwordTitle')}
                   {hasPassword && (
-                    <Badge variant="success" className="ml-2 align-middle">
+                    <StatusBadge tone="positive" className="ml-2 align-middle">
                       {t('passwordSetBadge')}
-                    </Badge>
+                    </StatusBadge>
                   )}
                 </p>
                 {/* break-words, not break-all: this line is prose (the
@@ -535,7 +571,7 @@ export function ConnectionsCard({ signIn, methods }: ConnectionsCardProps) {
                   {hasPassword
                     ? passwordLastChanged
                       ? t('passwordLastChanged', { date: passwordLastChanged })
-                      : t('passwordReady')
+                      : t('passwordReady', { email: signIn.email })
                     : state.emailpassReserved
                       ? t('passwordNotSetShort')
                       : t('passwordNotSet', { email: signIn.email })}
@@ -546,6 +582,12 @@ export function ConnectionsCard({ signIn, methods }: ConnectionsCardProps) {
                 {signIn.provider === 'email' && hasPassword && (
                   <p className="mt-0.5 text-xs text-muted-foreground/80">
                     {t('mostRecentSignIn')}
+                  </p>
+                )}
+                {/* The action says what it does before it does it. */}
+                {hasPassword && (
+                  <p className="mt-0.5 text-xs text-muted-foreground/80">
+                    {t('passwordHint')}
                   </p>
                 )}
               </div>
@@ -625,47 +667,6 @@ export function ConnectionsCard({ signIn, methods }: ConnectionsCardProps) {
         </div>
       </CardContent>
 
-      <Dialog
-        open={confirmProvider !== null}
-        onOpenChange={(open) => {
-          if (!open) setConfirmProvider(null)
-        }}
-      >
-        {confirmProvider && (
-          <DialogContent closeLabel={t('disconnectCancel')}>
-            <DialogHeader>
-              <DialogTitle>
-                {t('disconnectTitle', {
-                  provider: providerName(confirmProvider),
-                })}
-              </DialogTitle>
-              <DialogDescription>
-                {t('disconnectBody', {
-                  provider: providerName(confirmProvider),
-                })}
-              </DialogDescription>
-            </DialogHeader>
-            <DialogFooter>
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => setConfirmProvider(null)}
-                disabled={disconnecting}
-              >
-                {t('disconnectCancel')}
-              </Button>
-              <Button
-                type="button"
-                variant="destructive"
-                onClick={() => handleDisconnect(confirmProvider)}
-                disabled={disconnecting}
-              >
-                {t('disconnect')}
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        )}
-      </Dialog>
     </Card>
   )
 }

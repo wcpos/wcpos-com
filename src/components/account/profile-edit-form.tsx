@@ -6,7 +6,7 @@ import { toast } from 'sonner'
 import { useRouter, usePathname } from '@/i18n/navigation'
 import { locales, localeNames, type Locale } from '@/i18n/config'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
@@ -23,7 +23,7 @@ import {
 import { FormField } from '@/components/ui/form-field'
 import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
-import { Camera, ImagePlus, Trash2 } from 'lucide-react'
+import { Camera, Check, ImagePlus, Trash2 } from 'lucide-react'
 import {
   ConnectionsCard,
   type ConnectionsCardProps,
@@ -37,7 +37,14 @@ import {
   type TaxLabelKey,
 } from '@/lib/billing-countries'
 
+/** Flat, hairline-led section (ADR 0009): a Card drawn without its box. */
+const SECTION = 'rounded-none border-0 border-t bg-transparent'
+const SECTION_HEADER = 'px-0 pb-4 pt-6'
+const SECTION_BODY = 'px-0 pb-0'
+
 interface ProfileEditFormProps {
+  /** Rendered last in the right-hand column (the change-email card). */
+  emailCard?: React.ReactNode
   customer: {
     email: string
     first_name?: string
@@ -173,8 +180,11 @@ export function ProfileEditForm({
   savedLocale,
   memberSince,
   connections,
+  emailCard,
 }: ProfileEditFormProps) {
   const locale = useLocale()
+  // Inline "Saved" beside the autosaving form, alongside the toast.
+  const [justSaved, setJustSaved] = useState(false)
   const t = useTranslations('account.profile')
   const router = useRouter()
   const pathname = usePathname()
@@ -399,6 +409,7 @@ export function ProfileEditForm({
     if (!profileChanged && !billingChanged && !avatarChanged) return
 
     inFlightRef.current = true
+    setJustSaved(false)
 
     try {
       const response = await fetch('/api/account/profile', {
@@ -476,6 +487,7 @@ export function ProfileEditForm({
       }
 
       toast.success(t('updateSuccess'))
+      setJustSaved(true)
     } catch (err) {
       toast.error(err instanceof Error ? err.message : t('updateError'))
     } finally {
@@ -545,118 +557,67 @@ export function ProfileEditForm({
   }
 
   return (
-    // Identity rail capped at 400px (owner's call): wide enough for the
-    // Connections rows (avatar + email on its own line + Disconnect); the
-    // billing/address form takes the rest.
-    <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,25rem)_1fr]">
-      {/* Identity rail: who you are + account-level settings. Everything
-          here is either display-only or self-saving (language), so it lives
-          outside the profile <form>. */}
-      <div className="space-y-6">
-        <Card>
-          <CardContent className="flex flex-col items-center gap-1 pt-6 text-center">
-            {/* The avatar is the edit affordance: clicking it opens the
-                photo menu; picking or removing a photo saves immediately. */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button
-                  type="button"
-                  aria-label={t('avatarEdit')}
-                  className="group relative rounded-full outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                >
-                  <Avatar className="h-16 w-16">
-                    {avatarUrl ? (
-                      <AvatarImage src={avatarUrl} alt={t('avatarAlt')} />
-                    ) : null}
-                    <AvatarFallback>{initials}</AvatarFallback>
-                  </Avatar>
-                  <span
-                    aria-hidden="true"
-                    className="absolute inset-0 flex items-center justify-center rounded-full bg-foreground/45 opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100 group-data-[state=open]:opacity-100"
-                  >
-                    <Camera className="h-5 w-5 text-background" />
-                  </span>
-                </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="center">
-                <DropdownMenuItem
-                  onSelect={() => fileInputRef.current?.click()}
-                >
-                  <ImagePlus />
-                  {t('uploadPhoto')}
-                </DropdownMenuItem>
-                {hasCustomAvatar && (
-                  <DropdownMenuItem onSelect={handleAvatarRemove}>
-                    <Trash2 />
-                    {t('removePhoto')}
-                  </DropdownMenuItem>
-                )}
-              </DropdownMenuContent>
-            </DropdownMenu>
-            <input
-              ref={fileInputRef}
-              id="profile-avatar-upload"
-              type="file"
-              accept="image/*"
-              className="hidden"
-              tabIndex={-1}
-              aria-hidden="true"
-              onChange={handleAvatarFileChange}
-            />
-            {/* Live preview: reflects the name fields as they are edited. */}
-            <p className="mt-2 font-semibold">
-              {[firstName, lastName].filter(Boolean).join(' ') || email}
-            </p>
-            <p className="text-sm text-muted-foreground">{email}</p>
-            {memberSince && (
-              <Badge variant="muted-tint" className="mt-2">
-                {t('memberSince')} {memberSince}
-              </Badge>
+    <div>
+      {/* Identity band: who you are, with the photo menu behind one outline
+          button; picking or removing a photo saves immediately. */}
+      <div className="flex flex-wrap items-center gap-4 pb-6">
+        <Avatar className="h-16 w-16">
+          {avatarUrl ? <AvatarImage src={avatarUrl} alt={t('avatarAlt')} /> : null}
+          <AvatarFallback className="text-lg">{initials}</AvatarFallback>
+        </Avatar>
+        <div className="min-w-0 flex-1">
+          {/* Live preview: reflects the name fields as they are edited. */}
+          <p className="text-lg font-semibold">
+            {[firstName, lastName].filter(Boolean).join(' ') || email}
+          </p>
+          <p className="break-all text-sm text-muted-foreground">
+            {email}
+            {memberSince && ` · ${t('memberSince')} ${memberSince}`}
+          </p>
+        </div>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="sm">
+              <Camera />
+              {t('uploadPhoto')}
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem onSelect={() => fileInputRef.current?.click()}>
+              <ImagePlus />
+              {t('uploadPhoto')}
+            </DropdownMenuItem>
+            {hasCustomAvatar && (
+              <DropdownMenuItem onSelect={handleAvatarRemove}>
+                <Trash2 />
+                {t('removePhoto')}
+              </DropdownMenuItem>
             )}
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">{t('languageTitle')}</CardTitle>
-            <CardDescription>{t('languageHint')}</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Select
-              aria-label={t('languageTitle')}
-              aria-busy={isLanguagePending}
-              disabled={isLanguagePending}
-              value={selectedLocale}
-              onChange={handleLanguageChange}
-            >
-              {locales.map((loc) => (
-                <option key={loc} value={loc}>
-                  {localeNames[loc]}
-                </option>
-              ))}
-            </Select>
-          </CardContent>
-        </Card>
-
-        {connections && (
-          <ConnectionsCard
-            signIn={connections.signIn}
-            methods={connections.methods}
-          />
-        )}
+          </DropdownMenuContent>
+        </DropdownMenu>
+        <input
+          ref={fileInputRef}
+          id="profile-avatar-upload"
+          type="file"
+          accept="image/*"
+          className="hidden"
+          tabIndex={-1}
+          aria-hidden="true"
+          onChange={handleAvatarFileChange}
+        />
       </div>
 
+    <div className="grid items-start gap-x-10 lg:grid-cols-2">
       <form
-        className="space-y-6"
         onSubmit={handleSubmit}
         onBlur={handleFormBlur}
         onKeyDown={handleFormKeyDown}
       >
-      <Card>
-        <CardHeader>
+      <Card className={SECTION}>
+        <CardHeader className={SECTION_HEADER}>
           <CardTitle className="text-lg">{t('cardTitle')}</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-6">
+        <CardContent className={`space-y-6 ${SECTION_BODY}`}>
           <div className="grid gap-4 md:grid-cols-2">
             <FormField label={t('firstName')} htmlFor="profile-first-name">
               <Input
@@ -696,16 +657,22 @@ export function ProfileEditForm({
               autoComplete="tel"
             />
           </FormField>
+          {justSaved && (
+            <p role="status" className="flex items-center gap-1.5 text-xs text-green-700 dark:text-green-400">
+              <Check aria-hidden="true" className="size-3.5" />
+              {t('saved')}
+            </p>
+          )}
         </CardContent>
       </Card>
 
       {/* id targeted by the "billing address" link on the orders page */}
-      <Card id="billing-address" className="scroll-mt-24">
-        <CardHeader>
+      <Card id="billing-address" className={`scroll-mt-24 ${SECTION}`}>
+        <CardHeader className={SECTION_HEADER}>
           <CardTitle className="text-lg">{t('billingDetails')}</CardTitle>
           <CardDescription>{t('billingDetailsHint')}</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className={`space-y-4 ${SECTION_BODY}`}>
           <FormField label={t('company')} htmlFor="profile-company">
             <Input
               id="profile-company"
@@ -800,6 +767,39 @@ export function ProfileEditForm({
       </Card>
 
       </form>
+
+      {/* Right column: how you sign in, the language, the email address. */}
+      <div>
+        {connections && (
+          <ConnectionsCard
+            signIn={connections.signIn}
+            methods={connections.methods}
+          />
+        )}
+        <Card className={SECTION}>
+          <CardHeader className={SECTION_HEADER}>
+            <CardTitle className="text-lg">{t('languageTitle')}</CardTitle>
+            <CardDescription>{t('languageHint')}</CardDescription>
+          </CardHeader>
+          <CardContent className={SECTION_BODY}>
+            <Select
+              aria-label={t('languageTitle')}
+              aria-busy={isLanguagePending}
+              disabled={isLanguagePending}
+              value={selectedLocale}
+              onChange={handleLanguageChange}
+            >
+              {locales.map((loc) => (
+                <option key={loc} value={loc}>
+                  {localeNames[loc]}
+                </option>
+              ))}
+            </Select>
+          </CardContent>
+        </Card>
+        {emailCard}
+      </div>
+    </div>
     </div>
   )
 }
